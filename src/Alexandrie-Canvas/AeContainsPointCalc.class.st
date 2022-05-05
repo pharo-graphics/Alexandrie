@@ -14,12 +14,7 @@ Class {
 { #category : #accessing }
 AeContainsPointCalc class >> instance [
 
-	^ instance
-		ifNil: [ instance := self new ]
-		ifNotNil: [ 
-		  instance
-			  ensureReady;
-			  yourself ]
+	^ instance ifNil: [ instance := self new ]
 ]
 
 { #category : #accessing }
@@ -43,6 +38,8 @@ AeContainsPointCalc >> ensureReady [
 
 { #category : #testing }
 AeContainsPointCalc >> is: aPoint inFillOfVertices: vertices [
+
+	self ensureReady.
 
 	vertices readStreamDo: [ :aStream |
 		cairoContext moveTo: aStream next.
