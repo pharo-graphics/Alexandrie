@@ -59,7 +59,7 @@ AeRenderingTest >> fileNameFor: aSymbol [
 AeRenderingTest >> filesystemResourcesDirectory [
 
 	| repo |
-	repo := IceRepository registry detect: [ :each | each name asLowercase = 'blocbenchs' ].
+	repo := IceRepository registry detect: [ :each | each name asLowercase = 'alexandrie' ].
 	^ repo location / 'tests' 
 ]
 
