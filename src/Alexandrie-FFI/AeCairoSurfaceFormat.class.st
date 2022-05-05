@@ -1,6 +1,6 @@
 Class {
 	#name : #AeCairoSurfaceFormat,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'CAIRO_FORMAT_A1',
 		'CAIRO_FORMAT_A8',

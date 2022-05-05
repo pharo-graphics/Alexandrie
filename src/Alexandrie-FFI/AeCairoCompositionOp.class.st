@@ -1,6 +1,6 @@
 Class {
 	#name : #AeCairoCompositionOp,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'CAIRO_OPERATOR_ADD',
 		'CAIRO_OPERATOR_ATOP',

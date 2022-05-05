@@ -1,6 +1,6 @@
 Class {
 	#name : #AeCairoExtendMode,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'CAIRO_EXTEND_NONE',
 		'CAIRO_EXTEND_PAD',

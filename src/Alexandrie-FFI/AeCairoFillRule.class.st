@@ -1,6 +1,6 @@
 Class {
 	#name : #AeCairoFillRule,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'CAIRO_FILL_RULE_EVEN_ODD',
 		'CAIRO_FILL_RULE_WINDING'

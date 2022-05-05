@@ -1,6 +1,6 @@
 Class {
 	#name : #AeCairoHintMetrics,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'CAIRO_HINT_METRICS_DEFAULT',
 		'CAIRO_HINT_METRICS_OFF',

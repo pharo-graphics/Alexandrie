@@ -1,6 +1,6 @@
 Class {
 	#name : #AeCairoSubpixelOrder,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'CAIRO_SUBPIXEL_ORDER_BGR',
 		'CAIRO_SUBPIXEL_ORDER_DEFAULT',

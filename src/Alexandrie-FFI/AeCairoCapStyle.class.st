@@ -1,6 +1,6 @@
 Class {
 	#name : #AeCairoCapStyle,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'CAIRO_LINE_CAP_BUTT',
 		'CAIRO_LINE_CAP_ROUND',

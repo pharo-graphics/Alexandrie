@@ -1,6 +1,6 @@
 Class {
 	#name : #AeCairoContent,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'CAIRO_CONTENT_ALPHA',
 		'CAIRO_CONTENT_COLOR',

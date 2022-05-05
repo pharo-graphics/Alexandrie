@@ -1,6 +1,6 @@
 Class {
 	#name : #AeCairoFreetypeSynthesize,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'CAIRO_FT_SYNTHESIZE_BOLD',
 		'CAIRO_FT_SYNTHESIZE_OBLIQUE'

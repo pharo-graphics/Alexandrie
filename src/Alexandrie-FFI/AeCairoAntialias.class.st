@@ -1,6 +1,6 @@
 Class {
 	#name : #AeCairoAntialias,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'CAIRO_ANTIALIAS_BEST',
 		'CAIRO_ANTIALIAS_DEFAULT',

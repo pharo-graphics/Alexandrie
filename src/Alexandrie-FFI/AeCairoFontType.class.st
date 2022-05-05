@@ -1,6 +1,6 @@
 Class {
 	#name : #AeCairoFontType,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'CAIRO_FONT_TYPE_FT',
 		'CAIRO_FONT_TYPE_QUARTZ',

@@ -1,6 +1,6 @@
 Class {
 	#name : #AeCairoHintStyle,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'CAIRO_HINT_STYLE_DEFAULT',
 		'CAIRO_HINT_STYLE_FULL',

@@ -1,6 +1,6 @@
 Class {
 	#name : #AeCairoStatus,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'CAIRO_STATUS_CLIP_NOT_REPRESENTABLE',
 		'CAIRO_STATUS_DEVICE_ERROR',

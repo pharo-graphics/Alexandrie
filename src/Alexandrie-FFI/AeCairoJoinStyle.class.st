@@ -1,6 +1,6 @@
 Class {
 	#name : #AeCairoJoinStyle,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'CAIRO_LINE_JOIN_BEVEL',
 		'CAIRO_LINE_JOIN_MITER',

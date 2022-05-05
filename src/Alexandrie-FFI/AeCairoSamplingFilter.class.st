@@ -1,6 +1,6 @@
 Class {
 	#name : #AeCairoSamplingFilter,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'CAIRO_FILTER_BEST',
 		'CAIRO_FILTER_BILINEAR',
