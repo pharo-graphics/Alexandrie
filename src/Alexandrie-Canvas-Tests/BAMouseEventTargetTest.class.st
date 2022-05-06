@@ -1,14 +1,14 @@
 Class {
-	#name : #AeMouseEventTargetTest,
+	#name : #BAMouseEventTargetTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'space'
 	],
-	#category : #'Alexandrie-Canvas-Tests'
+	#category : #'Alexandrie-Canvas-Tests-Base'
 }
 
 { #category : #tests }
-AeMouseEventTargetTest >> assertMouseEventTargetAt: aPoint hasId: expectedId [
+BAMouseEventTargetTest >> assertMouseEventTargetAt: aPoint hasId: expectedId [
 
 	self
 		assert: (space root findMouseEventTargetAt: aPoint) id asSymbol
@@ -16,14 +16,14 @@ AeMouseEventTargetTest >> assertMouseEventTargetAt: aPoint hasId: expectedId [
 ]
 
 { #category : #tests }
-AeMouseEventTargetTest >> assertNoMouseEventTargetAt: aPoint [
+BAMouseEventTargetTest >> assertNoMouseEventTargetAt: aPoint [
 	"Assert that the target at aPoint is the root, which means there are no elements there."
 
 	self assertMouseEventTargetAt: aPoint hasId: space root id asSymbol
 ]
 
 { #category : #running }
-AeMouseEventTargetTest >> setUp [
+BAMouseEventTargetTest >> setUp [
 	super setUp.
 	
 	Bloc hasSparta: false.
@@ -31,7 +31,7 @@ AeMouseEventTargetTest >> setUp [
 ]
 
 { #category : #running }
-AeMouseEventTargetTest >> tearDown [
+BAMouseEventTargetTest >> tearDown [
 	
 	Bloc hasSparta: true.
 	super tearDown.
@@ -39,9 +39,9 @@ AeMouseEventTargetTest >> tearDown [
 ]
 
 { #category : #tests }
-AeMouseEventTargetTest >> testCircles [
+BAMouseEventTargetTest >> testCircles [
 
-	space := AeSpaceFixture new spaceWithCircles.	
+	space := BlSpaceFixture new spaceWithCircles.	
 
 	self
 		assertNoMouseEventTargetAt: 10 asPoint.
@@ -57,9 +57,9 @@ AeMouseEventTargetTest >> testCircles [
 ]
 
 { #category : #tests }
-AeMouseEventTargetTest >> testClippingWithoutBorders [
+BAMouseEventTargetTest >> testClippingWithoutBorders [
 
-	space := AeSpaceFixture new spaceClippingWithoutBorders.
+	space := BlSpaceFixture new spaceClippingWithoutBorders.
 	
 	self
 		assertMouseEventTargetAt: 10 asPoint
@@ -80,9 +80,9 @@ AeMouseEventTargetTest >> testClippingWithoutBorders [
 ]
 
 { #category : #tests }
-AeMouseEventTargetTest >> testRectangles [
+BAMouseEventTargetTest >> testRectangles [
 
-	space := AeSpaceFixture new spaceWithRectangles.
+	space := BlSpaceFixture new spaceWithRectangles.
 	
 	"No element theer, only background."
 	self
@@ -99,9 +99,9 @@ AeMouseEventTargetTest >> testRectangles [
 ]
 
 { #category : #tests }
-AeMouseEventTargetTest >> testTransformRotate [
+BAMouseEventTargetTest >> testTransformRotate [
 
-	space := AeSpaceFixture new spaceWithTransformRotate.
+	space := BlSpaceFixture new spaceWithTransformRotate.
 	 
 	{	 0 -> space root id.
 		 5 -> #A.
@@ -119,9 +119,9 @@ AeMouseEventTargetTest >> testTransformRotate [
 ]
 
 { #category : #tests }
-AeMouseEventTargetTest >> testTransformScale [
+BAMouseEventTargetTest >> testTransformScale [
 
-	space := AeSpaceFixture new spaceWithTransformScale.
+	space := BlSpaceFixture new spaceWithTransformScale.
 
 	{ 	 5 -> space root id.
 		10 -> #A.
@@ -137,9 +137,9 @@ AeMouseEventTargetTest >> testTransformScale [
 ]
 
 { #category : #tests }
-AeMouseEventTargetTest >> testTransformTranslate [
+BAMouseEventTargetTest >> testTransformTranslate [
 
-	space := AeSpaceFixture new spaceWithTransformTranslate.
+	space := BlSpaceFixture new spaceWithTransformTranslate.
 	
 	self
 		assertMouseEventTargetAt: 10 asPoint
@@ -159,9 +159,9 @@ AeMouseEventTargetTest >> testTransformTranslate [
 ]
 
 { #category : #tests }
-AeMouseEventTargetTest >> testTriangles [
+BAMouseEventTargetTest >> testTriangles [
 
-	space := AeSpaceFixture new spaceWithTriangles.
+	space := BlSpaceFixture new spaceWithTriangles.
 
 	self
 		assertMouseEventTargetAt: 10 asPoint

@@ -1,5 +1,5 @@
 Class {
-	#name : #AeSpaceBuilder,
+	#name : #BlSpaceBuilder,
 	#superclass : #Object,
 	#instVars : [
 		'space',
@@ -8,17 +8,17 @@ Class {
 		'host',
 		'alphabetGenerator'
 	],
-	#category : #'Alexandrie-Canvas-Tests'
+	#category : #'Alexandrie-Canvas-Tests-Utilities'
 }
 
 { #category : #convenience }
-AeSpaceBuilder class >> newSpaceWith: aUnaryBlockClosure [
+BlSpaceBuilder class >> newSpaceWith: aUnaryBlockClosure [
 
 	^ self new newSpaceWith: aUnaryBlockClosure
 ]
 
 { #category : #'adding elements' }
-AeSpaceBuilder >> addCircle [
+BlSpaceBuilder >> addCircle [
 
 	^ self addToRoot
 		geometry: BlCircleGeometry new;
@@ -26,7 +26,7 @@ AeSpaceBuilder >> addCircle [
 ]
 
 { #category : #'adding elements' }
-AeSpaceBuilder >> addHexagonalPolygon [
+BlSpaceBuilder >> addHexagonalPolygon [
 	"Answer an hexagon polygon."
 
 	| hexagonVertices |
@@ -44,7 +44,7 @@ AeSpaceBuilder >> addHexagonalPolygon [
 ]
 
 { #category : #'adding elements' }
-AeSpaceBuilder >> addPolyline [
+BlSpaceBuilder >> addPolyline [
 	"Answer a simple polyline of 3 vertices. Polylines are open, then don't look good with other outskirts than centered."
 
 	^ self addToRoot
@@ -55,7 +55,7 @@ AeSpaceBuilder >> addPolyline [
 ]
 
 { #category : #'adding elements' }
-AeSpaceBuilder >> addRectangle [
+BlSpaceBuilder >> addRectangle [
 
 	^ self addToRoot
 		geometry: BlRectangleGeometry new;
@@ -63,7 +63,7 @@ AeSpaceBuilder >> addRectangle [
 ]
 
 { #category : #'adding elements' }
-AeSpaceBuilder >> addText: aBlRopedText to: parentElement [
+BlSpaceBuilder >> addText: aBlRopedText to: parentElement [
 
 	| anElement |
 	anElement := BlTextElement new
@@ -77,13 +77,13 @@ AeSpaceBuilder >> addText: aBlRopedText to: parentElement [
 ]
 
 { #category : #'adding elements' }
-AeSpaceBuilder >> addTextToRoot: aBlRopedText [
+BlSpaceBuilder >> addTextToRoot: aBlRopedText [
 
 	^ self addText: aBlRopedText to: space root
 ]
 
 { #category : #'adding elements' }
-AeSpaceBuilder >> addTo: parentElement [
+BlSpaceBuilder >> addTo: parentElement [
 
 	| anElement |
 	anElement := BlElement new
@@ -96,13 +96,13 @@ AeSpaceBuilder >> addTo: parentElement [
 ]
 
 { #category : #'adding elements' }
-AeSpaceBuilder >> addToRoot [
+BlSpaceBuilder >> addToRoot [
 
 	^ self addTo: space root
 ]
 
 { #category : #'adding elements' }
-AeSpaceBuilder >> addTriangle [
+BlSpaceBuilder >> addTriangle [
 
 	^ self addToRoot
 		geometry: BlTriangleGeometry new;
@@ -110,7 +110,7 @@ AeSpaceBuilder >> addTriangle [
 ]
 
 { #category : #building }
-AeSpaceBuilder >> buildSpace [
+BlSpaceBuilder >> buildSpace [
 	"Make last set up before user can use the space."
 
 	space
@@ -124,7 +124,7 @@ AeSpaceBuilder >> buildSpace [
 ]
 
 { #category : #initialization }
-AeSpaceBuilder >> initialize [
+BlSpaceBuilder >> initialize [
 
 	super initialize.
 	
@@ -148,7 +148,7 @@ AeSpaceBuilder >> initialize [
 ]
 
 { #category : #'instance creation' }
-AeSpaceBuilder >> newSpaceWith: aUnaryBlockClosure [
+BlSpaceBuilder >> newSpaceWith: aUnaryBlockClosure [
 
 	aUnaryBlockClosure value: self.
 	^ self
@@ -157,25 +157,25 @@ AeSpaceBuilder >> newSpaceWith: aUnaryBlockClosure [
 ]
 
 { #category : #accessing }
-AeSpaceBuilder >> nextColor [
+BlSpaceBuilder >> nextColor [
 
 	^ Color random: random
 ]
 
 { #category : #accessing }
-AeSpaceBuilder >> space [
+BlSpaceBuilder >> space [
 
 	^ space
 ]
 
 { #category : #accessing }
-AeSpaceBuilder >> spaceExtent [
+BlSpaceBuilder >> spaceExtent [
 
 	^ spaceExtent
 ]
 
 { #category : #accessing }
-AeSpaceBuilder >> spaceExtent: aPoint [
+BlSpaceBuilder >> spaceExtent: aPoint [
 
 	spaceExtent := aPoint
 ]

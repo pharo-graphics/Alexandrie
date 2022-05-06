@@ -1,5 +1,5 @@
 Class {
-	#name : #AeContainsPointCalc,
+	#name : #AeOffscreenCalculator,
 	#superclass : #Object,
 	#instVars : [
 		'session',
@@ -12,20 +12,20 @@ Class {
 }
 
 { #category : #accessing }
-AeContainsPointCalc class >> instance [
+AeOffscreenCalculator class >> instance [
 
 	^ instance ifNil: [ instance := self new ]
 ]
 
 { #category : #accessing }
-AeContainsPointCalc class >> resetInstance [
+AeOffscreenCalculator class >> resetInstance [
 	<script>
 
 	instance := nil
 ]
 
 { #category : #initialization }
-AeContainsPointCalc >> ensureReady [
+AeOffscreenCalculator >> ensureReady [
 
 	| cairoSurface |
 	session == Smalltalk session ifTrue: [ ^ self ].
@@ -37,7 +37,7 @@ AeContainsPointCalc >> ensureReady [
 ]
 
 { #category : #testing }
-AeContainsPointCalc >> is: aPoint inFillOfVertices: vertices [
+AeOffscreenCalculator >> is: aPoint inFillOfVertices: vertices [
 
 	self ensureReady.
 

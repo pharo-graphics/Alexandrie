@@ -1,17 +1,17 @@
 Class {
-	#name : #AeMorphicWindowHost,
+	#name : #BAMorphicWindowHost,
 	#superclass : #BlMorphicWindowHost,
-	#category : #'Alexandrie-Canvas'
+	#category : #'Alexandrie-Canvas-Renderer'
 }
 
 { #category : #'driver selection' }
-AeMorphicWindowHost class >> label [
+BAMorphicWindowHost class >> label [
 
 	^ 'Morphic Alexandrie'
 ]
 
 { #category : #'host - api' }
-AeMorphicWindowHost >> createHostSpaceFor: aSpace [
+BAMorphicWindowHost >> createHostSpaceFor: aSpace [
 	"Create and assign a new morphic host space for given bloc space"
 
 	| aWindow aHostSpace|
@@ -22,7 +22,7 @@ AeMorphicWindowHost >> createHostSpaceFor: aSpace [
 		host: self;
 		universe: self universe;
 		space: aSpace;
-		renderer: AeRenderer new;
+		renderer: BARenderer new;
 		yourself.
 
 	aSpace hostSpace: aHostSpace

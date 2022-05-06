@@ -8,18 +8,18 @@ My NewTools inspections help humans to understand what's different between two b
 My colaborators are two instances of Form (the expected and the actual bitmap) and a String that serves as label for the comparison.
 "
 Class {
-	#name : #AePixelComparison,
+	#name : #BlPixelComparison,
 	#superclass : #Object,
 	#instVars : [
 		'actualForm',
 		'expectedForm',
 		'label'
 	],
-	#category : #'Alexandrie-Canvas-Tests'
+	#category : #'Alexandrie-Canvas-Tests-Utilities'
 }
 
 { #category : #'instance creation' }
-AePixelComparison class >> expectedForm: aForm actualForm: anotherForm label: aString [
+BlPixelComparison class >> expectedForm: aForm actualForm: anotherForm label: aString [
 
 	^ self new
 		  expectedForm: aForm;
@@ -29,19 +29,19 @@ AePixelComparison class >> expectedForm: aForm actualForm: anotherForm label: aS
 ]
 
 { #category : #accessing }
-AePixelComparison >> actualForm [
+BlPixelComparison >> actualForm [
 
 	^ actualForm
 ]
 
 { #category : #accessing }
-AePixelComparison >> actualForm: aForm [
+BlPixelComparison >> actualForm: aForm [
 
 	actualForm := aForm
 ]
 
 { #category : #'accessing diff' }
-AePixelComparison >> actualVsExpectedMergedDiffForm [
+BlPixelComparison >> actualVsExpectedMergedDiffForm [
 	
 	| actualDiffForm expectedDiffForm |
 	actualDiffForm := Form extent: actualForm extent depth: actualForm depth.
@@ -65,13 +65,13 @@ AePixelComparison >> actualVsExpectedMergedDiffForm [
 ]
 
 { #category : #'accessing diff' }
-AePixelComparison >> actualVsExpectedMergedForm [
+BlPixelComparison >> actualVsExpectedMergedForm [
 
 	^ self concatenatedForm: actualForm and: expectedForm
 ]
 
 { #category : #private }
-AePixelComparison >> concatenatedForm: aForm and: anotherForm [
+BlPixelComparison >> concatenatedForm: aForm and: anotherForm [
 	"Answer a Form with both forms separated by a transparent vertical 1-pixel line."
 
 	| mergedForm |
@@ -84,19 +84,19 @@ AePixelComparison >> concatenatedForm: aForm and: anotherForm [
 ]
 
 { #category : #accessing }
-AePixelComparison >> expectedForm [
+BlPixelComparison >> expectedForm [
 
 	^ expectedForm
 ]
 
 { #category : #accessing }
-AePixelComparison >> expectedForm: aForm [
+BlPixelComparison >> expectedForm: aForm [
 
 	expectedForm := aForm
 ]
 
 { #category : #spec }
-AePixelComparison >> inspectionActualVsExpected: aBuilder [
+BlPixelComparison >> inspectionActualVsExpected: aBuilder [
 	<inspectorPresentationOrder: 1 title: 'Actual/Expected'>
 
 	^ aBuilder newMorph
@@ -106,7 +106,7 @@ AePixelComparison >> inspectionActualVsExpected: aBuilder [
 ]
 
 { #category : #spec }
-AePixelComparison >> inspectionActualVsExpectedDiff: aBuilder [
+BlPixelComparison >> inspectionActualVsExpectedDiff: aBuilder [
 	<inspectorPresentationOrder: 2 title: 'Actual/Expected Diff'>
 
 	^ aBuilder newMorph
@@ -116,25 +116,25 @@ AePixelComparison >> inspectionActualVsExpectedDiff: aBuilder [
 ]
 
 { #category : #spec }
-AePixelComparison >> inspectionMagnification [
+BlPixelComparison >> inspectionMagnification [
 
 	^ 3
 ]
 
 { #category : #testing }
-AePixelComparison >> isMatch [
+BlPixelComparison >> isMatch [
 
 	^ 0 = (expectedForm pixelCompare: (0@0 corner: expectedForm extent) with: actualForm at: 0@0).
 ]
 
 { #category : #accessing }
-AePixelComparison >> label: aString [ 
+BlPixelComparison >> label: aString [ 
 	
 	label := aString
 ]
 
 { #category : #printing }
-AePixelComparison >> printOn: aStream [
+BlPixelComparison >> printOn: aStream [
 
 	super printOn: aStream.
 	aStream

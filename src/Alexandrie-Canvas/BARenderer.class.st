@@ -1,21 +1,21 @@
 Class {
-	#name : #AeRenderer,
+	#name : #BARenderer,
 	#superclass : #BlHostRenderer,
 	#instVars : [
 		'hostSpace',
 		'aeCanvas'
 	],
-	#category : #'Alexandrie-Canvas'
+	#category : #'Alexandrie-Canvas-Renderer'
 }
 
 { #category : #initialization }
-AeRenderer >> createFormSpaceRenderer [
+BARenderer >> createFormSpaceRenderer [
 
-	^ AeFormSpaceRenderer new
+	^ BAFormSpaceRenderer new
 ]
 
 { #category : #initialization }
-AeRenderer >> initializeForHostSpace: aBlHostSpace [
+BARenderer >> initializeForHostSpace: aBlHostSpace [
 	"Initialize this renderer for a given host space.
 	Please note, that it I be called multiple times"
 	
@@ -35,37 +35,37 @@ AeRenderer >> initializeForHostSpace: aBlHostSpace [
 ]
 
 { #category : #'api - updates' }
-AeRenderer >> performUpdates [
+BARenderer >> performUpdates [
 
 
 ]
 
 { #category : #accessing }
-AeRenderer >> physicalSize [
+BARenderer >> physicalSize [
 
 	^ aeCanvas extent asPhysicalSize
 ]
 
 { #category : #rendering }
-AeRenderer >> renderSpace: aBlSpace [
+BARenderer >> renderSpace: aBlSpace [
 
 	^ aeCanvas fullDraw: aBlSpace root
 ]
 
 { #category : #rendering }
-AeRenderer >> renderSurface: aRenderer damaged: aCollection [ 
+BARenderer >> renderSurface: aRenderer damaged: aCollection [ 
 
 	hostSpace morphicWindow form: aeCanvas asForm
 ]
 
 { #category : #accessing }
-AeRenderer >> scaleFactor [
+BARenderer >> scaleFactor [
 
 	^ 1.0
 ]
 
 { #category : #testing }
-AeRenderer >> shouldUpdateEveryFrame [
+BARenderer >> shouldUpdateEveryFrame [
 
 	^ true
 ]

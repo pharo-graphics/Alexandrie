@@ -1,24 +1,24 @@
 Class {
-	#name : #AeSpaceFixture,
+	#name : #BlSpaceFixture,
 	#superclass : #Object,
-	#category : #'Alexandrie-Canvas-Tests'
+	#category : #'Alexandrie-Canvas-Tests-Utilities'
 }
 
 { #category : #accessing }
-AeSpaceFixture >> allFixtureSelectors [
+BlSpaceFixture >> allFixtureSelectors [
 
 	^ self class allSelectors select: [ :each | 
 		  (each beginsWith: #space) and: each isUnary ]
 ]
 
 { #category : #accessing }
-AeSpaceFixture >> allFixtureSpaces [
+BlSpaceFixture >> allFixtureSpaces [
 
 	^ self allFixtureSelectors collect: [ :each | self perform: each ]
 ]
 
 { #category : #private }
-AeSpaceFixture >> diagonalPositionGeneratorStartingAt: aPoint by: by [
+BlSpaceFixture >> diagonalPositionGeneratorStartingAt: aPoint by: by [
 	
 	^ Generator on: [ :g | 
 		| index |
@@ -28,7 +28,7 @@ AeSpaceFixture >> diagonalPositionGeneratorStartingAt: aPoint by: by [
 ]
 
 { #category : #private }
-AeSpaceFixture >> gridPositionGeneratorStartingAt: offset by: by columns: numberOfColumns [
+BlSpaceFixture >> gridPositionGeneratorStartingAt: offset by: by columns: numberOfColumns [
 	
 	^ Generator on: [ :g | 
 		| column next |
@@ -52,9 +52,9 @@ AeSpaceFixture >> gridPositionGeneratorStartingAt: offset by: by columns: number
 ]
 
 { #category : #fixtures }
-AeSpaceFixture >> spaceClippingOutskirts [
+BlSpaceFixture >> spaceClippingOutskirts [
 	
-	^ AeSpaceBuilder newSpaceWith: [ :builder |
+	^ BlSpaceBuilder newSpaceWith: [ :builder |
 
 		| outskirts width positionGenerator addElementsBlock |
 		outskirts := { BlOutskirts inside. BlOutskirts centered. BlOutskirts outside }.
@@ -106,9 +106,9 @@ AeSpaceFixture >> spaceClippingOutskirts [
 ]
 
 { #category : #fixtures }
-AeSpaceFixture >> spaceClippingWithoutBorders [
+BlSpaceFixture >> spaceClippingWithoutBorders [
 
-	^ AeSpaceBuilder newSpaceWith: [ :builder |
+	^ BlSpaceBuilder newSpaceWith: [ :builder |
 		| elementA elementB elementC |
 	
 		elementA := builder addToRoot
@@ -134,9 +134,9 @@ AeSpaceFixture >> spaceClippingWithoutBorders [
 ]
 
 { #category : #fixtures }
-AeSpaceFixture >> spaceWithCircles [
+BlSpaceFixture >> spaceWithCircles [
 	
-	^ AeSpaceBuilder newSpaceWith: [ :builder |
+	^ BlSpaceBuilder newSpaceWith: [ :builder |
 		| elementA elementB |
 	
 		elementA := builder addCircle
@@ -152,9 +152,9 @@ AeSpaceFixture >> spaceWithCircles [
 ]
 
 { #category : #fixtures }
-AeSpaceFixture >> spaceWithElevation [
+BlSpaceFixture >> spaceWithElevation [
 
-	^ AeSpaceBuilder newSpaceWith: [ :builder |
+	^ BlSpaceBuilder newSpaceWith: [ :builder |
 		| elementA elementB elementC childD childE childF |
 	
 		"A and children are on top"
@@ -206,9 +206,9 @@ AeSpaceFixture >> spaceWithElevation [
 ]
 
 { #category : #fixtures }
-AeSpaceFixture >> spaceWithImagesAndTransformations [
+BlSpaceFixture >> spaceWithImagesAndTransformations [
 	
-	^ AeSpaceBuilder new
+	^ BlSpaceBuilder new
 		spaceExtent: 120@350;
 		newSpaceWith: [ :builder |
 
@@ -284,9 +284,9 @@ AeSpaceFixture >> spaceWithImagesAndTransformations [
 ]
 
 { #category : #fixtures }
-AeSpaceFixture >> spaceWithOpacities [
+BlSpaceFixture >> spaceWithOpacities [
 
-	^ AeSpaceBuilder newSpaceWith: [ :builder |
+	^ BlSpaceBuilder newSpaceWith: [ :builder |
 		| size fillColor borderColor |
 		size := 50 asPoint.
 		fillColor := builder nextColor.
@@ -331,9 +331,9 @@ AeSpaceFixture >> spaceWithOpacities [
 ]
 
 { #category : #fixtures }
-AeSpaceFixture >> spaceWithOutskirtsAndOpaqueBorders [
+BlSpaceFixture >> spaceWithOutskirtsAndOpaqueBorders [
 	
-	^ AeSpaceBuilder new
+	^ BlSpaceBuilder new
 		newSpaceWith: [ :builder |
 
 			| outskirts positionGenerator addElementBlock |
@@ -376,9 +376,9 @@ AeSpaceFixture >> spaceWithOutskirtsAndOpaqueBorders [
 ]
 
 { #category : #fixtures }
-AeSpaceFixture >> spaceWithOutskirtsAndTranslucentBorders [
+BlSpaceFixture >> spaceWithOutskirtsAndTranslucentBorders [
 	
-	^ AeSpaceBuilder new
+	^ BlSpaceBuilder new
 		newSpaceWith: [ :builder |
 
 			| outskirts positionGenerator addElementBlock |
@@ -421,10 +421,10 @@ AeSpaceFixture >> spaceWithOutskirtsAndTranslucentBorders [
 ]
 
 { #category : #fixtures }
-AeSpaceFixture >> spaceWithOutskirtsOfPolygons [
+BlSpaceFixture >> spaceWithOutskirtsOfPolygons [
 	"In Sparta, they are painted in a different way (the generic)."
 	
-	^ AeSpaceBuilder newSpaceWith: [ :builder |
+	^ BlSpaceBuilder newSpaceWith: [ :builder |
 
 		| outskirts width scale positionGenerator |
 		outskirts := { BlOutskirts inside. BlOutskirts centered. BlOutskirts outside }.
@@ -468,9 +468,9 @@ AeSpaceFixture >> spaceWithOutskirtsOfPolygons [
 ]
 
 { #category : #fixtures }
-AeSpaceFixture >> spaceWithRectangles [
+BlSpaceFixture >> spaceWithRectangles [
 
-	^ AeSpaceBuilder newSpaceWith: [ :builder |
+	^ BlSpaceBuilder newSpaceWith: [ :builder |
 		| elementA elementB |
 	
 		elementA := builder addToRoot
@@ -488,9 +488,9 @@ AeSpaceFixture >> spaceWithRectangles [
 ]
 
 { #category : #fixtures }
-AeSpaceFixture >> spaceWithStrokeStyles [
+BlSpaceFixture >> spaceWithStrokeStyles [
 	
-	^ AeSpaceBuilder newSpaceWith: [ :builder |
+	^ BlSpaceBuilder newSpaceWith: [ :builder |
 
 			| positionGenerator width |
 			width := 9.
@@ -570,10 +570,10 @@ AeSpaceFixture >> spaceWithStrokeStyles [
 ]
 
 { #category : #fixtures }
-AeSpaceFixture >> spaceWithText0 [
+BlSpaceFixture >> spaceWithText0 [
 	"Draw one span with font-size attribute and padding."
 
-	^ AeSpaceBuilder newSpaceWith: [ :builder |
+	^ BlSpaceBuilder newSpaceWith: [ :builder |
 	
 		(builder addTextToRoot: ('hi' asRopedText fontSize: 24; yourself))
 			padding: (BlInsets all: 2);
@@ -584,9 +584,9 @@ AeSpaceFixture >> spaceWithText0 [
 ]
 
 { #category : #fixtures }
-AeSpaceFixture >> spaceWithTransformRotate [
+BlSpaceFixture >> spaceWithTransformRotate [
 
-	^ AeSpaceBuilder newSpaceWith: [ :builder |
+	^ BlSpaceBuilder newSpaceWith: [ :builder |
 		| elementA elementB elementC |
 	
 		elementA := builder addToRoot
@@ -612,9 +612,9 @@ AeSpaceFixture >> spaceWithTransformRotate [
 ]
 
 { #category : #fixtures }
-AeSpaceFixture >> spaceWithTransformScale [
+BlSpaceFixture >> spaceWithTransformScale [
 
-	^ AeSpaceBuilder newSpaceWith: [ :builder |
+	^ BlSpaceBuilder newSpaceWith: [ :builder |
 		| elementA elementB elementC |
 
 		"Center is at 10@10"
@@ -643,9 +643,9 @@ AeSpaceFixture >> spaceWithTransformScale [
 ]
 
 { #category : #fixtures }
-AeSpaceFixture >> spaceWithTransformTranslate [
+BlSpaceFixture >> spaceWithTransformTranslate [
 
-	^ AeSpaceBuilder newSpaceWith: [ :builder |
+	^ BlSpaceBuilder newSpaceWith: [ :builder |
 		| elementA elementB elementC |
 	
 		elementA := builder addToRoot
@@ -668,9 +668,9 @@ AeSpaceFixture >> spaceWithTransformTranslate [
 ]
 
 { #category : #fixtures }
-AeSpaceFixture >> spaceWithTriangles [
+BlSpaceFixture >> spaceWithTriangles [
 
-	^ AeSpaceBuilder newSpaceWith: [ :builder |
+	^ BlSpaceBuilder newSpaceWith: [ :builder |
 		| elementA elementB |
 	
 		elementA := builder addTriangle

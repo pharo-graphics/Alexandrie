@@ -1,11 +1,11 @@
 Class {
-	#name : #AeFormSpaceRenderer,
-	#superclass : #Object,
-	#category : #'Alexandrie-Canvas'
+	#name : #BAFormSpaceRenderer,
+	#superclass : #BASpaceRenderer,
+	#category : #'Alexandrie-Canvas-Renderer'
 }
 
 { #category : #initialization }
-AeFormSpaceRenderer >> initializeForSurface: aBlHostRendererFormSurface [ 
+BAFormSpaceRenderer >> initializeForSurface: aBlHostRendererFormSurface [ 
 
 
 "
@@ -17,7 +17,7 @@ AeFormSpaceRenderer >> initializeForSurface: aBlHostRendererFormSurface [
 ]
 
 { #category : #rendering }
-AeFormSpaceRenderer >> renderSpace: aBlSpace [
+BAFormSpaceRenderer >> renderSpace: aBlSpace [
 	"Render a space and return a collection of damaged rectangles"
 	
 	^ #()

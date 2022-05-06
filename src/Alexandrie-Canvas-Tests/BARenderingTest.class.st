@@ -1,18 +1,18 @@
 Class {
-	#name : #AeRenderingTest,
+	#name : #BARenderingTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'spaceFixture'
 	],
-	#category : #'Alexandrie-Canvas-Tests'
+	#category : #'Alexandrie-Canvas-Tests-Base'
 }
 
 { #category : #exporting }
-AeRenderingTest class >> exportAllFilesUsingAeCanvas [
+BARenderingTest class >> exportAllFilesUsingAeCanvas [
 	<script>
 
 	| spaceFixture |
-	spaceFixture := AeSpaceFixture new.
+	spaceFixture := BlSpaceFixture new.
 	spaceFixture allFixtureSelectors do: [ :each |
 		| aSpace |
 		aSpace := spaceFixture perform: each.
@@ -23,11 +23,11 @@ AeRenderingTest class >> exportAllFilesUsingAeCanvas [
 ]
 
 { #category : #exporting }
-AeRenderingTest class >> exportAllFilesUsingCurrentSpartaCanvas [
+BARenderingTest class >> exportAllFilesUsingCurrentSpartaCanvas [
 	<script>
 
 	| spaceFixture |
-	spaceFixture := AeSpaceFixture new.
+	spaceFixture := BlSpaceFixture new.
 	spaceFixture allFixtureSelectors do: [ :each |
 		| aSpace |
 		aSpace := spaceFixture perform: each.
@@ -38,7 +38,7 @@ AeRenderingTest class >> exportAllFilesUsingCurrentSpartaCanvas [
 ]
 
 { #category : #exporting }
-AeRenderingTest class >> exportFileNamed: aSymbol with: aForm [ 
+BARenderingTest class >> exportFileNamed: aSymbol with: aForm [ 
 
 	| aFileName aPCRenderingTest |
 	aPCRenderingTest := self new.
@@ -49,14 +49,14 @@ AeRenderingTest class >> exportFileNamed: aSymbol with: aForm [
 ]
 
 { #category : #tests }
-AeRenderingTest >> fileNameFor: aSymbol [
+BARenderingTest >> fileNameFor: aSymbol [
 
 	^ self filesystemResourcesDirectory / ('expected-', aSymbol asString, '.png')
 
 ]
 
 { #category : #tests }
-AeRenderingTest >> filesystemResourcesDirectory [
+BARenderingTest >> filesystemResourcesDirectory [
 
 	| repo |
 	repo := IceRepository registry detect: [ :each | each name asLowercase = 'alexandrie' ].
@@ -64,28 +64,28 @@ AeRenderingTest >> filesystemResourcesDirectory [
 ]
 
 { #category : #tests }
-AeRenderingTest >> pixelComparisonFor: aSymbol [
+BARenderingTest >> pixelComparisonFor: aSymbol [
 	
 	| aSpace expectedForm actualForm |
 	aSpace := spaceFixture perform: aSymbol.
 	expectedForm := Form fromFileNamed: (self fileNameFor: aSymbol).
 	actualForm := aSpace root aeAsForm.
 
-	^ AePixelComparison
+	^ BlPixelComparison
 		expectedForm: expectedForm
 		actualForm: actualForm
 		label: aSymbol
 ]
 
 { #category : #running }
-AeRenderingTest >> setUp [
+BARenderingTest >> setUp [
 	super setUp.
 	
-	spaceFixture := AeSpaceFixture new.
+	spaceFixture := BlSpaceFixture new.
 ]
 
 { #category : #tests }
-AeRenderingTest >> testAllFixtures [
+BARenderingTest >> testAllFixtures [
 
 	| results mismatchingResults |
 	results := spaceFixture allFixtureSelectors
