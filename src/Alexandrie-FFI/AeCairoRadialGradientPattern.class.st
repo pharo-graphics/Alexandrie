@@ -6,7 +6,7 @@ See my instance creation protocol.
 Class {
 	#name : #AeCairoRadialGradientPattern,
 	#superclass : #AeCairoGradientPattern,
-	#category : #'Alexandrie-FFI-Core'
+	#category : #'Alexandrie-FFI-Patterns'
 }
 
 { #category : #'instance creation' }

@@ -8,7 +8,7 @@ Class {
 	#superclass : #FFIExternalReference,
 	#traits : 'AeTCairoLibrary + AeTCairoDestroy',
 	#classTraits : 'AeTCairoLibrary classTrait + AeTCairoDestroy classTrait',
-	#category : #'Alexandrie-FFI-Core'
+	#category : #'Alexandrie-FFI-Surfaces'
 }
 
 { #category : #converting }

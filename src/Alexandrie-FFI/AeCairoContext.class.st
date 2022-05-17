@@ -49,6 +49,15 @@ AeCairoContext >> copyPath [
 ]
 
 { #category : #API }
+AeCairoContext >> currentMatrix [
+
+	| aCairoMatrix |
+	aCairoMatrix := AeCairoMatrix externalNew.
+	self primGetTransform: aCairoMatrix.
+	^ aCairoMatrix	autoRelease.
+]
+
+{ #category : #API }
 AeCairoContext >> lineTo: aPoint [
 
 	^ self primLineToX: aPoint x asFloat y: aPoint y asFloat
@@ -94,7 +103,7 @@ AeCairoContext >> primAppendPath: aCairoPath [
 			AeCairoPath aCairoPath ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'private - transformation' }
 AeCairoContext >> primApplyTransform: aCairoMatrix [ 
 
 	self ffiCall: #( void cairo_transform (
@@ -148,6 +157,32 @@ AeCairoContext >> primFill [
 AeCairoContext >> primFillPreserve [
 
 	self ffiCall: #( void cairo_fill_preserve ( self ))
+]
+
+{ #category : #'private - text' }
+AeCairoContext >> primFontExtents: aFontExtents [
+
+	^ self ffiCall: #( void cairo_font_extents (
+		self,
+		AeCairoFontExtents* aFontExtents ) )
+]
+
+{ #category : #'private - transformation' }
+AeCairoContext >> primGetTransform: aCairoMatrix [
+
+	self ffiCall: #( void cairo_get_matrix (
+		self,
+		AeCairoMatrix *aCairoMatrix) )
+]
+
+{ #category : #'private - text' }
+AeCairoContext >> primGlyphExtents: theGlyphs num: aGlyphsNum metrics: aTextMetrics [
+
+	^ self ffiCall: #( void cairo_glyph_extents (
+		self,
+		AeCairoGlyphArray theGlyphs,
+		int aGlyphsNum,
+		AeCairoTextExtents* aTextMetrics ) )
 ]
 
 { #category : #'private - ffi' }
@@ -296,6 +331,14 @@ AeCairoContext >> primSetOperator: aCairoOperator [
       AeCairoCompositionOp aCairoOperator ) )
 ]
 
+{ #category : #'private - text' }
+AeCairoContext >> primSetScaledFont: aScaledFont [
+
+	^ self ffiCall: #( void cairo_set_scaled_font (
+		self,
+		AeCairoScaledFont aScaledFont ) )
+]
+
 { #category : #'private - ffi' }
 AeCairoContext >> primSetSource: aPattern [
 
@@ -343,6 +386,15 @@ AeCairoContext >> primSetTolerance: aNumber [
       double aNumber ) )
 ]
 
+{ #category : #'private - text' }
+AeCairoContext >> primShowGlyphs: aGlyphsArray num: aNumberOfGlyphs [
+
+	^ self ffiCall: #( void cairo_show_glyphs (
+		self,
+		void * aGlyphsArray,
+		int aNumberOfGlyphs ) )
+]
+
 { #category : #'private - ffi' }
 AeCairoContext >> primStroke [
 
@@ -355,7 +407,7 @@ AeCairoContext >> primStrokePreserve [
 	self ffiCall: #( void cairo_stroke_preserve ( self ))
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'private - transformation' }
 AeCairoContext >> primTranslateX: aX y: aY [
 
 	self ffiCall: #( void cairo_translate (

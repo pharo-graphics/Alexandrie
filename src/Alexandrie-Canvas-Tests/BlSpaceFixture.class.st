@@ -573,14 +573,28 @@ BlSpaceFixture >> spaceWithStrokeStyles [
 BlSpaceFixture >> spaceWithText0 [
 	"Draw one span with font-size attribute and padding."
 
-	^ BlSpaceBuilder newSpaceWith: [ :builder |
+	^ BlSpaceBuilder new
+		spaceExtent: 200 @ 100;
+		newSpaceWith: [ :builder |
+
+			| aText |
+			aText :=
+				('Les' asRopedText fontName: 'Courier New'; bold; foreground: Color blue; yourself),
+				('élèves' asRopedText fontSize: 18; underline; yourself),
+				('français' asRopedText fontSize: 26; italic; background: Color yellow; yourself).
 	
-		(builder addTextToRoot: ('hi' asRopedText fontSize: 24; yourself))
-			padding: (BlInsets all: 2);
-			relocate: 10 asPoint;
-			size: 36 asPoint;
-			yourself.
- ]
+			(builder addTextToRoot: aText)
+				padding: (BlInsets all: 2);
+				relocate: 1 asPoint;
+				yourself.
+
+"			(builder addTextToRoot: aText)
+				padding: (BlInsets all: 10);
+				relocate: 1 @ 50;
+				transformDo: [ :t | t scaleBy: 0.5 ];
+				yourself."
+
+	 		]
 ]
 
 { #category : #fixtures }

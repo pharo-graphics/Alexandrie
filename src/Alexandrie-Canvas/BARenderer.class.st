@@ -8,6 +8,11 @@ Class {
 	#category : #'Alexandrie-Canvas-Renderer'
 }
 
+{ #category : #accessing }
+BARenderer >> aeCanvas [
+	^ aeCanvas
+]
+
 { #category : #initialization }
 BARenderer >> createFormSpaceRenderer [
 
@@ -31,7 +36,10 @@ BARenderer >> initializeForHostSpace: aBlHostSpace [
 	hostSpace := aBlHostSpace.
 	aeCanvas := AeCanvas extent: aBlHostSpace physicalSize asPoint.
 
-	textMeasurer := BlMockedTextMeasurer new
+	textMeasurer := BASpaceTextMeasurer new
+		spaceRenderer: spaceRenderer;
+		yourself
+
 ]
 
 { #category : #'api - updates' }

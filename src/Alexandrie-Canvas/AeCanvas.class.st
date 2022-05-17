@@ -21,7 +21,11 @@ Class {
 		'pathBlock',
 		'isPathSetAsClip',
 		'cairoContext',
-		'pathCache'
+		'pathCache',
+		'fontOptions',
+		'identityMatrix',
+		'textExtents',
+		'utf8Encoder'
 	],
 	#category : #'Alexandrie-Canvas-Base'
 }
@@ -130,14 +134,14 @@ AeCanvas >> drawFillAndStroke [
 ]
 
 { #category : #text }
-AeCanvas >> drawText: aSpartaCairoTextRun baseline: aPoint [ 
+AeCanvas >> drawText: aeGlyphArray font: aScaledFont baseline: baseline [ 
 
-"	self primSetSourceR: aFillColor red G: aFillColor green B: aFillColor blue A: aFillColor alpha.
-	self primSetScaledFont: aTextRun scaledFont.
-	self primTranslateX: baseline x Y: baseline y.
-	self primShowGlyphs: aTextRun glyphs num: aTextRun glyphs size.
-	self primTranslateX: baseline x negated Y: baseline y negated"
-	1halt.
+	cairoContext
+		translate: baseline;
+		primSetScaledFont: aScaledFont;
+		primShowGlyphs: aeGlyphArray num: aeGlyphArray size;
+		translate: baseline negated.
+
 ]
 
 { #category : #accessing }
@@ -168,10 +172,12 @@ AeCanvas >> initializeExtent: aPoint [
 
 	cairoSurface := AeCairoImageSurface extent: aPoint.
 	cairoContext := AeCairoContext create: cairoSurface.
+	identityMatrix := AeCairoMatrix newIdentity.
+	textExtents := AeCairoTextExtents new. "Note: Concurrency risk"
+	utf8Encoder := ZnUTF8Encoder new.
 
-	cairoContext
-		primSetTolerance: 0.5;
-		primSetAntialias: AeCairoAntialias CAIRO_ANTIALIAS_FAST.
+	self setDefaultCairoContextOptions.
+
 ]
 
 { #category : #API }
@@ -186,6 +192,20 @@ AeCanvas >> pathTranslate: aPoint [
 
 	aPoint isZero ifTrue: [ ^self ].
 	cairoContext translate: aPoint
+]
+
+{ #category : #text }
+AeCanvas >> scaledFontFor: aFreeTypeFont [
+
+	| aCairoFontFace aFontMatrix |
+	aCairoFontFace := AeCairoFreetypeFontFace newFor: aFreeTypeFont.
+	aFontMatrix := AeCairoMatrix scaleBy: aFreeTypeFont pointSize.
+	
+	^ aCairoFontFace 
+		newScaledFontWithFontMatrix: aFontMatrix
+		userToDeviceMatrix: "identityMatrix" cairoContext currentMatrix
+		options: fontOptions
+
 ]
 
 { #category : #API }
@@ -219,6 +239,25 @@ AeCanvas >> setClipChildren: aBoolean [
 			isPathSetAsClip ifTrue: [
 				cairoContext resetClip ] ].
 	isPathSetAsClip := aBoolean
+]
+
+{ #category : #initialization }
+AeCanvas >> setDefaultCairoContextOptions [
+
+	| antialiasOption |
+	antialiasOption := AeCairoAntialias CAIRO_ANTIALIAS_FAST.
+
+	cairoContext
+		primSetTolerance: 0.5;
+		primSetAntialias: antialiasOption.
+
+	fontOptions := AeCairoFontOptions new
+		antialias: antialiasOption;
+		hintMetrics: AeCairoHintMetrics CAIRO_HINT_METRICS_ON;
+		hintStyle: AeCairoHintStyle CAIRO_HINT_STYLE_SLIGHT;
+		subpixelOrder: AeCairoSubpixelOrder CAIRO_SUBPIXEL_ORDER_RGB;
+		yourself
+
 ]
 
 { #category : #private }
@@ -317,7 +356,10 @@ AeCanvas >> setSourceColor: aColor [
 { #category : #private }
 AeCanvas >> setSourceSolidColor: aColor [
 
-	cairoContext primSetSourceR: aColor red g: aColor green b: aColor blue
+	cairoContext
+		primSetSourceR: aColor red
+		g: aColor green
+		b: aColor blue
 ]
 
 { #category : #private }
@@ -517,4 +559,15 @@ AeCanvas >> setWithoutBorderAndNoBackground [
 	
 	drawFillAndStrokeBlock := [ ]
 
+]
+
+{ #category : #text }
+AeCanvas >> textExtentsFor: aeGlyphsArray scaledFont: aeScaledFont do: aUnaryBlockClosure [
+	
+	cairoContext
+		primSetScaledFont: aeScaledFont;
+		primGlyphExtents: aeGlyphsArray
+			num: aeGlyphsArray size
+			metrics: textExtents.
+	aUnaryBlockClosure value: textExtents
 ]

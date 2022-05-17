@@ -69,7 +69,10 @@ BlSpaceBuilder >> addText: aBlRopedText to: parentElement [
 	anElement := BlTextElement new
 		text: aBlRopedText;
 		id: alphabetGenerator next;
-		background: self nextColor;
+		constraintsDo: [ :c | 
+			c vertical fitContent.
+			c horizontal fitContent ];
+		border: (BlBorder paint: self nextColor width: 1);
 		yourself.
 	parentElement addChild: anElement.
 	^ anElement

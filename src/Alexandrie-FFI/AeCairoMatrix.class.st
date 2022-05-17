@@ -34,10 +34,30 @@ AeCairoMatrix class >> fieldsDesc [
 ]
 
 { #category : #'instance creation' }
+AeCairoMatrix class >> newIdentity [
+
+	^ self new
+		  autoRelease;
+		  loadIdentity;
+		  yourself
+]
+
+{ #category : #'instance creation' }
+AeCairoMatrix class >> scaleBy: aFactor [
+	
+	^ self x: 0
+		y: 0
+		sx: aFactor
+		sy: aFactor
+		shx: 0
+		shy: 0
+]
+
+{ #category : #'instance creation' }
 AeCairoMatrix class >> x: x y: y sx: sx sy: sy shx: shx shy: shy [
 
 	^ self new
-		  initX: x
+		  initializeX: x
 		  y: y
 		  sx: sx
 		  sy: sy
@@ -47,7 +67,7 @@ AeCairoMatrix class >> x: x y: y sx: sx sy: sy shx: shx shy: shy [
 ]
 
 { #category : #initialization }
-AeCairoMatrix >> initX: aX y: aY sx: aSx sy: aSy shx: aShX shy: aShY [
+AeCairoMatrix >> initializeX: aX y: aY sx: aSx sy: aSy shx: aShX shy: aShY [
 
 	self
 		primInitX: aX
@@ -81,7 +101,9 @@ AeCairoMatrix >> loadIdentity [
 { #category : #'private - ffi' }
 AeCairoMatrix >> primInitX: aX y: aY sx: aSx sy: aSy shx: aShX shy: aShY [
 
-	self ffiCall: #( void cairo_matrix_init (
+	self ffiCall: #(
+		void
+		cairo_matrix_init (
 			self,
 			double aSx,
 			double aShY,

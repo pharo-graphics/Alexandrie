@@ -6,7 +6,7 @@ See: https://www.cairographics.org/manual/cairo-Image-Surfaces.html
 Class {
 	#name : #AeCairoImageSurface,
 	#superclass : #AeCairoSurface,
-	#category : #'Alexandrie-FFI-Core'
+	#category : #'Alexandrie-FFI-Surfaces'
 }
 
 { #category : #'instance creation' }

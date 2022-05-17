@@ -9,7 +9,7 @@ Class {
 	#superclass : #FFIExternalObject,
 	#traits : 'AeTCairoLibrary + AeTCairoDestroy',
 	#classTraits : 'AeTCairoLibrary classTrait + AeTCairoDestroy classTrait',
-	#category : #'Alexandrie-FFI-Core'
+	#category : #'Alexandrie-FFI-Patterns'
 }
 
 { #category : #'private - ffi' }

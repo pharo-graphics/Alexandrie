@@ -6,7 +6,7 @@ See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html
 Class {
 	#name : #AeCairoGradientPattern,
 	#superclass : #AeCairoPattern,
-	#category : #'Alexandrie-FFI-Core'
+	#category : #'Alexandrie-FFI-Patterns'
 }
 
 { #category : #'private - ffi' }
