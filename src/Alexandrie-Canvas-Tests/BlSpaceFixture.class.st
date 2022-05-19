@@ -579,20 +579,35 @@ BlSpaceFixture >> spaceWithText0 [
 
 			| aText |
 			aText :=
-				('Les' asRopedText fontName: 'Courier New'; bold; foreground: Color blue; yourself),
-				('élèves' asRopedText fontSize: 18; underline; yourself),
+				('Les' asRopedText      fontSize: 22; black; fontName: 'Arial'; foreground: Color blue; yourself),
+				('élèves' asRopedText   fontSize: 18; underline; yourself),
 				('français' asRopedText fontSize: 26; italic; background: Color yellow; yourself).
 	
 			(builder addTextToRoot: aText)
-				padding: (BlInsets all: 2);
-				relocate: 1 asPoint;
+				padding: (BlInsets all: 5);
+				relocate: 5 asPoint;
+				constraintsDo: [ :c | 
+					c vertical fitContent.
+					c horizontal fitContent ];
+				border: (BlBorder paint: builder nextColor width: 1);
 				yourself.
 
-"			(builder addTextToRoot: aText)
-				padding: (BlInsets all: 10);
-				relocate: 1 @ 50;
-				transformDo: [ :t | t scaleBy: 0.5 ];
-				yourself."
+			(builder addTextToRoot: 'aßc' asRopedText)
+"				background: builder nextColor;
+				padding: (BlInsets all: 0);"
+				opacity: 0.5;
+				transformDo: [ :t |
+					t scaleBy: 2.
+					t rotateBy: 90.
+					t translateBy: 0 @ 50 ];
+				yourself.
+
+			(builder addTextToRoot: (String loremIpsum: 10) asRopedText)
+				background: builder nextColor;
+				padding: (BlInsets all: 3);
+				relocate: 50 asPoint;
+				size: 50@20; 
+				yourself.
 
 	 		]
 ]
