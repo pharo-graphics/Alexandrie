@@ -40,10 +40,11 @@ BASpan >> advance [
 { #category : #building }
 BASpan >> aeBuild [
 
-	| aString aFontExtents aLogicalFont aFreeTypeFont aBlFont |
+	| aBlFont aLogicalFont aFreeTypeFont aBuffer aFontExtents aString |
 	
 	"we first collect font properties and text style from the attributes"
 	fontAndStyleBuilder := BlTextFontAndStyleBuilder new.
+
 	blSpan attributes do: [ :eachAttribute |
 		eachAttribute applyOnFontAndStyleBuilder: fontAndStyleBuilder ].
 
@@ -55,7 +56,10 @@ BASpan >> aeBuild [
 	"Get glyphs for the text"
 	aString := String streamContents: [ :aStream |
 		blSpan do: [ :anItem | anItem textRunOn: aStream ] ].
-	cairoGlyphsArray := cairoScaledFont glyphArrayFor: aString.
+	aBuffer := aString encodeWith: ZnUTF8Encoder default.
+	cairoGlyphsArray := cairoScaledFont
+		glyphArrayFor: aBuffer
+		length: aBuffer size.
 
 	"Get font metrics (shared for all string with this scaled font)"
 	"See SpartaFontMetrics>>#cairoInitializeFrom:"
@@ -80,19 +84,18 @@ BASpan >> aeBuild [
 { #category : #'as yet unclassified' }
 BASpan >> aeDrawOn: aeCanvas [
 
-	aeCanvas drawElementAlpha: 1.0 with: [
+	aeCanvas restoreAfter: [
 		fontAndStyleBuilder hasCustomColor
 			ifTrue: [
 				aeCanvas setSourceColor: fontAndStyleBuilder color ]
 			ifFalse: [
-				self flag: #todo.
+				self flag: #todo. "White is default?"
 				aeCanvas setSourceColor: Color black
 				].
 
 		aeCanvas
-			drawText: cairoGlyphsArray
-			font: cairoScaledFont
-			baseline: baselinePoint ]
+			pathTranslate: baselinePoint;
+			drawText: cairoGlyphsArray font: cairoScaledFont ]
 ]
 
 { #category : #accessing }

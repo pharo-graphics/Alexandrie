@@ -2,6 +2,7 @@ Extension { #name : #BlTextParagraphSpan }
 
 { #category : #'*Alexandrie-Canvas' }
 BlTextParagraphSpan >> aeDrawOn: aeCanvas [
-
-	1halt.
+	
+	self shouldNotImplement
+	"`BASpan` is my polymorphic replacement."
 ]

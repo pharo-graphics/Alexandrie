@@ -33,8 +33,8 @@ BlElement >> aeDrawGeometryOn: aeCanvas [
 
 	Notes:
 	- AeCanvas requires this 'set up order': background, outskirts, border.
-	- Receiver assumes that position and transformations are already applied on the canvas.
-	- Sender assumes that position and transformations are maintanined intact."
+	- Pre-condition: position and transformations are already applied on the canvas.
+	- Post-condition: position and transformations are maintanined intact."
 
 	self background aeApplyTo: aeCanvas.
 	self outskirts aeApplyTo: aeCanvas.

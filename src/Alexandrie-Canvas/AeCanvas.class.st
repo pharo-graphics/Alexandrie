@@ -25,7 +25,7 @@ Class {
 		'fontOptions',
 		'identityMatrix',
 		'textExtents',
-		'utf8Encoder'
+		'utf8Converter'
 	],
 	#category : #'Alexandrie-Canvas-Base'
 }
@@ -134,14 +134,11 @@ AeCanvas >> drawFillAndStroke [
 ]
 
 { #category : #text }
-AeCanvas >> drawText: aeGlyphArray font: aScaledFont baseline: baseline [ 
+AeCanvas >> drawText: aeGlyphArray font: aScaledFont [
 
 	cairoContext
-		translate: baseline;
 		primSetScaledFont: aScaledFont;
-		primShowGlyphs: aeGlyphArray num: aeGlyphArray size;
-		translate: baseline negated.
-
+		primShowGlyphs: aeGlyphArray num: aeGlyphArray size
 ]
 
 { #category : #accessing }
@@ -194,6 +191,12 @@ AeCanvas >> pathTranslate: aPoint [
 	cairoContext translate: aPoint
 ]
 
+{ #category : #API }
+AeCanvas >> restoreAfter: aBlock [
+
+	cairoContext restoreAfter: aBlock
+]
+
 { #category : #text }
 AeCanvas >> scaledFontFor: aFreeTypeFont [
 
@@ -203,7 +206,7 @@ AeCanvas >> scaledFontFor: aFreeTypeFont [
 	
 	^ aCairoFontFace 
 		newScaledFontWithFontMatrix: aFontMatrix
-		userToDeviceMatrix: "identityMatrix" cairoContext currentMatrix
+		userToDeviceMatrix: identityMatrix
 		options: fontOptions
 
 ]
