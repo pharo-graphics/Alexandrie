@@ -25,7 +25,8 @@ Class {
 		'fontOptions',
 		'identityMatrix',
 		'textExtents',
-		'utf8Converter'
+		'scaledFontByFreetypeFont',
+		'fontExtentsByScaledFont'
 	],
 	#category : #'Alexandrie-Canvas-Base'
 }
@@ -170,8 +171,7 @@ AeCanvas >> initializeExtent: aPoint [
 	cairoSurface := AeCairoImageSurface extent: aPoint.
 	cairoContext := AeCairoContext create: cairoSurface.
 	identityMatrix := AeCairoMatrix newIdentity.
-	textExtents := AeCairoTextExtents new. "Note: Concurrency risk"
-	utf8Encoder := ZnUTF8Encoder new.
+	textExtents := AeCairoTextExtents new.
 
 	self setDefaultCairoContextOptions.
 
