@@ -154,6 +154,18 @@ AeCanvas >> flush [
 	cairoSurface flush
 ]
 
+{ #category : #text }
+AeCanvas >> fontExtentsOf: aeScaledFont [
+
+	fontExtentsByScaledFont ifNil:[
+		fontExtentsByScaledFont := IdentityDictionary new ].
+
+	^ fontExtentsByScaledFont
+		at: aeScaledFont
+		ifAbsentPut:[ aeScaledFont extents ]
+
+]
+
 { #category : #rendering }
 AeCanvas >> fullDraw: anElement [
 
@@ -199,16 +211,22 @@ AeCanvas >> restoreAfter: aBlock [
 
 { #category : #text }
 AeCanvas >> scaledFontFor: aFreeTypeFont [
+	"Answer a AeCairoScaledFont that corresponds to the provided font.
+	Since the FreeTypeFont is cached in Pharo, it is used as key in a cache."
 
-	| aCairoFontFace aFontMatrix |
-	aCairoFontFace := AeCairoFreetypeFontFace newFor: aFreeTypeFont.
-	aFontMatrix := AeCairoMatrix scaleBy: aFreeTypeFont pointSize.
+	scaledFontByFreetypeFont ifNil: [
+		scaledFontByFreetypeFont := Dictionary new ].
 	
-	^ aCairoFontFace 
-		newScaledFontWithFontMatrix: aFontMatrix
-		userToDeviceMatrix: identityMatrix
-		options: fontOptions
-
+	^ scaledFontByFreetypeFont
+		at: aFreeTypeFont
+		ifAbsentPut: [ | aCairoFontFace aFontMatrix |
+			aCairoFontFace := AeCairoFreetypeFontFace newFor: aFreeTypeFont.
+			aFontMatrix := AeCairoMatrix scaleBy: aFreeTypeFont pointSize.
+			
+			aCairoFontFace 
+				newScaledFontWithFontMatrix: aFontMatrix
+				userToDeviceMatrix: identityMatrix
+				options: fontOptions ]
 ]
 
 { #category : #API }

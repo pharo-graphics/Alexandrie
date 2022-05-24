@@ -40,30 +40,25 @@ BASpan >> advance [
 { #category : #building }
 BASpan >> aeBuild [
 
-	| aBlFont aLogicalFont aFreeTypeFont aBuffer aFontExtents aString |
-	
-	"we first collect font properties and text style from the attributes"
-	fontAndStyleBuilder := BlTextFontAndStyleBuilder new.
+	| aFreeTypeFont aBuffer aFontExtents |
 
+	"Collect font properties and text style from the attributes"
+	fontAndStyleBuilder := BlTextFontAndStyleBuilder new.
 	blSpan attributes do: [ :eachAttribute |
 		eachAttribute applyOnFontAndStyleBuilder: fontAndStyleBuilder ].
 
-	aBlFont := fontAndStyleBuilder font.
-	aLogicalFont := aBlFont asLogicalFont.
-	aFreeTypeFont := aLogicalFont asFreetypeFont.
+	aFreeTypeFont := fontAndStyleBuilder font asLogicalFont asFreetypeFont.
 	cairoScaledFont := baTextMeasurer aeCanvas scaledFontFor: aFreeTypeFont.
 	
 	"Get glyphs for the text"
-	aString := String streamContents: [ :aStream |
-		blSpan do: [ :anItem | anItem textRunOn: aStream ] ].
-	aBuffer := aString encodeWith: ZnUTF8Encoder default.
+	aBuffer := blSpan utf8Encoded.
 	cairoGlyphsArray := cairoScaledFont
 		glyphArrayFor: aBuffer
 		length: aBuffer size.
 
 	"Get font metrics (shared for all string with this scaled font)"
 	"See SpartaFontMetrics>>#cairoInitializeFrom:"
-	aFontExtents := cairoScaledFont extents.
+	aFontExtents := baTextMeasurer aeCanvas fontExtentsOf: cairoScaledFont.
 	ascent := aFontExtents ascent negated.
 	descent := aFontExtents descent.
 
