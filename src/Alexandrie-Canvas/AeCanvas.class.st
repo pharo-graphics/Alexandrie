@@ -34,15 +34,21 @@ Class {
 { #category : #accessing }
 AeCanvas class >> extent: aPoint [
 
-	^ self basicNew
-		  initializeExtent: aPoint;
-		  yourself
+	^ self newFor: (AeCairoImageSurface extent: aPoint)
 ]
 
 { #category : #accessing }
 AeCanvas class >> new [
 
 	^ self shouldNotImplement
+]
+
+{ #category : #accessing }
+AeCanvas class >> newFor: aeCairoSurface [
+
+	^ self basicNew
+		  initializeWith: aeCairoSurface;
+		  yourself
 ]
 
 { #category : #visiting }
@@ -176,11 +182,11 @@ AeCanvas >> fullDraw: anElement [
 ]
 
 { #category : #initialization }
-AeCanvas >> initializeExtent: aPoint [
+AeCanvas >> initializeWith: aeCairoSurface [
 
 	self initialize.
 
-	cairoSurface := AeCairoImageSurface extent: aPoint.
+	cairoSurface := aeCairoSurface.
 	cairoContext := AeCairoContext create: cairoSurface.
 	identityMatrix := AeCairoMatrix newIdentity.
 	textExtents := AeCairoTextExtents new.
@@ -201,6 +207,12 @@ AeCanvas >> pathTranslate: aPoint [
 
 	aPoint isZero ifTrue: [ ^self ].
 	cairoContext translate: aPoint
+]
+
+{ #category : #private }
+AeCanvas >> privateAeCairoContext [
+
+	^ cairoContext
 ]
 
 { #category : #API }

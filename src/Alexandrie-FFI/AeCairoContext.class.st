@@ -273,6 +273,15 @@ AeCairoContext >> primSave [
 	self ffiCall: #( void cairo_save ( self ) )
 ]
 
+{ #category : #'private - transformation' }
+AeCairoContext >> primScaleX: aX y: aY [
+
+	self ffiCall: #( void cairo_scale (
+			self,
+			double aX,
+			double aY) )
+]
+
 { #category : #'private - ffi' }
 AeCairoContext >> primSetAntialias: aCairoAntialias [
 
@@ -428,6 +437,12 @@ AeCairoContext >> restoreAfter: aBlock [
 	self primSave.
 	aBlock value.
 	self primRestore.
+]
+
+{ #category : #API }
+AeCairoContext >> scale: aPoint [
+
+	self primScaleX: aPoint x y: aPoint y
 ]
 
 { #category : #initialization }

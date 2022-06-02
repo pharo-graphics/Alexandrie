@@ -1,9 +1,11 @@
 Class {
-	#name : #AeOffscreenCalculator,
+	#name : #AeOffscreen,
 	#superclass : #Object,
 	#instVars : [
 		'session',
-		'cairoContext'
+		'aeCanvas',
+		'cairoContext',
+		'textMeasurer'
 	],
 	#classInstVars : [
 		'instance'
@@ -12,32 +14,34 @@ Class {
 }
 
 { #category : #accessing }
-AeOffscreenCalculator class >> instance [
+AeOffscreen class >> instance [
 
 	^ instance ifNil: [ instance := self new ]
 ]
 
 { #category : #accessing }
-AeOffscreenCalculator class >> resetInstance [
+AeOffscreen class >> resetInstance [
 	<script>
 
 	instance := nil
 ]
 
 { #category : #initialization }
-AeOffscreenCalculator >> ensureReady [
+AeOffscreen >> ensureReady [
 
-	| cairoSurface |
 	session == Smalltalk session ifTrue: [ ^ self ].
 	session := Smalltalk session.
 
-	cairoSurface := AeCairoImageSurface extent: 1@1.
-	cairoContext := AeCairoContext create: cairoSurface.
+	aeCanvas := AeCanvas extent: 1 asPoint.
+	cairoContext := aeCanvas privateAeCairoContext.
 
+	textMeasurer := BACanvasTextMeasurer new
+							aeCanvas: aeCanvas;
+							yourself
 ]
 
-{ #category : #testing }
-AeOffscreenCalculator >> is: aPoint inFillOfVertices: vertices [
+{ #category : #api }
+AeOffscreen >> is: aPoint inFillOfVertices: vertices [
 
 	self ensureReady.
 
@@ -47,4 +51,11 @@ AeOffscreenCalculator >> is: aPoint inFillOfVertices: vertices [
 			cairoContext lineTo: aStream next	] ].
 
 	^ cairoContext primInFillX: aPoint x y: aPoint y
+]
+
+{ #category : #api }
+AeOffscreen >> measureTextParagraph: aBlTextParagraph [
+
+	self ensureReady.
+	textMeasurer measureTextParagraph: aBlTextParagraph
 ]

@@ -122,6 +122,18 @@ BlSpaceBuilder >> buildSpace [
 		forceLayout.
 ]
 
+{ #category : #accessing }
+BlSpaceBuilder >> host [
+
+	^ host
+]
+
+{ #category : #accessing }
+BlSpaceBuilder >> host: aBlHost [
+
+	host := aBlHost
+]
+
 { #category : #initialization }
 BlSpaceBuilder >> initialize [
 

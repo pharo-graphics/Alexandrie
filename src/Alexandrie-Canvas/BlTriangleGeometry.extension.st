@@ -18,7 +18,7 @@ BlTriangleGeometry >> aeApplyTo: aeCanvas element: aBlElement [
 { #category : #'*Alexandrie-Canvas-Core' }
 BlTriangleGeometry >> aeContainsPoint: aPoint in: aBlElement [
 
-	^ AeOffscreenCalculator instance
+	^ AeOffscreen instance
 		  is: aPoint
 		  inFillOfVertices: self computeVertices
 ]

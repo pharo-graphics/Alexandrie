@@ -7,18 +7,18 @@ Class {
 { #category : #initialization }
 BAFormSpaceRenderer >> initializeForSurface: aBlHostRendererFormSurface [ 
 
+	| aeCairoSurface |
+	aeCairoSurface := AeCairoImageSurface
+		createForData: aBlHostRendererFormSurface pointer
+		extent: aBlHostRendererFormSurface extent
+		stride: aBlHostRendererFormSurface stride
+		format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
 
-"
-	^ (self class environment at: #SpartaCairoCanvas)
-		createForData: aRendererSurface pointer
-		extent: aRendererSurface extent
-		stride: aRendererSurface stride
-		format: (self class environment at: #SpartaCairoSurfaceFormat) CAIRO_FORMAT_ARGB32	"
-]
+	aeCanvas := 	AeCanvas newFor: aeCairoSurface.
 
-{ #category : #rendering }
-BAFormSpaceRenderer >> renderSpace: aBlSpace [
-	"Render a space and return a collection of damaged rectangles"
-	
-	^ #()
+	self initializeScaleFactor: aBlHostRendererFormSurface scaleFactor.
+
+"	physicalSize := aBlHostRendererFormSurface physicalSize.
+	scaleFactor := aBlHostRendererFormSurface scaleFactor.
+	session := Smalltalk session"
 ]
