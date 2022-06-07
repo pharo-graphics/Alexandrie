@@ -39,6 +39,12 @@ BAOSWindowSDL2Host class >> priority [
 ]
 
 { #category : #'api - lifecycle' }
+BAOSWindowSDL2Host class >> pulsePeriod: aDuration [
+
+	PulseLoop pulsePeriod: aDuration
+]
+
+{ #category : #'api - lifecycle' }
 BAOSWindowSDL2Host class >> start [
 	PulseLoop start
 ]
