@@ -570,11 +570,10 @@ BlSpaceFixture >> spaceWithStrokeStyles [
 ]
 
 { #category : #fixtures }
-BlSpaceFixture >> spaceWithText0 [
-	"Draw one span with font-size attribute and padding."
+BlSpaceFixture >> spaceWithTextAttributes [
 
 	^ BlSpaceBuilder new
-		spaceExtent: 200 @ 100;
+		spaceExtent: 200 @ 40;
 		newSpaceWith: [ :builder |
 
 			| aText |
@@ -583,31 +582,119 @@ BlSpaceFixture >> spaceWithText0 [
 				('élèves' asRopedText   fontSize: 18; underline; yourself),
 				('français' asRopedText fontSize: 26; italic; background: Color yellow; yourself).
 	
-			(builder addTextToRoot: aText)
-				padding: (BlInsets all: 5);
-				relocate: 5 asPoint;
-				constraintsDo: [ :c | 
-					c vertical fitContent.
-					c horizontal fitContent ];
-				border: (BlBorder paint: builder nextColor width: 1);
-				yourself.
+			builder addTextToRoot: aText
 
-			(builder addTextToRoot: 'aßc' asRopedText)
-"				background: builder nextColor;
-				padding: (BlInsets all: 0);"
-				opacity: 0.5;
+	 		]
+]
+
+{ #category : #fixtures }
+BlSpaceFixture >> spaceWithTextMeasurements [
+
+	^ BlSpaceBuilder new
+		spaceExtent: 320 @ 50;
+		newSpaceWith: [ :builder |
+
+			| container |
+			container :=
+			  builder addToRoot
+			    layout: (BlLinearLayout horizontal cellSpacing: 1);
+			    constraintsDo: [ :c |
+			      c horizontal matchParent.
+			      c vertical matchParent ];
+				 transformDo: [ :t |
+					"Zoom in, to better appreciate children details"
+					t topLeftOrigin; scaleBy: 2.5 ];
+			    yourself.
+		
+			#(editorMeasurement labelMeasurement tightMeasurement)
+				do: [ :eachSelector |
+
+					(builder addText: 'Agüita' asRopedText to: container)
+						background: builder nextColor;
+						perform: eachSelector
+						yourself.
+					
+					]
+
+		 	]
+]
+
+{ #category : #fixtures }
+BlSpaceFixture >> spaceWithTextOpacities [
+
+	^ BlSpaceBuilder new
+		spaceExtent: 50 @ 100;
+		newSpaceWith: [ :builder |
+
+			| container |
+			container :=
+			  builder addToRoot
+			    layout: (BlLinearLayout vertical cellSpacing: 1);
+			    constraintsDo: [ :c |
+			      c horizontal matchParent.
+			      c vertical matchParent ];
+				 transformDo: [ :t |
+					"Zoom in, to better appreciate children details"
+					t topLeftOrigin; scaleBy: 2 ];
+			    yourself.
+
+		  (builder
+				addText: ('aßc' asRopedText
+				    foreground: (Color black alpha: 1.0);
+				    yourself)
+				to: container)
+				opacity: 1.0.
+
+		  (builder
+				addText: ('aßc' asRopedText
+				    foreground: (Color black alpha: 1.0);
+				    yourself)
+				to: container)
+				opacity: 0.5.
+
+
+		  (builder
+				addText: ('aßc' asRopedText
+				    foreground: (Color black alpha: 0.5);
+				    yourself)
+				to: container)
+				opacity: 1.0.
+
+		  (builder
+				addText: ('aßc' asRopedText
+				    foreground: (Color black alpha: 0.5);
+				    yourself)
+				to: container)
+				opacity: 0.5.
+
+		]
+]
+
+{ #category : #fixtures }
+BlSpaceFixture >> spaceWithTextTransformations [
+
+	^ BlSpaceBuilder newSpaceWith: [ :builder |
+
+			(builder addTextToRoot: '¡Hola!' asRopedText)
 				transformDo: [ :t |
-					t scaleBy: 2.
-					t rotateBy: 90.
-					t translateBy: 0 @ 50 ];
-				yourself.
+					t scaleBy: 1.5.
+					"rotation at bottom-left:"
+					t normalizedOrigin: 0 @ 1.
+					t skewY: 15.
+					t rotateBy: 90 ].
 
-			(builder addTextToRoot: (String loremIpsum: 10) asRopedText)
-				background: builder nextColor;
-				padding: (BlInsets all: 3);
+			(builder addTextToRoot: 'Salut !' asRopedText)
+				transformDo: [ :t |
+					"rotation beyond top-right:"
+					t normalizedOrigin: 1.5 @ -1.5.
+					t rotateBy: -45.
+					t scaleBy: 2. ].
+
+			(builder addTextToRoot: 'Hello!' asRopedText)
 				relocate: 50 asPoint;
-				size: 50@20; 
-				yourself.
+				transformDo: [ :t |
+					t translateBy: 15 asPoint.
+					t skewX: 45 ].
 
 	 		]
 ]
