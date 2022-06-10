@@ -41,7 +41,7 @@ BAMouseEventTargetTest >> tearDown [
 { #category : #tests }
 BAMouseEventTargetTest >> testCircles [
 
-	space := BlSpaceFixture new spaceWithCircles.	
+	space := BlSpaceFixture new buildCircles; space.
 
 	self
 		assertNoMouseEventTargetAt: 10 asPoint.
@@ -59,7 +59,7 @@ BAMouseEventTargetTest >> testCircles [
 { #category : #tests }
 BAMouseEventTargetTest >> testClippingWithoutBorders [
 
-	space := BlSpaceFixture new spaceClippingWithoutBorders.
+	space := BlSpaceFixture new buildClippingWithoutBorders; space.
 	
 	self
 		assertMouseEventTargetAt: 10 asPoint
@@ -82,7 +82,7 @@ BAMouseEventTargetTest >> testClippingWithoutBorders [
 { #category : #tests }
 BAMouseEventTargetTest >> testRectangles [
 
-	space := BlSpaceFixture new spaceWithRectangles.
+	space := BlSpaceFixture new buildRectangles; space.
 	
 	"No element theer, only background."
 	self
@@ -101,7 +101,7 @@ BAMouseEventTargetTest >> testRectangles [
 { #category : #tests }
 BAMouseEventTargetTest >> testTransformRotate [
 
-	space := BlSpaceFixture new spaceWithTransformRotate.
+	space := BlSpaceFixture new buildTransformRotate; space.
 	 
 	{	 0 -> space root id.
 		 5 -> #A.
@@ -121,7 +121,7 @@ BAMouseEventTargetTest >> testTransformRotate [
 { #category : #tests }
 BAMouseEventTargetTest >> testTransformScale [
 
-	space := BlSpaceFixture new spaceWithTransformScale.
+	space := BlSpaceFixture new buildTransformScale; space.
 
 	{ 	 5 -> space root id.
 		10 -> #A.
@@ -139,7 +139,7 @@ BAMouseEventTargetTest >> testTransformScale [
 { #category : #tests }
 BAMouseEventTargetTest >> testTransformTranslate [
 
-	space := BlSpaceFixture new spaceWithTransformTranslate.
+	space := BlSpaceFixture new buildTransformTranslate; space.
 	
 	self
 		assertMouseEventTargetAt: 10 asPoint
@@ -161,7 +161,7 @@ BAMouseEventTargetTest >> testTransformTranslate [
 { #category : #tests }
 BAMouseEventTargetTest >> testTriangles [
 
-	space := BlSpaceFixture new spaceWithTriangles.
+	space := BlSpaceFixture new buildTriangles; space.
 
 	self
 		assertMouseEventTargetAt: 10 asPoint
