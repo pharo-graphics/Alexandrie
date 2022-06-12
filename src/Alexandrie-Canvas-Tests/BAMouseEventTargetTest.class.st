@@ -22,26 +22,18 @@ BAMouseEventTargetTest >> assertNoMouseEventTargetAt: aPoint [
 	self assertMouseEventTargetAt: aPoint hasId: space root id asSymbol
 ]
 
-{ #category : #running }
-BAMouseEventTargetTest >> setUp [
-	super setUp.
-	
-	Bloc hasSparta: false.
+{ #category : #'instance creation' }
+BAMouseEventTargetTest >> newSpaceFixture [
 
-]
-
-{ #category : #running }
-BAMouseEventTargetTest >> tearDown [
-	
-	Bloc hasSparta: true.
-	super tearDown.
-
+	^ BlSpaceFixture new
+		host: BAMorphicWindowHost new;
+		yourself
 ]
 
 { #category : #tests }
 BAMouseEventTargetTest >> testCircles [
 
-	space := BlSpaceFixture new buildCircles; space.
+	space := self newSpaceFixture buildCircles; space.
 
 	self
 		assertNoMouseEventTargetAt: 10 asPoint.
@@ -59,7 +51,7 @@ BAMouseEventTargetTest >> testCircles [
 { #category : #tests }
 BAMouseEventTargetTest >> testClippingWithoutBorders [
 
-	space := BlSpaceFixture new buildClippingWithoutBorders; space.
+	space := self newSpaceFixture buildClippingWithoutBorders; space.
 	
 	self
 		assertMouseEventTargetAt: 10 asPoint
@@ -82,7 +74,7 @@ BAMouseEventTargetTest >> testClippingWithoutBorders [
 { #category : #tests }
 BAMouseEventTargetTest >> testRectangles [
 
-	space := BlSpaceFixture new buildRectangles; space.
+	space := self newSpaceFixture buildRectangles; space.
 	
 	"No element theer, only background."
 	self
@@ -101,7 +93,7 @@ BAMouseEventTargetTest >> testRectangles [
 { #category : #tests }
 BAMouseEventTargetTest >> testTransformRotate [
 
-	space := BlSpaceFixture new buildTransformRotate; space.
+	space := self newSpaceFixture buildTransformRotate; space.
 	 
 	{	 0 -> space root id.
 		 5 -> #A.
@@ -121,7 +113,7 @@ BAMouseEventTargetTest >> testTransformRotate [
 { #category : #tests }
 BAMouseEventTargetTest >> testTransformScale [
 
-	space := BlSpaceFixture new buildTransformScale; space.
+	space := self newSpaceFixture buildTransformScale; space.
 
 	{ 	 5 -> space root id.
 		10 -> #A.
@@ -139,7 +131,7 @@ BAMouseEventTargetTest >> testTransformScale [
 { #category : #tests }
 BAMouseEventTargetTest >> testTransformTranslate [
 
-	space := BlSpaceFixture new buildTransformTranslate; space.
+	space := self newSpaceFixture buildTransformTranslate; space.
 	
 	self
 		assertMouseEventTargetAt: 10 asPoint
@@ -161,7 +153,7 @@ BAMouseEventTargetTest >> testTransformTranslate [
 { #category : #tests }
 BAMouseEventTargetTest >> testTriangles [
 
-	space := BlSpaceFixture new buildTriangles; space.
+	space := self newSpaceFixture buildTriangles; space.
 
 	self
 		assertMouseEventTargetAt: 10 asPoint
