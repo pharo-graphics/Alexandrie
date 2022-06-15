@@ -497,23 +497,35 @@ BlSpaceFixture >> buildStrokeStyles [
 { #category : #fixtures }
 BlSpaceFixture >> buildTextAttributes [
 
-	| aText |
-	builder spaceExtent: 200 @ 40.
+	| container |
+	builder spaceExtent: 50 @ 100.
 
-	aText :=
-		('Les' asRopedText      fontSize: 22; black; fontName: 'Arial'; foreground: Color blue; yourself),
-		('élèves' asRopedText   fontSize: 18; underline; yourself),
-		('français' asRopedText fontSize: 26; italic; background: Color yellow; yourself).
+	container :=
+	  builder addToRoot
+	    layout: (BlLinearLayout vertical cellSpacing: 5);
+	    constraintsDo: [ :c |
+	      c horizontal matchParent.
+	      c vertical matchParent ];
+	    yourself.
+	
+	builder
+		addText: ('Les' asRopedText fontSize: 40; black; fontName: 'Arial'; foreground: Color blue; yourself)
+		 to: container.
 
-	builder addTextToRoot: aText
-
+	builder
+		addText: ('élèves' asRopedText   fontSize: 30; underline; yourself)
+		to: container.
+		
+	builder
+		addText: ('français' asRopedText fontSize: 25; italic; background: Color yellow; yourself)
+		to: container.
 ]
 
 { #category : #fixtures }
 BlSpaceFixture >> buildTextMeasurements [
 
 	| container |
-	builder spaceExtent: 320 @ 50.
+	builder spaceExtent: 200 @ 25.
 
 	container :=
 	  builder addToRoot
@@ -523,7 +535,7 @@ BlSpaceFixture >> buildTextMeasurements [
 	      c vertical matchParent ];
 		 transformDo: [ :t |
 			"Zoom in, to better appreciate children details"
-			t topLeftOrigin; scaleBy: 2.5 ];
+			t topLeftOrigin; scaleBy: 1.5 ];
 	    yourself.
 
 	#(editorMeasurement labelMeasurement tightMeasurement)
