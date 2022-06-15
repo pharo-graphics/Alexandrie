@@ -1,7 +1,7 @@
 Extension { #name : #BlElementCachedExplicitTransformation }
 
 { #category : #'*Alexandrie-Canvas-Core' }
-BlElementCachedExplicitTransformation >> aeApplyTo: aeCanvas element: aBlElement [
+BlElementCachedExplicitTransformation >> aeApplyTo: aeCanvas [
 
 	self ensureMatrix.
 	aeCanvas pathTransform:

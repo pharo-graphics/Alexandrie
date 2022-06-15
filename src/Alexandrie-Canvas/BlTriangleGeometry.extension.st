@@ -3,15 +3,19 @@ Extension { #name : #BlTriangleGeometry }
 { #category : #'*Alexandrie-Canvas-Core' }
 BlTriangleGeometry >> aeApplyTo: aeCanvas element: aBlElement [
 
-	aeCanvas setPathFor: self isClosed: true with: [ :cairoContext |
-		| thePoints |
-		thePoints := self computeVertices.
+	aeCanvas
+		setPathKey: self
+		hasJoins: true
+		hasCaps: false
+		block: [ :cairoContext |
+			| thePoints |
+			thePoints := self computeVertices.
 
-		cairoContext
-			moveTo: thePoints first;
-			lineTo: thePoints second;
-			lineTo: thePoints third;
-			primClosePath ]
+			cairoContext
+				moveTo: thePoints first;
+				lineTo: thePoints second;
+				lineTo: thePoints third;
+				primClosePath ]
 
 ]
 

@@ -1,12 +1,28 @@
 Extension { #name : #BlTextBackgroundAttribute }
 
 { #category : #'*Alexandrie-Canvas-Core' }
-BlTextBackgroundAttribute >> aeDrawBelowOn: aeCanvas with: aBlTextParagraphSpan [
-	"Render rectangle under text span"
+BlTextBackgroundAttribute >> aeDrawBelowOn: aeCanvas span: aBASpan [
+	"Render a rectangle under text span"
 
-"	aCanvas fill
-		paint: paint;
-		path: (aSpan bounds translateBy: aSpan baseline);
-		draw"	
-	1halt
+	aeCanvas restoreContextAfter: [ 
+
+		aeCanvas
+			setBackgroundWith: [ aeCanvas setSourceColor: paint ]
+				alpha: 1.0.
+
+		aeCanvas setBorderOff.
+		"ToDo: set line joins?"
+
+		aeCanvas
+			setPathKey: self
+			hasJoins: true
+			hasCaps: false
+			block: [ :cairoContext |
+				| aRectangle |
+				aRectangle := aBASpan bounds "translateBy: aBASpan baselinePoint".
+				cairoContext rectangle: aRectangle ].
+
+		aeCanvas drawFigure.
+		
+		]
 ]

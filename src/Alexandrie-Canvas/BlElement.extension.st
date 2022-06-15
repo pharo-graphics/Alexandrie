@@ -22,39 +22,58 @@ BlElement >> aeDrawChildrenOn: aeCanvas [
 	
 	self children isEmpty ifTrue: [ ^self ].
 
-	aeCanvas setClipChildren: self clipChildren.
+	aeCanvas prepareToDrawChildrenWithClipping: self clipChildren.
 	self children sortedByElevation do: [ :each |
 		each aeDrawOn: aeCanvas ].
 ]
 
 { #category : #'*Alexandrie-Canvas-Core' }
-BlElement >> aeDrawGeometryOn: aeCanvas [
-	"Draw my geometry with the corresponding background and border.
+BlElement >> aeDrawOn: aeCanvas [
 
-	Notes:
-	- AeCanvas requires this 'set up order': background, outskirts, border.
-	- Pre-condition: position and transformations are already applied on the canvas.
-	- Post-condition: position and transformations are maintanined intact."
+	self aeDrawOn: aeCanvas with: [
 
-	self background aeApplyTo: aeCanvas.
-	self outskirts aeApplyTo: aeCanvas.
-	self border aeApplyTo: aeCanvas.
-	self geometry aeApplyTo: aeCanvas element: self.
-	aeCanvas drawFillAndStroke.
+		"My position is applied before my transformation matrix,
+		which may have an additional translation."
+		aeCanvas pathTranslate: self position.
+		self transformation aeApplyTo: aeCanvas.
+
+		self aeDrawOnlyMeOn: aeCanvas.
+		self aeDrawChildrenOn: aeCanvas ]
+]
+
+{ #category : #'*Alexandrie-Canvas-Core' }
+BlElement >> aeDrawOn: aeCanvas with: aBlockClosure [
+
+	self opacity = 1.0
+		ifTrue: [ aeCanvas restoreContextAfter: aBlockClosure ]
+		ifFalse: [ aeCanvas paintGroupWith: aBlockClosure alpha: self opacity ]
 
 ]
 
 { #category : #'*Alexandrie-Canvas-Core' }
-BlElement >> aeDrawOn: aeCanvas [
+BlElement >> aeDrawOnlyMeOn: aeCanvas [
+	"Draw my geometry with the corresponding background and border.
 
-	aeCanvas drawElementAlpha: self opacity with: [
+	Notes:
+	- AeCanvas requires background to be set up first (see class comment).
+	- Pre-condition: position and transformations are already applied on the canvas.
+	- Post-condition: position and transformations are maintanined intact."
+	
+	| myBorder |
+	self background aeApplyTo: aeCanvas.
 
-		"Apply transformations"
-		aeCanvas pathTranslate: self position.
-		self transformation aeApplyTo: aeCanvas element: self.
+	myBorder := self border.
+	myBorder isTransparent
+		ifTrue: [ aeCanvas setBorderOff ]
+		ifFalse: [
+			self outskirts aeApplyTo: aeCanvas.
+			aeCanvas setBorderBlock: [
+				myBorder paint aeApplyTo: aeCanvas.
+				myBorder style aeApplyTo: aeCanvas.
+				aeCanvas setBorderWidth: myBorder width ] ].
 
-		self aeDrawGeometryOn: aeCanvas.
-		self aeDrawChildrenOn: aeCanvas.
+	self geometry aeApplyTo: aeCanvas element: self.
 
-		]
+	aeCanvas drawFigure.
+
 ]

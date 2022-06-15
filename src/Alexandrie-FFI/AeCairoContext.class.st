@@ -70,26 +70,6 @@ AeCairoContext >> moveTo: aPoint [
 ]
 
 { #category : #API }
-AeCairoContext >> paintGroupWith: aBlock [
-
-	self primPushGroup.
-	aBlock value.
-	self
-		primPopGroupToSource;
-		primPaint
-]
-
-{ #category : #API }
-AeCairoContext >> paintGroupWith: aBlock alpha: aNumber [
-
-	self primPushGroup.
-	aBlock value.
-	self
-		primPopGroupToSource;
-		primPaintAlpha: aNumber
-]
-
-{ #category : #API }
 AeCairoContext >> popGroup [
 
 	^ self primPopGroup initialize; yourself "(autoRelease)"
@@ -425,18 +405,20 @@ AeCairoContext >> primTranslateX: aX y: aY [
 			double aY) )
 ]
 
+{ #category : #API }
+AeCairoContext >> rectangle: aRectangle [
+
+	self
+		primRectangleX: aRectangle left
+		y: aRectangle top
+		width: aRectangle width
+		height: aRectangle height
+]
+
 { #category : #initialization }
 AeCairoContext >> resetClip [
 
 	^ self ffiCall: #( void cairo_reset_clip #( self ) )
-]
-
-{ #category : #transformations }
-AeCairoContext >> restoreAfter: aBlock [
-
-	self primSave.
-	aBlock value.
-	self primRestore.
 ]
 
 { #category : #API }

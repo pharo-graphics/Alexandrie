@@ -67,75 +67,6 @@ AeCanvas class >> newFor: aeCairoSurface [
 		  yourself
 ]
 
-{ #category : #visiting }
-AeCanvas >> acceptBlImageBackground: aBlImageBackground [ 
-
-	| image |
-	hasBackground := true.
-	backgroundAlpha := aBlImageBackground opacity.
-	image := aBlImageBackground image.
-	hasOpaqueBackground := image isTranslucent not.
-
-	"TODO: do not initialize here, and reset on new session"	
-	formToCairoSurfaceCache ifNil: [
-		formToCairoSurfaceCache := LRUCache new
-			maximumWeight: 400;
-			factory: [ :aForm | AeCairoImageSurface fromForm: aForm ];
-			yourself ].
-	
-	backgroundSourceBlock := [ 
-		| aCairoSurface |
-		aCairoSurface := formToCairoSurfaceCache at: image.
-		cairoContext primSetSourceSurface: aCairoSurface x: 0.0 y: 0.0.
-		].
-
-]
-
-{ #category : #visiting }
-AeCanvas >> acceptBlPaintBackground: aBlPaintBackground [
-
-	hasBackground := true.
-	backgroundAlpha := aBlPaintBackground opacity.
-	hasOpaqueBackground := aBlPaintBackground isOpaque.
-	backgroundSourceBlock := [
-		self setSourceColor: aBlPaintBackground paint color ]
-
-]
-
-{ #category : #visiting }
-AeCanvas >> acceptBlTransparentBackground: aBlTransparentBackground [ 
-
-	hasBackground := false.
-	backgroundAlpha := 0.0.
-	hasOpaqueBackground := false.
-	backgroundSourceBlock := nil.
-]
-
-{ #category : #visiting }
-AeCanvas >> acceptColorPaintBorder: aBlColorPaint border: aBlBorder [
-
-	borderColor := aBlColorPaint color.
-	borderWidth := aBlBorder width.
-	borderStyle := aBlBorder style.
-
-	(borderColor isTransparent or: [ borderWidth isZero ]) ifTrue: [
-		self setWithoutBorder ].
-
-
-]
-
-{ #category : #visiting }
-AeCanvas >> acceptTransparentPaintBorder: aBlElement [ 
-	
-	self setWithoutBorder.
-]
-
-{ #category : #private }
-AeCanvas >> applyPathBlock [
-
-	pathBlock value: cairoContext
-]
-
 { #category : #converting }
 AeCanvas >> asForm [
 
@@ -143,17 +74,9 @@ AeCanvas >> asForm [
 ]
 
 { #category : #API }
-AeCanvas >> drawElementAlpha: aNumber with: aBlock [
+AeCanvas >> drawFigure [
 
-	aNumber = 1.0
-		ifTrue: [ cairoContext restoreAfter: aBlock ]
-		ifFalse: [ cairoContext paintGroupWith: aBlock alpha: aNumber ]
-]
-
-{ #category : #API }
-AeCanvas >> drawFillAndStroke [
-
-	drawFillAndStrokeBlock value
+	figureBlock value
 ]
 
 { #category : #text }
@@ -212,16 +135,42 @@ AeCanvas >> initializeWith: aeCairoSurface [
 ]
 
 { #category : #API }
+AeCanvas >> paintGroupWith: aBlock [
+	"Note: Cairo already saves and restores its state with push_group and pop_group"
+
+	cairoContext primPushGroup.
+
+	aBlock value.
+
+	cairoContext
+		primPopGroupToSource;
+		primPaint
+]
+
+{ #category : #API }
+AeCanvas >> paintGroupWith: aBlock alpha: aNumber [
+	"Note: Cairo already saves and restores its state with push_group and pop_group"
+
+	cairoContext primPushGroup.
+
+	aBlock value.
+
+	cairoContext
+		primPopGroupToSource;
+		primPaintAlpha: aNumber
+]
+
+{ #category : #API }
 AeCanvas >> pathScale: aPoint [
 
 	cairoContext scale: aPoint
 ]
 
 { #category : #API }
-AeCanvas >> pathTransform: aMatrix [
+AeCanvas >> pathTransform: aeCairoMatrix [
 
-	aMatrix isIdentity ifTrue: [ ^self ].
-	cairoContext primApplyTransform: aMatrix
+	aeCairoMatrix isIdentity ifTrue: [ ^self ].
+	cairoContext primApplyTransform: aeCairoMatrix
 ]
 
 { #category : #API }
@@ -232,15 +181,49 @@ AeCanvas >> pathTranslate: aPoint [
 ]
 
 { #category : #private }
+AeCanvas >> preparePath [
+
+	pathBlock value: cairoContext
+]
+
+{ #category : #private }
+AeCanvas >> prepareStroke: aBoolean [
+
+	borderBlock value.
+
+	aBoolean ifTrue:[ borderWidth := borderWidth * 2.0 ].	
+	cairoContext primSetLineWidth: borderWidth.
+
+]
+
+{ #category : #API }
+AeCanvas >> prepareToDrawChildrenWithClipping: aBoolean [
+
+	aBoolean
+		ifTrue: [
+			isPathSetAsClip ifFalse: [ 
+				self preparePath.
+				cairoContext primClip ] ]
+		ifFalse: [
+			isPathSetAsClip ifTrue: [
+				cairoContext resetClip ] ].
+	isPathSetAsClip := aBoolean
+]
+
+{ #category : #private }
 AeCanvas >> privateAeCairoContext [
 
 	^ cairoContext
 ]
 
 { #category : #API }
-AeCanvas >> restoreAfter: aBlock [
+AeCanvas >> restoreContextAfter: aBlock [
 
-	cairoContext restoreAfter: aBlock
+	cairoContext primSave.
+
+	aBlock value.
+
+	cairoContext primRestore
 ]
 
 { #category : #text }
@@ -264,6 +247,61 @@ AeCanvas >> scaledFontFor: aFreeTypeFont [
 ]
 
 { #category : #API }
+AeCanvas >> setBackgroundOff [
+
+	hasBackground := false.
+
+]
+
+{ #category : #API }
+AeCanvas >> setBackgroundWith: aBlock alpha: aDouble [
+
+	hasBackground := true.
+	backgroundAlpha := aDouble.
+	backgroundSourceBlock :=	aBlock
+]
+
+{ #category : #API }
+AeCanvas >> setBackgroundWithForm: aForm alpha: aDouble [
+
+	"TODO: do not initialize here, and reset on new session"	
+	formToCairoSurfaceCache ifNil: [
+		formToCairoSurfaceCache := LRUCache new
+			maximumWeight: 400;
+			factory: [ :form | AeCairoImageSurface fromForm: form ];
+			yourself ].
+
+	self
+		setBackgroundWith: [ 
+			| aCairoSurface |
+			aCairoSurface := formToCairoSurfaceCache at: aForm.
+			cairoContext primSetSourceSurface: aCairoSurface x: 0.0 y: 0.0 ]
+ 		alpha: aDouble
+
+]
+
+{ #category : #API }
+AeCanvas >> setBorderBlock: aBlockClosure [
+
+	borderBlock := aBlockClosure
+]
+
+{ #category : #API }
+AeCanvas >> setBorderOff [
+
+	hasBackground
+		ifTrue: [ self setFigureWithoutBorderAndBackground ]
+		ifFalse: [ self setFigureIsNull ]
+]
+
+{ #category : #API }
+AeCanvas >> setBorderWidth: aDouble [
+
+	borderWidth := aDouble
+
+]
+
+{ #category : #API }
 AeCanvas >> setCapButt [
 
 	"Do nothing as it's the default in Cairo"
@@ -283,17 +321,25 @@ AeCanvas >> setCapSquare [
 ]
 
 { #category : #API }
-AeCanvas >> setClipChildren: aBoolean [
+AeCanvas >> setDashes: dashArray offset: dashOffset [ 
 
-	aBoolean
-		ifTrue: [
-			isPathSetAsClip ifFalse: [ 
-				self applyPathBlock.
-				cairoContext primClip ] ]
-		ifFalse: [
-			isPathSetAsClip ifTrue: [
-				cairoContext resetClip ] ].
-	isPathSetAsClip := aBoolean
+	"TODO: do not initialize here, and reset on new session"	
+	arrayToDashesBuf ifNil: [
+		arrayToDashesBuf := LRUCache new
+			maximumWeight: 400;
+			factory: [ :anArray |
+				| buf |
+				buf := ByteArray new: 8 * anArray size.
+				anArray withIndexDo: [ :len :i |
+					buf doubleAt: (i-1) * 8 + 1 put: len asFloat ].
+				buf ];
+			yourself ].
+
+	cairoContext
+		primSetDash: (arrayToDashesBuf at: dashArray)
+		count: dashArray size
+		offset: dashOffset
+
 ]
 
 { #category : #initialization }
@@ -316,9 +362,149 @@ AeCanvas >> setDefaultCairoContextOptions [
 ]
 
 { #category : #private }
-AeCanvas >> setDoubleWidth [
+AeCanvas >> setFigureIsNull [
+	
+	figureBlock := [ ]
 
-	borderWidth := borderWidth * 2.0
+]
+
+{ #category : #private }
+AeCanvas >> setFigureWithBorderCenter [
+
+	figureBlock := [
+
+		self preparePath.
+
+		hasBackground ifTrue: [
+			backgroundSourceBlock value.
+			cairoContext
+				primClipPreserve;
+				primPaintAlpha: backgroundAlpha;
+				resetClip ].
+
+		self prepareStroke: false.
+		cairoContext primStroke ]
+
+]
+
+{ #category : #private }
+AeCanvas >> setFigureWithBorderInsideAndBackground [
+
+	figureBlock := [
+
+		self preparePath.
+
+		backgroundSourceBlock value.
+		cairoContext
+			primClipPreserve;
+			primPaintAlpha: backgroundAlpha.
+		isPathSetAsClip := true.
+
+		self prepareStroke: true.
+		cairoContext primStroke.
+
+		]
+
+]
+
+{ #category : #private }
+AeCanvas >> setFigureWithBorderInsideAndNoBackground [
+
+	figureBlock := [
+
+		self preparePath.
+
+		self prepareStroke: true.
+		cairoContext 
+			primClipPreserve;
+			primStroke.
+		isPathSetAsClip := true.
+
+		]
+
+]
+
+{ #category : #private }
+AeCanvas >> setFigureWithBorderOutsideAndNoBackground [
+
+	figureBlock := [
+
+		self preparePath.
+
+		self paintGroupWith: [ 
+			self prepareStroke: true.
+			cairoContext primStrokePreserve.
+	
+			"Clear inside"
+			cairoContext
+				setOperatorClear;
+				primFill ].
+
+		 ]
+
+]
+
+{ #category : #private }
+AeCanvas >> setFigureWithBorderOutsideAndOpaqueBackground [
+
+	figureBlock := [
+
+		self preparePath.
+
+		self prepareStroke: true.
+		cairoContext primStrokePreserve.
+
+		backgroundSourceBlock value.
+		cairoContext
+			primClip;
+			primPaint.
+		isPathSetAsClip := true.
+
+		]
+
+]
+
+{ #category : #private }
+AeCanvas >> setFigureWithBorderOutsideAndTranslucentBackground [
+
+	figureBlock := [
+
+		self preparePath.
+
+		self paintGroupWith: [ 
+			self prepareStroke: true.
+			cairoContext primStrokePreserve.
+
+			"Clear inside"
+			cairoContext
+				setOperatorClear;
+				primFillPreserve ].
+
+		backgroundSourceBlock value.
+		cairoContext
+			primClip;
+			primPaintAlpha: backgroundAlpha.
+		isPathSetAsClip := true.
+
+		]
+
+]
+
+{ #category : #private }
+AeCanvas >> setFigureWithoutBorderAndBackground [
+	
+	figureBlock := [
+
+		self preparePath.
+
+		backgroundSourceBlock value.
+		cairoContext
+			primClip;
+			primPaintAlpha: backgroundAlpha.
+		isPathSetAsClip := true.
+		
+		]
+
 ]
 
 { #category : #API }
@@ -347,30 +533,29 @@ AeCanvas >> setJoinRound [
 ]
 
 { #category : #API }
+AeCanvas >> setLineCapBlock: aFullBlockClosure [ 
+	
+	hasCaps ifTrue: aFullBlockClosure
+]
+
+{ #category : #API }
+AeCanvas >> setLineJoinBlock: aFullBlockClosure [ 
+	
+	hasJoins ifTrue: aFullBlockClosure
+]
+
+{ #category : #API }
 AeCanvas >> setOutskirtsCentered [
 
-	drawFillAndStrokeBlock := [
-
-		self applyPathBlock.
-
-		hasBackground ifTrue: [
-			backgroundSourceBlock value.
-			cairoContext
-				primClipPreserve;
-				primPaintAlpha: backgroundAlpha;
-				resetClip ].
-
-		self setStrokeParameters.
-		cairoContext primStroke ]
-
+	self setFigureWithBorderCenter
 ]
 
 { #category : #API }
 AeCanvas >> setOutskirtsInside [
 
 	hasBackground
-		ifTrue: [ self setWithInsideBorderAndBackground ]
-		ifFalse: [ self setWithInsideBorderAndNoBackground ]
+		ifTrue: [ self setFigureWithBorderInsideAndBackground ]
+		ifFalse: [ self setFigureWithBorderInsideAndNoBackground ]
 ]
 
 { #category : #API }
@@ -378,23 +563,26 @@ AeCanvas >> setOutskirtsOutside [
 
 	hasBackground
 		ifTrue: [
-			hasOpaqueBackground
-				ifTrue: [ self setWithOutsideBorderAndOpaqueBackground ]
-				ifFalse: [ self setWithOutsideBorderAndTranslucentBackground ] ]
+			backgroundAlpha = 1.0
+				ifTrue: [ self setFigureWithBorderOutsideAndOpaqueBackground ]
+				ifFalse: [ self setFigureWithBorderOutsideAndTranslucentBackground ] ]
 		ifFalse: [
-			self setWithOutsideBorderAndNoBackground ]
-	
+			self setFigureWithBorderOutsideAndNoBackground ]
+
 ]
 
 { #category : #API }
-AeCanvas >> setPathFor: anObject isClosed: aBoolean with: aBlock [
-	"Establish how to draw the path, which can be open or closed.
-	The anObject argument might serve as a cache key."
+AeCanvas >> setPathKey: anObject hasJoins: hasJoinsBoolean hasCaps: hasCapsBoolean block: aUnaryBlock [
+	"Establish how to draw the path and some properties that serve to optimize.
+	The anObject argument might serve as a cache key.
+	The block closure receives an instance of AeCairoContext to build the geometrical
+	path. It is expected to utilize the path drawing API (bindings of
+	https://www.cairographics.org/manual/cairo-Paths.html)"
 
 	isPathSetAsClip := false.
-	isClosedGeometry := aBoolean.
-	pathBlock := aBlock
-
+	hasJoins := hasJoinsBoolean.
+	hasCaps := hasCapsBoolean.
+	pathBlock := aUnaryBlock
 ]
 
 { #category : #private }
@@ -425,195 +613,6 @@ AeCanvas >> setSourceTranslucentColor: aColor [
 		g: aColor green
 		b: aColor blue
 		a: aColor alpha
-]
-
-{ #category : #private }
-AeCanvas >> setStrokeDashes [
-
-	"TODO: do not initialize here, and reset on new session"	
-	| dashArray |
-	
-	arrayToDashesBuf ifNil: [
-		arrayToDashesBuf := LRUCache new
-			maximumWeight: 400;
-			factory: [ :anArray |
-				| buf |
-				buf := ByteArray new: 8 * anArray size.
-				anArray withIndexDo: [ :len :i |
-					buf doubleAt: (i-1) * 8 + 1 put: len asFloat ].
-				buf ];
-			yourself ].
-
-	dashArray := borderStyle dashArray.
-
-	cairoContext
-		primSetDash: (arrayToDashesBuf at: dashArray)
-		count: dashArray size
-		offset: borderStyle dashOffset
-
-]
-
-{ #category : #private }
-AeCanvas >> setStrokeParameters [
-
-	self setSourceColor: borderColor.
-	
-	cairoContext primSetLineWidth: borderWidth.
-
-	borderStyle dashArray ifNotEmpty: [ self setStrokeDashes ].
-
-	borderStyle lineJoin
-		aeApplyTo: self
-		style: borderStyle.
-
-	isClosedGeometry ifFalse: [
-		borderStyle lineCap aeApplyTo: self ].
-
-]
-
-{ #category : #private }
-AeCanvas >> setWithInsideBorderAndBackground [
-
-	drawFillAndStrokeBlock := [
-
-		self applyPathBlock.
-
-		backgroundSourceBlock value.
-		cairoContext
-			primClipPreserve;
-			primPaintAlpha: backgroundAlpha.
-		isPathSetAsClip := true.
-
-		self
-			setDoubleWidth;
-			setStrokeParameters.
-		cairoContext primStroke.
-
-		]
-
-]
-
-{ #category : #private }
-AeCanvas >> setWithInsideBorderAndNoBackground [
-
-	drawFillAndStrokeBlock := [
-
-		self applyPathBlock.
-
-		self
-			setDoubleWidth;
-			setStrokeParameters.
-		cairoContext 
-			primClipPreserve;
-			primStroke.
-		isPathSetAsClip := true.
-
-		]
-
-]
-
-{ #category : #private }
-AeCanvas >> setWithOutsideBorderAndNoBackground [
-
-	drawFillAndStrokeBlock := [
-
-		self applyPathBlock.
-
-		cairoContext paintGroupWith: [ 
-			"Draw doubled border"
-			self
-				setDoubleWidth;
-				setStrokeParameters.
-			cairoContext primStrokePreserve.
-			"Clear inside"
-			cairoContext
-				setOperatorClear;
-				primFill ].
-
-		 ]
-
-]
-
-{ #category : #private }
-AeCanvas >> setWithOutsideBorderAndOpaqueBackground [
-
-	drawFillAndStrokeBlock := [
-
-		self applyPathBlock.
-
-		self
-			setDoubleWidth;
-			setStrokeParameters.
-		cairoContext primStrokePreserve.
-
-		backgroundSourceBlock value.
-		cairoContext
-			primClip;
-			primPaint.
-		isPathSetAsClip := true.
-
-		]
-
-]
-
-{ #category : #private }
-AeCanvas >> setWithOutsideBorderAndTranslucentBackground [
-
-	drawFillAndStrokeBlock := [
-
-		self applyPathBlock.
-
-		cairoContext paintGroupWith: [ 
-			"Draw doubled border"
-			self
-				setDoubleWidth;
-				setStrokeParameters.
-			cairoContext primStrokePreserve.
-			"Clear inside"
-			cairoContext
-				setOperatorClear;
-				primFillPreserve ].
-
-		backgroundSourceBlock value.
-		cairoContext
-			primClip;
-			primPaintAlpha: backgroundAlpha.
-		isPathSetAsClip := true.
-
-		]
-
-]
-
-{ #category : #private }
-AeCanvas >> setWithoutBorder [
-
-	hasBackground
-		ifTrue: [ self setWithoutBorderAndBackground ]
-		ifFalse: [ self setWithoutBorderAndNoBackground ]
-]
-
-{ #category : #private }
-AeCanvas >> setWithoutBorderAndBackground [
-	
-	drawFillAndStrokeBlock := [
-
-		self applyPathBlock.
-		backgroundSourceBlock value.
-
-		cairoContext
-			primClip;
-			primPaintAlpha: backgroundAlpha.
-		isPathSetAsClip := true.
-		
-		]
-
-]
-
-{ #category : #private }
-AeCanvas >> setWithoutBorderAndNoBackground [
-	
-	drawFillAndStrokeBlock := [ ]
-
 ]
 
 { #category : #text }

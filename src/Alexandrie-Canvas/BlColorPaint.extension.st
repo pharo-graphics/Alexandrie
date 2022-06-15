@@ -1,7 +1,8 @@
 Extension { #name : #BlColorPaint }
 
 { #category : #'*Alexandrie-Canvas-Core' }
-BlColorPaint >> aeApplyTo: aeCanvas border: aBlBorder [ 
+BlColorPaint >> aeApplyTo: aeCanvas [
 	
-	^ aeCanvas acceptColorPaintBorder: self border: aBlBorder
+	aeCanvas setSourceColor: self color
+
 ]

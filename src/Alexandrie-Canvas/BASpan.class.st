@@ -76,21 +76,27 @@ BASpan >> aeBuild [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #drawing }
 BASpan >> aeDrawOn: aeCanvas [
 
-	aeCanvas restoreAfter: [
-		fontAndStyleBuilder hasCustomColor
-			ifTrue: [
-				aeCanvas setSourceColor: fontAndStyleBuilder color ]
-			ifFalse: [
-				self flag: #todo. "White is default?"
-				aeCanvas setSourceColor: Color black
-				].
+	aeCanvas restoreContextAfter: [
 
-		aeCanvas
-			pathTranslate: baselinePoint;
-			drawText: cairoGlyphsArray font: cairoScaledFont ]
+		self flag: #todo. "Default color?"
+		aeCanvas setSourceColor: 
+			(fontAndStyleBuilder hasCustomColor
+				ifTrue: [ fontAndStyleBuilder color ]
+				ifFalse: [ Color black ]).
+
+		blSpan attributes do: [ :anAttribute | 
+			anAttribute aeDrawBelowOn: aeCanvas span: self.
+"			anAttribute aeApplyTo: aeCanvas "].
+
+		aeCanvas drawText: cairoGlyphsArray font: cairoScaledFont.
+		
+		blSpan attributes do: [ :anAttribute | 
+			anAttribute aeDrawAboveOn: aeCanvas span: self ].
+
+		]
 ]
 
 { #category : #accessing }
@@ -112,9 +118,27 @@ BASpan >> baseline: aPoint [
 ]
 
 { #category : #accessing }
+BASpan >> baselinePoint [
+
+	^ baselinePoint
+]
+
+{ #category : #accessing }
+BASpan >> bounds [
+
+	^ self origin extent: self extent
+]
+
+{ #category : #accessing }
 BASpan >> descent [
 
 	^ descent
+]
+
+{ #category : #accessing }
+BASpan >> extent [
+
+	^ width @ height
 ]
 
 { #category : #accessing }
@@ -142,6 +166,12 @@ BASpan >> initializeTextMeasurer: aBATextMeasurer span: aBlSpan [
 BASpan >> left [
 
 	^ left
+]
+
+{ #category : #accessing }
+BASpan >> origin [
+
+	^ left @ top
 ]
 
 { #category : #accessing }

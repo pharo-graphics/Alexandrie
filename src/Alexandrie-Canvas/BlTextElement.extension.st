@@ -1,13 +1,16 @@
 Extension { #name : #BlTextElement }
 
 { #category : #'*Alexandrie-Canvas-Core' }
-BlTextElement >> aeDrawGeometryOn: aeCanvas [
-	super aeDrawGeometryOn: aeCanvas.
+BlTextElement >> aeDrawOnlyMeOn: aeCanvas [
 
-	paragraph containerExtent: self extent.
-	paragraph selection: self selection.
+	super aeDrawOnlyMeOn: aeCanvas.
 
-	aeCanvas restoreAfter: [
+"	paragraph containerExtent: self extent.
+	paragraph selection: self selection."
+
+	aeCanvas restoreContextAfter: [
 		aeCanvas pathTranslate: self padding topLeft.
-		paragraph aeDrawOn: aeCanvas ]
+		paragraph line spans do: [ :each |
+			aeCanvas pathTranslate: each baselinePoint.
+			each aeDrawOn: aeCanvas ] ]
 ]
