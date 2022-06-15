@@ -1,5 +1,23 @@
 "
-I let Bloc elements render in a Cairo surface.
+I am a canvas to render geometrical figures on a Cairo surface.
+
+# Draw a figure
+
+To draw a figure, prepare the canvas using `set*` methods in the API protocol,
+using this order:
+
+1. set up background
+2. set up border and outskirts
+3. set up path
+4. send `drawFigure`
+
+Note: Background MUST be set BEFORE border.
+
+
+# Nesting figures
+
+I'm prepared to draw a tree of figures, A node's children can be either clipped or not.
+It depends on the argument sent to `prepareToDrawChildrenWithClipping:`.
 
 "
 Class {
@@ -7,26 +25,24 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'hasBackground',
-		'borderColor',
 		'borderWidth',
 		'formToCairoSurfaceCache',
 		'backgroundAlpha',
 		'cairoSurface',
 		'backgroundSourceBlock',
-		'borderStyle',
 		'arrayToDashesBuf',
-		'drawFillAndStrokeBlock',
-		'hasOpaqueBackground',
-		'isClosedGeometry',
 		'pathBlock',
 		'isPathSetAsClip',
 		'cairoContext',
-		'pathCache',
 		'fontOptions',
 		'identityMatrix',
 		'textExtents',
 		'scaledFontByFreetypeFont',
-		'fontExtentsByScaledFont'
+		'fontExtentsByScaledFont',
+		'borderBlock',
+		'figureBlock',
+		'hasJoins',
+		'hasCaps'
 	],
 	#category : #'Alexandrie-Canvas-Base'
 }
@@ -193,6 +209,12 @@ AeCanvas >> initializeWith: aeCairoSurface [
 
 	self setDefaultCairoContextOptions.
 
+]
+
+{ #category : #API }
+AeCanvas >> pathScale: aPoint [
+
+	cairoContext scale: aPoint
 ]
 
 { #category : #API }

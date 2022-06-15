@@ -19,7 +19,8 @@ BASpaceRenderer >> initializeScaleFactor: aScaleFactor [
 
 	aScaleFactor = 1.0 ifTrue: [ ^self ].
 
-	aeCanvas privateAeCairoContext scale: aScaleFactor asPoint.
+	"TODO"
+	aeCanvas pathScale: aScaleFactor asPoint.
 	scaleFactor := aScaleFactor.
 ]
 
