@@ -49,7 +49,7 @@ BlSpaceBuilder >> addPolyline [
 
 	^ self addToRoot
 		background: Color transparent;
-		geometry: (BlPolyline vertices: { 20@4. 0@0. 4@20 });
+		geometry: (BlPolylineGeometry vertices: { 20@4. 0@0. 4@20 });
 		outskirts: BlOutskirts centered;	
 		yourself
 ]
