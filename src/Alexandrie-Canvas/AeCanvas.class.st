@@ -349,7 +349,7 @@ AeCanvas >> setDefaultCairoContextOptions [
 	antialiasOption := AeCairoAntialias CAIRO_ANTIALIAS_FAST.
 
 	cairoContext
-		primSetTolerance: 0.5;
+		primSetTolerance: 0.2;
 		primSetAntialias: antialiasOption.
 
 	fontOptions := AeCairoFontOptions new
