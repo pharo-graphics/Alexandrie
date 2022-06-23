@@ -42,7 +42,8 @@ Class {
 		'borderBlock',
 		'figureBlock',
 		'hasJoins',
-		'hasCaps'
+		'hasCaps',
+		'currentScaledFontId'
 	],
 	#category : #'Alexandrie-Canvas-Base'
 }
@@ -121,6 +122,34 @@ AeCanvas >> fullDraw: anElement [
 ]
 
 { #category : #initialization }
+AeCanvas >> initializeCairoOptions [
+
+	| antialiasOption |
+	antialiasOption := AeCairoAntialias CAIRO_ANTIALIAS_FAST.
+
+	cairoContext
+		primSetTolerance: 0.2;
+		primSetAntialias: antialiasOption.
+
+	fontOptions := AeCairoFontOptions new
+		antialias: antialiasOption;
+		hintMetrics: AeCairoHintMetrics CAIRO_HINT_METRICS_ON;
+		hintStyle: AeCairoHintStyle CAIRO_HINT_STYLE_SLIGHT;
+		subpixelOrder: AeCairoSubpixelOrder CAIRO_SUBPIXEL_ORDER_RGB;
+		yourself
+
+"As Sparta-Cairo would be:
+	fontOptions := AeCairoFontOptions new
+		antialias: AeCairoAntialias CAIRO_ANTIALIAS_SUBPIXEL;
+		hintMetrics: AeCairoHintMetrics CAIRO_HINT_METRICS_ON;
+		hintStyle: AeCairoHintStyle CAIRO_HINT_STYLE_MEDIUM;
+		subpixelOrder: AeCairoSubpixelOrder CAIRO_SUBPIXEL_ORDER_RGB;
+		yourself
+"
+
+]
+
+{ #category : #initialization }
 AeCanvas >> initializeWith: aeCairoSurface [
 
 	self initialize.
@@ -130,7 +159,7 @@ AeCanvas >> initializeWith: aeCairoSurface [
 	identityMatrix := AeCairoMatrix newIdentity.
 	textExtents := AeCairoTextExtents new.
 
-	self setDefaultCairoContextOptions.
+	self initializeCairoOptions.
 
 ]
 
@@ -339,25 +368,6 @@ AeCanvas >> setDashes: dashArray offset: dashOffset [
 		primSetDash: (arrayToDashesBuf at: dashArray)
 		count: dashArray size
 		offset: dashOffset
-
-]
-
-{ #category : #initialization }
-AeCanvas >> setDefaultCairoContextOptions [
-
-	| antialiasOption |
-	antialiasOption := AeCairoAntialias CAIRO_ANTIALIAS_FAST.
-
-	cairoContext
-		primSetTolerance: 0.2;
-		primSetAntialias: antialiasOption.
-
-	fontOptions := AeCairoFontOptions new
-		antialias: antialiasOption;
-		hintMetrics: AeCairoHintMetrics CAIRO_HINT_METRICS_ON;
-		hintStyle: AeCairoHintStyle CAIRO_HINT_STYLE_SLIGHT;
-		subpixelOrder: AeCairoSubpixelOrder CAIRO_SUBPIXEL_ORDER_RGB;
-		yourself
 
 ]
 
