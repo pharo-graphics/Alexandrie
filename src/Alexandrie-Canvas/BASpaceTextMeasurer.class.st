@@ -1,6 +1,9 @@
 Class {
 	#name : #BASpaceTextMeasurer,
 	#superclass : #BATextMeasurer,
+	#instVars : [
+		'spaceRenderer'
+	],
 	#category : #'Alexandrie-Canvas-Text'
 }
 
@@ -17,7 +20,7 @@ BASpaceTextMeasurer >> spaceRenderer [
 ]
 
 { #category : #accessing }
-BASpaceTextMeasurer >> spaceRenderer: aBlAeSpaceRenderer [
+BASpaceTextMeasurer >> spaceRenderer: aBASpaceRenderer [
 
-	spaceRenderer := aBlAeSpaceRenderer
+	spaceRenderer := aBASpaceRenderer
 ]

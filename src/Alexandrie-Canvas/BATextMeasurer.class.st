@@ -1,9 +1,6 @@
 Class {
 	#name : #BATextMeasurer,
 	#superclass : #BlHostTextMeasurer,
-	#instVars : [
-		'spaceRenderer'
-	],
 	#category : #'Alexandrie-Canvas-Text'
 }
 
