@@ -142,6 +142,27 @@ AeCairoMatrix >> primScaleX: aX Y: aY [
 			double aY ) )
 ]
 
+{ #category : #printing }
+AeCairoMatrix >> printOn: aStream [
+
+	super printOn: aStream.
+
+	aStream nextPut: $(.
+
+	{{ self sx . self shx. self x }.
+	{ self shy. self sy. self y }}
+		do: [ :eachRow |
+			eachRow
+				do: [ :eachValue |
+					aStream nextPutAll: 
+						(eachValue printShowingDecimalPlaces: 1) ] 
+				separatedBy: [ aStream space ] ]
+		separatedBy: [ aStream nextPutAll: ' | ' ].
+
+	aStream nextPut: $).
+
+]
+
 { #category : #transformations }
 AeCairoMatrix >> rotateByRadians: angle [
 
