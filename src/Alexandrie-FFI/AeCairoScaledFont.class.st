@@ -42,12 +42,30 @@ AeCairoScaledFont class >> primDestroy: aHandle [
 ]
 
 { #category : #API }
+AeCairoScaledFont >> currentTransformationMatrix [
+
+	| aCairoMatrix |
+	aCairoMatrix := AeCairoMatrix externalNew autoRelease; yourself.
+	self primGetCurrentTransformationMatrixInto: aCairoMatrix.
+	^ aCairoMatrix
+]
+
+{ #category : #API }
 AeCairoScaledFont >> extents [
 
 	| aFontExtents |
 	aFontExtents := AeCairoFontExtents new.
 	self primExtents: aFontExtents.
 	^ aFontExtents
+]
+
+{ #category : #API }
+AeCairoScaledFont >> fontMatrix [
+
+	| aCairoMatrix |
+	aCairoMatrix := AeCairoMatrix externalNew autoRelease; yourself.
+	self primGetFontMatrixInto: aCairoMatrix.
+	^ aCairoMatrix
 ]
 
 { #category : #API }
@@ -109,6 +127,36 @@ AeCairoScaledFont >> primExtents: aTextExtents text: utf8 [
 ]
 
 { #category : #'private - ffi' }
+AeCairoScaledFont >> primGetCurrentTransformationMatrixInto: aeCairoMatrix [
+
+	^ self ffiCall: #(
+		void
+		cairo_scaled_font_get_ctm (
+			self,
+			AeCairoMatrix *aeCairoMatrix ))
+]
+
+{ #category : #'private - ffi' }
+AeCairoScaledFont >> primGetFontMatrixInto: aeCairoMatrix [
+
+	^ self ffiCall: #(
+		void
+		cairo_scaled_font_get_font_matrix (
+			self,
+			AeCairoMatrix *aeCairoMatrix ))
+]
+
+{ #category : #'private - ffi' }
+AeCairoScaledFont >> primGetScaleMatrixInto: aeCairoMatrix [
+
+	^ self ffiCall: #(
+		void
+		cairo_scaled_font_get_scale_matrix (
+			self,
+			AeCairoMatrix *aeCairoMatrix ))
+]
+
+{ #category : #'private - ffi' }
 AeCairoScaledFont >> primStatus [
 
 	^ self ffiCall: #(AeCairoStatus cairo_scaled_font_status ( self ) )
@@ -130,6 +178,15 @@ AeCairoScaledFont >> primTextToGlyphs: aBuffer length: aLength glyphs: theGlyphs
 			nil,
 			nil,
 			nil))
+]
+
+{ #category : #API }
+AeCairoScaledFont >> scaleMatrix [
+
+	| aCairoMatrix |
+	aCairoMatrix := AeCairoMatrix externalNew autoRelease; yourself.
+	self primGetScaleMatrixInto: aCairoMatrix.
+	^ aCairoMatrix
 ]
 
 { #category : #API }
