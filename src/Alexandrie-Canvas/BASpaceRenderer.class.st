@@ -2,8 +2,7 @@ Class {
 	#name : #BASpaceRenderer,
 	#superclass : #BlHostSpaceRenderer,
 	#instVars : [
-		'aeCanvas',
-		'scaleFactor'
+		'aeCanvas'
 	],
 	#category : #'Alexandrie-Canvas-Renderer'
 }
@@ -15,13 +14,13 @@ BASpaceRenderer >> aeCanvas [
 ]
 
 { #category : #initialization }
-BASpaceRenderer >> initializeScaleFactor: aScaleFactor [
+BASpaceRenderer >> initializeForSurface: aBlHostRendererSurface and: aeCairoSurface [
 
-	aScaleFactor = 1.0 ifTrue: [ ^self ].
+	aeCairoSurface setDeviceScale: aBlHostRendererSurface scaleFactor asPoint.
 
-	"TODO"
-	aeCanvas pathScale: aScaleFactor asPoint.
-	scaleFactor := aScaleFactor.
+	aeCanvas := 	AeCanvas newFor: aeCairoSurface.
+
+
 ]
 
 { #category : #rendering }
