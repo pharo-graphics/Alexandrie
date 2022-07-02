@@ -305,6 +305,14 @@ AeCairoContext >> primSetLineWidth: aNumber [
 ]
 
 { #category : #'private - ffi' }
+AeCairoContext >> primSetMatrix: aCairoMatrix [
+
+	self ffiCall: #( void cairo_set_matrix (
+		self,
+		AeCairoMatrix *aCairoMatrix) )
+]
+
+{ #category : #'private - ffi' }
 AeCairoContext >> primSetMiterLimit: aNumber [
 
 	self ffiCall: #( void cairo_set_miter_limit (

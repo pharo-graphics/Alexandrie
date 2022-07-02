@@ -27,8 +27,8 @@ AeCairoMatrix class >> fieldsDesc [
 	self rebuildFieldAccessors
 	"
 	^ #(
-		double sx; double shx;
-		double shy; double sy;
+		double sx; double shy;
+		double shx; double sy;
 		double x; double y;	
 	)
 ]
@@ -38,7 +38,7 @@ AeCairoMatrix class >> newIdentity [
 
 	^ self new
 		  autoRelease;
-		  loadIdentity;
+		  primInitIdentity;
 		  yourself
 ]
 
@@ -57,25 +57,13 @@ AeCairoMatrix class >> scaleBy: aFactor [
 AeCairoMatrix class >> x: x y: y sx: sx sy: sy shx: shx shy: shy [
 
 	^ self new
-		  initializeX: x
+		  primInitX: x
 		  y: y
 		  sx: sx
 		  sy: sy
 		  shx: shx
 		  shy: shy;
 		  yourself
-]
-
-{ #category : #initialization }
-AeCairoMatrix >> initializeX: aX y: aY sx: aSx sy: aSy shx: aShX shy: aShY [
-
-	self
-		primInitX: aX
-		y: aY
-		sx: aSx
-		sy: aSy
-		shx: aShX
-		shy: aShY
 ]
 
 { #category : #transformations }
@@ -92,37 +80,31 @@ AeCairoMatrix >> isIdentity [
 			self shx = 0.0 and: [ self shy = 0.0 ] ] ] ] ]
 ]
 
-{ #category : #initialization }
-AeCairoMatrix >> loadIdentity [
+{ #category : #'private - ffi' }
+AeCairoMatrix >> primInitIdentity [
 
-	self primLoadIdentity
+	self ffiCall: #( void cairo_matrix_init_identity ( self ) )
 ]
 
 { #category : #'private - ffi' }
-AeCairoMatrix >> primInitX: aX y: aY sx: aSx sy: aSy shx: aShX shy: aShY [
+AeCairoMatrix >> primInitX: x y: y sx: sx sy: sy shx: shx shy: shy [
 
 	self ffiCall: #(
 		void
 		cairo_matrix_init (
 			self,
-			double aSx,
-			double aShY,
-			double aShX,
-			double aSy,
-			double aX,
-			double aY ) )
+			double sx,
+			double shy,
+			double shx,
+			double sy,
+			double x,
+			double y ) )
 ]
 
 { #category : #'private - ffi' }
 AeCairoMatrix >> primInvert [
 
 	self ffiCall: #( AeCairoStatus cairo_matrix_invert ( self ) )
-]
-
-{ #category : #'private - ffi' }
-AeCairoMatrix >> primLoadIdentity [
-
-	self ffiCall: #( void cairo_matrix_init_identity ( self ) )
 ]
 
 { #category : #'private - ffi' }
@@ -134,12 +116,31 @@ AeCairoMatrix >> primRotateByRadians: angle [
 ]
 
 { #category : #'private - ffi' }
-AeCairoMatrix >> primScaleX: aX Y: aY [
+AeCairoMatrix >> primScaleX: x y: y [
 
 	self ffiCall: #( void cairo_matrix_scale (
 			self,
-			double aX,
-			double aY ) )
+			double x,
+			double y ) )
+]
+
+{ #category : #'private - ffi' }
+AeCairoMatrix >> primTransformX: xPointer y: yPointer [
+	
+	^ self ffiCall: #( void cairo_matrix_transform_point (
+			self,
+			double * xPointer, 
+			double * yPointer))
+]
+
+{ #category : #'private - ffi' }
+AeCairoMatrix >> primTranslateX: px y: py [
+
+	self ffiCall: #( void cairo_matrix_translate (
+		self,
+		double px,
+		double py ))
+
 ]
 
 { #category : #printing }
@@ -149,15 +150,16 @@ AeCairoMatrix >> printOn: aStream [
 
 	aStream nextPut: $(.
 
-	{{ self sx . self shx. self x }.
-	{ self shy. self sy. self y }}
-		do: [ :eachRow |
-			eachRow
-				do: [ :eachValue |
-					aStream nextPutAll: 
-						(eachValue printShowingDecimalPlaces: 1) ] 
-				separatedBy: [ aStream space ] ]
-		separatedBy: [ aStream nextPutAll: ' | ' ].
+	{	{ self sx . self shy. }.
+		{ self shx. self sy . }.
+		{ self x  . self y    } }
+			do: [ :eachRow |
+				eachRow
+					do: [ :eachValue |
+						aStream nextPutAll: 
+							(eachValue printShowingDecimalPlaces: 1) ] 
+					separatedBy: [ aStream space ] ]
+			separatedBy: [ aStream nextPutAll: ' | ' ].
 
 	aStream nextPut: $).
 
@@ -172,76 +174,95 @@ AeCairoMatrix >> rotateByRadians: angle [
 { #category : #transformations }
 AeCairoMatrix >> scaleBy: aPoint [
 
-	self primScaleX: aPoint x Y: aPoint y
+	self primScaleX: aPoint x y: aPoint y
 ]
 
-{ #category : #'accessing structure variables' }
+{ #category : #'accessing - structure variables' }
 AeCairoMatrix >> shx [
 	"This method was automatically generated"
 	^handle doubleAt: OFFSET_SHX
 ]
 
-{ #category : #'accessing structure variables' }
+{ #category : #'accessing - structure variables' }
 AeCairoMatrix >> shx: anObject [
 	"This method was automatically generated"
 	handle doubleAt: OFFSET_SHX put: anObject
 ]
 
-{ #category : #'accessing structure variables' }
+{ #category : #'accessing - structure variables' }
 AeCairoMatrix >> shy [
 	"This method was automatically generated"
 	^handle doubleAt: OFFSET_SHY
 ]
 
-{ #category : #'accessing structure variables' }
+{ #category : #'accessing - structure variables' }
 AeCairoMatrix >> shy: anObject [
 	"This method was automatically generated"
 	handle doubleAt: OFFSET_SHY put: anObject
 ]
 
-{ #category : #'accessing structure variables' }
+{ #category : #'accessing - structure variables' }
 AeCairoMatrix >> sx [
 	"This method was automatically generated"
 	^handle doubleAt: OFFSET_SX
 ]
 
-{ #category : #'accessing structure variables' }
+{ #category : #'accessing - structure variables' }
 AeCairoMatrix >> sx: anObject [
 	"This method was automatically generated"
 	handle doubleAt: OFFSET_SX put: anObject
 ]
 
-{ #category : #'accessing structure variables' }
+{ #category : #'accessing - structure variables' }
 AeCairoMatrix >> sy [
 	"This method was automatically generated"
 	^handle doubleAt: OFFSET_SY
 ]
 
-{ #category : #'accessing structure variables' }
+{ #category : #'accessing - structure variables' }
 AeCairoMatrix >> sy: anObject [
 	"This method was automatically generated"
 	handle doubleAt: OFFSET_SY put: anObject
 ]
 
-{ #category : #'accessing structure variables' }
+{ #category : #transformations }
+AeCairoMatrix >> transform: aPoint [
+
+	| x y |
+	x := ByteArray new: 8.
+	y := ByteArray new: 8.
+	x doubleAt: 1 put: aPoint x.
+	y doubleAt: 1 put: aPoint y.
+	self primTransformX: x y: y.
+
+	^ (x doubleAt: 1) @ (y doubleAt: 1)
+]
+
+{ #category : #transformations }
+AeCairoMatrix >> translateBy: aPoint [
+
+	self primTranslateX: aPoint x y: aPoint y
+]
+
+{ #category : #'accessing - structure variables' }
 AeCairoMatrix >> x [
 	"This method was automatically generated"
 	^handle doubleAt: OFFSET_X
 ]
 
-{ #category : #'accessing structure variables' }
+{ #category : #'accessing - structure variables' }
 AeCairoMatrix >> x: anObject [
 	"This method was automatically generated"
 	handle doubleAt: OFFSET_X put: anObject
 ]
 
-{ #category : #'accessing structure variables' }
+{ #category : #'accessing - structure variables' }
 AeCairoMatrix >> y [
 	"This method was automatically generated"
 	^handle doubleAt: OFFSET_Y
 ]
 
-{ #category : #'accessing structure variables' }
+{ #category : #'accessing - structure variables' }
 AeCairoMatrix >> y: anObject [
 	"This method was automatically generated"
 	handle doubleAt: OFFSET_Y put: anObject
