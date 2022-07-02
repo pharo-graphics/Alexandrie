@@ -115,9 +115,8 @@ AeCairoImageSurface >> asForm [
 		size: self primHeight * self primStride / 4.
 	aBitmap := Bitmap newFrom: theData.
 
-	^ (AeCairoSurfaceForm extent: self extent depth: 32 bits: aBitmap)
-		surface: self;
-		yourself
+	^ Form extent: self extent depth: 32 bits: aBitmap
+
 ]
 
 { #category : #API }
