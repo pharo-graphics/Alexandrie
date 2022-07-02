@@ -72,7 +72,9 @@ AeCairoContext >> moveTo: aPoint [
 { #category : #API }
 AeCairoContext >> popGroup [
 
-	^ self primPopGroup initialize; yourself "(autoRelease)"
+	^ self primPopGroup
+		  autoRelease;
+		  yourself
 ]
 
 { #category : #'private - ffi' }
