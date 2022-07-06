@@ -20,7 +20,7 @@ AeCairoContext class >> asExternalTypeOn: generator [
 ]
 
 { #category : #'instance creation' }
-AeCairoContext class >> create: aSurface [
+AeCairoContext class >> newFor: aSurface [
 
 	^ (self primCreate: aSurface)
 		surface: aSurface;

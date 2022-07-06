@@ -54,7 +54,7 @@ AeCairoSurface >> markDirty [
 { #category : #API }
 AeCairoSurface >> newContext [
 
-	^ AeCairoContext create: self
+	^ AeCairoContext newFor: self
 ]
 
 { #category : #'private - ffi' }
