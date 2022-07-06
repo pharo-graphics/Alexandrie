@@ -51,6 +51,12 @@ AeCairoSurface >> markDirty [
 	self primMarkDirty
 ]
 
+{ #category : #API }
+AeCairoSurface >> newContext [
+
+	^ AeCairoContext create: self
+]
+
 { #category : #'private - ffi' }
 AeCairoSurface >> primFlush [
 

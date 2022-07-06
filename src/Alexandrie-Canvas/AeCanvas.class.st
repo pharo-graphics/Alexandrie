@@ -155,7 +155,7 @@ AeCanvas >> initializeWith: aeCairoSurface [
 	self initialize.
 
 	cairoSurface := aeCairoSurface.
-	cairoContext := AeCairoContext create: cairoSurface.
+	cairoContext := cairoSurface newContext.
 	identityMatrix := AeCairoMatrix newIdentity.
 	textExtents := AeCairoTextExtents new.
 

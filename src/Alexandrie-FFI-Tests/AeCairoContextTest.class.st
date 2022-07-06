@@ -12,7 +12,7 @@ Class {
 AeCairoContextTest >> testCreate [
 
 	surface := AeCairoImageSurface extent: 100 @ 50.
-	context := AeCairoContext create: surface.
+	context := surface newContext.
 
 	self deny: context isNil
 ]
