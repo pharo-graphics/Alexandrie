@@ -22,6 +22,23 @@ AeCairoSurface class >> primDestroy: aHandle [
 	self ffiCall: #( void cairo_surface_destroy ( void * aHandle ) )
 ]
 
+{ #category : #'private - ffi' }
+AeCairoSurface >> deviceScale [
+
+	| xPointer yPointer |
+	xPointer := FFIFloat64 newBuffer.
+	yPointer := FFIFloat64 newBuffer.
+	self primGetDeviceScaleX: xPointer y: yPointer.
+	^ (xPointer doubleAt: 1) @ (yPointer doubleAt: 1)
+
+]
+
+{ #category : #'private - ffi' }
+AeCairoSurface >> deviceScale: aPoint [
+
+	self primSetDeviceScaleX: aPoint x y: aPoint y
+]
+
 { #category : #API }
 AeCairoSurface >> flush [
 
@@ -38,6 +55,17 @@ AeCairoSurface >> markDirty [
 AeCairoSurface >> primFlush [
 
 	^ self ffiCall: #(void cairo_surface_flush ( self ) )
+]
+
+{ #category : #'private - ffi' }
+AeCairoSurface >> primGetDeviceScaleX: xPointer y: yPointer [
+
+	self ffiCall: #(
+		void cairo_surface_get_device_scale (
+			self,
+			double * xPointer,
+			double * yPointer ) )
+
 ]
 
 { #category : #'private - ffi' }
@@ -60,10 +88,4 @@ Note that the scale affects drawing to the surface as well as using the surface 
 			double xScale,
 			double yScale ) )
 
-]
-
-{ #category : #'private - ffi' }
-AeCairoSurface >> setDeviceScale: aPoint [
-
-	self primSetDeviceScaleX: aPoint x y: aPoint y
 ]

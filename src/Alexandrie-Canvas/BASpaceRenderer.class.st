@@ -16,7 +16,7 @@ BASpaceRenderer >> aeCanvas [
 { #category : #initialization }
 BASpaceRenderer >> initializeForSurface: aBlHostRendererSurface and: aeCairoSurface [
 
-	aeCairoSurface setDeviceScale: aBlHostRendererSurface scaleFactor asPoint.
+	aeCairoSurface deviceScale: aBlHostRendererSurface scaleFactor asPoint.
 
 	aeCanvas := 	AeCanvas newFor: aeCairoSurface.
 
