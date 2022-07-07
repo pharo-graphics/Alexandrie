@@ -20,6 +20,10 @@ BASpaceRenderer >> initializeForSurface: aBlHostRendererSurface and: aeCairoSurf
 
 	aeCanvas := 	AeCanvas newFor: aeCairoSurface.
 
+	"On High DPI displays, high quality is not visible enough, and often 
+	much larger surface areas are painted."
+	aBlHostRendererSurface scaleFactor > 1.0
+		ifTrue: [ aeCanvas setLowQualityOptions ]
 
 ]
 
