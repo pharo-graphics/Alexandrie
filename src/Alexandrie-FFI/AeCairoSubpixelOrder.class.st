@@ -1,3 +1,18 @@
+"
+I am a Cairo FFI binding for `cairo_subpixel_order_t`.
+
+The subpixel order specifies the order of color elements within each pixel on the display device when rendering with an antialiasing mode of `CAIRO_ANTIALIAS_SUBPIXEL`.
+
+Members:
+
+- `CAIRO_SUBPIXEL_ORDER_DEFAULT`: Use the default subpixel order for for the target device, since 1.0
+- `CAIRO_SUBPIXEL_ORDER_RGB`: Subpixel elements are arranged horizontally with red at the left, since 1.0
+- `CAIRO_SUBPIXEL_ORDER_BGR`: Subpixel elements are arranged horizontally with blue at the left, since 1.0
+- `CAIRO_SUBPIXEL_ORDER_VRGB`: Subpixel elements are arranged vertically with red at the top, since 1.0
+- `CAIRO_SUBPIXEL_ORDER_VBGR`: Subpixel elements are arranged vertically with blue at the top, since 1.0
+
+See: https://www.cairographics.org/manual/cairo-cairo-font-options-t.html#cairo-subpixel-order-t
+"
 Class {
 	#name : #AeCairoSubpixelOrder,
 	#superclass : #AeEnumeration,
