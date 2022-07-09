@@ -10,7 +10,7 @@ BAFormSpaceRenderer >> initializeForSurface: aBlHostRendererFormSurface [
 	self
 		initializeForSurface: aBlHostRendererFormSurface
 		and: (AeCairoImageSurface
-					createForData: aBlHostRendererFormSurface pointer
+					newForData: aBlHostRendererFormSurface pointer
 					extent: aBlHostRendererFormSurface extent
 					stride: aBlHostRendererFormSurface stride
 					format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32)

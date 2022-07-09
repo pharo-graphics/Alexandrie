@@ -23,7 +23,7 @@ AeCairoContext class >> asExternalTypeOn: generator [
 AeCairoContext class >> newFor: aSurface [
 
 	^ (self primCreate: aSurface)
-		surface: aSurface;
+		initializeWith: aSurface;
 		autoRelease;
 		yourself
 ]
@@ -55,6 +55,13 @@ AeCairoContext >> currentMatrix [
 	aCairoMatrix := AeCairoMatrix externalNew.
 	self primGetTransform: aCairoMatrix.
 	^ aCairoMatrix	autoRelease.
+]
+
+{ #category : #initialization }
+AeCairoContext >> initializeWith: anAeCairoSurface [
+	"Note: don't send super initialize as it nullifies the handle."
+
+	surface := anAeCairoSurface
 ]
 
 { #category : #API }
@@ -456,12 +463,6 @@ AeCairoContext >> setSourceRGBColor: aColor [
 AeCairoContext >> surface [
 
 	^ surface
-]
-
-{ #category : #accessing }
-AeCairoContext >> surface: anAeCairoSurface [
-
-	surface := anAeCairoSurface
 ]
 
 { #category : #API }

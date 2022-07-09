@@ -21,19 +21,6 @@ AeCairoImageSurface class >> createExtent: anExtent format: aSurfaceFormat [
 ]
 
 { #category : #'instance creation' }
-AeCairoImageSurface class >> createForData: aData extent: aPoint stride: stride format: aSurfaceFormat [
-
-	^ (self
-		   primCreateForData: aData
-		   width: aPoint x
-		   height: aPoint y
-		   stride: stride
-		   format: aSurfaceFormat)
-		  autoRelease;
-		  yourself
-]
-
-{ #category : #'instance creation' }
 AeCairoImageSurface class >> extent: aPoint [
 
 	^ self
@@ -70,6 +57,19 @@ AeCairoImageSurface class >> fromForm: aForm [
 	^ aSurface
 		markDirty;
 		yourself
+]
+
+{ #category : #'instance creation' }
+AeCairoImageSurface class >> newForData: aData extent: aPoint stride: stride format: aSurfaceFormat [
+
+	^ (self
+		   primCreateForData: aData
+		   width: aPoint x
+		   height: aPoint y
+		   stride: stride
+		   format: aSurfaceFormat)
+		  autoRelease;
+		  yourself
 ]
 
 { #category : #'private - ffi' }

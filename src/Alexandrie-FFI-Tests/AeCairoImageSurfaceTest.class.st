@@ -33,7 +33,7 @@ AeCairoImageSurfaceTest >> testCreateForDataExtentFormat [
 	data := FFIExternalArray externalNewType: FFIUInt8 size: stride * extent y.
 
 	surface := AeCairoImageSurface 
-		createForData: data
+		newForData: data
 		extent: extent
 		stride: stride
 		format: format.
