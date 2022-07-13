@@ -637,11 +637,8 @@ AeCanvas >> setSourceSolidColor: aColor [
 { #category : #private }
 AeCanvas >> setSourceTranslucentColor: aColor [
 
-	cairoContext
-		primSetSourceR: aColor red
-		g: aColor green
-		b: aColor blue
-		a: aColor alpha
+	cairoContext setSourceRGBAColor: aColor
+
 ]
 
 { #category : #text }

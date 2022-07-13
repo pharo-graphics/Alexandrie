@@ -454,9 +454,19 @@ AeCairoContext >> setOperatorClear [
 ]
 
 { #category : #API }
+AeCairoContext >> setSourceRGBAColor: aColor [
+
+	self
+		primSetSourceR: aColor red
+		g: aColor green
+		b: aColor blue
+		a: aColor alpha
+]
+
+{ #category : #API }
 AeCairoContext >> setSourceRGBColor: aColor [
 
-	^ self primSetSourceR: aColor red g: aColor green b: aColor blue
+	self primSetSourceR: aColor red g: aColor green b: aColor blue
 ]
 
 { #category : #accessing }
