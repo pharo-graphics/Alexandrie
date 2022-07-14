@@ -557,15 +557,12 @@ AeCanvas >> setLineJoinBlock: aFullBlockClosure [
 { #category : #initialization }
 AeCanvas >> setLowQualityOptions [
 
-	| antialiasOption |	
-	antialiasOption := AeCairoAntialias CAIRO_ANTIALIAS_NONE.
-
 	cairoContext
 		primSetTolerance: 0.5;
-		primSetAntialias: antialiasOption.
+		primSetAntialias: AeCairoAntialias CAIRO_ANTIALIAS_NONE.
 
 	fontOptions := AeCairoFontOptions new
-		antialias: antialiasOption;
+		antialias: AeCairoAntialias CAIRO_ANTIALIAS_FAST;
 		hintMetrics: AeCairoHintMetrics CAIRO_HINT_METRICS_OFF;
 		hintStyle: AeCairoHintStyle CAIRO_HINT_STYLE_NONE;
 		subpixelOrder: AeCairoSubpixelOrder CAIRO_SUBPIXEL_ORDER_DEFAULT;
