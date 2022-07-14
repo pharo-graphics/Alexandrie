@@ -153,6 +153,75 @@ BASpan >> height [
 	^ height
 ]
 
+{ #category : #accessing }
+BASpan >> indexAtPosition: aPoint [
+	"I return a cursor index at a given position as a Point provided in local coordinates of this span"
+
+	| aWidth |
+	self flag: #todo.
+	
+	aWidth := aPoint x max: 0.
+
+	(aWidth <= 0)
+		ifTrue: [ ^ (self from - 1) max: 0 ].
+	(aWidth >= self advance)
+		ifTrue: [ ^ self to ].
+
+	^ (self spanStart to: self spanEnd)
+		findBinary: [ :anIndex |
+			| aSubSpan aParagraph |
+			
+			aSubSpan := BlSpan
+				text: (blSpan text from: (1 min: anIndex) to: anIndex)
+				attributes: self span attributes.
+			
+			aParagraph := baTextMeasurer measureTextSpan: aSubSpan.
+			
+			(aWidth closeTo: aParagraph advance epsilon: 0.1)
+				ifTrue: [ 0 ]
+				ifFalse: [ (aWidth - aParagraph advance) sign ] ]
+		"exact match"
+		do: [ :anIndex | self from + anIndex - 1 ]
+
+		"need to measure a bit more"
+		ifNone: [ :a :b |
+			| leftIndex rightIndex leftWidth leftSpanIndex rightWidth rightSpanIndex spanIndex |
+			leftIndex := a ifNil: [ self spanStart - 1 ].
+			rightIndex := b ifNil: [ self spanEnd + 1 ].
+			
+			leftIndex < self spanStart
+				ifTrue: [
+					leftWidth := 0.
+					leftSpanIndex := (self spanStart - 1) max: 0 ]
+				ifFalse: [
+					| aSubSpan aParagraph |
+					aSubSpan := BlSpan
+						text: (blSpan text from: (1 min: leftIndex) to: leftIndex)
+						attributes: self span attributes.
+					aParagraph := baTextMeasurer measureTextSpan: aSubSpan.
+					leftWidth := aParagraph advance.
+					leftSpanIndex := leftIndex ].
+
+			rightIndex > self spanEnd
+				ifTrue: [
+					rightWidth := self advance.
+					rightSpanIndex := self spanEnd ]
+				ifFalse: [
+					| aSubSpan aParagraph |
+					aSubSpan := BlSpan
+						text: (blSpan text from: (1 min: rightIndex) to: rightIndex)
+						attributes: self span attributes.
+					aParagraph := baTextMeasurer measureTextSpan: aSubSpan.
+					rightWidth := aParagraph advance.
+					rightSpanIndex := rightIndex ].
+
+			spanIndex := aWidth <= (leftWidth + ((rightWidth - leftWidth) / 2.0))
+				ifTrue: [ leftSpanIndex ]
+				ifFalse: [ rightSpanIndex ].
+
+			self from + spanIndex - 1 ]
+]
+
 { #category : #initialization }
 BASpan >> initializeTextMeasurer: aBATextMeasurer span: aBlSpan [
 
@@ -184,6 +253,30 @@ BASpan >> paragraph [
 BASpan >> paragraph: aBlTextParagraph [
 
 	paragraph := aBlTextParagraph
+]
+
+{ #category : #accessing }
+BASpan >> positionAt: anIndex [
+
+	| aSpanIndex aSubSpan aMeasuredSpan aPositionY aPositionX |
+
+	aPositionY := self baseline y.
+	aPositionX := self baseline x.
+
+	(anIndex = (self from - 1))
+		ifTrue: [ ^ aPositionX @ aPositionY ].
+	(anIndex = self to)
+		ifTrue: [ ^ (aPositionX + self advance) @ aPositionY ].
+
+	aSpanIndex := anIndex - self from + 1.
+
+	aSubSpan := BlSpan
+		text: (blSpan text from: (1 min: aSpanIndex) to: aSpanIndex)
+		attributes: self span attributes.
+
+	aMeasuredSpan := baTextMeasurer measureTextSpan: aSubSpan.
+	
+	^ (aPositionX + aMeasuredSpan advance) @ aPositionY
 ]
 
 { #category : #printing }
