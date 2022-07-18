@@ -1,56 +1,46 @@
 Extension { #name : #BlTextParagraph }
 
 { #category : #'*Alexandrie-Canvas' }
-BlTextParagraph >> aeDrawSelectionOn: aeCanvas padding: aBlInsets [ 
+BlTextParagraph >> aeDrawHighlightsOn: aeCanvas [
+
+	(self highlights isNil or: [ self highlights isEmpty ]) ifTrue: [ ^ self ].
+
+	self highlights do: [ :eachHighlight | 
+		| rectangles |
+		rectangles := self selectionRectanglesFrom: eachHighlight selection.
+		self aeFillRectanglesBackground: rectangles on: aeCanvas with: eachHighlight paint ]
+]
+
+{ #category : #'*Alexandrie-Canvas' }
+BlTextParagraph >> aeDrawSelectionOn: aeCanvas [
+
+	self aeDrawselection: self selection on: aeCanvas color: self class selectionColor
+]
+
+{ #category : #'*Alexandrie-Canvas' }
+BlTextParagraph >> aeDrawselection: aSelection on: aeCanvas color: aColor [
 
 	| rectangles |
-	(self selection isNil or: [ self selection isEmpty ])
-		ifTrue: [ ^ self ].
+	(aSelection isNil or: [ aSelection isEmpty ]) ifTrue: [ ^ self ].
+	rectangles := self selectionRectanglesFrom: aSelection.
+	self aeFillRectanglesBackground: rectangles on: aeCanvas with: aColor
+]
 
+{ #category : #'*Alexandrie-Canvas' }
+BlTextParagraph >> aeFillRectanglesBackground: anArrayOfrectangles on: aeCanvas with: aColor [
 
-	rectangles := OrderedCollection new.
-	
-	selection do: [ :aSelection |
-		| aStart anEnd aSelectionStartSpan aSelectionEndSpan aSelectionStartPosition aSelectionEndPosition |
+	"TODO: refactor the following is the only Alexandrie-specific code"
 
-		aStart := aSelection from min: self text size.
-		anEnd := aSelection to min: self text size.
+	aeCanvas restoreContextAfter: [ 
+		aeCanvas setBackgroundWith: [ aeCanvas setSourceColor: aColor ] alpha: 1.0.
 
-		aSelectionStartSpan := self spanAtIndex: aStart.
-		aSelectionEndSpan := self spanAtIndex: anEnd.
+		aeCanvas setBorderOff.
 
-		aSelectionStartPosition := aStart isZero
-			ifTrue: [ 0@0 ]
-			ifFalse: [ (aSelectionStartSpan positionAt: aStart) + (aBlInsets left @ 0) ].
+		aeCanvas
+			setPathKey: self
+			hasJoins: true
+			hasCaps: false
+			block: [ :cairoContext | anArrayOfrectangles do: [ :each | cairoContext rectangle: each ] ].
 
-		aSelectionEndPosition := anEnd = self text size
-			ifTrue: [ (aSelectionEndSpan positionAt: anEnd) + (aBlInsets width @ 0) ]
-			ifFalse: [ (aSelectionEndSpan positionAt: anEnd) + (aBlInsets left @ 0) ].
-
-		rectangles add: ((aSelection to > self text size)
-			"containerExtent includes padding"
-			ifTrue: [ (aSelectionStartPosition x @ 0) corner: self containerExtent ]
-			ifFalse: [ (aSelectionStartPosition x @ 0) corner: (aSelectionEndPosition x @ self containerExtent y) ]).
-		].
-	
-
-		"TODO: refactor the following is the only Alexandrie-specific code"
-		aeCanvas restoreContextAfter: [ 
-
-			aeCanvas
-				setBackgroundWith: [ aeCanvas setSourceColor: (self class selectionColor) ]
-				alpha: 1.0.
-
-			aeCanvas setBorderOff.
-
-			aeCanvas
-				setPathKey: self
-				hasJoins: true
-				hasCaps: false
-				block: [ :cairoContext |
-					rectangles do: [ :each | cairoContext rectangle: each ] ].
-
-			aeCanvas drawFigure.
-			
-			]
+		aeCanvas drawFigure ]
 ]
