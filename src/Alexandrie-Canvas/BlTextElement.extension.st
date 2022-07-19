@@ -12,10 +12,11 @@ BlTextElement >> aeDrawBeneathOn: aeCanvas [
 { #category : #'*Alexandrie-Canvas-Core' }
 BlTextElement >> aeDrawOnlyMeOn: aeCanvas [
 
-	super aeDrawOnlyMeOn: aeCanvas.
+	paragraph ifNil: [^self].
 	self setupParagraphBeforeDrawing.
-
 	self aeDrawBeneathOn: aeCanvas.
+
+	super aeDrawOnlyMeOn: aeCanvas.
 
 	aeCanvas restoreContextAfter: [ 
 		aeCanvas pathTranslate: self padding topLeft.
