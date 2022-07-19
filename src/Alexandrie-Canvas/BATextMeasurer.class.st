@@ -20,6 +20,5 @@ BATextMeasurer >> measureTextParagraph: aBlTextParagraph [
 BATextMeasurer >> measureTextSpan: aBlSpan [
 	"Measure a given text span and return paragraph span with computed metrics"
 
-	^ BATextParagraphSpan textMeasurer: self span: aBlSpan
-
+	^ BATextParagraphSpan new measurer: self;  span: aBlSpan; yourself
 ]

@@ -3,7 +3,7 @@ Extension { #name : #BlTextParagraph }
 { #category : #'*Alexandrie-Canvas' }
 BlTextParagraph >> aeDrawHighlightsOn: aeCanvas [
 
-	(self highlights isNil or: [ self highlights isEmpty ]) ifTrue: [ ^ self ].
+	highlights ifNil: [ ^ self ].
 
 	self highlights do: [ :eachHighlight | 
 		| rectangles |

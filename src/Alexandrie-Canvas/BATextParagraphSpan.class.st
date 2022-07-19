@@ -10,10 +10,9 @@ Class {
 }
 
 { #category : #'instance creation' }
-BATextParagraphSpan class >> textMeasurer: aBASpaceTextMeasurer span: aBlSpan [
+BATextParagraphSpan class >> measurer: aBASpaceTextMeasurer span: aBlSpan [
 
-	^ self new
-		  textMeasurer: aBASpaceTextMeasurer span: aBlSpan;
+	^ self new measurer: aBASpaceTextMeasurer; span: aBlSpan; 
 		  yourself
 ]
 
@@ -82,9 +81,8 @@ BATextParagraphSpan >> normalize: aScale [
 	self flag: 'todo ?'
 ]
 
-{ #category : #initialization }
-BATextParagraphSpan >> textMeasurer: aBATextMeasurer span: aBlSpan [
-	measurer := aBATextMeasurer.
-	span := aBlSpan.
+{ #category : #accessing }
+BATextParagraphSpan >> span: aBlSpan [
+	super span: aBlSpan.
 	self aeBuild.
 ]
