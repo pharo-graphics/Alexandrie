@@ -1,21 +1,10 @@
 Class {
-	#name : #BASpan,
-	#superclass : #Object,
+	#name : #BATextParagraphSpan,
+	#superclass : #BlTextParagraphSegment,
 	#instVars : [
-		'paragraph',
-		'left',
-		'top',
-		'width',
-		'height',
-		'advance',
-		'ascent',
-		'descent',
-		'paragraphEndIndex',
-		'paragraphStartIndex',
 		'paragraphBlText',
 		'baTextMeasurer',
 		'blSpan',
-		'baselinePoint',
 		'cairoScaledFont',
 		'cairoGlyphsArray',
 		'fontAndStyleBuilder'
@@ -24,21 +13,15 @@ Class {
 }
 
 { #category : #'instance creation' }
-BASpan class >> textMeasurer: aBASpaceTextMeasurer span: aBlSpan [
+BATextParagraphSpan class >> textMeasurer: aBASpaceTextMeasurer span: aBlSpan [
 
 	^ self basicNew
 		  initializeTextMeasurer: aBASpaceTextMeasurer span: aBlSpan;
 		  yourself
 ]
 
-{ #category : #accessing }
-BASpan >> advance [
-
-	^ advance
-]
-
 { #category : #building }
-BASpan >> aeBuild [
+BATextParagraphSpan >> aeBuild [
 
 	| aFreeTypeFont aBuffer aFontExtents |
 
@@ -77,7 +60,7 @@ BASpan >> aeBuild [
 ]
 
 { #category : #drawing }
-BASpan >> aeDrawOn: aeCanvas [
+BATextParagraphSpan >> aeDrawOn: aeCanvas [
 
 	aeCanvas restoreContextAfter: [
 
@@ -100,61 +83,7 @@ BASpan >> aeDrawOn: aeCanvas [
 ]
 
 { #category : #accessing }
-BASpan >> ascent [
-
-	^ ascent
-]
-
-{ #category : #accessing }
-BASpan >> baseline [
-
-	^ baselinePoint
-]
-
-{ #category : #accessing }
-BASpan >> baseline: aPoint [
-
-	baselinePoint := aPoint
-]
-
-{ #category : #accessing }
-BASpan >> baselinePoint [
-
-	^ baselinePoint
-]
-
-{ #category : #accessing }
-BASpan >> bounds [
-
-	^ self origin extent: self extent
-]
-
-{ #category : #accessing }
-BASpan >> descent [
-
-	^ descent
-]
-
-{ #category : #accessing }
-BASpan >> extent [
-
-	^ width @ height
-]
-
-{ #category : #accessing }
-BASpan >> from [
-
-	^ paragraphStartIndex
-]
-
-{ #category : #accessing }
-BASpan >> height [
-
-	^ height
-]
-
-{ #category : #accessing }
-BASpan >> indexAtPosition: aPoint [
+BATextParagraphSpan >> indexAtPosition: aPoint [
 	"I return a cursor index at a given position as a Point provided in local coordinates of this span"
 
 	| aWidth |
@@ -223,7 +152,7 @@ BASpan >> indexAtPosition: aPoint [
 ]
 
 { #category : #initialization }
-BASpan >> initializeTextMeasurer: aBATextMeasurer span: aBlSpan [
+BATextParagraphSpan >> initializeTextMeasurer: aBATextMeasurer span: aBlSpan [
 
 	self initialize.
 	baTextMeasurer := aBATextMeasurer.
@@ -231,32 +160,14 @@ BASpan >> initializeTextMeasurer: aBATextMeasurer span: aBlSpan [
 	self aeBuild.
 ]
 
-{ #category : #accessing }
-BASpan >> left [
-
-	^ left
+{ #category : #measurement }
+BATextParagraphSpan >> normalize: aScale [
+	"Normalize this segment to have rounded measurements"
+	self flag: 'todo ?'
 ]
 
 { #category : #accessing }
-BASpan >> origin [
-
-	^ left @ top
-]
-
-{ #category : #accessing }
-BASpan >> paragraph [
-
-	^ paragraph
-]
-
-{ #category : #accessing }
-BASpan >> paragraph: aBlTextParagraph [
-
-	paragraph := aBlTextParagraph
-]
-
-{ #category : #accessing }
-BASpan >> positionAt: anIndex [
+BATextParagraphSpan >> positionAt: anIndex [
 
 	| aSpanIndex aSubSpan aMeasuredSpan aPositionY aPositionX |
 
@@ -280,7 +191,7 @@ BASpan >> positionAt: anIndex [
 ]
 
 { #category : #printing }
-BASpan >> printOn: aStream [
+BATextParagraphSpan >> printOn: aStream [
 
 	super printOn: aStream.
 	aStream
@@ -291,25 +202,25 @@ BASpan >> printOn: aStream [
 ]
 
 { #category : #accessing }
-BASpan >> span [
+BATextParagraphSpan >> span [
 
 	^ blSpan
 ]
 
 { #category : #accessing }
-BASpan >> span: aBlSpan [
+BATextParagraphSpan >> span: aBlSpan [
 
 	blSpan := aBlSpan
 ]
 
 { #category : #'accessing - span' }
-BASpan >> spanEnd [
+BATextParagraphSpan >> spanEnd [
 
 	^ blSpan size
 ]
 
 { #category : #'accessing - span' }
-BASpan >> spanLength [
+BATextParagraphSpan >> spanLength [
 
 	^ (self spanStart isZero and: [ self spanEnd isZero ])
 		ifTrue: [ 0 ]
@@ -317,40 +228,22 @@ BASpan >> spanLength [
 ]
 
 { #category : #'accessing - span' }
-BASpan >> spanStart [
+BATextParagraphSpan >> spanStart [
 
 	^ 1 min: blSpan size
 ]
 
 { #category : #accessing }
-BASpan >> text: aGlobalText from: aGlobalTextStart to: aGlobalTextEnd [
+BATextParagraphSpan >> text: aGlobalText from: aGlobalTextStart to: aGlobalTextEnd [
 	"Assign the paragraph's text with provided indices so that we could always determine which part of it I measure"
 
 	paragraphBlText := aGlobalText.
-	paragraphStartIndex := aGlobalTextStart.
-	paragraphEndIndex := aGlobalTextEnd
+	from := aGlobalTextStart.
+	to := aGlobalTextEnd
 ]
 
 { #category : #accessing }
-BASpan >> textMeasurer [
+BATextParagraphSpan >> textMeasurer [
 
 	^ baTextMeasurer
-]
-
-{ #category : #accessing }
-BASpan >> to [
-
-	^ paragraphEndIndex
-]
-
-{ #category : #accessing }
-BASpan >> top [
-
-	^ top
-]
-
-{ #category : #accessing }
-BASpan >> width [
-
-	^ width
 ]

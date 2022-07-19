@@ -12,6 +12,11 @@ BlTextParagraph >> aeDrawHighlightsOn: aeCanvas [
 ]
 
 { #category : #'*Alexandrie-Canvas' }
+BlTextParagraph >> aeDrawOn: aCanvas [	
+	self line aeDrawOn: aCanvas
+]
+
+{ #category : #'*Alexandrie-Canvas' }
 BlTextParagraph >> aeDrawSelectionOn: aeCanvas [
 
 	self aeDrawselection: self selection on: aeCanvas color: self class selectionColor

@@ -16,11 +16,9 @@ BlTextElement >> aeDrawOnlyMeOn: aeCanvas [
 	self setupParagraphBeforeDrawing.
 
 	self aeDrawBeneathOn: aeCanvas.
-	
+
 	aeCanvas restoreContextAfter: [ 
 		aeCanvas pathTranslate: self padding topLeft.
 		"Draw text with attributes"
-		paragraph line spans do: [ :each | 
-			aeCanvas pathTranslate: each baselinePoint.
-			each aeDrawOn: aeCanvas ] ]
+		paragraph aeDrawOn: aeCanvas ]
 ]
