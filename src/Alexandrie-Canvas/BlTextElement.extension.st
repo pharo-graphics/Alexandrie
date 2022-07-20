@@ -12,15 +12,14 @@ BlTextElement >> aeDrawBeneathOn: aeCanvas [
 { #category : #'*Alexandrie-Canvas-Core' }
 BlTextElement >> aeDrawOnlyMeOn: aeCanvas [
 
-	super aeDrawOnlyMeOn: aeCanvas.
+	paragraph ifNil: [^self].
 	self setupParagraphBeforeDrawing.
-
 	self aeDrawBeneathOn: aeCanvas.
-	
+
+	super aeDrawOnlyMeOn: aeCanvas.
+
 	aeCanvas restoreContextAfter: [ 
 		aeCanvas pathTranslate: self padding topLeft.
 		"Draw text with attributes"
-		paragraph line spans do: [ :each | 
-			aeCanvas pathTranslate: each baselinePoint.
-			each aeDrawOn: aeCanvas ] ]
+		paragraph aeDrawOn: aeCanvas ]
 ]
