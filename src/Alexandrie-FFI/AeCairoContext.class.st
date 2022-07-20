@@ -54,7 +54,9 @@ AeCairoContext >> currentMatrix [
 	| aCairoMatrix |
 	aCairoMatrix := AeCairoMatrix externalNew.
 	self primGetTransform: aCairoMatrix.
-	^ aCairoMatrix	autoRelease.
+	^ aCairoMatrix
+		  autoRelease;
+		  yourself
 ]
 
 { #category : #initialization }
@@ -102,7 +104,6 @@ AeCairoContext >> primApplyTransform: aCairoMatrix [
 
 { #category : #'private - ffi' }
 AeCairoContext >> primArcCenterX: centerX centerY: centerY radius: aRadius startAngle: aStartAngle endAngle: anEndAngle [ 
-
 	self ffiCall: #(void cairo_arc (
 			self,
 			double centerX,
@@ -151,7 +152,7 @@ AeCairoContext >> primFillPreserve [
 { #category : #'private - text' }
 AeCairoContext >> primFontExtents: aFontExtents [
 
-	^ self ffiCall: #( void cairo_font_extents (
+	self ffiCall: #( void cairo_font_extents (
 		self,
 		AeCairoFontExtents* aFontExtents ) )
 ]
@@ -167,7 +168,7 @@ AeCairoContext >> primGetTransform: aCairoMatrix [
 { #category : #'private - text' }
 AeCairoContext >> primGlyphExtents: theGlyphs num: aGlyphsNum metrics: aTextMetrics [
 
-	^ self ffiCall: #( void cairo_glyph_extents (
+	self ffiCall: #( void cairo_glyph_extents (
 		self,
 		AeCairoGlyphArray theGlyphs,
 		int aGlyphsNum,
@@ -242,7 +243,7 @@ AeCairoContext >> primPushGroup [
 { #category : #'private - ffi' }
 AeCairoContext >> primRectangleX: aX y: aY width: aWidth height: aHeight [
 
-	^ self ffiCall: #(void cairo_rectangle (
+	self ffiCall: #(void cairo_rectangle (
 			self,
 			double aX,
 			double aY,
@@ -340,7 +341,7 @@ AeCairoContext >> primSetOperator: aCairoOperator [
 { #category : #'private - text' }
 AeCairoContext >> primSetScaledFont: aScaledFont [
 
-	^ self ffiCall: #( void cairo_set_scaled_font (
+	self ffiCall: #( void cairo_set_scaled_font (
 		self,
 		AeCairoScaledFont aScaledFont ) )
 ]
@@ -395,7 +396,7 @@ AeCairoContext >> primSetTolerance: aNumber [
 { #category : #'private - text' }
 AeCairoContext >> primShowGlyphs: aGlyphsArray num: aNumberOfGlyphs [
 
-	^ self ffiCall: #( void cairo_show_glyphs (
+	self ffiCall: #( void cairo_show_glyphs (
 		self,
 		void * aGlyphsArray,
 		int aNumberOfGlyphs ) )
@@ -435,7 +436,7 @@ AeCairoContext >> rectangle: aRectangle [
 { #category : #initialization }
 AeCairoContext >> resetClip [
 
-	^ self ffiCall: #( void cairo_reset_clip #( self ) )
+	self ffiCall: #( void cairo_reset_clip #( self ) )
 ]
 
 { #category : #API }
