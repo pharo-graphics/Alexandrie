@@ -1,3 +1,6 @@
+"
+I represent an Alexandrie specific measured span
+"
 Class {
 	#name : #BATextParagraphSpan,
 	#superclass : #BlTextParagraphLeaf,
