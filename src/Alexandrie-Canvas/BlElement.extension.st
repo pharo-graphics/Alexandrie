@@ -59,8 +59,11 @@ BlElement >> aeDrawOnlyMeOn: aeCanvas [
 	- Pre-condition: position and transformations are already applied on the canvas.
 	- Post-condition: position and transformations are maintanined intact."
 	
-	| myBorder |
-	self background aeApplyTo: aeCanvas.
+	| myBackground myBorder |
+	myBackground := self background.
+	myBackground isTransparent
+		ifTrue: [ aeCanvas setBackgroundOff ]
+		ifFalse: [ myBackground aeApplyTo: aeCanvas ].
 
 	myBorder := self border.
 	myBorder isTransparent

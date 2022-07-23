@@ -13,6 +13,10 @@ using this order:
 
 Note: Background MUST be set BEFORE border.
 
+## Special cases:
+
+1. Outside outskirt + translucent color as background: use alpha value as background alpha.
+2. Cap round: use only with center outskirt.
 
 # Nesting figures
 
@@ -256,10 +260,11 @@ AeCanvas >> setBackgroundOff [
 
 { #category : #API }
 AeCanvas >> setBackgroundWith: aBlock alpha: aDouble [
+	"Note: If alpha is zero, it's faster using #setBackgroundOff."
 
 	hasBackground := true.
 	backgroundAlpha := aDouble.
-	backgroundSourceBlock :=	aBlock
+	backgroundSourceBlock := aBlock
 ]
 
 { #category : #API }
