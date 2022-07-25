@@ -8,9 +8,9 @@ Class {
 }
 
 { #category : #accessing }
-BASpaceTextMeasurer >> aeCanvas [
+BASpaceTextMeasurer >> canvas [
 
-	^ spaceRenderer aeCanvas
+	^ self spaceRenderer aeCanvas
 ]
 
 { #category : #accessing }

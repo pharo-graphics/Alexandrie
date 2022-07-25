@@ -36,7 +36,7 @@ AeOffscreen >> ensureReady [
 	cairoContext := aeCanvas privateAeCairoContext.
 
 	textMeasurer := BACanvasTextMeasurer new
-							aeCanvas: aeCanvas;
+							canvas: aeCanvas;
 							yourself
 ]
 

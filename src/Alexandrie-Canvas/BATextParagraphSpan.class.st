@@ -19,45 +19,6 @@ BATextParagraphSpan class >> measurer: aBASpaceTextMeasurer span: aBlSpan [
 		  yourself
 ]
 
-{ #category : #building }
-BATextParagraphSpan >> aeBuild [
-
-	| aFreeTypeFont aBuffer aFontExtents |
-
-	"Collect font properties and text style from the attributes"
-	fontAndStyleBuilder := BlTextFontAndStyleBuilder new.
-	self attributes do: [ :eachAttribute |
-		eachAttribute applyOnFontAndStyleBuilder: fontAndStyleBuilder ].
-
-	aFreeTypeFont := fontAndStyleBuilder font asLogicalFont asFreetypeFont.
-	cairoScaledFont := self measurer aeCanvas scaledFontFor: aFreeTypeFont.
-	
-	"Get glyphs for the text"
-	aBuffer := self span utf8Encoded.
-	cairoGlyphsArray := cairoScaledFont
-		glyphArrayFor: aBuffer
-		length: aBuffer size.
-
-	"Get font metrics (shared for all string with this scaled font)"
-	"See SpartaFontMetrics>>#cairoInitializeFrom:"
-	aFontExtents := self measurer aeCanvas fontExtentsOf: cairoScaledFont.
-	ascent := aFontExtents ascent negated.
-	descent := aFontExtents descent.
-
-	"Get text metrics"
-	"See SpartaTextMetrics>>#cairoInitializeFrom:"
-	self measurer aeCanvas
-		textExtentsFor: cairoGlyphsArray
-		scaledFont: cairoScaledFont
-		do: [ :aTextExtents |
-			advance := aTextExtents advanceX.
-			left := aTextExtents bearingX.
-			top := aTextExtents bearingY.
-			width := aTextExtents width.
-			height := aTextExtents height ].
-
-]
-
 { #category : #drawing }
 BATextParagraphSpan >> aeDrawOn: aeCanvas [
 
@@ -78,14 +39,41 @@ BATextParagraphSpan >> aeDrawOn: aeCanvas [
 			anAttribute aeDrawAboveOn: aeCanvas span: self ] ]
 ]
 
+{ #category : #building }
+BATextParagraphSpan >> getTextMetricsWithBuilder: aBlTextFontAndStyleBuilder [
+	"build an abstract font and resolve not yet resolved properties"
+	| freeTypeFont buffer fontExtents |
+	
+	fontAndStyleBuilder := aBlTextFontAndStyleBuilder.
+	freeTypeFont := fontAndStyleBuilder font asLogicalFont asFreetypeFont.
+	cairoScaledFont := self measurer canvas scaledFontFor: freeTypeFont.
+	
+	"Get glyphs for the text"
+	buffer := self span utf8Encoded.
+	cairoGlyphsArray := cairoScaledFont
+		glyphArrayFor: buffer
+		length: buffer size.
+
+	fontExtents := self measurer canvas fontExtentsOf: cairoScaledFont.
+	ascent := fontExtents ascent negated.
+	descent := fontExtents descent.
+
+	"Get text metrics"
+	"See SpartaTextMetrics>>#cairoInitializeFrom:"
+	self measurer canvas
+		textExtentsFor: cairoGlyphsArray
+		scaledFont: cairoScaledFont
+		do: [ :aTextExtents |
+			advance := aTextExtents advanceX.
+			left := aTextExtents bearingX.
+			top := aTextExtents bearingY.
+			width := aTextExtents width.
+			height := aTextExtents height ].
+
+]
+
 { #category : #measurement }
 BATextParagraphSpan >> normalize: aScale [
 	"Normalize this segment to have rounded measurements"
 	self flag: 'todo ?'
-]
-
-{ #category : #accessing }
-BATextParagraphSpan >> span: aBlSpan [
-	super span: aBlSpan.
-	self aeBuild.
 ]

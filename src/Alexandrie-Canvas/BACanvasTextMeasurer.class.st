@@ -8,13 +8,13 @@ Class {
 }
 
 { #category : #accessing }
-BACanvasTextMeasurer >> aeCanvas [
+BACanvasTextMeasurer >> canvas [
 
 	^ aeCanvas
 ]
 
 { #category : #accessing }
-BACanvasTextMeasurer >> aeCanvas: anAeCanvas [
+BACanvasTextMeasurer >> canvas: anAeCanvas [
 
 	aeCanvas := anAeCanvas
 ]
