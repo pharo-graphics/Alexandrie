@@ -9,7 +9,7 @@ Class {
 
 { #category : #accessing }
 BACanvasTextMeasurer >> canvas [
-
+	"return the Alexandrie canvas"
 	^ aeCanvas
 ]
 
