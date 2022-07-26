@@ -9,6 +9,10 @@ Class {
 	#category : #'Alexandrie-Canvas-Text'
 }
 
+{ #category : #drawing }
+BATextParagraphLeaf >> aeDrawOn: aeCanvas [
+]
+
 { #category : #building }
 BATextParagraphLeaf >> getTextMetricsFor: utf8EncodedString withBuilder: aBlTextFontAndStyleBuilder canvas: aeCanvas [
 
