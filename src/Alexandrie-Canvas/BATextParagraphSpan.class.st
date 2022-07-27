@@ -12,6 +12,7 @@ BATextParagraphSpan >> aeDrawOn: aeCanvas [
 
 	self span ifNil: [ ^ self ].
 	aeCanvas restoreContextAfter: [ 
+		aeCanvas pathTranslate: self baseline.
 		self flag: #todo. "Default color?"
 		aeCanvas setSourceColor: (fontAndStyleBuilder hasCustomColor
 				 ifTrue: [ fontAndStyleBuilder color ]

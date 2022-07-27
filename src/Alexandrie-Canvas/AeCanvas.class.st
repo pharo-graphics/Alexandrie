@@ -233,22 +233,29 @@ AeCanvas >> restoreContextAfter: aBlock [
 
 { #category : #text }
 AeCanvas >> scaledFontFor: aFreeTypeFont [
+
 	"Answer a AeCairoScaledFont that corresponds to the provided font.
 	Since the FreeTypeFont is cached in Pharo, it is used as key in a cache."
 
-	scaledFontByFreetypeFont ifNil: [
-		scaledFontByFreetypeFont := Dictionary new ].
-	
+	scaledFontByFreetypeFont ifNil: [ scaledFontByFreetypeFont := Dictionary new ].
+
 	^ scaledFontByFreetypeFont
-		at: aFreeTypeFont
-		ifAbsentPut: [ | aCairoFontFace aFontMatrix |
-			aCairoFontFace := AeCairoFreetypeFontFace newFor: aFreeTypeFont.
-			aFontMatrix := AeCairoMatrix scaleBy: aFreeTypeFont pointSize.
+		  at: aFreeTypeFont
+		  ifAbsentPut: [ self scaledFontFor: aFreeTypeFont scaleBy: aFreeTypeFont pointSize ]
+]
+
+{ #category : #text }
+AeCanvas >> scaledFontFor: aFreeTypeFont scaleBy: aSize [
+	"Answer a AeCairoScaledFont that corresponds to the provided font and scale"
+
+ 	| aCairoFontFace aFontMatrix |
+	aCairoFontFace := AeCairoFreetypeFontFace newFor: aFreeTypeFont.
+	aFontMatrix := AeCairoMatrix scaleBy: aSize.
 			
-			aCairoFontFace 
+	^ aCairoFontFace 
 				newScaledFontWithFontMatrix: aFontMatrix
 				userToDeviceMatrix: identityMatrix
-				options: fontOptions ]
+				options: fontOptions
 ]
 
 { #category : #API }
