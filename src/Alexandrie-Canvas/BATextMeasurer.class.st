@@ -1,6 +1,9 @@
 Class {
 	#name : #BATextMeasurer,
 	#superclass : #BlHostTextMeasurer,
+	#instVars : [
+		'lineAdvance'
+	],
 	#category : #'Alexandrie-Canvas-Text'
 }
 
@@ -21,7 +24,6 @@ BATextMeasurer >> measureTextSpan: aBlSpan [
 	"Measure a given text span and return paragraph span with computed metrics"
 
 	| fontAndStyleBuilder attributes paragraphSpan |
-
 	"Collect font properties and text style from the attributes"
 	fontAndStyleBuilder := BlTextFontAndStyleBuilder new.
 	attributes := aBlSpan attributes.
@@ -29,7 +31,7 @@ BATextMeasurer >> measureTextSpan: aBlSpan [
 
 	paragraphSpan := self createParagraphSpan.
 	paragraphSpan span: aBlSpan.
-	paragraphSpan getTextMetricsWithBuilder: fontAndStyleBuilder.
+	paragraphSpan updateMetricsWithBuilder: fontAndStyleBuilder.
 	^ paragraphSpan
 ]
 

@@ -29,20 +29,20 @@ BATextParagraphSpan >> aeDrawOn: aeCanvas [
 ]
 
 { #category : #building }
-BATextParagraphSpan >> getTextMetricsWithBuilder: aBlTextFontAndStyleBuilder [
+BATextParagraphSpan >> updateMetricsWithBuilder: aBlTextFontAndStyleBuilder [
 
 	"build an abstract font and resolve not yet resolved properties"
 
-	| metrics |
-	metrics := self
-		           getTextMetricsFor: self span utf8Encoded
-		           withBuilder: aBlTextFontAndStyleBuilder
-		           canvas: self measurer canvas.
+	self
+		updateMetricsFor: self span utf8Encoded
+		builder: aBlTextFontAndStyleBuilder
+		canvas: self measurer canvas.
 	ascent := metrics at: #ascent.
 	descent := metrics at: #descent.
 	advance := metrics at: #advance.
 	left := metrics at: #left.
 	top := metrics at: #top.
 	width := metrics at: #width.
-	height := metrics at: #height
+	height := metrics at: #height.
+	
 ]

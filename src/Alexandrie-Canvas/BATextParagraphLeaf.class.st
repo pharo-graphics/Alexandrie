@@ -2,9 +2,11 @@ Class {
 	#name : #BATextParagraphLeaf,
 	#superclass : #BlTextParagraphLeaf,
 	#instVars : [
+		'metrics',
 		'cairoScaledFont',
 		'cairoGlyphsArray',
-		'fontAndStyleBuilder'
+		'fontAndStyleBuilder',
+		'lineAdvance'
 	],
 	#category : #'Alexandrie-Canvas-Text'
 }
@@ -13,12 +15,25 @@ Class {
 BATextParagraphLeaf >> aeDrawOn: aeCanvas [
 ]
 
+{ #category : #initialization }
+BATextParagraphLeaf >> initialize [
+	super initialize.
+	metrics := IdentityDictionary new
+]
+
+{ #category : #measurement }
+BATextParagraphLeaf >> normalize: aScale [
+	"Normalize this segment to have rounded measurements"
+	self flag: 'Do we need this ?'.
+
+]
+
 { #category : #building }
-BATextParagraphLeaf >> getTextMetricsFor: utf8EncodedString withBuilder: aBlTextFontAndStyleBuilder canvas: aeCanvas [
+BATextParagraphLeaf >> updateMetricsFor: utf8EncodedString builder: aBlTextFontAndStyleBuilder canvas: aeCanvas [
 
 	"returns a font metrics dictionary from an abstract font"
 
-	| freeTypeFont buffer fontExtents metrics |
+	| freeTypeFont buffer fontExtents |
 	fontAndStyleBuilder := aBlTextFontAndStyleBuilder.
 	freeTypeFont := fontAndStyleBuilder font asLogicalFont asFreetypeFont.
 	cairoScaledFont := aeCanvas scaledFontFor: freeTypeFont.
@@ -29,25 +44,23 @@ BATextParagraphLeaf >> getTextMetricsFor: utf8EncodedString withBuilder: aBlText
 
 	fontExtents := aeCanvas fontExtentsOf: cairoScaledFont.
 
-	metrics := IdentityDictionary new.
 	metrics at: #ascent put: fontExtents ascent negated.
 	metrics at: #descent put: fontExtents descent.
 
 	"Get text metrics"
 	"See SpartaTextMetrics>>#cairoInitializeFrom:"
+
 	aeCanvas textExtentsFor: cairoGlyphsArray scaledFont: cairoScaledFont do: [ :aTextExtents | 
-		metrics at: #advance put: aTextExtents advanceX.
+		span isTabulation
+			ifTrue: [ metrics at: #advance put: aTextExtents advanceX * 8 ]
+			ifFalse: [ metrics at: #advance put: aTextExtents advanceX ].
 		metrics at: #left put: aTextExtents bearingX.
 		metrics at: #top put: aTextExtents bearingY.
-		metrics at: #width put: aTextExtents width.
+		span isTabulation
+			ifTrue: [ metrics at: #width put: aTextExtents width * 8 ]
+			ifFalse: [ metrics at: #width put: aTextExtents width ].
 		metrics at: #height put: aTextExtents height.
-		metrics at: #bounds put: (aTextExtents bearingX @ aTextExtents bearingY extent: aTextExtents width @ aTextExtents height)].
-	^ metrics
-]
-
-{ #category : #measurement }
-BATextParagraphLeaf >> normalize: aScale [
-	"Normalize this segment to have rounded measurements"
-	self flag: 'Do we need this ?'.
-
+		metrics
+			at: #bounds
+			put: (aTextExtents bearingX @ aTextExtents bearingY extent: aTextExtents width @ aTextExtents height) ]
 ]
