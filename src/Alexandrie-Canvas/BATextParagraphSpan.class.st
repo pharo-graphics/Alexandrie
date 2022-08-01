@@ -36,7 +36,7 @@ BATextParagraphSpan >> updateMetricsWithBuilder: aBlTextFontAndStyleBuilder [
 	self
 		updateMetricsFor: self span utf8Encoded
 		builder: aBlTextFontAndStyleBuilder
-		canvas: self measurer canvas.
+		canvas: hostMeasurer canvas.
 	ascent := metrics at: #ascent.
 	descent := metrics at: #descent.
 	advance := metrics at: #advance.
