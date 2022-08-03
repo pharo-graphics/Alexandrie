@@ -39,7 +39,7 @@ BlSpaceBuilder >> addHexagonalPolygon [
 		 80 @ 36 }.
 		
 	^ self addToRoot
-		geometry: (BlPolygon vertices: hexagonVertices);
+		geometry: (BlPolygonGeometry vertices: hexagonVertices);
 		yourself
 ]
 
