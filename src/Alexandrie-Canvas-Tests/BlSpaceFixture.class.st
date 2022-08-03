@@ -161,6 +161,57 @@ BlSpaceFixture >> buildElevation [
 ]
 
 { #category : #fixtures }
+BlSpaceFixture >> buildGeometryVariants: aBlElementGeometry [
+
+	| outskirts positionGenerator addElementBlock |
+	builder spaceExtent: 140@200.
+
+	outskirts := { BlOutskirts inside. BlOutskirts centered. BlOutskirts outside }.
+	positionGenerator := self 
+		gridPositionGeneratorStartingAt: 10 asPoint
+		by: 40
+		columns: 3.
+	addElementBlock := [ :backgroundColor :borderColor :aBlOutskirt |
+		builder addToRoot
+			geometry: aBlElementGeometry;
+			border: (BlBorder paint: borderColor width: 5);
+			background: backgroundColor;
+			outskirts: aBlOutskirt;
+			relocate: positionGenerator next;
+			size: 35 asPoint;
+			yourself ].
+	
+	"All Opaque"
+	outskirts do: [ :eachOutskirt |
+		addElementBlock
+			value: builder nextColor
+			value: builder nextColor
+			value: eachOutskirt ].
+
+	"Opaques + translucent border"
+	outskirts do: [ :eachOutskirt |
+		addElementBlock
+			value: builder nextColor
+			value: builder nextColor translucent
+			value: eachOutskirt ].
+
+	"Translucents + translucent border"
+	outskirts do: [ :eachOutskirt |
+		addElementBlock
+			value: builder nextColor translucent
+			value: builder nextColor translucent
+			value: eachOutskirt ].
+
+	"Transparents + translucent border"
+	outskirts do: [ :eachOutskirt |
+		addElementBlock
+			value: Color transparent
+			value: builder nextColor translucent
+			value: eachOutskirt ].
+
+]
+
+{ #category : #fixtures }
 BlSpaceFixture >> buildImagesAndTransformations [
 	
 	| outskirts positionGenerator addElementBlock |
@@ -721,6 +772,48 @@ BlSpaceFixture >> buildTriangles [
 		size: 10 asPoint;
 		yourself
 
+]
+
+{ #category : #fixtures }
+BlSpaceFixture >> buildVariantsOfPolygon [
+
+	| hexagonVertices |
+	hexagonVertices := { 
+		 30 @  0.
+		 10 @  0.
+		  0 @ 18.
+		 10 @ 35.
+		 30 @ 35.
+		 40 @ 18 }.
+		
+	self buildGeometryVariants: (BlPolygonGeometry vertices: hexagonVertices)
+]
+
+{ #category : #fixtures }
+BlSpaceFixture >> buildVariantsOfPolyline [
+
+	| hexagonVertices |
+	hexagonVertices := { 
+		 60 @  0.
+		 20 @  0.
+		  0 @ 36.
+		 20 @ 70.
+		 60 @ 70.
+		 80 @ 36 }.
+		
+	self buildGeometryVariants: ((BlPolylineGeometry vertices: hexagonVertices))
+]
+
+{ #category : #fixtures }
+BlSpaceFixture >> buildVariantsOfRectangle [
+
+	self buildGeometryVariants: (BlRectangleGeometry new)
+]
+
+{ #category : #fixtures }
+BlSpaceFixture >> buildVariantsOfSquare [
+
+	self buildGeometryVariants: (BlSquareGeometry new)
 ]
 
 { #category : #private }
