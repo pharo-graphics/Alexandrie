@@ -1,3 +1,9 @@
+"
+I'm represent an error in FreeType bindings.
+
+I am created with a numeric code, that is translated as a String message.
+
+"
 Class {
 	#name : #AeFreeTypeError,
 	#superclass : #Error,

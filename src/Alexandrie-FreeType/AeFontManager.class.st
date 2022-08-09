@@ -3,10 +3,17 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'library',
-		'facesByFamily'
+		'facesByFamily',
+		'session'
 	],
 	#category : #'Alexandrie-FreeType'
 }
+
+{ #category : #initialization }
+AeFontManager >> checkSession [
+
+	session == Smalltalk session ifFalse: [ self reset ]
+]
 
 { #category : #accessing }
 AeFontManager >> facesByFamily [
@@ -19,7 +26,7 @@ AeFontManager >> initialize [
 
 	super initialize.
 
-	facesByFamily := Dictionary new
+	self reset
 ]
 
 { #category : #accessing }
@@ -28,25 +35,38 @@ AeFontManager >> library [
 	^ library
 ]
 
-{ #category : #accessing }
-AeFontManager >> library: anObject [
+{ #category : #registering }
+AeFontManager >> registerAllFacesOnFile: aFileReference [
 
-	library := anObject
+	| newFaces |
+	newFaces := library facesOn: aFileReference.
+	
+	newFaces do: [ :each | self registerFace: each ]
 ]
 
-{ #category : #'as yet unclassified' }
-AeFontManager >> registerAllFaces: aCollection [ 
-	
-	aCollection do: [ :each |
-		self registerFace: each ]
-	
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #registering }
 AeFontManager >> registerFace: aFace [ 
 
 	(facesByFamily
 		at: aFace familyName
 		ifAbsentPut: [ Set new ])
 		add: aFace
+]
+
+{ #category : #initialization }
+AeFontManager >> reset [
+
+	session := Smalltalk session.
+	library := AeFTLibrary newInitialized.
+	facesByFamily := Dictionary new
+]
+
+{ #category : #scanning }
+AeFontManager >> scanDefaultDirectories [
+
+	AeFontScanner new
+		addDefaultDirectories;
+		manager: self;
+		scan
+
 ]

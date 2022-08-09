@@ -9,7 +9,7 @@ Class {
 	#category : #'Alexandrie-FreeType'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #directories }
 AeFontScanner >> addDefaultDirectories [
 
 	includedDirectories := { self imageRelativeFontsDirectory.
@@ -17,7 +17,7 @@ AeFontScanner >> addDefaultDirectories [
 		self platformSpecificDirectories
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #directories }
 AeFontScanner >> allDirectories [
 
 	^{ self imageRelativeFontsDirectory.
@@ -25,7 +25,7 @@ AeFontScanner >> allDirectories [
 		self platformSpecificDirectories
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #directories }
 AeFontScanner >> getWindowsFontFolderPath [
 	"Answer the windows font folder path.
 	This is obtained through the Windows API if FFI is present,
@@ -52,7 +52,7 @@ AeFontScanner >> getWindowsFontFolderPath [
 	^ (buff copyFrom: 1 to: (buff indexOf: 0) - 1) asString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #directories }
 AeFontScanner >> getWindowsLocalPaths [
 	"This values should be read from the repository in the key 
 	HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\Fonts
@@ -64,13 +64,13 @@ AeFontScanner >> getWindowsLocalPaths [
 		FileLocator home / 'AppData' / 'Roaming' / 'Microsoft' / 'Windows' / 'Fonts' }
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #directories }
 AeFontScanner >> imageRelativeFontsDirectory [
 
 	^ FileLocator imageDirectory / 'Fonts'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #directories }
 AeFontScanner >> macOSXFolderDirectories [
 	"Answer the Mac OS X font folder paths.
 	This needs some FFI code, but for the time being, we guess these and omit the user fonts folder"
@@ -89,7 +89,7 @@ AeFontScanner >> manager: anAeFontManager [
 	manager:= anAeFontManager 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #directories }
 AeFontScanner >> platformSpecificDirectories [
 
 	Smalltalk os isWindows ifTrue: [ ^ self winFontDirectories ].
@@ -106,20 +106,14 @@ AeFontScanner >> scan [
 		self scanRecursively: each asFileReference ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #directories }
 AeFontScanner >> scanFile: aFileReference [ 
 	
-	| newFaces |
-	newFaces := manager library facesOn: aFileReference.
-	
-	newFaces ifNotEmpty: [ 
-		manager registerAllFaces: newFaces ] 
-		ifEmpty: [ aFileReference traceCr. ]
-	
+	manager registerAllFacesOnFile: aFileReference
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #directories }
 AeFontScanner >> scanRecursively: aDirectory [
 
 	aDirectory exists ifFalse: [ ^ self ].
@@ -136,20 +130,20 @@ AeFontScanner >> scanRecursively: aDirectory [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #directories }
 AeFontScanner >> unixFontDirectories [
 	"Trying with some common directories in unix. The prefered version is to read the /etc/fonts/fonts.conf"
 
 	^ { FileLocator home / '.fonts'. '/usr/share/fonts'. '/usr/local/share/fonts' }
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #directories }
 AeFontScanner >> vmRelativeFontsDirectory [
 
 	^ FileLocator vmDirectory / 'Fonts'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #directories }
 AeFontScanner >> winFontDirectories [
 
 	^ {self getWindowsFontFolderPath.

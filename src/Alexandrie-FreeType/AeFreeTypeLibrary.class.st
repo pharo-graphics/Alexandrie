@@ -1,3 +1,6 @@
+"
+I am a FreeType FFI binding library.
+"
 Class {
 	#name : #AeFreeTypeLibrary,
 	#superclass : #FFILibrary,
