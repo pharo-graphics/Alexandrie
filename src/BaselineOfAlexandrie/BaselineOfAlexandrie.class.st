@@ -11,7 +11,7 @@ BaselineOfAlexandrie >> baseline: spec [
 	spec
 		for: #common
 		do: [
-			self declareBlocOn: spec.
+			"self declareBlocOn: spec."
 			spec
 				package: 'Alexandrie-FFI';
 				package: 'Alexandrie-FFI-Tests'
