@@ -4,7 +4,7 @@ I am a FreeType FFI binding library.
 Class {
 	#name : #AeFreeTypeLibrary,
 	#superclass : #FFILibrary,
-	#category : #'Alexandrie-FreeType'
+	#category : #'Alexandrie-FreeType-FFI'
 }
 
 { #category : #'accessing - platform' }

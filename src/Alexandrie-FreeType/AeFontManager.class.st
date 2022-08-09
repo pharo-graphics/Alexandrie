@@ -6,7 +6,7 @@ Class {
 		'facesByFamily',
 		'session'
 	],
-	#category : #'Alexandrie-FreeType'
+	#category : #'Alexandrie-FreeType-Core'
 }
 
 { #category : #initialization }
@@ -19,6 +19,12 @@ AeFontManager >> checkSession [
 AeFontManager >> facesByFamily [
 
 	^ facesByFamily
+]
+
+{ #category : #accessing }
+AeFontManager >> familyNames [
+
+	^ self facesByFamily keys
 ]
 
 { #category : #initialization }
@@ -66,6 +72,16 @@ AeFontManager >> scanDefaultDirectories [
 
 	AeFontScanner new
 		addDefaultDirectories;
+		manager: self;
+		scan
+
+]
+
+{ #category : #scanning }
+AeFontManager >> scanDirectory: aFileReference [ 
+
+	AeFontScanner new
+		addDirectory: aFileReference;
 		manager: self;
 		scan
 

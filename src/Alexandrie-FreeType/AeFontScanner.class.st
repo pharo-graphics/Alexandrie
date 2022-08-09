@@ -2,19 +2,27 @@ Class {
 	#name : #AeFontScanner,
 	#superclass : #Object,
 	#instVars : [
-		'includedDirectories',
 		'manager',
-		'alreadyScanned'
+		'alreadyScanned',
+		'includedDirectories'
 	],
-	#category : #'Alexandrie-FreeType'
+	#category : #'Alexandrie-FreeType-Core'
 }
 
 { #category : #directories }
 AeFontScanner >> addDefaultDirectories [
 
-	includedDirectories := { self imageRelativeFontsDirectory.
-	 	self vmRelativeFontsDirectory },
-		self platformSpecificDirectories
+	includedDirectories
+		add: self imageRelativeFontsDirectory;
+	 	add: self vmRelativeFontsDirectory;
+		addAll: self platformSpecificDirectories
+
+]
+
+{ #category : #directories }
+AeFontScanner >> addDirectory: aFileReference [
+
+	includedDirectories add: aFileReference
 ]
 
 { #category : #directories }
@@ -71,6 +79,14 @@ AeFontScanner >> imageRelativeFontsDirectory [
 ]
 
 { #category : #directories }
+AeFontScanner >> initialize [
+
+	super initialize.
+
+	includedDirectories := OrderedCollection new
+]
+
+{ #category : #directories }
 AeFontScanner >> macOSXFolderDirectories [
 	"Answer the Mac OS X font folder paths.
 	This needs some FFI code, but for the time being, we guess these and omit the user fonts folder"
@@ -120,13 +136,22 @@ AeFontScanner >> scanRecursively: aDirectory [
 	(alreadyScanned includes: aDirectory) ifTrue: [ ^self ].
 	alreadyScanned add: aDirectory.
 
-	aDirectory files do: [ :aFile |
-		((aFile basename beginsWith: '.' ) or: [
-		aFile basename asLowercase endsWith: '.gz' ])
-			ifFalse: [ self scanFile: aFile ] ].
+	aDirectory files
+		reject: [ :aFile |
+			 self shouldIgnoreFile: aFile ]
+		thenDo: [ :aFile |
+			self scanFile: aFile ].
 
 	aDirectory directories do: [ :aSubDirectory |
 		self scanRecursively: aSubDirectory ].
+
+]
+
+{ #category : #directories }
+AeFontScanner >> shouldIgnoreFile: aFile [
+
+	^ ((aFile basename beginsWith: '.' ) or: [
+		aFile basename asLowercase endsWith: '.gz' ])
 
 ]
 

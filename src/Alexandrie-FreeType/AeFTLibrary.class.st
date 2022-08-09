@@ -10,7 +10,7 @@ Class {
 	#superclass : #FFIExternalObject,
 	#traits : 'AeTFreeTypeLibrary',
 	#classTraits : 'AeTFreeTypeLibrary classTrait',
-	#category : #'Alexandrie-FreeType'
+	#category : #'Alexandrie-FreeType-FFI'
 }
 
 { #category : #'as yet unclassified' }

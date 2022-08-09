@@ -13,7 +13,7 @@ Class {
 	#classVars : [
 		'MessageByErrorCode'
 	],
-	#category : #'Alexandrie-FreeType'
+	#category : #'Alexandrie-FreeType-FFI'
 }
 
 { #category : #'class initialization' }

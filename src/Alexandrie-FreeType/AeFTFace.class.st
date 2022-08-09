@@ -19,7 +19,7 @@ Class {
 		'OFFSET_STYLEFLAGS',
 		'OFFSET_STYLENAMEADDRESS'
 	],
-	#category : #'Alexandrie-FreeType'
+	#category : #'Alexandrie-FreeType-FFI'
 }
 
 { #category : #'field definition' }
