@@ -31,24 +31,6 @@ BAMouseEventTargetTest >> newSpaceFixture [
 ]
 
 { #category : #tests }
-BAMouseEventTargetTest >> testCircles [
-
-	space := self newSpaceFixture buildCircles; space.
-
-	self
-		assertNoMouseEventTargetAt: 10 asPoint.
-
-	self
-		assertMouseEventTargetAt: 15 asPoint
-		hasId: #A.
-
-	self
-		assertMouseEventTargetAt: 20 asPoint
-		hasId: #B.
-
-]
-
-{ #category : #tests }
 BAMouseEventTargetTest >> testClippingWithoutBorders [
 
 	space := self newSpaceFixture buildClippingWithoutBorders; space.
@@ -72,9 +54,27 @@ BAMouseEventTargetTest >> testClippingWithoutBorders [
 ]
 
 { #category : #tests }
-BAMouseEventTargetTest >> testRectangles [
+BAMouseEventTargetTest >> testOverlappingCircles [
 
-	space := self newSpaceFixture buildRectangles; space.
+	space := self newSpaceFixture buildOverlappingCircles; space.
+
+	self
+		assertNoMouseEventTargetAt: 10 asPoint.
+
+	self
+		assertMouseEventTargetAt: 15 asPoint
+		hasId: #A.
+
+	self
+		assertMouseEventTargetAt: 20 asPoint
+		hasId: #B.
+
+]
+
+{ #category : #tests }
+BAMouseEventTargetTest >> testOverlappingRectangles [
+
+	space := self newSpaceFixture buildOverlappingRectangles; space.
 	
 	"No element theer, only background."
 	self
@@ -83,6 +83,24 @@ BAMouseEventTargetTest >> testRectangles [
 	self
 		assertMouseEventTargetAt: 10 asPoint
 		hasId: #A.
+
+	self
+		assertMouseEventTargetAt: 15 asPoint
+		hasId: #B.
+
+]
+
+{ #category : #tests }
+BAMouseEventTargetTest >> testOverlappingTriangles [
+
+	space := self newSpaceFixture buildOverlappingTriangles; space.
+
+	self
+		assertMouseEventTargetAt: 10 asPoint
+		hasId: #A.
+
+	self
+		assertNoMouseEventTargetAt: 11@10.
 
 	self
 		assertMouseEventTargetAt: 15 asPoint
@@ -147,23 +165,5 @@ BAMouseEventTargetTest >> testTransformTranslate [
 
 	self
 		assertNoMouseEventTargetAt: 25 asPoint. 
-
-]
-
-{ #category : #tests }
-BAMouseEventTargetTest >> testTriangles [
-
-	space := self newSpaceFixture buildTriangles; space.
-
-	self
-		assertMouseEventTargetAt: 10 asPoint
-		hasId: #A.
-
-	self
-		assertNoMouseEventTargetAt: 11@10.
-
-	self
-		assertMouseEventTargetAt: 15 asPoint
-		hasId: #B.
 
 ]

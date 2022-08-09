@@ -15,23 +15,6 @@ BlSpaceFixture class >> allFixtureSelectors [
 ]
 
 { #category : #fixtures }
-BlSpaceFixture >> buildCircles [
-
-	| elementA elementB |
-
-	elementA := builder addCircle
-		relocate: 10 asPoint;
-		size: 10 asPoint;
-		yourself.
-
-	elementB := builder addCircle
-		relocate: 15 asPoint;
-		size: 10 asPoint;
-		yourself.
-
-]
-
-{ #category : #fixtures }
 BlSpaceFixture >> buildClippingOutskirts [
 
 	| outskirts width positionGenerator addElementsBlock |
@@ -157,57 +140,6 @@ BlSpaceFixture >> buildElevation [
 		relocate: 30 @ 30;
 		size: 30 asPoint;
 		yourself.
-
-]
-
-{ #category : #fixtures }
-BlSpaceFixture >> buildGeometryVariants: aBlElementGeometry [
-
-	| outskirts positionGenerator addElementBlock |
-	builder spaceExtent: 140@200.
-
-	outskirts := { BlOutskirts inside. BlOutskirts centered. BlOutskirts outside }.
-	positionGenerator := self 
-		gridPositionGeneratorStartingAt: 10 asPoint
-		by: 40
-		columns: 3.
-	addElementBlock := [ :backgroundColor :borderColor :aBlOutskirt |
-		builder addToRoot
-			geometry: aBlElementGeometry;
-			border: (BlBorder paint: borderColor width: 5);
-			background: backgroundColor;
-			outskirts: aBlOutskirt;
-			relocate: positionGenerator next;
-			size: 35 asPoint;
-			yourself ].
-	
-	"All Opaque"
-	outskirts do: [ :eachOutskirt |
-		addElementBlock
-			value: builder nextColor
-			value: builder nextColor
-			value: eachOutskirt ].
-
-	"Opaques + translucent border"
-	outskirts do: [ :eachOutskirt |
-		addElementBlock
-			value: builder nextColor
-			value: builder nextColor translucent
-			value: eachOutskirt ].
-
-	"Translucents + translucent border"
-	outskirts do: [ :eachOutskirt |
-		addElementBlock
-			value: builder nextColor translucent
-			value: builder nextColor translucent
-			value: eachOutskirt ].
-
-	"Transparents + translucent border"
-	outskirts do: [ :eachOutskirt |
-		addElementBlock
-			value: Color transparent
-			value: builder nextColor translucent
-			value: eachOutskirt ].
 
 ]
 
@@ -458,17 +390,52 @@ BlSpaceFixture >> buildOutskirtsOfPolygons [
 ]
 
 { #category : #fixtures }
-BlSpaceFixture >> buildRectangles [
+BlSpaceFixture >> buildOverlappingCircles [
+
+	| elementA elementB |
+
+	elementA := builder addCircle
+		relocate: 10 asPoint;
+		size: 10 asPoint;
+		yourself.
+
+	elementB := builder addCircle
+		relocate: 15 asPoint;
+		size: 10 asPoint;
+		yourself.
+
+]
+
+{ #category : #fixtures }
+BlSpaceFixture >> buildOverlappingRectangles [
+	"Note: This code assumes that default geometry is a rectangle."
 
 	builder addToRoot
-		geometry: BlRectangleGeometry new;
 		relocate: 10 asPoint;
 		size: 10 asPoint.
 
 	builder addToRoot
-		geometry: BlRectangleGeometry new;
 		relocate: 15 asPoint;
 		size: 10 asPoint.
+
+]
+
+{ #category : #fixtures }
+BlSpaceFixture >> buildOverlappingTriangles [
+
+	| elementA elementB |
+
+	elementA := builder addToRoot
+		geometry: BlTriangleGeometry new;
+		relocate: 10 asPoint;
+		size: 10 asPoint;
+		yourself.
+
+	elementB := builder addToRoot
+		geometry: BlTriangleGeometry new;
+		relocate: 15 asPoint;
+		size: 10 asPoint;
+		yourself
 
 ]
 
@@ -560,15 +527,15 @@ BlSpaceFixture >> buildTextAttributes [
 	    yourself.
 	
 	builder
-		addText: ('Les' asRopedText fontSize: 40; black; fontName: 'Arial'; foreground: Color blue; yourself)
+		addText: ((self ropedTextFor: 'Les') fontSize: 40; black; foreground: Color blue; yourself)
 		 to: container.
 
 	builder
-		addText: ('élèves' asRopedText   fontSize: 30; underline; yourself)
+		addText: ((self ropedTextFor: 'élèves') fontSize: 30; underline; yourself)
 		to: container.
 		
 	builder
-		addText: ('français' asRopedText fontSize: 25; italic; background: Color yellow; yourself)
+		addText: ((self ropedTextFor: 'français') fontSize: 25; italic; background: Color yellow; yourself)
 		to: container.
 ]
 
@@ -592,7 +559,7 @@ BlSpaceFixture >> buildTextMeasurements [
 	#(editorMeasurement labelMeasurement tightMeasurement)
 		do: [ :eachSelector |
 
-			(builder addText: 'Agüita' asRopedText to: container)
+			(builder addText: (self ropedTextFor: 'Agüita') to: container)
 				background: builder nextColor;
 				perform: eachSelector
 				yourself.
@@ -619,28 +586,28 @@ BlSpaceFixture >> buildTextOpacities [
 	    yourself.
 
   (builder
-		addText: ('aßc' asRopedText
+		addText: ((self ropedTextFor: 'aßc')
 		    foreground: (Color black alpha: 1.0);
 		    yourself)
 		to: container)
 		opacity: 1.0.
 
   (builder
-		addText: ('aßc' asRopedText
+		addText: ((self ropedTextFor: 'aßc')
 		    foreground: (Color black alpha: 1.0);
 		    yourself)
 		to: container)
 		opacity: 0.5.
 
   (builder
-		addText: ('aßc' asRopedText
+		addText: ((self ropedTextFor: 'aßc')
 		    foreground: (Color black alpha: 0.5);
 		    yourself)
 		to: container)
 		opacity: 1.0.
 
   (builder
-		addText: ('aßc' asRopedText
+		addText: ((self ropedTextFor: 'aßc')
 		    foreground: (Color black alpha: 0.5);
 		    yourself)
 		to: container)
@@ -651,7 +618,7 @@ BlSpaceFixture >> buildTextOpacities [
 { #category : #fixtures }
 BlSpaceFixture >> buildTextTransformations [
 
-	(builder addTextToRoot: '¡Hola!' asRopedText)
+	(builder addTextToRoot: (self ropedTextFor: '¡Hola!'))
 		transformDo: [ :t |
 			t scaleBy: 1.5.
 			"rotation at bottom-left:"
@@ -659,14 +626,14 @@ BlSpaceFixture >> buildTextTransformations [
 			t skewY: 15.
 			t rotateBy: 90 ].
 
-	(builder addTextToRoot: 'Salut !' asRopedText)
+	(builder addTextToRoot: (self ropedTextFor: 'Salut !'))
 		transformDo: [ :t |
 			"rotation beyond top-right:"
 			t normalizedOrigin: 1.5 @ -1.5.
 			t rotateBy: -45.
 			t scaleBy: 2. ].
 
-	(builder addTextToRoot: 'Hello!' asRopedText)
+	(builder addTextToRoot: (self ropedTextFor: 'Hello!'))
 		relocate: 50 asPoint;
 		transformDo: [ :t |
 			t translateBy: 15 asPoint.
@@ -758,62 +725,90 @@ BlSpaceFixture >> buildTransformTranslate [
 ]
 
 { #category : #fixtures }
-BlSpaceFixture >> buildTriangles [
+BlSpaceFixture >> buildVariantsOf: aBlElementGeometry [
 
-	| elementA elementB |
+	| outskirts positionGenerator addElementBlock |
+	builder spaceExtent: 150@180.
 
-	elementA := builder addTriangle
-		relocate: 10 asPoint;
-		size: 10 asPoint;
-		yourself.
+	outskirts := { BlOutskirts inside. BlOutskirts centered. BlOutskirts outside }.
+	positionGenerator := self 
+		gridPositionGeneratorStartingAt: 10 asPoint
+		by: 40
+		columns: 3.
+	addElementBlock := [ :backgroundColor :borderColor :aBlOutskirt |
+		builder addToRoot
+			geometry: aBlElementGeometry;
+			border: (BlBorder paint: borderColor width: 5);
+			background: backgroundColor;
+			outskirts: aBlOutskirt;
+			relocate: positionGenerator next;
+			size: 35 asPoint;
+			yourself ].
+	
+	"All Opaque"
+	outskirts do: [ :eachOutskirt |
+		addElementBlock
+			value: builder nextColor
+			value: builder nextColor
+			value: eachOutskirt ].
 
-	elementB := builder addTriangle
-		relocate: 15 asPoint;
-		size: 10 asPoint;
-		yourself
+	"Opaques + translucent border"
+	outskirts do: [ :eachOutskirt |
+		addElementBlock
+			value: builder nextColor
+			value: builder nextColor translucent
+			value: eachOutskirt ].
 
+	"Translucents + translucent border"
+	outskirts do: [ :eachOutskirt |
+		addElementBlock
+			value: builder nextColor translucent
+			value: builder nextColor translucent
+			value: eachOutskirt ].
+
+	"Transparents + translucent border"
+	outskirts do: [ :eachOutskirt |
+		addElementBlock
+			value: Color transparent
+			value: builder nextColor translucent
+			value: eachOutskirt ].
+
+]
+
+{ #category : #fixtures }
+BlSpaceFixture >> buildVariantsOfEllipse [
+
+	self buildVariantsOf: BlEllipseGeometry new
 ]
 
 { #category : #fixtures }
 BlSpaceFixture >> buildVariantsOfPolygon [
 
-	| hexagonVertices |
-	hexagonVertices := { 
-		 30 @  0.
-		 10 @  0.
-		  0 @ 18.
-		 10 @ 35.
-		 30 @ 35.
-		 40 @ 18 }.
-		
-	self buildGeometryVariants: (BlPolygonGeometry vertices: hexagonVertices)
+	self buildVariantsOf: (BlPolygonGeometry vertices: self hexagonVertices)
 ]
 
 { #category : #fixtures }
 BlSpaceFixture >> buildVariantsOfPolyline [
 
-	| hexagonVertices |
-	hexagonVertices := { 
-		 60 @  0.
-		 20 @  0.
-		  0 @ 36.
-		 20 @ 70.
-		 60 @ 70.
-		 80 @ 36 }.
-		
-	self buildGeometryVariants: ((BlPolylineGeometry vertices: hexagonVertices))
+	self buildVariantsOf: (BlPolylineGeometry vertices: self hexagonVertices)
 ]
 
 { #category : #fixtures }
 BlSpaceFixture >> buildVariantsOfRectangle [
 
-	self buildGeometryVariants: (BlRectangleGeometry new)
+	self buildVariantsOf: BlRectangleGeometry new
+]
+
+{ #category : #fixtures }
+BlSpaceFixture >> buildVariantsOfRoundedRectangle [
+
+	self buildVariantsOf: (BlRoundedRectangleGeometry cornerRadius: 5)
 ]
 
 { #category : #fixtures }
 BlSpaceFixture >> buildVariantsOfSquare [
 
-	self buildGeometryVariants: (BlSquareGeometry new)
+	self buildVariantsOf: BlSquareGeometry new
 ]
 
 { #category : #private }
@@ -850,6 +845,18 @@ BlSpaceFixture >> gridPositionGeneratorStartingAt: offset by: by columns: number
 		] repeat ]
 ]
 
+{ #category : #fixtures }
+BlSpaceFixture >> hexagonVertices [
+
+	^ {	 30 @  0.
+		 10 @  0.
+		  0 @ 18.
+		 10 @ 35.
+		 30 @ 35.
+		 40 @ 18 }
+
+]
+
 { #category : #accessing }
 BlSpaceFixture >> host: aHost [
 	
@@ -864,6 +871,14 @@ BlSpaceFixture >> initialize [
 	
 	builder := BlSpaceBuilder new.
 
+]
+
+{ #category : #private }
+BlSpaceFixture >> ropedTextFor: aString [
+
+	^ aString asRopedText
+		  fontName: 'DejaVu Sans';
+		  yourself
 ]
 
 { #category : #accessing }

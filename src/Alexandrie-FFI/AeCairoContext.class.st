@@ -48,17 +48,6 @@ AeCairoContext >> copyPath [
 		  yourself
 ]
 
-{ #category : #API }
-AeCairoContext >> currentMatrix [
-
-	| aCairoMatrix |
-	aCairoMatrix := AeCairoMatrix externalNew.
-	self primGetTransform: aCairoMatrix.
-	^ aCairoMatrix
-		  autoRelease;
-		  yourself
-]
-
 { #category : #initialization }
 AeCairoContext >> initializeWith: anAeCairoSurface [
 	"Note: don't send super initialize as it nullifies the handle."
@@ -70,6 +59,24 @@ AeCairoContext >> initializeWith: anAeCairoSurface [
 AeCairoContext >> lineTo: aPoint [
 
 	^ self primLineToX: aPoint x asFloat y: aPoint y asFloat
+]
+
+{ #category : #API }
+AeCairoContext >> matrix [
+
+	| aCairoMatrix |
+	aCairoMatrix := AeCairoMatrix externalNew.
+	self primGetMatrix: aCairoMatrix.
+	^ aCairoMatrix
+		  autoRelease;
+		  yourself
+]
+
+{ #category : #API }
+AeCairoContext >> matrix: aeMatrix [
+
+	self primGetMatrix: aeMatrix
+
 ]
 
 { #category : #API }
@@ -137,6 +144,20 @@ AeCairoContext >> primCopyPath [
 	^ self ffiCall: #(AeCairoPath cairo_copy_path ( self ) )
 ]
 
+{ #category : #private }
+AeCairoContext >> primCurveViaX: x1 y: y1 viaX: x2 y: y2 toX: x3 y: y3 [
+	
+	self ffiCall: #(
+		void cairo_curve_to (
+			self,
+			double x1,
+			double y1,
+			double x2,
+			double y2,
+			double x3,
+			double y3 ) )
+]
+
 { #category : #'private - ffi' }
 AeCairoContext >> primFill [
 
@@ -158,7 +179,7 @@ AeCairoContext >> primFontExtents: aFontExtents [
 ]
 
 { #category : #'private - transformation' }
-AeCairoContext >> primGetTransform: aCairoMatrix [
+AeCairoContext >> primGetMatrix: aCairoMatrix [
 
 	self ffiCall: #( void cairo_get_matrix (
 		self,

@@ -55,14 +55,6 @@ BlSpaceBuilder >> addPolyline [
 ]
 
 { #category : #'adding elements' }
-BlSpaceBuilder >> addRectangle [
-
-	^ self addToRoot
-		geometry: BlRectangleGeometry new;
-		yourself
-]
-
-{ #category : #'adding elements' }
 BlSpaceBuilder >> addText: aBlRopedText to: parentElement [
 
 	| anElement |
