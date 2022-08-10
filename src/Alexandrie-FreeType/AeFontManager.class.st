@@ -51,7 +51,14 @@ AeFontManager >> detectFamilyName: aFamilyName slant: aSlant weight: aWeight str
 { #category : #accessing }
 AeFontManager >> faceAt: aFaceEntry [ 
 
-	^ faceByEntryCache at: aFaceEntry
+	^ self faceByEntryCache at: aFaceEntry
+]
+
+{ #category : #accessing }
+AeFontManager >> faceByEntryCache [
+
+	self checkSession. "Cache may be invalid after session change"
+	^ faceByEntryCache
 ]
 
 { #category : #accessing }
@@ -80,18 +87,19 @@ AeFontManager >> familyNames [
 	^ result
 ]
 
+{ #category : #accessing }
+AeFontManager >> freetypeLibrary [
+
+	self checkSession.
+	^ freetypeLibrary
+]
+
 { #category : #initialization }
 AeFontManager >> initialize [
 
 	super initialize.
 
 	self reset
-]
-
-{ #category : #accessing }
-AeFontManager >> library [
-
-	^ library
 ]
 
 { #category : #registering }
@@ -116,19 +124,22 @@ AeFontManager >> registerFace: aFace onFile: aFileReference index: index [
 { #category : #registering }
 AeFontManager >> registerFacesOnFile: aFileReference [
 
-	library fastReadFacesOn: aFileReference do: [ :aFace :index | 
+	self freetypeLibrary fastReadFacesOn: aFileReference do: [ :aFace :index | 
 		self registerFace: aFace onFile: aFileReference index: index ]
 ]
 
 { #category : #initialization }
 AeFontManager >> reset [
 
-	session := Smalltalk session.
-	library := AeFTLibrary newInitialized.
+	"Filesystem dependent"
 	faceEntriesByFamilyName := Dictionary new.
+
+	"Session dependents"
+	session := Smalltalk session.
+	freetypeLibrary := AeFTLibrary newInitialized.
 	faceByEntryCache := LRUCache new
 		maximumWeight: 20;
-		factory: [ :anEntry | anEntry newFaceWith: library ];
+		factory: [ :anEntry | anEntry newFaceWith: freetypeLibrary ];
 		yourself.
 ]
 
