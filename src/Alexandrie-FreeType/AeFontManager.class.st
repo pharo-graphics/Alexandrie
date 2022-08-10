@@ -3,8 +3,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'library',
-		'facesByFamily',
-		'session'
+		'session',
+		'faceEntriesByFamilyName',
+		'faceByEntryCache'
 	],
 	#category : #'Alexandrie-FreeType-Core'
 }
@@ -16,15 +17,52 @@ AeFontManager >> checkSession [
 ]
 
 { #category : #accessing }
-AeFontManager >> facesByFamily [
+AeFontManager >> detectFamilyName: aFamilyName slant: aSlant weight: aWeight stretch: aStretch ifNone: absentBlock [
 
-	^ facesByFamily
+	| faces attributes entry |
+	faces := faceEntriesByFamilyName
+		at: aFamilyName asLowercase
+		ifAbsent: [ ^ absentBlock value ].
+	
+	attributes := { aSlant. aWeight. aStretch }.
+
+	entry := faces
+			detect: [ :each | each slantWeightStretch = attributes ]
+			ifNone: [ ^ absentBlock value ].
+
+	^ self faceAt: entry
+]
+
+{ #category : #accessing }
+AeFontManager >> faceAt: aFaceEntry [ 
+
+	^ faceByEntryCache at: aFaceEntry
+]
+
+{ #category : #accessing }
+AeFontManager >> faceEntries [
+
+	| result |
+	result := Set new.
+	self faceEntriesByFamilyName valuesDo: [ :each |
+		result addAll: each ].
+	^ result
+]
+
+{ #category : #accessing }
+AeFontManager >> faceEntriesByFamilyName [
+
+	^ faceEntriesByFamilyName
 ]
 
 { #category : #accessing }
 AeFontManager >> familyNames [
 
-	^ self facesByFamily keys
+	| result |
+	result := SortedCollection new.
+	self faceEntriesByFamilyName valuesDo: [ :each |
+		result add: each anyOne familyName ].
+	^ result
 ]
 
 { #category : #initialization }
@@ -42,21 +80,29 @@ AeFontManager >> library [
 ]
 
 { #category : #registering }
-AeFontManager >> registerAllFacesOnFile: aFileReference [
+AeFontManager >> registerFace: aFace onFile: aFileReference index: index [
 
-	| newFaces |
-	newFaces := library facesOn: aFileReference.
+	| anEntry |
+	anEntry :=
+		AeFileFaceEntry new
+			location: aFileReference;
+			index: index;
+			familyName: aFace familyName;
+			styleName: aFace styleName;
+			yourself.
 	
-	newFaces do: [ :each | self registerFace: each ]
+	(faceEntriesByFamilyName
+		at: aFace familyName asLowercase
+		ifAbsentPut: [ Set new ])
+		add: anEntry
+
 ]
 
 { #category : #registering }
-AeFontManager >> registerFace: aFace [ 
+AeFontManager >> registerFacesOnFile: aFileReference [
 
-	(facesByFamily
-		at: aFace familyName
-		ifAbsentPut: [ Set new ])
-		add: aFace
+	library fastReadFacesOn: aFileReference do: [ :aFace :index | 
+		self registerFace: aFace onFile: aFileReference index: index ]
 ]
 
 { #category : #initialization }
@@ -64,7 +110,11 @@ AeFontManager >> reset [
 
 	session := Smalltalk session.
 	library := AeFTLibrary newInitialized.
-	facesByFamily := Dictionary new
+	faceEntriesByFamilyName := Dictionary new.
+	faceByEntryCache := LRUCache new
+		maximumWeight: 20;
+		factory: [ :anEntry | anEntry newFaceWith: library ];
+		yourself.
 ]
 
 { #category : #scanning }

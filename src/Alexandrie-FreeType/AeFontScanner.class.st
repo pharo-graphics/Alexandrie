@@ -125,7 +125,7 @@ AeFontScanner >> scan [
 { #category : #directories }
 AeFontScanner >> scanFile: aFileReference [ 
 	
-	manager registerAllFacesOnFile: aFileReference
+	manager registerFacesOnFile: aFileReference
 
 ]
 

@@ -62,24 +62,38 @@ AeFTLibrary class >> primInitFreeType: aPointer [
 			void ** aPointer ))
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #iteration }
 AeFTLibrary >> facesOn: aFileReference [
 	"Answer all the faces in a file path."
 
 	^ Array streamContents: [ :aStream |
 		self
-			facesOn: aFileReference
-			do: [ :each | aStream nextPut: each ]]
-
+			lowLevelFacesOn: aFileReference
+			withIndexDo: [ :eachFace :index |
+				eachFace autoRelease.
+				aStream nextPut: eachFace ] ]
 ]
 
-{ #category : #'private - ffi' }
-AeFTLibrary >> facesOn: aFileReference do: aBlock [
-	"Iterate over the faces in a file path.
-	The official documentation recommends this implementation with an invalid index.
+{ #category : #iteration }
+AeFTLibrary >> fastReadFacesOn: aFileReference do: aBlock [
+	"Iterate over all the faces in a file path. 
+	IMPORTANT: The Face will be freed (done) after each iteration."
+
+	self
+		lowLevelFacesOn: aFileReference
+		withIndexDo: [ :eachFace :index |
+			aBlock value: eachFace value: index.
+			eachFace free. ]
+]
+
+{ #category : #iteration }
+AeFTLibrary >> lowLevelFacesOn: aFileReference withIndexDo: aBlock [
+	"Iterate over the faces in a file path. NOTE: Sender is responsible to RELEASE.
+
 	See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_facerec"
 
 	| faceIndex numberOfFaces |
+	"If there is any face on this file, there will be a face with 0 index."
 	faceIndex := 0.
 	
 	[	| aPointer returnCode aFace |
@@ -91,25 +105,27 @@ AeFTLibrary >> facesOn: aFileReference do: aBlock [
 
 		returnCode = 0 ifFalse: [ ^ self ].
 
-		aFace := (AeFTFace fromHandle: aPointer)
-			autoRelease;
-			yourself.			
-		aBlock value: aFace.
+		aFace := AeFTFace fromHandle: aPointer.
 
 		faceIndex = 0 ifTrue: [
 			numberOfFaces := aFace numberOfFaces ].
+
+		aBlock value: aFace value: faceIndex.
 			
-		faceIndex := faceIndex + 1 ] doWhileTrue: [ faceIndex < numberOfFaces ]
+		faceIndex := faceIndex + 1 ]
+			doWhileTrue: [ faceIndex < numberOfFaces ]
 ]
 
-{ #category : #'private - ffi' }
-AeFTLibrary >> newFile: aFileReference index: anInteger [
+{ #category : #'instance creation' }
+AeFTLibrary >> newFaceFromFile: aFileReference index: aZeroBasedIndex [
 
 	| aPointer returnCode |
-
 	aPointer := ExternalAddress new.
 	
-	returnCode := self primNewFace: aPointer path: aFileReference pathString index: anInteger.
+	returnCode := self
+		primNewFace: aPointer
+		path: aFileReference pathString
+		index: aZeroBasedIndex.
 
 	returnCode = 0 ifFalse: [
 		AeFreeTypeError signalForCode: returnCode ].
@@ -119,14 +135,14 @@ AeFTLibrary >> newFile: aFileReference index: anInteger [
 		yourself
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #accessing }
 AeFTLibrary >> numberOfFacesOn: aFileReference [
 	"Answer the number of faces in a file path.
 	The official documentation recommends this implementation with an invalid index.
 	See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_facerec"
 
 	| aFaceRec |
-	aFaceRec := self newFile: aFileReference index: -1.
+	aFaceRec := self newFaceFromFile: aFileReference index: -1.
 	^ aFaceRec numberOfFaces
 
 ]

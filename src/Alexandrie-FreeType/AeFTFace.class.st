@@ -3,6 +3,8 @@ I am a FreeType FFI binding to `FT_Face`.
 
 A `FT_Face` is a typographic face object. A face object models a given typeface, in a given style.
 
+Instances of this class are created by `AeFTLibrary`.
+
 See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_face
 "
 Class {
@@ -18,6 +20,9 @@ Class {
 		'OFFSET_NUMBEROFGLYPHS',
 		'OFFSET_STYLEFLAGS',
 		'OFFSET_STYLENAMEADDRESS'
+	],
+	#pools : [
+		'AeFTConstants'
 	],
 	#category : #'Alexandrie-FreeType-FFI'
 }
@@ -41,7 +46,7 @@ AeFTFace class >> fieldsDesc [
     "FT_String* family_name;"  String familyNameAddress
     "FT_String* style_name;"   String styleNameAddress
 	)
-	"... Interesting fields stop here"
+	"... we ignore remaining fields"
 ]
 
 { #category : #'private - ffi' }
@@ -104,6 +109,31 @@ AeFTFace >> familyNameAddress: anObject [
 	handle pointerAt: OFFSET_FAMILYNAMEADDRESS put: anObject getHandle.
 ]
 
+{ #category : #'initialize-release' }
+AeFTFace >> free [
+
+	self class finalizeResourceData: handle.
+	handle := nil.
+]
+
+{ #category : #testing }
+AeFTFace >> isBold [
+
+	^ self styleFlags allMask: StyleFlagBold
+]
+
+{ #category : #testing }
+AeFTFace >> isFixedWidth [
+
+	^ self styleFlags allMask: FaceFlagFixedWidth
+]
+
+{ #category : #testing }
+AeFTFace >> isItalic [
+
+	^ self styleFlags allMask: StyleFlagItalic
+]
+
 { #category : #'accessing - structure variables' }
 AeFTFace >> numberOfFaces [
 	"This method was automatically generated"
@@ -126,6 +156,12 @@ AeFTFace >> numberOfGlyphs [
 AeFTFace >> numberOfGlyphs: anObject [
 	"This method was automatically generated"
 	^handle platformLongAt: OFFSET_NUMBEROFGLYPHS put: anObject
+]
+
+{ #category : #accessing }
+AeFTFace >> postscriptName [
+
+	^ self ffiCall: #(String FT_Get_Postscript_Name (self))
 ]
 
 { #category : #printing }

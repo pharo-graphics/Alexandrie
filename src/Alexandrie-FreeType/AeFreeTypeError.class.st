@@ -3,6 +3,7 @@ I'm represent an error in FreeType bindings.
 
 I am created with a numeric code, that is translated as a String message.
 
+See: https://freetype.org/freetype2/docs/reference/ft2-error_code_values.html
 "
 Class {
 	#name : #AeFreeTypeError,
