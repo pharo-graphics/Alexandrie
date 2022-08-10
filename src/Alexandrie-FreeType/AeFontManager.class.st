@@ -2,13 +2,28 @@ Class {
 	#name : #AeFontManager,
 	#superclass : #Object,
 	#instVars : [
-		'library',
 		'session',
 		'faceEntriesByFamilyName',
-		'faceByEntryCache'
+		'faceByEntryCache',
+		'freetypeLibrary'
+	],
+	#classInstVars : [
+		'globalInstance'
 	],
 	#category : #'Alexandrie-FreeType-Core'
 }
+
+{ #category : #accessing }
+AeFontManager class >> globalInstance [
+
+	^ globalInstance ifNil: [ globalInstance := self new ]
+]
+
+{ #category : #accessing }
+AeFontManager class >> resetGlobalInstance [
+
+	globalInstance := nil
+]
 
 { #category : #initialization }
 AeFontManager >> checkSession [
