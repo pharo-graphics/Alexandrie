@@ -40,7 +40,7 @@ AeCairoContext class >> primDestroy: aHandle [
 	self ffiCall: #( void cairo_destroy ( void * aHandle ) )
 ]
 
-{ #category : #API }
+{ #category : #'API - path' }
 AeCairoContext >> copyPath [
 
 	^ self primCopyPath
@@ -55,13 +55,13 @@ AeCairoContext >> initializeWith: anAeCairoSurface [
 	surface := anAeCairoSurface
 ]
 
-{ #category : #API }
+{ #category : #'API - path' }
 AeCairoContext >> lineTo: aPoint [
 
 	^ self primLineToX: aPoint x asFloat y: aPoint y asFloat
 ]
 
-{ #category : #API }
+{ #category : #'API - matrix' }
 AeCairoContext >> matrix [
 
 	| aCairoMatrix |
@@ -72,20 +72,20 @@ AeCairoContext >> matrix [
 		  yourself
 ]
 
-{ #category : #API }
+{ #category : #'API - matrix' }
 AeCairoContext >> matrix: aeMatrix [
 
 	self primGetMatrix: aeMatrix
 
 ]
 
-{ #category : #API }
+{ #category : #'API - path' }
 AeCairoContext >> moveTo: aPoint [
 
 	self primMoveToX: aPoint x asFloat y: aPoint y asFloat
 ]
 
-{ #category : #API }
+{ #category : #'API - compositing' }
 AeCairoContext >> popGroup [
 
 	^ self primPopGroup
@@ -93,7 +93,7 @@ AeCairoContext >> popGroup [
 		  yourself
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - path' }
 AeCairoContext >> primAppendPath: aCairoPath [
 
 	self ffiCall: #( void cairo_append_path (
@@ -101,7 +101,7 @@ AeCairoContext >> primAppendPath: aCairoPath [
 			AeCairoPath aCairoPath ) )
 ]
 
-{ #category : #'private - transformation' }
+{ #category : #'API - matrix' }
 AeCairoContext >> primApplyTransform: aCairoMatrix [ 
 
 	self ffiCall: #( void cairo_transform (
@@ -109,7 +109,7 @@ AeCairoContext >> primApplyTransform: aCairoMatrix [
 		AeCairoMatrix *aCairoMatrix) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - path' }
 AeCairoContext >> primArcCenterX: centerX centerY: centerY radius: aRadius startAngle: aStartAngle endAngle: anEndAngle [ 
 	self ffiCall: #(void cairo_arc (
 			self,
@@ -120,7 +120,7 @@ AeCairoContext >> primArcCenterX: centerX centerY: centerY radius: aRadius start
 			double anEndAngle) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - path' }
 AeCairoContext >> primArcNegativeCenterX: centerX centerY: centerY radius: aRadius startAngle: aStartAngle endAngle: anEndAngle [ 
 	self ffiCall: #(void cairo_arc_negative (
 			self,
@@ -131,31 +131,31 @@ AeCairoContext >> primArcNegativeCenterX: centerX centerY: centerY radius: aRadi
 			double anEndAngle) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - clipping' }
 AeCairoContext >> primClip [
 
 	self ffiCall: #(void cairo_clip ( self ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - clipping' }
 AeCairoContext >> primClipPreserve [
 
 	self ffiCall: #(void cairo_clip_preserve ( self ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - path' }
 AeCairoContext >> primClosePath [
 	
 	self ffiCall: #(void cairo_close_path ( self ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - path' }
 AeCairoContext >> primCopyPath [
 
 	^ self ffiCall: #(AeCairoPath cairo_copy_path ( self ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - path' }
 AeCairoContext >> primCurveViaX: x1 y: y1 viaX: x2 y: y2 toX: x3 y: y3 [
 	
 	self ffiCall: #(
@@ -169,19 +169,19 @@ AeCairoContext >> primCurveViaX: x1 y: y1 viaX: x2 y: y2 toX: x3 y: y3 [
 			double y3 ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - painting' }
 AeCairoContext >> primFill [
 
 	self ffiCall: #( void cairo_fill ( self ))
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - painting' }
 AeCairoContext >> primFillPreserve [
 
 	self ffiCall: #( void cairo_fill_preserve ( self ))
 ]
 
-{ #category : #'private - text' }
+{ #category : #'API - text' }
 AeCairoContext >> primFontExtents: aFontExtents [
 
 	self ffiCall: #( void cairo_font_extents (
@@ -189,7 +189,7 @@ AeCairoContext >> primFontExtents: aFontExtents [
 		AeCairoFontExtents* aFontExtents ) )
 ]
 
-{ #category : #'private - transformation' }
+{ #category : #'API - matrix' }
 AeCairoContext >> primGetMatrix: aCairoMatrix [
 
 	self ffiCall: #( void cairo_get_matrix (
@@ -197,7 +197,7 @@ AeCairoContext >> primGetMatrix: aCairoMatrix [
 		AeCairoMatrix *aCairoMatrix) )
 ]
 
-{ #category : #'private - text' }
+{ #category : #'API - text' }
 AeCairoContext >> primGlyphExtents: theGlyphs num: aGlyphsNum metrics: aTextMetrics [
 
 	self ffiCall: #( void cairo_glyph_extents (
@@ -207,7 +207,7 @@ AeCairoContext >> primGlyphExtents: theGlyphs num: aGlyphsNum metrics: aTextMetr
 		AeCairoTextExtents* aTextMetrics ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - hit testing' }
 AeCairoContext >> primInFillX: x y: y [ 
 
 	^ self ffiCall: #( Boolean cairo_in_fill (
@@ -216,7 +216,7 @@ AeCairoContext >> primInFillX: x y: y [
 		double y ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - path' }
 AeCairoContext >> primLineToX: aX y: aY [
 
 	self ffiCall: #(void cairo_line_to (
@@ -225,13 +225,13 @@ AeCairoContext >> primLineToX: aX y: aY [
 			double aY ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - matrix' }
 AeCairoContext >> primLoadIdentity [
 
 	self ffiCall: #( void cairo_identity_matrix ( self ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - path' }
 AeCairoContext >> primMoveToX: aX y: aY [
 
 	self ffiCall: #(void cairo_move_to (
@@ -240,13 +240,13 @@ AeCairoContext >> primMoveToX: aX y: aY [
 			double aY ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - painting' }
 AeCairoContext >> primPaint [
 
 	self ffiCall: #( void cairo_paint ( self ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - painting' }
 AeCairoContext >> primPaintAlpha: aNumber [
 
 	self ffiCall: #(void cairo_paint_with_alpha (
@@ -254,25 +254,25 @@ AeCairoContext >> primPaintAlpha: aNumber [
 			double aNumber ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - compositing' }
 AeCairoContext >> primPopGroup [
 
 	^ self ffiCall: #( AeCairoSurfacePattern cairo_pop_group ( self ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - compositing' }
 AeCairoContext >> primPopGroupToSource [
 
 	self ffiCall: #( void cairo_pop_group_to_source ( self ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - compositing' }
 AeCairoContext >> primPushGroup [
 
 	self ffiCall: #( void cairo_push_group ( self ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - path' }
 AeCairoContext >> primRectangleX: aX y: aY width: aWidth height: aHeight [
 
 	self ffiCall: #(void cairo_rectangle (
@@ -283,19 +283,19 @@ AeCairoContext >> primRectangleX: aX y: aY width: aWidth height: aHeight [
 			double aHeight ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - states' }
 AeCairoContext >> primRestore [
 
 	self ffiCall: #( void cairo_restore ( self ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - states' }
 AeCairoContext >> primSave [
 
 	self ffiCall: #( void cairo_save ( self ) )
 ]
 
-{ #category : #'private - transformation' }
+{ #category : #'API - matrix' }
 AeCairoContext >> primScaleX: aX y: aY [
 
 	self ffiCall: #( void cairo_scale (
@@ -304,7 +304,7 @@ AeCairoContext >> primScaleX: aX y: aY [
 			double aY) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - path settings' }
 AeCairoContext >> primSetAntialias: aCairoAntialias [
 
 	self ffiCall: #( void cairo_set_antialias (
@@ -312,7 +312,7 @@ AeCairoContext >> primSetAntialias: aCairoAntialias [
       AeCairoAntialias aCairoAntialias ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - path settings' }
 AeCairoContext >> primSetDash: anArrayOfDoubles count: aNumberOfDashes offset: anOffset [
 
 	self ffiCall: #( void cairo_set_dash (
@@ -322,7 +322,7 @@ AeCairoContext >> primSetDash: anArrayOfDoubles count: aNumberOfDashes offset: a
 		double anOffset ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - path settings' }
 AeCairoContext >> primSetLineCap: aCairoCapStyle [
 
 	self ffiCall: #( void cairo_set_line_cap (
@@ -330,7 +330,7 @@ AeCairoContext >> primSetLineCap: aCairoCapStyle [
       AeCairoCapStyle aCairoCapStyle ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - path settings' }
 AeCairoContext >> primSetLineJoin: aCairoJoinStyle [
 
 	self ffiCall: #( void cairo_set_line_join (
@@ -338,7 +338,7 @@ AeCairoContext >> primSetLineJoin: aCairoJoinStyle [
       AeCairoJoinStyle aCairoJoinStyle ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - path settings' }
 AeCairoContext >> primSetLineWidth: aNumber [
 
 	self ffiCall: #( void cairo_set_line_width (
@@ -346,7 +346,7 @@ AeCairoContext >> primSetLineWidth: aNumber [
       double aNumber ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - matrix' }
 AeCairoContext >> primSetMatrix: aCairoMatrix [
 
 	self ffiCall: #( void cairo_set_matrix (
@@ -354,7 +354,7 @@ AeCairoContext >> primSetMatrix: aCairoMatrix [
 		AeCairoMatrix *aCairoMatrix) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - path settings' }
 AeCairoContext >> primSetMiterLimit: aNumber [
 
 	self ffiCall: #( void cairo_set_miter_limit (
@@ -362,7 +362,7 @@ AeCairoContext >> primSetMiterLimit: aNumber [
       double aNumber ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - compositing' }
 AeCairoContext >> primSetOperator: aCairoOperator [
 
 	self ffiCall: #( void cairo_set_operator (
@@ -370,7 +370,7 @@ AeCairoContext >> primSetOperator: aCairoOperator [
       AeCairoCompositionOp aCairoOperator ) )
 ]
 
-{ #category : #'private - text' }
+{ #category : #'API - text' }
 AeCairoContext >> primSetScaledFont: aScaledFont [
 
 	self ffiCall: #( void cairo_set_scaled_font (
@@ -378,7 +378,7 @@ AeCairoContext >> primSetScaledFont: aScaledFont [
 		AeCairoScaledFont aScaledFont ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - source' }
 AeCairoContext >> primSetSource: aPattern [
 
 	self ffiCall: #( void cairo_set_source (
@@ -386,7 +386,7 @@ AeCairoContext >> primSetSource: aPattern [
 		AeCairoPattern aPattern ))
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - source' }
 AeCairoContext >> primSetSourceR: aRed g: aGreen b: aBlue [
 	
 	self ffiCall: #( void cairo_set_source_rgb (
@@ -396,7 +396,7 @@ AeCairoContext >> primSetSourceR: aRed g: aGreen b: aBlue [
 			double aBlue) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - source' }
 AeCairoContext >> primSetSourceR: aRed g: aGreen b: aBlue a: anAlpha [
 	
 	self ffiCall: #( void cairo_set_source_rgba (
@@ -407,7 +407,7 @@ AeCairoContext >> primSetSourceR: aRed g: aGreen b: aBlue a: anAlpha [
 			double anAlpha) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - source' }
 AeCairoContext >> primSetSourceSurface: aCairoSurface x: aX y: aY [
 
 	self ffiCall: #( void cairo_set_source_surface (
@@ -417,7 +417,7 @@ AeCairoContext >> primSetSourceSurface: aCairoSurface x: aX y: aY [
 			double aY) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - path settings' }
 AeCairoContext >> primSetTolerance: aNumber [ 
 
 	self ffiCall: #( void cairo_set_tolerance (
@@ -425,7 +425,7 @@ AeCairoContext >> primSetTolerance: aNumber [
       double aNumber ) )
 ]
 
-{ #category : #'private - text' }
+{ #category : #'API - text' }
 AeCairoContext >> primShowGlyphs: aGlyphsArray num: aNumberOfGlyphs [
 
 	self ffiCall: #( void cairo_show_glyphs (
@@ -434,19 +434,19 @@ AeCairoContext >> primShowGlyphs: aGlyphsArray num: aNumberOfGlyphs [
 		int aNumberOfGlyphs ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - painting' }
 AeCairoContext >> primStroke [
 
 	self ffiCall: #( void cairo_stroke ( self ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - painting' }
 AeCairoContext >> primStrokePreserve [
 
 	self ffiCall: #( void cairo_stroke_preserve ( self ))
 ]
 
-{ #category : #'private - transformation' }
+{ #category : #'API - matrix' }
 AeCairoContext >> primTranslateX: aX y: aY [
 
 	self ffiCall: #( void cairo_translate (
@@ -455,7 +455,7 @@ AeCairoContext >> primTranslateX: aX y: aY [
 			double aY) )
 ]
 
-{ #category : #API }
+{ #category : #'API - path' }
 AeCairoContext >> rectangle: aRectangle [
 
 	self
@@ -465,13 +465,13 @@ AeCairoContext >> rectangle: aRectangle [
 		height: aRectangle height
 ]
 
-{ #category : #initialization }
+{ #category : #'API - clipping' }
 AeCairoContext >> resetClip [
 
 	self ffiCall: #( void cairo_reset_clip #( self ) )
 ]
 
-{ #category : #API }
+{ #category : #'API - path' }
 AeCairoContext >> roundedRectangle: aRectangle radii: anArrayOfCornerRadii [
 	"anArrayOfCornerRadii must contain four numbers representing corner radii:
 	(topLeft, topRight, bottomRight, bottomLeft)"
@@ -525,13 +525,13 @@ AeCairoContext >> roundedRectangle: aRectangle radii: anArrayOfCornerRadii [
 
 ]
 
-{ #category : #API }
+{ #category : #'API - matrix' }
 AeCairoContext >> scale: aPoint [
 
 	self primScaleX: aPoint x y: aPoint y
 ]
 
-{ #category : #initialization }
+{ #category : #'API - compositing' }
 AeCairoContext >> setOperatorClear [
 	"Set 'clear' drawing mode.
 	
@@ -540,7 +540,7 @@ AeCairoContext >> setOperatorClear [
 	^ self primSetOperator: AeCairoCompositionOp CAIRO_OPERATOR_CLEAR
 ]
 
-{ #category : #API }
+{ #category : #'API - source' }
 AeCairoContext >> setSourceRGBAColor: aColor [
 
 	self
@@ -550,7 +550,7 @@ AeCairoContext >> setSourceRGBAColor: aColor [
 		a: aColor alpha
 ]
 
-{ #category : #API }
+{ #category : #'API - source' }
 AeCairoContext >> setSourceRGBColor: aColor [
 
 	self primSetSourceR: aColor red g: aColor green b: aColor blue
@@ -562,7 +562,7 @@ AeCairoContext >> surface [
 	^ surface
 ]
 
-{ #category : #API }
+{ #category : #'API - matrix' }
 AeCairoContext >> translate: aPoint [
 
 	self primTranslateX: aPoint x y: aPoint y
