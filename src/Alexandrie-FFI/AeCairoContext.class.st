@@ -121,6 +121,17 @@ AeCairoContext >> primArcCenterX: centerX centerY: centerY radius: aRadius start
 ]
 
 { #category : #'private - ffi' }
+AeCairoContext >> primArcNegativeCenterX: centerX centerY: centerY radius: aRadius startAngle: aStartAngle endAngle: anEndAngle [ 
+	self ffiCall: #(void cairo_arc_negative (
+			self,
+			double centerX,
+			double centerY,
+			double aRadius,
+			double aStartAngle,
+			double anEndAngle) )
+]
+
+{ #category : #'private - ffi' }
 AeCairoContext >> primClip [
 
 	self ffiCall: #(void cairo_clip ( self ) )
@@ -144,7 +155,7 @@ AeCairoContext >> primCopyPath [
 	^ self ffiCall: #(AeCairoPath cairo_copy_path ( self ) )
 ]
 
-{ #category : #private }
+{ #category : #'private - ffi' }
 AeCairoContext >> primCurveViaX: x1 y: y1 viaX: x2 y: y2 toX: x3 y: y3 [
 	
 	self ffiCall: #(
@@ -458,6 +469,58 @@ AeCairoContext >> rectangle: aRectangle [
 AeCairoContext >> resetClip [
 
 	self ffiCall: #( void cairo_reset_clip #( self ) )
+]
+
+{ #category : #API }
+AeCairoContext >> roundedRectangle: aRectangle radii: anArrayOfCornerRadii [
+	"anArrayOfCornerRadii must contain four numbers representing corner radii:
+	(topLeft, topRight, bottomRight, bottomLeft)"
+
+	"See: https://www.cairographics.org/cookbook/roundedrectangles/"
+
+	| bound tlR blR brR trR t b l r |
+
+	bound := (aRectangle width min: aRectangle height) / 2.0.
+	tlR := anArrayOfCornerRadii first min: bound.
+	trR := anArrayOfCornerRadii second min: bound.
+	brR := anArrayOfCornerRadii third min: bound.
+	blR := anArrayOfCornerRadii fourth min: bound.
+	
+	t := aRectangle top.
+	b := aRectangle bottom.
+	l := aRectangle left.
+	r := aRectangle right.
+
+	self
+		primArcCenterX: t + tlR
+		centerY: l + tlR
+		radius: tlR
+		startAngle: 2.0 * Float halfPi
+		endAngle: 3.0 * Float halfPi.
+
+	self
+		primArcCenterX: b - trR
+		centerY: l + trR
+		radius: trR
+		startAngle: 3.0 * Float halfPi
+		endAngle: 4.0 * Float halfPi.
+
+	self
+		primArcCenterX: b - brR
+		centerY: r - brR
+		radius: brR
+		startAngle: 0.0 "* Float halfPi"
+		endAngle: "1.0 *" Float halfPi.
+
+	self
+		primArcCenterX: t + blR
+		centerY: r - blR
+		radius: blR
+		startAngle: "1.0 *" Float halfPi
+		endAngle: 2.0 * Float halfPi.
+
+	self primClosePath.
+
 ]
 
 { #category : #API }

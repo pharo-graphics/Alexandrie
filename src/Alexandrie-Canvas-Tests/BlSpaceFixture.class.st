@@ -776,6 +776,33 @@ BlSpaceFixture >> buildVariantsOf: aBlElementGeometry [
 ]
 
 { #category : #fixtures }
+BlSpaceFixture >> buildVariantsOfAll: aBlElementGeometryCollection [
+
+	| positionGenerator addElementBlock |
+	builder spaceExtent: 150@210.
+
+	positionGenerator := self 
+		gridPositionGeneratorStartingAt: 10 asPoint
+		by: 40
+		columns: 3.
+	addElementBlock := [ :backgroundColor :borderColor :aBlElementGeometry |
+		builder addToRoot
+			geometry: aBlElementGeometry;
+			border: (BlBorder paint: borderColor width: 2);
+			background: backgroundColor;
+			relocate: positionGenerator next;
+			size: 30 asPoint;
+			yourself ].
+	
+	aBlElementGeometryCollection do: [ :each |
+		addElementBlock
+			value: builder nextColor
+			value: builder nextColor
+			value: each ].
+
+]
+
+{ #category : #fixtures }
 BlSpaceFixture >> buildVariantsOfEllipse [
 
 	self buildVariantsOf: BlEllipseGeometry new
@@ -802,7 +829,88 @@ BlSpaceFixture >> buildVariantsOfRectangle [
 { #category : #fixtures }
 BlSpaceFixture >> buildVariantsOfRoundedRectangle [
 
-	self buildVariantsOf: (BlRoundedRectangleGeometry cornerRadius: 5)
+	self buildVariantsOfAll: {
+		(BlRoundedRectangleGeometry cornerRadius: 0).
+		(BlRoundedRectangleGeometry cornerRadius: 10).
+		(BlRoundedRectangleGeometry cornerRadius: 30).
+
+		"individual corners"
+		(BlRoundedRectangleGeometry cornerRadii:
+			(BlCornerRadii new
+				topLeft: 15;
+				topRight: 0;
+				bottomLeft: 0;
+				bottomRight: 0;
+				yourself)).
+		(BlRoundedRectangleGeometry cornerRadii:
+			(BlCornerRadii new
+				topLeft: 0;
+				topRight: 15;
+				bottomLeft: 0;
+				bottomRight: 0;
+				yourself)).
+		(BlRoundedRectangleGeometry cornerRadii:
+			(BlCornerRadii new
+				topLeft: 0;
+				topRight: 0;
+				bottomLeft: 0;
+				bottomRight: 15;
+				yourself)).
+		(BlRoundedRectangleGeometry cornerRadii:
+			(BlCornerRadii new
+				topLeft: 0;
+				topRight: 0;
+				bottomLeft: 15;
+				bottomRight: 0;
+				yourself)).
+
+		"diagonals"
+		(BlRoundedRectangleGeometry cornerRadii:
+			(BlCornerRadii new
+				topLeft: 15;
+				topRight: 0;
+				bottomLeft: 0;
+				bottomRight: 15;
+				yourself)).
+		(BlRoundedRectangleGeometry cornerRadii:
+			(BlCornerRadii new
+				topLeft: 0;
+				topRight: 15;
+				bottomLeft: 15;
+				bottomRight: 0;
+				yourself)).
+
+		"in pairs"
+		(BlRoundedRectangleGeometry cornerRadii:
+			(BlCornerRadii new
+				topLeft: 15;
+				topRight: 15;
+				bottomLeft: 0;
+				bottomRight: 0;
+				yourself)).
+		(BlRoundedRectangleGeometry cornerRadii:
+			(BlCornerRadii new
+				topLeft: 0;
+				topRight: 15;
+				bottomLeft: 0;
+				bottomRight: 15;
+				yourself)).
+		(BlRoundedRectangleGeometry cornerRadii:
+			(BlCornerRadii new
+				topLeft: 0;
+				topRight: 0;
+				bottomLeft: 15;
+				bottomRight: 15;
+				yourself)).
+		(BlRoundedRectangleGeometry cornerRadii:
+			(BlCornerRadii new
+				topLeft: 15;
+				topRight: 0;
+				bottomLeft: 15;
+				bottomRight: 0;
+				yourself)).
+		}
+	
 ]
 
 { #category : #fixtures }
