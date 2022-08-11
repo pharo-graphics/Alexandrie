@@ -139,6 +139,20 @@ AeCanvas >> initializeWith: aeCairoSurface [
 
 ]
 
+{ #category : #text }
+AeCanvas >> newScaledFontForFace: aFTFace size: aSize [
+	"Answer a AeCairoScaledFont that corresponds to the provided font and scale"
+
+ 	| aCairoFontFace aFontMatrix |
+	aCairoFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
+	aFontMatrix := AeCairoMatrix scaleBy: aSize.
+			
+	^ aCairoFontFace 
+				newScaledFontWithFontMatrix: aFontMatrix
+				userToDeviceMatrix: identityMatrix
+				options: fontOptions
+]
+
 { #category : #API }
 AeCanvas >> paintGroupWith: aBlock [
 	"Note: Cairo already saves and restores its state with push_group and pop_group"
@@ -232,30 +246,14 @@ AeCanvas >> restoreContextAfter: aBlock [
 ]
 
 { #category : #text }
-AeCanvas >> scaledFontFor: aFreeTypeFont [
-
-	"Answer a AeCairoScaledFont that corresponds to the provided font.
-	Since the FreeTypeFont is cached in Pharo, it is used as key in a cache."
+AeCanvas >> scaledFontForFace: aFTFace size: pointSize [
+	"Answer a AeCairoScaledFont that corresponds to the provided face and point size."
 
 	scaledFontByFreetypeFont ifNil: [ scaledFontByFreetypeFont := Dictionary new ].
 
 	^ scaledFontByFreetypeFont
-		  at: aFreeTypeFont
-		  ifAbsentPut: [ self scaledFontFor: aFreeTypeFont scaleBy: aFreeTypeFont pointSize ]
-]
-
-{ #category : #text }
-AeCanvas >> scaledFontFor: aFreeTypeFont scaleBy: aSize [
-	"Answer a AeCairoScaledFont that corresponds to the provided font and scale"
-
- 	| aCairoFontFace aFontMatrix |
-	aCairoFontFace := AeCairoFreetypeFontFace newFor: aFreeTypeFont.
-	aFontMatrix := AeCairoMatrix scaleBy: aSize.
-			
-	^ aCairoFontFace 
-				newScaledFontWithFontMatrix: aFontMatrix
-				userToDeviceMatrix: identityMatrix
-				options: fontOptions
+		  at: {aFTFace. pointSize}
+		  ifAbsentPut: [ self newScaledFontForFace: aFTFace size: pointSize ]
 ]
 
 { #category : #API }

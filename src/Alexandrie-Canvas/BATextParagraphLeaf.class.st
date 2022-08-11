@@ -31,12 +31,14 @@ BATextParagraphLeaf >> normalize: aScale [
 { #category : #building }
 BATextParagraphLeaf >> updateMetricsFor: utf8EncodedString builder: aBlTextFontAndStyleBuilder canvas: aeCanvas [
 
-	"returns a font metrics dictionary from an abstract font"
+	"Return a font metrics dictionary from an abstract font"
 
-	| freeTypeFont buffer fontExtents |
+	| buffer fontExtents aBlFont |
 	fontAndStyleBuilder := aBlTextFontAndStyleBuilder.
-	freeTypeFont := fontAndStyleBuilder font asLogicalFont asFreetypeFont.
-	cairoScaledFont := aeCanvas scaledFontFor: freeTypeFont.
+	aBlFont := fontAndStyleBuilder font.
+	cairoScaledFont := aeCanvas
+		scaledFontForFace: aBlFont asAeFTFace
+		size: aBlFont fontSize value.
 
 	"Get glyphs for the text"
 	buffer := utf8EncodedString.

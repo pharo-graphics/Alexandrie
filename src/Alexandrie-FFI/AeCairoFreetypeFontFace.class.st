@@ -10,18 +10,14 @@ Class {
 }
 
 { #category : #'instance creation' }
-AeCairoFreetypeFontFace class >> newFor: aFreeTypeFont [
+AeCairoFreetypeFontFace class >> newForFace: aFTFace [
 	"Create a cairo font face for a given freetype face"
 
 	| aCairoFontFace |
-	aCairoFontFace := self primCreate: aFreeTypeFont face.
+	aCairoFontFace := self primCreate: aFTFace.
 
 	aCairoFontFace status isSuccess ifFalse: [
 		self error: aCairoFontFace status asString ].
-
-	self
-		synthesizeFlagFor: aFreeTypeFont
-		ifPresent: [ :flag | aCairoFontFace synthesize: flag ].
 
 	^ aCairoFontFace
 		autoRelease;
@@ -33,24 +29,6 @@ AeCairoFreetypeFontFace class >> newFor: aFreeTypeFont [
 AeCairoFreetypeFontFace class >> primCreate: aFreetypeFontFace [
 
 	^ self ffiCall: #( AeCairoFreetypeFontFace cairo_ft_font_face_create_for_ft_face ( void* aFreetypeFontFace, 0 ) )
-]
-
-{ #category : #'instance creation' }
-AeCairoFreetypeFontFace class >> synthesizeFlagFor: aFreeTypeFont ifPresent: aUnaryBlock [
-	"Evaluate a block with the simulated emphasis, if it's non-zero."
-
-	| flag |
-	flag := 0.
-
-	aFreeTypeFont isSimulatedBold ifTrue: [
-		flag :=
-			AeCairoFreetypeSynthesize CAIRO_FT_SYNTHESIZE_BOLD value ].
-	aFreeTypeFont isSimulatedItalic ifTrue: [
-		flag := flag |
-			AeCairoFreetypeSynthesize CAIRO_FT_SYNTHESIZE_OBLIQUE value ].
-
-	flag isZero ifFalse: [ aUnaryBlock value: flag ].
-
 ]
 
 { #category : #'instance creation' }
@@ -73,16 +51,4 @@ AeCairoFreetypeFontFace >> primGetSynthesize [
 AeCairoFreetypeFontFace >> primSetSynthesize: aNumber [
 
 	self ffiCall: #(void cairo_ft_font_face_set_synthesize ( self, uint aNumber ) )
-]
-
-{ #category : #accessing }
-AeCairoFreetypeFontFace >> synthesize [
-
-	^ self primGetSynthesize
-]
-
-{ #category : #accessing }
-AeCairoFreetypeFontFace >> synthesize: aNumber [
-
-	self primSetSynthesize: aNumber
 ]
