@@ -41,11 +41,41 @@ AeCairoContext class >> primDestroy: aHandle [
 ]
 
 { #category : #'API - path' }
+AeCairoContext >> circleCenterX: x y: y radius: radius [
+
+	self
+		primArcCenterX: x + radius
+		centerY: y + radius
+		radius: radius
+		startAngle: 0.0
+		endAngle: Float twoPi
+]
+
+{ #category : #'API - path' }
 AeCairoContext >> copyPath [
 
 	^ self primCopyPath
 		  autoRelease;
 		  yourself
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> ellipseWidth: width height: height [
+	"See: https://www.cairographics.org/cookbook/ellipses/"
+
+	self primSave.
+
+	self
+		primScaleX: width
+			y: height;
+		primArcCenterX: 0.5
+			centerY: 0.5
+			radius: 0.5
+			startAngle: 0.0
+			endAngle: Float twoPi.
+
+	self primRestore.
+
 ]
 
 { #category : #initialization }
