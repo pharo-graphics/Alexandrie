@@ -2,6 +2,7 @@ Class {
 	#name : #AeFaceEntry,
 	#superclass : #Object,
 	#instVars : [
+		'index',
 		'familyName',
 		'styleName',
 		'slant',
@@ -83,6 +84,18 @@ AeFaceEntry >> familyName [
 AeFaceEntry >> familyName: aString [
 
 	familyName := aString
+]
+
+{ #category : #accessing }
+AeFaceEntry >> index [
+
+	^ index
+]
+
+{ #category : #accessing }
+AeFaceEntry >> index: aZeroBasedInteger [
+
+	index := aZeroBasedInteger
 ]
 
 { #category : #'instance creation' }

@@ -87,6 +87,18 @@ AeFTLibrary >> fastReadFacesOn: aFileReference do: aBlock [
 ]
 
 { #category : #iteration }
+AeFTLibrary >> fastReadFacesOnMemory: aByteArray do: aBlock [
+	"Iterate over all the faces in a given ByteArray.
+	IMPORTANT: The Face will be freed (done) after each iteration."
+
+	self
+		lowLevelFacesOnMemory: aByteArray
+		withIndexDo: [ :eachFace :index |
+			aBlock value: eachFace value: index.
+			eachFace free. ]
+]
+
+{ #category : #iteration }
 AeFTLibrary >> lowLevelFacesOn: aFileReference withIndexDo: aBlock [
 	"Iterate over the faces in a file path. NOTE: Sender is responsible to RELEASE.
 
@@ -116,6 +128,37 @@ AeFTLibrary >> lowLevelFacesOn: aFileReference withIndexDo: aBlock [
 			doWhileTrue: [ faceIndex < numberOfFaces ]
 ]
 
+{ #category : #iteration }
+AeFTLibrary >> lowLevelFacesOnMemory: aByteArray withIndexDo: aBlock [
+	"Iterate over the faces in a ByteArray. NOTE: Sender is responsible to RELEASE.
+
+	See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_facerec"
+
+	| faceIndex numberOfFaces |
+	"If there is any face on this file, there will be a face with 0 index."
+	faceIndex := 0.
+	
+	[	| aPointer returnCode aFace |
+		aPointer := ExternalAddress new.
+		returnCode := self 
+			primNewMemoryFace: aPointer 
+			buffer: aByteArray
+			size: aByteArray size
+			index: faceIndex.
+
+		returnCode = 0 ifFalse: [ ^ self ].
+
+		aFace := AeFTFace fromHandle: aPointer.
+
+		faceIndex = 0 ifTrue: [
+			numberOfFaces := aFace numberOfFaces ].
+
+		aBlock value: aFace value: faceIndex.
+			
+		faceIndex := faceIndex + 1 ]
+			doWhileTrue: [ faceIndex < numberOfFaces ]
+]
+
 { #category : #'instance creation' }
 AeFTLibrary >> newFaceFromFile: aFileReference index: aZeroBasedIndex [
 
@@ -125,6 +168,26 @@ AeFTLibrary >> newFaceFromFile: aFileReference index: aZeroBasedIndex [
 	returnCode := self
 		primNewFace: aPointer
 		path: aFileReference pathString
+		index: aZeroBasedIndex.
+
+	returnCode = 0 ifFalse: [
+		AeFreeTypeError signalForCode: returnCode ].
+		
+	^ (AeFTFace fromHandle: aPointer)
+		autoRelease;
+		yourself
+]
+
+{ #category : #'instance creation' }
+AeFTLibrary >> newFaceFromMemory: aByteArray index: aZeroBasedIndex [
+
+	| aPointer returnCode |
+	aPointer := ExternalAddress new.
+	
+	returnCode := self
+		primNewMemoryFace: aPointer
+		buffer: aByteArray
+		size: aByteArray size 
 		index: aZeroBasedIndex.
 
 	returnCode = 0 ifFalse: [
@@ -160,6 +223,24 @@ AeFTLibrary >> primNewFace: aFaceAddress path: filepathname index: face_index [
 			self,
 			String filepathname,
 			"FT_Long" long face_index,
+			"FT_Face" void ** aFaceAddress ))
+
+]
+
+{ #category : #'private - ffi' }
+AeFTLibrary >> primNewMemoryFace: aFaceAddress buffer: fileBase size: fileSize index: faceIndex [
+	"Create a new FT_Face object, answered in the pointer. Use FT_Done_Face to destroy it. 
+	Return a FreeType error code. 0 means success.
+	
+	See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_new_memory_face"
+
+	^ self ffiCall: #(
+		int
+		FT_New_Memory_Face(
+			self,
+			"FT_Byte" void * fileBase,
+			"FT_Long" long fileSize,
+			"FT_Long" long faceIndex,
 			"FT_Face" void ** aFaceAddress ))
 
 ]

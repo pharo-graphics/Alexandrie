@@ -2,23 +2,10 @@ Class {
 	#name : #AeFileFaceEntry,
 	#superclass : #AeFaceEntry,
 	#instVars : [
-		'location',
-		'index'
+		'location'
 	],
 	#category : #'Alexandrie-FreeType-Core'
 }
-
-{ #category : #accessing }
-AeFileFaceEntry >> index [
-
-	^ index
-]
-
-{ #category : #accessing }
-AeFileFaceEntry >> index: aZeroBasedInteger [
-
-	index := aZeroBasedInteger
-]
 
 { #category : #accessing }
 AeFileFaceEntry >> location [

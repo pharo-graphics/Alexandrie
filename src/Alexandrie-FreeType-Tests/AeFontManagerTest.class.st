@@ -67,6 +67,18 @@ AeFontManagerTest >> testFamilyNames [
 ]
 
 { #category : #tests }
+AeFontManagerTest >> testGlobalInstance [
+	"Warning: this test resets the singleton instance."
+	
+	| aManager |
+	AeFontManager resetGlobalInstance.
+	aManager := AeFontManager globalInstance.
+	
+	self assert: (aManager familyNames includes: AeSourceSansProRegular familyName).
+	self assert: aManager defaultFace familyName equals: AeSourceSansProRegular familyName.
+]
+
+{ #category : #tests }
 AeFontManagerTest >> testNewIsEmpty [
 
 	| aManager |
@@ -98,4 +110,20 @@ AeFontManagerTest >> testScanDirectory [
 	aManager scanDirectory: AeFilesytemResources fontsDirectory.
 
 	self denyEmpty: aManager familyNames
+]
+
+{ #category : #tests }
+AeFontManagerTest >> testScanEmbeddedFonts [
+
+	| aManager |
+	aManager := AeFontManager new.
+	aManager scanEmbeddedFonts.
+	
+	self
+		assert: aManager familyNames asArray 
+		equals: #('Source Code Pro' 'Source Sans Pro').
+
+	"Trigger lazy read of attributes"
+	aManager faceEntries do: [ :each |
+		each slantWeightStretch ]
 ]

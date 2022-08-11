@@ -4,8 +4,9 @@ Class {
 	#instVars : [
 		'session',
 		'faceEntriesByFamilyName',
+		'freetypeLibrary',
 		'faceByEntryCache',
-		'freetypeLibrary'
+		'defaultFace'
 	],
 	#classInstVars : [
 		'globalInstance'
@@ -16,7 +17,22 @@ Class {
 { #category : #accessing }
 AeFontManager class >> globalInstance [
 
-	^ globalInstance ifNil: [ globalInstance := self new ]
+	| aFace |
+	^ globalInstance ifNil: [
+		globalInstance := self new
+			scanEmbeddedFonts;
+			yourself.
+			
+		aFace := globalInstance
+			detectFamilyName: AeSourceSansProRegular familyName
+			slant: AeFontSlant normal
+			weight: AeFontWeight normal
+			stretch: AeFontStretch normal
+			ifNone: [ self error: 'Shouldn''t happen' ].
+		
+		globalInstance defaultFace: aFace.
+		
+		globalInstance ]
 ]
 
 { #category : #accessing }
@@ -29,6 +45,18 @@ AeFontManager class >> resetGlobalInstance [
 AeFontManager >> checkSession [
 
 	session == Smalltalk session ifFalse: [ self reset ]
+]
+
+{ #category : #accessing }
+AeFontManager >> defaultFace [
+	
+	^ defaultFace
+]
+
+{ #category : #accessing }
+AeFontManager >> defaultFace: aFTFace [
+
+	defaultFace := aFTFace
 ]
 
 { #category : #accessing }
@@ -103,29 +131,42 @@ AeFontManager >> initialize [
 ]
 
 { #category : #registering }
-AeFontManager >> registerFace: aFace onFile: aFileReference index: index [
+AeFontManager >> registerFaceEntry: aFaceEntry [
 
-	| anEntry |
-	anEntry :=
-		AeFileFaceEntry new
-			location: aFileReference;
-			index: index;
-			familyName: aFace familyName;
-			styleName: aFace styleName;
-			yourself.
-	
 	(faceEntriesByFamilyName
-		at: aFace familyName asLowercase
+		at: aFaceEntry familyName asLowercase
 		ifAbsentPut: [ Set new ])
-		add: anEntry
+		add: aFaceEntry
 
 ]
 
 { #category : #registering }
 AeFontManager >> registerFacesOnFile: aFileReference [
 
-	self freetypeLibrary fastReadFacesOn: aFileReference do: [ :aFace :index | 
-		self registerFace: aFace onFile: aFileReference index: index ]
+	self freetypeLibrary
+		fastReadFacesOn: aFileReference
+		do: [ :aFace :index | 
+			AeFileFaceEntry new
+				location: aFileReference;
+				index: index;
+				familyName: aFace familyName;
+				styleName: aFace styleName;
+				yourself ]
+]
+
+{ #category : #'as yet unclassified' }
+AeFontManager >> registerFacesOnMemory: aByteArray [ 
+
+	self freetypeLibrary
+		fastReadFacesOnMemory: aByteArray
+		do: [ :aFace :index |
+			self registerFaceEntry: 
+				(AeMemoryFaceEntry new
+					bytes: aByteArray;
+					index: index;
+					familyName: aFace familyName;
+					styleName: aFace styleName;
+					yourself) ]
 ]
 
 { #category : #initialization }
@@ -161,4 +202,11 @@ AeFontManager >> scanDirectory: aFileReference [
 		manager: self;
 		scan
 
+]
+
+{ #category : #'as yet unclassified' }
+AeFontManager >> scanEmbeddedFonts [
+
+	AeEmbeddedFontFile allSubclassesDo: [ :each |
+		self registerFacesOnMemory: each fontContentsData ]
 ]
