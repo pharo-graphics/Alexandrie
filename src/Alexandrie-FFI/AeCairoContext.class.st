@@ -478,7 +478,7 @@ AeCairoContext >> roundedRectangle: aRectangle radii: anArrayOfCornerRadii [
 
 	"See: https://www.cairographics.org/cookbook/roundedrectangles/"
 
-	| bound tlR blR brR trR t b l r |
+	| bound tlR blR brR trR t b l r threeHalvesPi |
 
 	bound := (aRectangle width min: aRectangle height) / 2.0.
 	tlR := anArrayOfCornerRadii first min: bound.
@@ -491,33 +491,35 @@ AeCairoContext >> roundedRectangle: aRectangle radii: anArrayOfCornerRadii [
 	l := aRectangle left.
 	r := aRectangle right.
 
+	threeHalvesPi := 3.0 * Float halfPi.
+
 	self
 		primArcCenterX: t + tlR
 		centerY: l + tlR
 		radius: tlR
-		startAngle: 2.0 * Float halfPi
-		endAngle: 3.0 * Float halfPi.
+		startAngle: Float pi
+		endAngle: threeHalvesPi.
 
 	self
 		primArcCenterX: b - trR
 		centerY: l + trR
 		radius: trR
-		startAngle: 3.0 * Float halfPi
-		endAngle: 4.0 * Float halfPi.
+		startAngle: threeHalvesPi
+		endAngle: Float twoPi.
 
 	self
 		primArcCenterX: b - brR
 		centerY: r - brR
 		radius: brR
-		startAngle: 0.0 "* Float halfPi"
-		endAngle: "1.0 *" Float halfPi.
+		startAngle: 0.0
+		endAngle: Float halfPi.
 
 	self
 		primArcCenterX: t + blR
 		centerY: r - blR
 		radius: blR
-		startAngle: "1.0 *" Float halfPi
-		endAngle: 2.0 * Float halfPi.
+		startAngle: Float halfPi
+		endAngle: Float pi.
 
 	self primClosePath.
 
