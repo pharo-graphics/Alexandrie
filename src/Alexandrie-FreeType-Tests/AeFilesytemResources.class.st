@@ -4,20 +4,20 @@ Class {
 	#category : #'Alexandrie-FreeType-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AeFilesytemResources class >> fontsDirectory [
 
 	^ self testsDirectory / 'fonts'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AeFilesytemResources class >> repositoryDirectory [
 
 	^ (IceRepository registry detect: [ :each | 
 		   each name asLowercase = 'alexandrie' ]) location
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AeFilesytemResources class >> testsDirectory [
 
 	^ self repositoryDirectory / 'tests'
