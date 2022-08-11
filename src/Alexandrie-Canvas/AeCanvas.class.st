@@ -116,15 +116,6 @@ AeCanvas >> fontExtentsOf: aeScaledFont [
 
 ]
 
-{ #category : #rendering }
-AeCanvas >> fullDraw: anElement [
-
-	anElement aeDrawOn: self.
-	self flush.
-	
-	^ #()
-]
-
 { #category : #initialization }
 AeCanvas >> initializeWith: aeCairoSurface [
 
