@@ -52,6 +52,17 @@ AeCairoContext >> circleCenterX: x y: y radius: radius [
 ]
 
 { #category : #'API - path' }
+AeCairoContext >> circleRadius: radius [
+
+	self
+		primArcCenterX: radius
+		centerY: radius
+		radius: radius
+		startAngle: 0.0
+		endAngle: Float twoPi
+]
+
+{ #category : #'API - path' }
 AeCairoContext >> copyPath [
 
 	^ self primCopyPath
@@ -495,6 +506,16 @@ AeCairoContext >> rectangle: aRectangle [
 		height: aRectangle height
 ]
 
+{ #category : #'API - path' }
+AeCairoContext >> rectangleTo: extentPoint [
+
+	self
+		primRectangleX: 0
+		y: 0
+		width: extentPoint x
+		height:extentPoint y
+]
+
 { #category : #'API - clipping' }
 AeCairoContext >> resetClip [
 
@@ -546,6 +567,58 @@ AeCairoContext >> roundedRectangle: aRectangle radii: anArrayOfCornerRadii [
 
 	self
 		primArcCenterX: t + blR
+		centerY: r - blR
+		radius: blR
+		startAngle: Float halfPi
+		endAngle: Float pi.
+
+	self primClosePath.
+
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> roundedRectangleTo: extentPoint radii: anArrayOfCornerRadii [
+	"anArrayOfCornerRadii must contain four numbers representing corner radii:
+	(topLeft, topRight, bottomRight, bottomLeft)"
+
+	"See: https://www.cairographics.org/cookbook/roundedrectangles/"
+
+	| bound tlR blR brR trR b r threeHalvesPi |
+
+	bound := (extentPoint x min: extentPoint y) / 2.0.
+	tlR := anArrayOfCornerRadii first min: bound.
+	trR := anArrayOfCornerRadii second min: bound.
+	brR := anArrayOfCornerRadii third min: bound.
+	blR := anArrayOfCornerRadii fourth min: bound.
+	
+	b := extentPoint y.
+	r := extentPoint x.
+
+	threeHalvesPi := 3.0 * Float halfPi.
+
+	self
+		primArcCenterX: tlR
+		centerY: tlR
+		radius: tlR
+		startAngle: Float pi
+		endAngle: threeHalvesPi.
+
+	self
+		primArcCenterX: b - trR
+		centerY: trR
+		radius: trR
+		startAngle: threeHalvesPi
+		endAngle: Float twoPi.
+
+	self
+		primArcCenterX: b - brR
+		centerY: r - brR
+		radius: brR
+		startAngle: 0.0
+		endAngle: Float halfPi.
+
+	self
+		primArcCenterX: blR
 		centerY: r - blR
 		radius: blR
 		startAngle: Float halfPi
