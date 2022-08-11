@@ -16,9 +16,9 @@ Class {
 
 { #category : #accessing }
 AeFontManager class >> globalInstance [
-
-	| aFace |
+	
 	^ globalInstance ifNil: [
+		| aFace |
 		globalInstance := self new
 			scanEmbeddedFonts;
 			yourself.
@@ -35,10 +35,23 @@ AeFontManager class >> globalInstance [
 		globalInstance ]
 ]
 
+{ #category : #'system startup' }
+AeFontManager class >> initialize [
+
+	SessionManager default registerGuiClassNamed: self name
+]
+
 { #category : #accessing }
 AeFontManager class >> resetGlobalInstance [
 
 	globalInstance := nil
+]
+
+{ #category : #'system startup' }
+AeFontManager class >> shutDown: isQuitting [
+
+	isQuitting ifFalse: [ ^ self ].
+	self resetGlobalInstance.
 ]
 
 { #category : #initialization }
@@ -50,6 +63,7 @@ AeFontManager >> checkSession [
 { #category : #accessing }
 AeFontManager >> defaultFace [
 	
+	self checkSession.
 	^ defaultFace
 ]
 
@@ -145,16 +159,17 @@ AeFontManager >> registerFacesOnFile: aFileReference [
 
 	self freetypeLibrary
 		fastReadFacesOn: aFileReference
-		do: [ :aFace :index | 
-			AeFileFaceEntry new
-				location: aFileReference;
-				index: index;
-				familyName: aFace familyName;
-				styleName: aFace styleName;
-				yourself ]
+		do: [ :aFace :index |
+			self registerFaceEntry: 
+				(AeFileFaceEntry new
+					location: aFileReference;
+					index: index;
+					familyName: aFace familyName;
+					styleName: aFace styleName;
+					yourself) ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #registering }
 AeFontManager >> registerFacesOnMemory: aByteArray [ 
 
 	self freetypeLibrary
@@ -177,6 +192,7 @@ AeFontManager >> reset [
 
 	"Session dependents"
 	session := Smalltalk session.
+	defaultFace := nil.
 	freetypeLibrary := AeFTLibrary newInitialized.
 	faceByEntryCache := LRUCache new
 		maximumWeight: 20;
@@ -204,7 +220,7 @@ AeFontManager >> scanDirectory: aFileReference [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #scanning }
 AeFontManager >> scanEmbeddedFonts [
 
 	AeEmbeddedFontFile allSubclassesDo: [ :each |

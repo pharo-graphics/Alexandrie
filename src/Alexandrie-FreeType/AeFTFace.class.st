@@ -168,6 +168,7 @@ AeFTFace >> postscriptName [
 AeFTFace >> printOn: aStream [
 
 	super printOn: aStream.
+	handle isNull ifTrue: [ ^self ].
 	aStream
 		nextPutAll: ' family: ';
 		print: self familyName;
