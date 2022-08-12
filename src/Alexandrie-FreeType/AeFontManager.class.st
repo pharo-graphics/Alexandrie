@@ -145,7 +145,20 @@ AeFontManager >> initialize [
 ]
 
 { #category : #registering }
-AeFontManager >> registerFaceEntry: aFaceEntry [
+AeFontManager >> registerFace: aFace entry: aFaceEntry [
+
+	aFaceEntry 
+		familyName: aFace familyName;
+		styleName: aFace styleName.
+	aFaceEntry weight: 
+		(aFace isBold
+			ifTrue: [ AeFontWeight bold ]
+			ifFalse: [ AeFontWeight normal ]).
+	aFaceEntry slant: 
+		(aFace isItalic
+			ifTrue: [ AeFontSlant italic ]
+			ifFalse: [ AeFontSlant normal ]).
+	aFaceEntry stretch: AeFontStretch normal.
 
 	(faceEntriesByFamilyName
 		at: aFaceEntry familyName asLowercase
@@ -160,12 +173,10 @@ AeFontManager >> registerFacesOnFile: aFileReference [
 	self freetypeLibrary
 		fastReadFacesOn: aFileReference
 		do: [ :aFace :index |
-			self registerFaceEntry: 
+			self registerFace: aFace entry: 
 				(AeFileFaceEntry new
 					location: aFileReference;
 					index: index;
-					familyName: aFace familyName;
-					styleName: aFace styleName;
 					yourself) ]
 ]
 
@@ -175,12 +186,10 @@ AeFontManager >> registerFacesOnMemory: aByteArray [
 	self freetypeLibrary
 		fastReadFacesOnMemory: aByteArray
 		do: [ :aFace :index |
-			self registerFaceEntry: 
+			self registerFace: aFace entry: 
 				(AeMemoryFaceEntry new
 					bytes: aByteArray;
 					index: index;
-					familyName: aFace familyName;
-					styleName: aFace styleName;
 					yourself) ]
 ]
 

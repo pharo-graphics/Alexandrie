@@ -4,6 +4,7 @@ Class {
 	#classVars : [
 		'Black',
 		'Bold',
+		'ExtraBlack',
 		'ExtraBold',
 		'ExtraLight',
 		'Light',
@@ -24,6 +25,11 @@ AeFontWeight class >> black [
 { #category : #accessing }
 AeFontWeight class >> bold [
 	^ Bold
+]
+
+{ #category : #accessing }
+AeFontWeight class >> extraBlack [
+	^ ExtraBlack
 ]
 
 { #category : #accessing }
@@ -48,7 +54,7 @@ AeFontWeight class >> initialize [
 	Bold := self weight: 700 name: #bold.
 	ExtraBold := self weight: 800 name: #extraBold.
 	Black := self weight: 900 name: #black.
-
+	ExtraBlack := self weight: 1000 name: #extraBlack.
 ]
 
 { #category : #accessing }
