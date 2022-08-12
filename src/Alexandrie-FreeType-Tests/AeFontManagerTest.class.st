@@ -12,10 +12,12 @@ AeFontManagerTest >> testDetectFamilyNameSlantWeightStretchIfNone [
 
 	| aManager aFace isAbsent |
 	aManager := AeFontManager new.
-	aManager scanDirectory: AeFilesytemResources fontsDirectory.
+	aManager
+		scanDirectory: AeFilesytemResources fontsDirectory;
+		scanEmbeddedFonts.
 
 	aFace := aManager
-		detectFamilyName: 'Noto Emoji'
+		detectFamilyName: 'Inria Serif'
 		slant: AeFontSlant normal
 		weight: AeFontWeight normal
 		stretch: AeFontStretch normal
@@ -23,13 +25,13 @@ AeFontManagerTest >> testDetectFamilyNameSlantWeightStretchIfNone [
 	self assert: aFace class equals: AeFTFace.
 
 	aFace := aManager
-		detectFamilyName: 'source code pro' "<-- it ignores case"
+		detectFamilyName: 'INRIA SERIF' "<-- it ignores case"
 		slant: AeFontSlant italic
-		weight: AeFontWeight extraLight
+		weight: AeFontWeight light
 		stretch: AeFontStretch normal
 		ifNone: [ self fail ].
 	self assert: aFace class equals: AeFTFace.
-	self assert: aFace familyName equals: 'Source Code Pro'.
+	self assert: aFace familyName equals: 'Inria Serif'.
 	self assert: aFace isItalic.
 	self deny: aFace isBold.
 	self deny: aFace isFixedWidth.
@@ -58,11 +60,13 @@ AeFontManagerTest >> testFamilyNames [
 
 	| aManager |
 	aManager := AeFontManager new.
-	aManager scanDirectory: AeFilesytemResources fontsDirectory.
+	aManager
+		scanDirectory: AeFilesytemResources fontsDirectory;
+		scanEmbeddedFonts.
 
 	self
 		assert: aManager familyNames asArray
-		equals: #('Noto Emoji' 'Source Code Pro')
+		equals: #('Inria Serif' 'Noto Color Emoji' 'Source Code Pro' 'Source Sans Pro')
 
 ]
 
@@ -78,14 +82,14 @@ AeFontManagerTest >> testGlobalInstance [
 	self assert: aManager defaultFace familyName equals: AeSourceSansProRegular familyName.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 AeFontManagerTest >> testIncludesFamilyName [
 
 	| aManager |
 	aManager := AeFontManager new.
 	aManager scanDirectory: AeFilesytemResources fontsDirectory.
 
-	self assert: (aManager includesFamilyName: 'Noto Emoji')
+	self assert: (aManager includesFamilyName: AeNotoColorEmojiDownloadedFont new familyName)
 
 ]
 
