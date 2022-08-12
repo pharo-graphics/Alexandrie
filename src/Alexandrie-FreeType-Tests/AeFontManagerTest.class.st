@@ -78,6 +78,17 @@ AeFontManagerTest >> testGlobalInstance [
 	self assert: aManager defaultFace familyName equals: AeSourceSansProRegular familyName.
 ]
 
+{ #category : #test }
+AeFontManagerTest >> testIncludesFamilyName [
+
+	| aManager |
+	aManager := AeFontManager new.
+	aManager scanDirectory: AeFilesytemResources fontsDirectory.
+
+	self assert: (aManager includesFamilyName: 'Noto Emoji')
+
+]
+
 { #category : #tests }
 AeFontManagerTest >> testNewIsEmpty [
 

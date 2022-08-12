@@ -136,6 +136,12 @@ AeFontManager >> freetypeLibrary [
 	^ freetypeLibrary
 ]
 
+{ #category : #testing }
+AeFontManager >> includesFamilyName: aString [
+
+	^ faceEntriesByFamilyName includesKey: aString asLowercase
+]
+
 { #category : #initialization }
 AeFontManager >> initialize [
 
