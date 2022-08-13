@@ -14,7 +14,7 @@ BaselineOfAlexandrie >> baseline: spec [
 	spec
 		for: #common
 		do: [
-			spec postLoadDoIt: #'postload:package:'.
+			"spec postLoadDoIt: #'postload:package:'."
 
 			spec
 				package: 'Alexandrie-FFI';
