@@ -6,7 +6,7 @@ Report main graphic library versions
 
 Stdio stdout
 	<< 'Cairo: ';
-	<< AeCairoLibrary uniqueInstance versionString; lf.
+	<< CairoLibrary uniqueInstance versionString; lf.
 Stdio stdout
 	<< 'Freetype: ';
 	print: FT2Library current libraryVersion; lf.
