@@ -92,6 +92,39 @@ AeCanvasTest >> testDrawCurvedFigure [
 ]
 
 { #category : #tests }
+AeCanvasTest >> testDrawNestedFiguresWithClipping [
+
+	| aeCanvas |
+	aeCanvas := AeCanvas extent: 50 asPoint.
+	aeCanvas clear: Color yellow.
+
+	aeCanvas pathTranslate: 10 asPoint.
+	aeCanvas
+		setBackgroundWith: [ aeCanvas setSourceColor: Color blue ]
+		alpha: 1.0.
+	aeCanvas setBorderOff.
+	aeCanvas drawClosedPathWith: [ :cairoContext |
+		cairoContext rectangleTo: 30 asPoint ].
+	aeCanvas drawFigure.
+
+	aeCanvas prepareToDrawChildrenWithClipping: true.
+
+	aeCanvas pathTranslate: 15 asPoint.
+	aeCanvas
+		setBackgroundWith: [ aeCanvas setSourceColor: Color orange ]
+		alpha: 1.0.
+	aeCanvas setBorderOff.
+	aeCanvas drawClosedCurvedPathWith: [ :cairoContext |
+		cairoContext circleRadius: 15 ].
+	aeCanvas drawFigure.
+
+	aeCanvas flush.
+
+	self assert: aeCanvas asForm class equals: Form
+
+]
+
+{ #category : #tests }
 AeCanvasTest >> testDrawOpenFigure [
 
 	| aeCanvas |
