@@ -148,3 +148,34 @@ AeCanvasTest >> testDrawOpenFigure [
 	self assert: aeCanvas asForm class equals: Form
 
 ]
+
+{ #category : #tests }
+AeCanvasTest >> testDrawText [
+
+	| aeCanvas aFTFace cairoScaledFont cairoGlyphsArray baselineY baselineX |
+	aeCanvas := AeCanvas extent: 100 @ 50.
+	aeCanvas clear: Color paleBlue.
+
+	aFTFace := AeFontManager globalInstance defaultFace.
+	cairoScaledFont := aeCanvas scaledFontForFace: aFTFace size: 40.
+
+	baselineY := cairoScaledFont extents ascent.
+
+	cairoGlyphsArray := cairoScaledFont glyphArrayForString: 'Hello'.
+
+	aeCanvas
+		textExtentsFor: cairoGlyphsArray
+		scaledFont: cairoScaledFont
+		do: [ :aTextExtents | baselineX := aTextExtents bearingX ].
+
+	aeCanvas restoreContextAfter: [ 
+		aeCanvas pathTranslate: baselineX @ baselineY.
+		aeCanvas setSourceColor: Color orange.
+		aeCanvas drawText: cairoGlyphsArray font: cairoScaledFont ].
+
+
+	aeCanvas flush.
+"	aeCanvas asForm inspect."
+	self assert: aeCanvas asForm class equals: Form
+
+]

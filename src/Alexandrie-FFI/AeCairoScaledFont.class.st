@@ -108,6 +108,14 @@ AeCairoScaledFont >> glyphArrayFor: aBuffer length: aBufferLength [
 	^ aGlyphsArray
 ]
 
+{ #category : #API }
+AeCairoScaledFont >> glyphArrayForString: aString [ 
+	
+	| utf8Encoded |
+	utf8Encoded := aString utf8Encoded.
+	^ self glyphArrayFor: utf8Encoded length: utf8Encoded size
+]
+
 { #category : #'private - ffi' }
 AeCairoScaledFont >> primExtents: aFontExtents [
 
