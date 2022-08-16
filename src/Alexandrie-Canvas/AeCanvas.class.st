@@ -324,8 +324,19 @@ AeCanvas >> setBackgroundOff [
 ]
 
 { #category : #API }
+AeCanvas >> setBackgroundWith: aBlock [
+	"Set the block that sets background. The alpha will be 1.0."
+
+	hasBackground := true.
+	backgroundAlpha := 1.0.
+	backgroundSourceBlock := aBlock
+]
+
+{ #category : #API }
 AeCanvas >> setBackgroundWith: aBlock alpha: aDouble [
-	"Note: If alpha is zero, it's faster using #setBackgroundOff."
+	"Set the block that sets background with a given alpha.
+
+	Note: If alpha is zero, it's faster using #setBackgroundOff."
 
 	hasBackground := true.
 	backgroundAlpha := aDouble.

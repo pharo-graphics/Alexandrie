@@ -25,9 +25,8 @@ AeCanvasTest >> testDrawArbitraryFigure [
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 200 asPoint.
 
-	aeCanvas
-		setBackgroundWith: [ aeCanvas setSourceColor: Color blue ]
-		alpha: 1.0.
+	aeCanvas setBackgroundWith: [
+		aeCanvas setSourceColor: Color blue ].
 	aeCanvas setBorderOff.
 
 	aeCanvas
@@ -53,9 +52,8 @@ AeCanvasTest >> testDrawClosedFigure [
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 200 asPoint.
 
-	aeCanvas
-		setBackgroundWith: [ aeCanvas setSourceColor: Color blue ]
-		alpha: 1.0.
+	aeCanvas setBackgroundWith: [
+		aeCanvas setSourceColor: Color blue ].
 	aeCanvas setBorderOff.
 
 	aeCanvas drawClosedPathWith: [ :cairoContext |
@@ -75,9 +73,8 @@ AeCanvasTest >> testDrawCurvedFigure [
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 200 asPoint.
 
-	aeCanvas
-		setBackgroundWith: [ aeCanvas setSourceColor: Color blue ]
-		alpha: 1.0.
+	aeCanvas setBackgroundWith: [
+		aeCanvas setSourceColor: Color blue ].
 	aeCanvas setBorderOff.
 
 	aeCanvas drawClosedCurvedPathWith: [ :cairoContext |
@@ -99,20 +96,20 @@ AeCanvasTest >> testDrawNestedFiguresWithClipping [
 	aeCanvas clear: Color yellow.
 
 	aeCanvas pathTranslate: 10 asPoint.
-	aeCanvas
-		setBackgroundWith: [ aeCanvas setSourceColor: Color blue ]
-		alpha: 1.0.
+	aeCanvas setBackgroundWith: [
+		aeCanvas setSourceColor: Color blue ].
 	aeCanvas setBorderOff.
 	aeCanvas drawClosedPathWith: [ :cairoContext |
 		cairoContext rectangleTo: 30 asPoint ].
 	aeCanvas drawFigure.
 
+	"Key message being tested:"
 	aeCanvas prepareToDrawChildrenWithClipping: true.
 
+	"Draw a child circle that is clipped by the parent rectangle."
 	aeCanvas pathTranslate: 15 asPoint.
-	aeCanvas
-		setBackgroundWith: [ aeCanvas setSourceColor: Color orange ]
-		alpha: 1.0.
+	aeCanvas setBackgroundWith: [
+		aeCanvas setSourceColor: Color orange ].
 	aeCanvas setBorderOff.
 	aeCanvas drawClosedCurvedPathWith: [ :cairoContext |
 		cairoContext circleRadius: 15 ].
