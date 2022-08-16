@@ -34,20 +34,18 @@ Class {
 		'backgroundAlpha',
 		'cairoSurface',
 		'backgroundSourceBlock',
-		'arrayToDashesBuf',
 		'pathBlock',
 		'isPathSetAsClip',
 		'cairoContext',
 		'fontOptions',
 		'identityMatrix',
 		'textExtents',
-		'scaledFontByFreetypeFont',
-		'fontExtentsByScaledFont',
 		'borderBlock',
 		'figureBlock',
 		'hasJoins',
 		'hasCaps',
-		'currentScaledFontId'
+		'scaledFontCache',
+		'dashesCache'
 	],
 	#category : #'Alexandrie-Canvas-Base'
 }
@@ -164,15 +162,28 @@ AeCanvas >> flush [
 	cairoSurface flush
 ]
 
-{ #category : #text }
-AeCanvas >> fontExtentsOf: aeScaledFont [
+{ #category : #initialization }
+AeCanvas >> initializeCaches [
 
-	fontExtentsByScaledFont ifNil:[
-		fontExtentsByScaledFont := IdentityDictionary new ].
+	identityMatrix := AeCairoMatrix newIdentity.
+	textExtents := AeCairoTextExtents new.
 
-	^ fontExtentsByScaledFont
-		at: aeScaledFont
-		ifAbsentPut:[ aeScaledFont extents ]
+	scaledFontCache := Dictionary new.
+
+	dashesCache := LRUCache new
+		maximumWeight: 400;
+		factory: [ :anArray |
+			| buf |
+			buf := ByteArray new: 8 * anArray size.
+			anArray withIndexDo: [ :len :i |
+				buf doubleAt: (i-1) * 8 + 1 put: len asFloat ].
+			buf ];
+		yourself.
+
+	formToCairoSurfaceCache := LRUCache new
+		maximumWeight: 400;
+		factory: [ :form | AeCairoImageSurface fromForm: form ];
+		yourself.
 
 ]
 
@@ -183,8 +194,8 @@ AeCanvas >> initializeWith: aeCairoSurface [
 
 	cairoSurface := aeCairoSurface.
 	cairoContext := cairoSurface newContext.
-	identityMatrix := AeCairoMatrix newIdentity.
-	textExtents := AeCairoTextExtents new.
+
+	self initializeCaches.
 
 	self setHighQualityOptions.
 
@@ -197,11 +208,11 @@ AeCanvas >> newScaledFontForFace: aFTFace size: aSize [
  	| aCairoFontFace aFontMatrix |
 	aCairoFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
 	aFontMatrix := AeCairoMatrix scaleBy: aSize.
-			
+	
 	^ aCairoFontFace 
-				newScaledFontWithFontMatrix: aFontMatrix
-				userToDeviceMatrix: identityMatrix
-				options: fontOptions
+			newScaledFontWithFontMatrix: aFontMatrix
+			userToDeviceMatrix: identityMatrix
+			options: fontOptions
 ]
 
 { #category : #API }
@@ -300,9 +311,7 @@ AeCanvas >> restoreContextAfter: aBlock [
 AeCanvas >> scaledFontForFace: aFTFace size: pointSize [
 	"Answer a AeCairoScaledFont that corresponds to the provided face and point size."
 
-	scaledFontByFreetypeFont ifNil: [ scaledFontByFreetypeFont := Dictionary new ].
-
-	^ scaledFontByFreetypeFont
+	^ scaledFontCache
 		  at: {aFTFace. pointSize}
 		  ifAbsentPut: [ self newScaledFontForFace: aFTFace size: pointSize ]
 ]
@@ -325,13 +334,6 @@ AeCanvas >> setBackgroundWith: aBlock alpha: aDouble [
 
 { #category : #API }
 AeCanvas >> setBackgroundWithForm: aForm alpha: aDouble [
-
-	"TODO: do not initialize here, and reset on new session"	
-	formToCairoSurfaceCache ifNil: [
-		formToCairoSurfaceCache := LRUCache new
-			maximumWeight: 400;
-			factory: [ :form | AeCairoImageSurface fromForm: form ];
-			yourself ].
 
 	self
 		setBackgroundWith: [ 
@@ -388,20 +390,8 @@ AeCanvas >> setDashes: dashArray offset: dashOffset [
 	
 	See https://www.cairographics.org/samples/dash/"
 
-	"TODO: do not initialize here, and reset on new session"	
-	arrayToDashesBuf ifNil: [
-		arrayToDashesBuf := LRUCache new
-			maximumWeight: 400;
-			factory: [ :anArray |
-				| buf |
-				buf := ByteArray new: 8 * anArray size.
-				anArray withIndexDo: [ :len :i |
-					buf doubleAt: (i-1) * 8 + 1 put: len asFloat ].
-				buf ];
-			yourself ].
-
 	cairoContext
-		primSetDash: (arrayToDashesBuf at: dashArray)
+		primSetDash: (dashesCache at: dashArray)
 		count: dashArray size
 		offset: dashOffset
 
@@ -706,6 +696,11 @@ AeCanvas >> setSourceTranslucentColor: aColor [
 
 { #category : #text }
 AeCanvas >> textExtentsFor: aeGlyphsArray scaledFont: aeScaledFont do: aUnaryBlockClosure [
+	"Evaluate a block closure with an instance of AeCairoTextExtents which holds
+	the metrics of the fiven glyph array and scaled font.
+
+	Nota: Sender must assume the AeCairoTextExtents instance is valid ONLY during
+	the execution of the block closure."
 	
 	cairoContext
 		primSetScaledFont: aeScaledFont;

@@ -2,6 +2,8 @@
 I am a Cairo FFI binding for `cairo_scaled_font_t`.
 A `cairo_scaled_font_t` represents a realization of a font face at a particular size and transformation and a certain set of font options.
 
+I have a collaborator: the font extents, which is cached in an instance variable.
+
 See: https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html
 "
 Class {
@@ -9,6 +11,9 @@ Class {
 	#superclass : #FFIExternalObject,
 	#traits : 'AeTCairoLibrary + AeTCairoDestroy',
 	#classTraits : 'AeTCairoLibrary classTrait + AeTCairoDestroy classTrait',
+	#instVars : [
+		'extents'
+	],
 	#category : #'Alexandrie-FFI-Text'
 }
 
@@ -53,10 +58,10 @@ AeCairoScaledFont >> currentTransformationMatrix [
 { #category : #API }
 AeCairoScaledFont >> extents [
 
-	| aFontExtents |
-	aFontExtents := AeCairoFontExtents new.
-	self primExtents: aFontExtents.
-	^ aFontExtents
+	^ extents ifNil: [
+		extents := AeCairoFontExtents new.
+		self primExtents: extents.
+		extents ]
 ]
 
 { #category : #API }
