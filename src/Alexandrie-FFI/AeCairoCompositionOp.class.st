@@ -1,3 +1,9 @@
+"
+Normally, you will be using cairo to draw objects on top of each other. But cairo can do differently, if you need it! In fact, you can use all the Porter/Duff compositing operators.
+
+To understand the effect of compositing operators, please refer to https://www.cairographics.org/operators/
+
+"
 Class {
 	#name : #AeCairoCompositionOp,
 	#superclass : #AeEnumeration,

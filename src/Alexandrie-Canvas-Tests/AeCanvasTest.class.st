@@ -8,13 +8,14 @@ Class {
 }
 
 { #category : #tests }
-AeCanvasTest >> testAsForm [
+AeCanvasTest >> testClear [
 
-	| aCanvas |
-	aCanvas := AeCanvas extent: 200 asPoint.
-
-	aCanvas flush.
-	self assert: aCanvas asForm class equals: Form
+	| aeCanvas |
+	aeCanvas := AeCanvas extent: 50 asPoint.
+	aeCanvas clear: Color green.
+	aeCanvas clearTransparent.
+	aeCanvas flush.
+	self assert: aeCanvas asForm class equals: Form
 
 ]
 
@@ -24,7 +25,6 @@ AeCanvasTest >> testDrawArbitraryFigure [
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 200 asPoint.
 
-	"aeCanvas setBackgroundOff."
 	aeCanvas
 		setBackgroundWith: [ aeCanvas setSourceColor: Color blue ]
 		alpha: 1.0.
@@ -53,7 +53,6 @@ AeCanvasTest >> testDrawClosedFigure [
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 200 asPoint.
 
-	"aeCanvas setBackgroundOff."
 	aeCanvas
 		setBackgroundWith: [ aeCanvas setSourceColor: Color blue ]
 		alpha: 1.0.
@@ -76,7 +75,6 @@ AeCanvasTest >> testDrawCurvedFigure [
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 200 asPoint.
 
-	"aeCanvas setBackgroundOff."
 	aeCanvas
 		setBackgroundWith: [ aeCanvas setSourceColor: Color blue ]
 		alpha: 1.0.
@@ -97,19 +95,24 @@ AeCanvasTest >> testDrawCurvedFigure [
 AeCanvasTest >> testDrawOpenFigure [
 
 	| aeCanvas |
-	aeCanvas := AeCanvas extent: 200 asPoint.
+	aeCanvas := AeCanvas extent: 50 asPoint.
 
-	"aeCanvas setBackgroundOff."
-	aeCanvas
-		setBackgroundWith: [ aeCanvas setSourceColor: Color blue ]
-		alpha: 1.0.
-	aeCanvas setBorderOff.
+	aeCanvas setBackgroundOff.
+
+	aeCanvas setOutskirtsCentered.
+	aeCanvas setBorderBlock: [
+		aeCanvas setSourceColor: Color red.
+		aeCanvas setDashes: #(4 6) offset: 2.
+		aeCanvas setLineJoinBlock: [ aeCanvas setJoinRound ].
+		aeCanvas setLineCapBlock: [ aeCanvas setCapSquare ].
+		aeCanvas setBorderWidth: 4 ].
 
 	aeCanvas drawOpenPathWith: [ :cairoContext |
-		cairoContext lineTo: 10 asPoint ].
+		cairoContext
+			moveTo: 20@10;
+			lineTo: 30@40 ].
 
 	aeCanvas drawFigure.
-
 
 	aeCanvas flush.
 	self assert: aeCanvas asForm class equals: Form

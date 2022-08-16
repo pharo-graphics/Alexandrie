@@ -1,7 +1,9 @@
 "
 I am a Cairo FFI binding for `cairo_t`.
 
-See https://www.cairographics.org/manual/cairo-cairo-t.html
+This tutorial is a good source to understand how to use my instances: https://www.cairographics.org/tutorial/
+
+See: https://www.cairographics.org/manual/cairo-cairo-t.html
 "
 Class {
 	#name : #AeCairoContext,
@@ -60,6 +62,34 @@ AeCairoContext >> circleRadius: radius [
 		radius: radius
 		startAngle: 0.0
 		endAngle: Float twoPi
+]
+
+{ #category : #'API - painting' }
+AeCairoContext >> clearR: r g: g b: b a: a [
+	"See https://www.cairographics.org/FAQ/#clear_a_surface"
+
+	self
+		primSave;
+		setOperatorSource;
+		primSetSourceR: r
+			g: g
+			b: b
+			a: a;
+		primPaint;
+		primRestore
+
+]
+
+{ #category : #'API - painting' }
+AeCairoContext >> clearTransparent [
+	"See https://www.cairographics.org/FAQ/#clear_a_surface"
+
+	self
+		primSave;
+		setOperatorClear;
+		primPaint;
+		primRestore
+
 ]
 
 { #category : #'API - path' }
@@ -636,11 +666,22 @@ AeCairoContext >> scale: aPoint [
 
 { #category : #'API - compositing' }
 AeCairoContext >> setOperatorClear [
-	"Set 'clear' drawing mode.
+	"Set 'CAIRO_OPERATOR_CLEAR' drawing mode.
 	
-	Drawing under this mode will clear the surface under the shape boundaries"
+	Drawing under this mode will clear the surface under the shape boundaries.
+	
+	See https://www.cairographics.org/operators/"
 	
 	^ self primSetOperator: AeCairoCompositionOp CAIRO_OPERATOR_CLEAR
+]
+
+{ #category : #'API - compositing' }
+AeCairoContext >> setOperatorSource [
+	"Set 'CAIRO_OPERATOR_SOURCE' drawing mode.
+
+	See https://www.cairographics.org/operators/"
+	
+	^ self primSetOperator: AeCairoCompositionOp CAIRO_OPERATOR_SOURCE
 ]
 
 { #category : #'API - source' }

@@ -79,6 +79,24 @@ AeCanvas >> asForm [
 ]
 
 { #category : #API }
+AeCanvas >> clear: aColor [
+	"Clear the surface with a color."
+
+	cairoContext
+		clearR: aColor red
+		g: aColor green
+		b: aColor blue
+		a: aColor alpha
+]
+
+{ #category : #API }
+AeCanvas >> clearTransparent [
+	"Clear the surface with transparent color."
+
+	cairoContext clearTransparent
+]
+
+{ #category : #API }
 AeCanvas >> drawClosedCurvedPathWith: aUnaryBlock [
 	"Establish how to draw the path of the figure.
 	The block closure receives an instance of AeCairoContext to build the geometric
@@ -366,6 +384,9 @@ AeCanvas >> setCapSquare [
 
 { #category : #API }
 AeCanvas >> setDashes: dashArray offset: dashOffset [ 
+	"Set the dashes and offset for the figure's stroke. Don't send this message to draw a figure without dashes.
+	
+	See https://www.cairographics.org/samples/dash/"
 
 	"TODO: do not initialize here, and reset on new session"	
 	arrayToDashesBuf ifNil: [
@@ -587,12 +608,14 @@ AeCanvas >> setJoinRound [
 
 { #category : #API }
 AeCanvas >> setLineCapBlock: aFullBlockClosure [ 
+	"Set the block that sets the line cap, if geometry is open."
 	
 	hasCaps ifTrue: aFullBlockClosure
 ]
 
 { #category : #API }
 AeCanvas >> setLineJoinBlock: aFullBlockClosure [ 
+	"Set the block that will be valued if geometry has joins."
 	
 	hasJoins ifTrue: aFullBlockClosure
 ]
