@@ -79,9 +79,51 @@ AeCanvas >> asForm [
 ]
 
 { #category : #API }
+AeCanvas >> drawClosedCurvedPathWith: aUnaryBlock [
+	"Establish how to draw the path of the figure.
+	The block closure receives an instance of AeCairoContext to build the geometric
+	path. It is expected to utilize the path drawing API (bindings of
+	https://www.cairographics.org/manual/cairo-Paths.html)"
+
+	self
+		setPathKey: self
+		hasJoins: false
+		hasCaps: false
+		block: aUnaryBlock
+]
+
+{ #category : #API }
+AeCanvas >> drawClosedPathWith: aUnaryBlock [
+	"Establish how to draw the path of the figure.
+	The block closure receives an instance of AeCairoContext to build the geometric
+	path. It is expected to utilize the path drawing API (bindings of
+	https://www.cairographics.org/manual/cairo-Paths.html)"
+
+	self
+		setPathKey: self
+		hasJoins: true
+		hasCaps: false
+		block: aUnaryBlock
+]
+
+{ #category : #API }
 AeCanvas >> drawFigure [
 
 	figureBlock value
+]
+
+{ #category : #API }
+AeCanvas >> drawOpenPathWith: aUnaryBlock [
+	"Establish how to draw the path of the figure.
+	The block closure receives an instance of AeCairoContext to build the geometric
+	path. It is expected to utilize the path drawing API (bindings of
+	https://www.cairographics.org/manual/cairo-Paths.html)"
+
+	self
+		setPathKey: self
+		hasJoins: true
+		hasCaps: true
+		block: aUnaryBlock
 ]
 
 { #category : #text }

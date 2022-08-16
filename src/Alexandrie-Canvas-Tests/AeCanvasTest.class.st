@@ -19,7 +19,7 @@ AeCanvasTest >> testAsForm [
 ]
 
 { #category : #tests }
-AeCanvasTest >> testDrawSimpleFigure [
+AeCanvasTest >> testDrawArbitraryFigure [
 
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 200 asPoint.
@@ -33,9 +33,80 @@ AeCanvasTest >> testDrawSimpleFigure [
 	aeCanvas
 		setPathKey: self
 		hasJoins: true
-		hasCaps: false
+		hasCaps: true
 		block: [ :cairoContext |
-			cairoContext rectangle: (10 asPoint extent: 20 asPoint) ].
+			cairoContext
+				rectangle: (0 asPoint extent: 20 asPoint);
+				circleRadius: 20 ].
+
+	aeCanvas drawFigure.
+
+
+	aeCanvas flush.
+	self assert: aeCanvas asForm class equals: Form
+
+]
+
+{ #category : #tests }
+AeCanvasTest >> testDrawClosedFigure [
+
+	| aeCanvas |
+	aeCanvas := AeCanvas extent: 200 asPoint.
+
+	"aeCanvas setBackgroundOff."
+	aeCanvas
+		setBackgroundWith: [ aeCanvas setSourceColor: Color blue ]
+		alpha: 1.0.
+	aeCanvas setBorderOff.
+
+	aeCanvas drawClosedPathWith: [ :cairoContext |
+		cairoContext rectangle: (10 asPoint extent: 20 asPoint) ].
+
+	aeCanvas drawFigure.
+
+
+	aeCanvas flush.
+	self assert: aeCanvas asForm class equals: Form
+
+]
+
+{ #category : #tests }
+AeCanvasTest >> testDrawCurvedFigure [
+
+	| aeCanvas |
+	aeCanvas := AeCanvas extent: 200 asPoint.
+
+	"aeCanvas setBackgroundOff."
+	aeCanvas
+		setBackgroundWith: [ aeCanvas setSourceColor: Color blue ]
+		alpha: 1.0.
+	aeCanvas setBorderOff.
+
+	aeCanvas drawClosedCurvedPathWith: [ :cairoContext |
+		cairoContext circleRadius: 10 ].
+
+	aeCanvas drawFigure.
+
+
+	aeCanvas flush.
+	self assert: aeCanvas asForm class equals: Form
+
+]
+
+{ #category : #tests }
+AeCanvasTest >> testDrawOpenFigure [
+
+	| aeCanvas |
+	aeCanvas := AeCanvas extent: 200 asPoint.
+
+	"aeCanvas setBackgroundOff."
+	aeCanvas
+		setBackgroundWith: [ aeCanvas setSourceColor: Color blue ]
+		alpha: 1.0.
+	aeCanvas setBorderOff.
+
+	aeCanvas drawOpenPathWith: [ :cairoContext |
+		cairoContext lineTo: 10 asPoint ].
 
 	aeCanvas drawFigure.
 
