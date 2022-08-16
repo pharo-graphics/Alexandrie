@@ -354,6 +354,24 @@ AeCairoContext >> primRectangleX: aX y: aY width: aWidth height: aHeight [
 			double aHeight ) )
 ]
 
+{ #category : #'API - path' }
+AeCairoContext >> primRelativeLineToX: aX y: aY [
+
+	self ffiCall: #(void cairo_rel_line_to (
+			self,
+			double aX,
+			double aY ) )
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> primRelativeMoveToX: aX y: aY [
+
+	self ffiCall: #(void cairo_rel_move_to (
+			self,
+			double aX,
+			double aY ) )
+]
+
 { #category : #'API - states' }
 AeCairoContext >> primRestore [
 
