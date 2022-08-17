@@ -127,6 +127,12 @@ AeCairoContext >> initializeWith: anAeCairoSurface [
 ]
 
 { #category : #'API - path' }
+AeCairoContext >> lineRelativeTo: aPoint [
+
+	^ self primRelativeLineToX: aPoint x asFloat y: aPoint y asFloat
+]
+
+{ #category : #'API - path' }
 AeCairoContext >> lineTo: aPoint [
 
 	^ self primLineToX: aPoint x asFloat y: aPoint y asFloat
@@ -148,6 +154,12 @@ AeCairoContext >> matrix: aeMatrix [
 
 	self primGetMatrix: aeMatrix
 
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> moveRelativeTo: aPoint [
+
+	self primRelativeMoveToX: aPoint x asFloat y: aPoint y asFloat
 ]
 
 { #category : #'API - path' }
