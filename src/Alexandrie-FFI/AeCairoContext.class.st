@@ -46,8 +46,8 @@ AeCairoContext class >> primDestroy: aHandle [
 AeCairoContext >> circleCenterX: x y: y radius: radius [
 
 	self
-		primArcCenterX: x + radius
-		centerY: y + radius
+		primArcCenterX: x
+		centerY: y
 		radius: radius
 		startAngle: 0.0
 		endAngle: Float twoPi
