@@ -3,27 +3,29 @@ An AeCanvasTest is a test class for testing the behavior of AeCanvas
 "
 Class {
 	#name : #AeCanvasTest,
-	#superclass : #TestCase,
+	#superclass : #AePixelMatchTest,
 	#category : #'Alexandrie-Canvas-Tests-Base'
 }
 
-{ #category : #tests }
-AeCanvasTest >> testClear [
+{ #category : #hooks }
+AeCanvasTest >> actualFormFor: aSymbol [
 
-	| aeCanvas |
-	aeCanvas := AeCanvas extent: 50 asPoint.
-	aeCanvas clear: Color green.
-	aeCanvas clearTransparent.
-	aeCanvas flush.
-	self assert: aeCanvas asForm class equals: Form
+	^ (self perform: aSymbol)
+		flush;
+		asForm
+]
 
+{ #category : #hooks }
+AeCanvasTest >> allFormSelectors [
+
+	^ self class selectors select: [ :each | each beginsWith: 'canvasWith' ]
 ]
 
 { #category : #tests }
-AeCanvasTest >> testDrawArbitraryFigure [
+AeCanvasTest >> canvasWithArbitraryFigure [
 
 	| aeCanvas |
-	aeCanvas := AeCanvas extent: 200 asPoint.
+	aeCanvas := AeCanvas extent: 50 asPoint.
 
 	aeCanvas setBackgroundWith: [
 		aeCanvas setSourceColor: Color blue ].
@@ -41,55 +43,22 @@ AeCanvasTest >> testDrawArbitraryFigure [
 	aeCanvas drawFigure.
 
 
-	aeCanvas flush.
-	self assert: aeCanvas asForm class equals: Form
-
+	^ aeCanvas
 ]
 
 { #category : #tests }
-AeCanvasTest >> testDrawClosedFigure [
+AeCanvasTest >> canvasWithClear [
 
 	| aeCanvas |
-	aeCanvas := AeCanvas extent: 200 asPoint.
+	aeCanvas := AeCanvas extent: 10 asPoint.
+	aeCanvas clearTransparent.
+	aeCanvas clear: Color green.
 
-	aeCanvas setBackgroundWith: [
-		aeCanvas setSourceColor: Color blue ].
-	aeCanvas setBorderOff.
-
-	aeCanvas drawClosedPathWith: [ :cairoContext |
-		cairoContext rectangle: (10 asPoint extent: 20 asPoint) ].
-
-	aeCanvas drawFigure.
-
-
-	aeCanvas flush.
-	self assert: aeCanvas asForm class equals: Form
-
+	^ aeCanvas
 ]
 
 { #category : #tests }
-AeCanvasTest >> testDrawCurvedFigure [
-
-	| aeCanvas |
-	aeCanvas := AeCanvas extent: 200 asPoint.
-
-	aeCanvas setBackgroundWith: [
-		aeCanvas setSourceColor: Color blue ].
-	aeCanvas setBorderOff.
-
-	aeCanvas drawClosedCurvedPathWith: [ :cairoContext |
-		cairoContext circleRadius: 10 ].
-
-	aeCanvas drawFigure.
-
-
-	aeCanvas flush.
-	self assert: aeCanvas asForm class equals: Form
-
-]
-
-{ #category : #tests }
-AeCanvasTest >> testDrawNestedFiguresWithClipping [
+AeCanvasTest >> canvasWithClippedFigures [
 
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 50 asPoint.
@@ -115,14 +84,49 @@ AeCanvasTest >> testDrawNestedFiguresWithClipping [
 		cairoContext circleRadius: 15 ].
 	aeCanvas drawFigure.
 
-	aeCanvas flush.
-
-	self assert: aeCanvas asForm class equals: Form
-
+	^ aeCanvas
 ]
 
 { #category : #tests }
-AeCanvasTest >> testDrawOpenFigure [
+AeCanvasTest >> canvasWithClosedFigure [
+
+	| aeCanvas |
+	aeCanvas := AeCanvas extent: 50 asPoint.
+
+	aeCanvas setBackgroundWith: [
+		aeCanvas setSourceColor: Color blue ].
+	aeCanvas setBorderOff.
+
+	aeCanvas drawClosedPathWith: [ :cairoContext |
+		cairoContext rectangle: (10 asPoint extent: 20 asPoint) ].
+
+	aeCanvas drawFigure.
+
+
+	^ aeCanvas
+]
+
+{ #category : #tests }
+AeCanvasTest >> canvasWithCurvedFigure [
+
+	| aeCanvas |
+	aeCanvas := AeCanvas extent: 50 asPoint.
+
+	aeCanvas setBackgroundWith: [
+		aeCanvas setSourceColor: Color blue ].
+	aeCanvas setBorderOff.
+
+	aeCanvas drawClosedCurvedPathWith: [ :cairoContext |
+		cairoContext circleRadius: 25 ].
+
+	aeCanvas drawFigure.
+
+
+	^ aeCanvas
+]
+
+{ #category : #tests }
+AeCanvasTest >> canvasWithOpenFigure [
 
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 50 asPoint.
@@ -144,13 +148,11 @@ AeCanvasTest >> testDrawOpenFigure [
 
 	aeCanvas drawFigure.
 
-	aeCanvas flush.
-	self assert: aeCanvas asForm class equals: Form
-
+	^ aeCanvas
 ]
 
 { #category : #tests }
-AeCanvasTest >> testDrawText [
+AeCanvasTest >> canvasWithText [
 
 	| aeCanvas aFTFace cairoScaledFont cairoGlyphsArray baselineY baselineX |
 	aeCanvas := AeCanvas extent: 100 @ 50.
@@ -173,9 +175,25 @@ AeCanvasTest >> testDrawText [
 		aeCanvas setSourceColor: Color orange.
 		aeCanvas drawText: cairoGlyphsArray font: cairoScaledFont ].
 
+	^ aeCanvas
+]
 
-	aeCanvas flush.
-"	aeCanvas asForm inspect."
-	self assert: aeCanvas asForm class equals: Form
+{ #category : #convenience }
+AeCanvasTest >> deleteAllExports [
+	<script: 'self new deleteAllExports' >
 
+	super deleteAllExports
+]
+
+{ #category : #hooks }
+AeCanvasTest >> expectedFormsDirectory [
+
+	^ AeFilesytemResources testsDirectory / 'canvas'
+]
+
+{ #category : #convenience }
+AeCanvasTest >> exportAll [
+	<script: 'self new exportAll' >
+
+	super exportAll
 ]
