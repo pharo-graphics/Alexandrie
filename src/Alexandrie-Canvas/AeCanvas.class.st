@@ -689,6 +689,33 @@ AeCanvas >> setSourceColor: aColor [
 		ifFalse: [ self setSourceSolidColor: aColor ]
 ]
 
+{ #category : #API }
+AeCanvas >> setSourceLinearPatternStops: aCollection start: startPoint end: endPoint [
+	
+	| aPattern |
+	aPattern := AeCairoLinearGradientPattern from: startPoint to: endPoint.
+	aCollection do: [ :each |
+		aPattern addStopAt: each key color: each value ].
+	
+	cairoContext primSetSource: aPattern.
+]
+
+{ #category : #API }
+AeCanvas >> setSourceRadialPatternStops: aCollection center: aPoint radius: aNumber [
+	
+	| aPattern |
+	aPattern := AeCairoRadialGradientPattern
+		innerCenter: aPoint
+		innerRadius: 0
+		outerCenter: aPoint
+		outerRadius: aNumber.
+
+	aCollection do: [ :each |
+		aPattern addStopAt: each key color: each value ].
+	
+	cairoContext primSetSource: aPattern.
+]
+
 { #category : #private }
 AeCanvas >> setSourceSolidColor: aColor [
 
