@@ -43,6 +43,25 @@ AeCairoContext class >> primDestroy: aHandle [
 ]
 
 { #category : #'API - path' }
+AeCairoContext >> annulusSectorFrom: radiansStart to: radiansStop innerRadius: innerRadius outerRadius: outerRadius [
+	"Precondition: radiansStart < radiansStop"
+
+	self
+		primArcCenterX: outerRadius
+			centerY: outerRadius
+			radius: outerRadius
+			startAngle: radiansStart
+			endAngle: radiansStop;
+		primArcNegativeCenterX: outerRadius
+			centerY: outerRadius
+			radius: innerRadius
+			startAngle: radiansStop
+			endAngle: radiansStart;
+		primClosePath
+
+]
+
+{ #category : #'API - path' }
 AeCairoContext >> circleCenterX: x y: y radius: radius [
 
 	self
@@ -62,6 +81,21 @@ AeCairoContext >> circleRadius: radius [
 		radius: radius
 		startAngle: 0.0
 		endAngle: Float twoPi
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> circleSectorFrom: radiansStart to: radiansStop radius: radius [
+	"Precondition: radiansStart < radiansStop"
+
+	self
+		primArcCenterX: radius
+			centerY: radius
+			radius: radius
+			startAngle: radiansStart
+			endAngle: radiansStop;
+		primLineToX: radius y: radius;
+		primClosePath
+
 ]
 
 { #category : #'API - painting' }
