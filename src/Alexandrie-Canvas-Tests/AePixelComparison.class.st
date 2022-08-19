@@ -141,7 +141,7 @@ AePixelComparison >> printOn: aStream [
 		nextPut: $(;
 		nextPutAll: label;
 		space;
-		nextPutAll: (self isMatch ifTrue: [ 'match' ] ifFalse: [ 'mismatch' ]);
+		nextPutAll: (self isMatch ifTrue: [ 'match' ] ifFalse: [ 'MISMATCH' ]);
 		nextPut: $)
 
 ]
