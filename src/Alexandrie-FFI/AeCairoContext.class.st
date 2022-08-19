@@ -326,8 +326,19 @@ AeCairoContext >> primGlyphExtents: theGlyphs num: aGlyphsNum metrics: aTextMetr
 
 { #category : #'API - hit testing' }
 AeCairoContext >> primInFillX: x y: y [ 
+	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-in-fill"
 
 	^ self ffiCall: #( Boolean cairo_in_fill (
+		self,
+		double x,
+		double y ) )
+]
+
+{ #category : #'API - hit testing' }
+AeCairoContext >> primInStrokeX: x y: y [ 
+	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-in-stroke"
+
+	^ self ffiCall: #( Boolean cairo_in_stroke (
 		self,
 		double x,
 		double y ) )
