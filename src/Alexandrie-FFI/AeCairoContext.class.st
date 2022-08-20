@@ -136,6 +136,20 @@ AeCairoContext >> copyPath [
 ]
 
 { #category : #'API - path' }
+AeCairoContext >> cubicCurveFrom: startPoint controlPoint1: cp1 controlPoint2: cp2 to: endPoint [
+
+	self
+		primMoveToX: startPoint x
+			y: startPoint y;
+		primCurveViaX: cp1 x
+			y: cp1 y
+			viaX: cp2 x
+			y: cp2 y
+			toX: endPoint x
+			y: endPoint y
+]
+
+{ #category : #'API - path' }
 AeCairoContext >> ellipseWidth: width height: height [
 	"See: https://www.cairographics.org/cookbook/ellipses/"
 
@@ -159,6 +173,14 @@ AeCairoContext >> initializeWith: anAeCairoSurface [
 	"Note: don't send super initialize as it nullifies the handle."
 
 	surface := anAeCairoSurface
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> lineFrom: aPoint to: anotherPoint [
+
+	self
+		moveTo: aPoint;
+		lineTo: anotherPoint
 ]
 
 { #category : #'API - path' }
@@ -275,7 +297,8 @@ AeCairoContext >> primCopyPath [
 
 { #category : #'API - path' }
 AeCairoContext >> primCurveViaX: x1 y: y1 viaX: x2 y: y2 toX: x3 y: y3 [
-	
+	"See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-curve-to"	
+
 	self ffiCall: #(
 		void cairo_curve_to (
 			self,
@@ -600,6 +623,39 @@ AeCairoContext >> primTranslateX: aX y: aY [
 			self,
 			double aX,
 			double aY) )
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> quadraticCurveFrom: startPoint controlPoint: qp1 to: endPoint [
+	"Quadratic bezier curve.
+
+	Fundaments:
+
+	Any quadratic spline can be expressed as a cubic (where the cubic term is zero). The end points of the cubic will be the same as the quadratic's.
+
+		CP0 = QP0
+		CP3 = QP2
+
+	The two control points for the cubic are:
+
+		CP1 = QP0 + 2/3 *(QP1-QP0)
+		CP2 = QP2 + 2/3 *(QP1-QP2)
+		
+	Based on AthensCairoPathBuilder>>#curveVia:to:"
+
+	| cp1 cp2 |
+	cp1 := (qp1 - startPoint) * 0.6666666666666666 + startPoint.
+	cp2 := (qp1 - endPoint)   * 0.6666666666666666 + endPoint.
+
+	self
+		primMoveToX: startPoint x
+			y: startPoint y;
+		primCurveViaX: cp1 x
+			y: cp1 y
+			viaX: cp2 x
+			y: cp2 y
+			toX: endPoint x
+			y: endPoint y
 ]
 
 { #category : #'API - path' }
