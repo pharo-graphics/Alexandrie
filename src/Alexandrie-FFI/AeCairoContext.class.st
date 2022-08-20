@@ -43,17 +43,17 @@ AeCairoContext class >> primDestroy: aHandle [
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> annulusSectorFrom: radiansStart to: radiansStop innerRadius: innerRadius outerRadius: outerRadius [
+AeCairoContext >> annulusSectorCenter: aPoint from: radiansStart to: radiansStop innerRadius: innerRadius outerRadius: outerRadius [
 	"Precondition: radiansStart < radiansStop"
 
 	self
-		primArcCenterX: outerRadius
-			centerY: outerRadius
+		primArcCenterX: aPoint x
+			centerY: aPoint y
 			radius: outerRadius
 			startAngle: radiansStart
 			endAngle: radiansStop;
-		primArcNegativeCenterX: outerRadius
-			centerY: outerRadius
+		primArcNegativeCenterX: aPoint x
+			centerY: aPoint y
 			radius: innerRadius
 			startAngle: radiansStop
 			endAngle: radiansStart;
@@ -84,16 +84,17 @@ AeCairoContext >> circleRadius: radius [
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> circleSectorFrom: radiansStart to: radiansStop radius: radius [
+AeCairoContext >> circleSectorCenter: aPoint from: radiansStart to: radiansStop radius: radius [
 	"Precondition: radiansStart < radiansStop"
 
 	self
-		primArcCenterX: radius
-			centerY: radius
+		primArcCenterX: aPoint x
+			centerY: aPoint y
 			radius: radius
 			startAngle: radiansStart
 			endAngle: radiansStop;
-		primLineToX: radius y: radius;
+		primLineToX: aPoint x
+			y: aPoint y;
 		primClosePath
 
 ]
