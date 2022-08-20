@@ -667,10 +667,12 @@ AeCanvas >> setOutskirtsOutside [
 { #category : #API }
 AeCanvas >> setPathKey: anObject hasJoins: hasJoinsBoolean hasCaps: hasCapsBoolean block: aUnaryBlock [
 	"Establish how to draw the path and some properties that serve to optimize.
+	
 	The anObject argument might serve as a cache key.
-	The block closure receives an instance of AeCairoContext to build the geometrical
-	path. It is expected to utilize the path drawing API (bindings of
-	https://www.cairographics.org/manual/cairo-Paths.html)"
+	
+	The block closure receives an instance of AeCairoContext to build the geometric
+	path. The block must only send messages in the 'API - path' protocol of AeCairoContext.
+	This is, only the bindings of: https://www.cairographics.org/manual/cairo-Paths.html"
 
 	isPathSetAsClip := false.
 	hasJoins := hasJoinsBoolean.
