@@ -1,3 +1,8 @@
+"
+I represent a manager for FreeType fonts, that knows how to scan, load and cache faces.
+
+The faces may be located on the filesystem or as `AeEmbeddedFontFile` subclasses.
+"
 Class {
 	#name : #AeFontManager,
 	#superclass : #Object,
@@ -11,7 +16,7 @@ Class {
 	#classInstVars : [
 		'globalInstance'
 	],
-	#category : #'Alexandrie-FreeType-Core'
+	#category : #'Alexandrie-FreeType-Manager'
 }
 
 { #category : #accessing }

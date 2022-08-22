@@ -1,5 +1,7 @@
 "
-I am a FreeType FFI binding library.
+I'm a FreeType FFI binding library, that exposes as literal as possible to C API of the library.
+
+The initial code is inspired on the FreeType library bindings from Pharo 11 (2022).
 "
 Class {
 	#name : #AeFreeTypeLibrary,

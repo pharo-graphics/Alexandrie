@@ -1,15 +1,22 @@
+"
+I represent an abstract category for FreeType font faces. 
+
+A `AeFileManager` uses instances of my subclasses to categorize the scanned font faces.
+The users of the manager use me to query for a particular member of a font family.
+
+"
 Class {
-	#name : #AeFontNameValuePool,
-	#superclass : #SharedPool,
+	#name : #AeFontCategory,
+	#superclass : #Object,
 	#instVars : [
 		'name',
 		'value'
 	],
-	#category : #'Alexandrie-FreeType-Core'
+	#category : #'Alexandrie-FreeType-Manager'
 }
 
 { #category : #'instance creation' }
-AeFontNameValuePool class >> value: aValue name: aName [
+AeFontCategory class >> value: aValue name: aName [
 
 	^ self basicNew
 		  initializeWithName: aName value: aValue;
@@ -17,7 +24,7 @@ AeFontNameValuePool class >> value: aValue name: aName [
 ]
 
 { #category : #comparing }
-AeFontNameValuePool >> = anObject [
+AeFontCategory >> = anObject [
 	"Answer whether the receiver and anObject represent the same object."
 
 	self == anObject
@@ -28,14 +35,14 @@ AeFontNameValuePool >> = anObject [
 ]
 
 { #category : #comparing }
-AeFontNameValuePool >> hash [
+AeFontCategory >> hash [
 	"Answer an integer value that is related to the identity of the receiver."
 
 	^ value hash
 ]
 
 { #category : #initializing }
-AeFontNameValuePool >> initializeWithName: aString value: aNumber [
+AeFontCategory >> initializeWithName: aString value: aNumber [
 
 	self initialize.
 	value := aNumber.
@@ -43,14 +50,14 @@ AeFontNameValuePool >> initializeWithName: aString value: aNumber [
 ]
 
 { #category : #accessing }
-AeFontNameValuePool >> name [
+AeFontCategory >> name [
 	<return: #Symbol>
 
 	^ name
 ]
 
 { #category : #printing }
-AeFontNameValuePool >> printOn: aStream [
+AeFontCategory >> printOn: aStream [
 	"Append a sequence of characters to aStream that identify the receiver."
 
 	super printOn: aStream.
@@ -63,7 +70,7 @@ AeFontNameValuePool >> printOn: aStream [
 ]
 
 { #category : #accessing }
-AeFontNameValuePool >> value [
+AeFontCategory >> value [
 
 	^ value
 ]

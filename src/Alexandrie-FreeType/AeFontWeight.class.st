@@ -1,6 +1,14 @@
+"
+I represent a font weight to categorize and query font faces. 
+
+A `AeFileManager` uses me to categorize the scanned font faces.
+The users of the manager use me to query for a particular member of a font family.
+
+Access the singleton instances at class-side.
+"
 Class {
 	#name : #AeFontWeight,
-	#superclass : #AeFontNameValuePool,
+	#superclass : #AeFontCategory,
 	#classVars : [
 		'Black',
 		'Bold',
@@ -14,7 +22,7 @@ Class {
 		'SemiLight',
 		'Thin'
 	],
-	#category : #'Alexandrie-FreeType-Core'
+	#category : #'Alexandrie-FreeType-Manager'
 }
 
 { #category : #accessing }

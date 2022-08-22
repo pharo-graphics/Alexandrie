@@ -188,7 +188,7 @@ AeCanvasTest >> deleteAllExports [
 { #category : #hooks }
 AeCanvasTest >> expectedFormsDirectory [
 
-	^ AeFilesytemResources testsDirectory / 'canvas'
+	^ AeFilesystemResources canvasDirectory
 ]
 
 { #category : #convenience }

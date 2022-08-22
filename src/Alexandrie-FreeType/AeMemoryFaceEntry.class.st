@@ -1,10 +1,13 @@
+"
+I represent a FreeType font face whose bytes were loaded as a `ByteArray`.
+"
 Class {
 	#name : #AeMemoryFaceEntry,
 	#superclass : #AeFaceEntry,
 	#instVars : [
 		'bytes'
 	],
-	#category : #'Alexandrie-FreeType-Core'
+	#category : #'Alexandrie-FreeType-Manager'
 }
 
 { #category : #accessing }
@@ -14,9 +17,9 @@ AeMemoryFaceEntry >> bytes [
 ]
 
 { #category : #accessing }
-AeMemoryFaceEntry >> bytes: anObject [
+AeMemoryFaceEntry >> bytes: aByteArray [
 
-	bytes := anObject
+	bytes := aByteArray
 ]
 
 { #category : #'instance creation' }

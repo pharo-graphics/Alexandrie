@@ -1,3 +1,6 @@
+"
+I contain constants of the FreeType C API.
+"
 Class {
 	#name : #AeFTConstants,
 	#superclass : #SharedPool,

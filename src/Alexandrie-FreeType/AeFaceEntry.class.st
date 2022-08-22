@@ -1,3 +1,9 @@
+"
+I represent a FreeType font face that is not necessarily loaded in the image.
+
+My `newFaceWith:` method serves to load a `AeFTFace` ready to be used.
+
+"
 Class {
 	#name : #AeFaceEntry,
 	#superclass : #Object,
@@ -10,7 +16,7 @@ Class {
 		'stretch',
 		'wasStyleNameParsed'
 	],
-	#category : #'Alexandrie-FreeType-Core'
+	#category : #'Alexandrie-FreeType-Manager'
 }
 
 { #category : #accessing }
@@ -45,6 +51,7 @@ AeFaceEntry >> index [
 
 { #category : #accessing }
 AeFaceEntry >> index: aZeroBasedInteger [
+	"A FreeType font has a collection of faces. This index indicates a particular face in a font."
 
 	index := aZeroBasedInteger
 ]
@@ -85,15 +92,15 @@ AeFaceEntry >> readSemiStyleFrom: aStream [
 	
 	token = 'bold' ifTrue: [ ^ weight := AeFontWeight semiBold ].
 
-	1halt.
 ]
 
 { #category : #accessing }
 AeFaceEntry >> readStyleFrom: aStream [
-	"This is a aimplification of FreeTypeNameParser.
+	"This is a simplification of FreeTypeNameParser.
 	
 	References:
 	- https://docs.microsoft.com/es-mx/typography/opentype/spec/os2#wtc
+	- ?
 	"
 
 	| token |
@@ -149,7 +156,6 @@ AeFaceEntry >> readStyleFrom: aStream [
 	token = 'semi' ifTrue: [ 
 		^ self readSemiStyleFrom: aStream ].
 
-	1halt.
 ]
 
 { #category : #accessing }
@@ -160,7 +166,6 @@ AeFaceEntry >> readUltraStyleFrom: aStream [
 	
 	token = 'light' ifTrue: [ ^ weight := AeFontWeight extraLight ].
 
-	1halt.
 ]
 
 { #category : #accessing }
@@ -171,9 +176,9 @@ AeFaceEntry >> slant [
 ]
 
 { #category : #accessing }
-AeFaceEntry >> slant: anObject [
+AeFaceEntry >> slant: aFontSlant [
 
-	slant := anObject
+	slant := aFontSlant
 ]
 
 { #category : #accessing }
@@ -191,9 +196,9 @@ AeFaceEntry >> stretch [
 ]
 
 { #category : #accessing }
-AeFaceEntry >> stretch: anObject [
+AeFaceEntry >> stretch: aFontStretch [
 
-	stretch := anObject
+	stretch := aFontStretch
 ]
 
 { #category : #accessing }
@@ -204,6 +209,7 @@ AeFaceEntry >> styleName [
 
 { #category : #accessing }
 AeFaceEntry >> styleName: aString [
+	"The styleName is a String that FreeType retrieves from a font face. It may be empty."
 
 	styleName := aString
 ]
@@ -216,7 +222,7 @@ AeFaceEntry >> weight [
 ]
 
 { #category : #accessing }
-AeFaceEntry >> weight: anObject [
+AeFaceEntry >> weight: aFontWeight [
 
-	weight := anObject
+	weight := aFontWeight
 ]

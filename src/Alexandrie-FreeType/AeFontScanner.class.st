@@ -1,3 +1,10 @@
+"
+I'm a filesystem scanner to detect FreeType font faces.
+
+This includes knowing the default locations for each OS platform.
+
+Extracted from the FileSystem bindings present in Pharo 11 in 2022.
+"
 Class {
 	#name : #AeFontScanner,
 	#superclass : #Object,
@@ -6,7 +13,7 @@ Class {
 		'alreadyScanned',
 		'includedDirectories'
 	],
-	#category : #'Alexandrie-FreeType-Core'
+	#category : #'Alexandrie-FreeType-Manager'
 }
 
 { #category : #directories }

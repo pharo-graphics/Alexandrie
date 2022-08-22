@@ -13,7 +13,7 @@ AeFontManagerTest >> testDetectFamilyNameSlantWeightStretchIfNone [
 	| aManager aFace isAbsent |
 	aManager := AeFontManager new.
 	aManager
-		scanDirectory: AeFilesytemResources fontsDirectory;
+		scanDirectory: AeFilesystemResources fontsDirectory;
 		scanEmbeddedFonts.
 
 	aFace := aManager
@@ -61,7 +61,7 @@ AeFontManagerTest >> testFamilyNames [
 	| aManager |
 	aManager := AeFontManager new.
 	aManager
-		scanDirectory: AeFilesytemResources fontsDirectory;
+		scanDirectory: AeFilesystemResources fontsDirectory;
 		scanEmbeddedFonts.
 
 	self
@@ -87,7 +87,7 @@ AeFontManagerTest >> testIncludesFamilyName [
 
 	| aManager |
 	aManager := AeFontManager new.
-	aManager scanDirectory: AeFilesytemResources fontsDirectory.
+	aManager scanDirectory: AeFilesystemResources fontsDirectory.
 
 	self assert: (aManager includesFamilyName: AeNotoColorEmojiDownloadedFont new familyName)
 
@@ -122,7 +122,7 @@ AeFontManagerTest >> testScanDirectory [
 
 	| aManager |
 	aManager := AeFontManager new.
-	aManager scanDirectory: AeFilesytemResources fontsDirectory.
+	aManager scanDirectory: AeFilesystemResources fontsDirectory.
 
 	self denyEmpty: aManager familyNames
 ]

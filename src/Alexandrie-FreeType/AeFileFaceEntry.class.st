@@ -1,10 +1,13 @@
+"
+I'm a light-weight representation of FreeType font face located in the filesystem.
+"
 Class {
 	#name : #AeFileFaceEntry,
 	#superclass : #AeFaceEntry,
 	#instVars : [
 		'location'
 	],
-	#category : #'Alexandrie-FreeType-Core'
+	#category : #'Alexandrie-FreeType-Manager'
 }
 
 { #category : #accessing }

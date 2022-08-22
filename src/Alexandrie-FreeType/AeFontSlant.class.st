@@ -1,12 +1,20 @@
+"
+I represent a slant type to categorize and query font faces. 
+
+A `AeFileManager` uses me to categorize the scanned font faces.
+The users of the manager use me to query for a particular member of a font family.
+
+Access the singleton instances at class-side.
+"
 Class {
 	#name : #AeFontSlant,
-	#superclass : #AeFontNameValuePool,
+	#superclass : #AeFontCategory,
 	#classVars : [
 		'Italic',
 		'Normal',
 		'Oblique'
 	],
-	#category : #'Alexandrie-FreeType-Core'
+	#category : #'Alexandrie-FreeType-Manager'
 }
 
 { #category : #'class initialization' }

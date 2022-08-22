@@ -1,3 +1,8 @@
+"
+I am the superclass of fonts that are downloaded via HTTP.
+
+My subclasses are particular fonts that can be loaded in a `AeFontManager`.
+"
 Class {
 	#name : #AeDownloadedFont,
 	#superclass : #Object,
@@ -64,9 +69,10 @@ AeDownloadedFont >> fileName [
 
 { #category : #initialization }
 AeDownloadedFont >> initialize [
+
 	super initialize.
-	
-	downloadDirectory := AeFilesytemResources fontsDirectory / 'downloaded'
+
+	downloadDirectory := AeFilesystemResources downloadedFontsDirectory
 ]
 
 { #category : #testing }
