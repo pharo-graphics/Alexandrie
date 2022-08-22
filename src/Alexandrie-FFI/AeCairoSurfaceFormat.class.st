@@ -1,3 +1,10 @@
+"
+I am a Cairo FFI binding for `cairo_format_t`.
+
+It is used to identify the memory format of image data.
+
+See: https://www.cairographics.org/manual/cairo-Image-Surfaces.html#cairo-format-t
+"
 Class {
 	#name : #AeCairoSurfaceFormat,
 	#superclass : #AeEnumeration,

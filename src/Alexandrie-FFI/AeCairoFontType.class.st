@@ -1,3 +1,10 @@
+"
+I am a Cairo FFI binding for `cairo_font_type_t`.
+
+It is used to describe the type of a given font face or scaled font. The font types are also known as ""font backends"" within cairo.
+
+See: https://www.cairographics.org/manual/cairo-cairo-font-face-t.html#cairo-font-type-t
+"
 Class {
 	#name : #AeCairoFontType,
 	#superclass : #AeEnumeration,

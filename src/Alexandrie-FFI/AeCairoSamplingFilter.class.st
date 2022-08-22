@@ -1,3 +1,10 @@
+"
+I am a Cairo FFI binding for `cairo_filter_t`.
+
+It is used to indicate what filtering should be applied when reading pixel values from patterns. See `cairo_pattern_set_filter()` for indicating the desired filter to be used with a particular pattern.
+
+See: https://cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-filter-t
+"
 Class {
 	#name : #AeCairoSamplingFilter,
 	#superclass : #AeEnumeration,

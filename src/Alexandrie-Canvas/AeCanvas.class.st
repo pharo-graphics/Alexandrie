@@ -23,6 +23,7 @@ Note: Background MUST be set BEFORE border.
 I'm prepared to draw a tree of figures, A node's children can be either clipped or not.
 It depends on the argument sent to `prepareToDrawChildrenWithClipping:`.
 
+See my test suite for some examples, and Bloc-Alexandrie package.
 "
 Class {
 	#name : #AeCanvas,

@@ -1,3 +1,12 @@
+"
+I am a Cairo FFI binding for `cairo_status_t`.
+
+It is used to indicate errors that can occur when using Cairo. In some cases it is returned directly by functions. but when using `cairo_t`, the last error, if any, is stored in the context and can be retrieved with `cairo_status()`.
+
+New entries may be added in future versions. Use `cairo_status_to_string()` to get a human-readable representation of an error message.
+
+See: https://www.cairographics.org/manual/cairo-Error-handling.html#cairo-status-t
+"
 Class {
 	#name : #AeCairoStatus,
 	#superclass : #AeEnumeration,

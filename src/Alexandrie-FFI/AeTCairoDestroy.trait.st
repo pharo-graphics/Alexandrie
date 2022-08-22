@@ -1,3 +1,6 @@
+"
+I'm a trait for all classes that represent bindings to Cairo library and need to be freed/destroyed.
+"
 Trait {
 	#name : #AeTCairoDestroy,
 	#category : #'Alexandrie-FFI-Library'

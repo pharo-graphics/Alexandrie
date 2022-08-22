@@ -1,3 +1,6 @@
+"
+My subclasses are enums in Cairo API.
+"
 Class {
 	#name : #AeEnumeration,
 	#superclass : #FFIEnumeration,

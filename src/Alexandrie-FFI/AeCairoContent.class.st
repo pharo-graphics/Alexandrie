@@ -1,3 +1,16 @@
+"
+I am a Cairo FFI binding for `cairo_content_t`.
+
+It is used to describe the content that a surface will contain, whether color information, alpha information (translucence vs. opacity), or both.
+
+Members:
+
+- `CAIRO_CONTENT_COLOR`: The surface will hold color content only.
+- `CAIRO_CONTENT_ALPHA`: The surface will hold alpha content only.
+- `CAIRO_CONTENT_COLOR_ALPHA`: The surface will hold color and alpha content.
+
+See: https://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-content-t
+"
 Class {
 	#name : #AeCairoContent,
 	#superclass : #AeEnumeration,

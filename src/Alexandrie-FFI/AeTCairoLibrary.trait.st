@@ -1,3 +1,6 @@
+"
+I'm a trait for all classes that represent bindings to Cairo library.
+"
 Trait {
 	#name : #AeTCairoLibrary,
 	#category : #'Alexandrie-FFI-Library'

@@ -1,3 +1,8 @@
+"
+I'm the FFI binding for Cairo with a literal-style, in the sense that no object-oriented abstractions wrap the C API that the library provides.
+
+See: https://cairographics.org/manual/index.html
+"
 Class {
 	#name : #AeCairoLibrary,
 	#superclass : #FFILibrary,
