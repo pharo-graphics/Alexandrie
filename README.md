@@ -67,9 +67,11 @@ It could be done with:
 - https://ports.macports.org/port/gtk3
 
 And then, in a terminal:
-1. `cd pharo-vm/Pharo.app/Contents/MacOS/Plugins/`
-2. `rm libcairo.* libfreetype.* libpixman-1.* libpng12.*`
-3. `cd ../../../../../`
+```
+cd pharo-vm/Pharo.app/Contents/MacOS/Plugins/
+rm libcairo.* libfreetype.* libpixman-1.* libpng12.*
+cd ../../../../../
+```
 
 **On Windows**, it wasn't tested yet
 
