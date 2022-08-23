@@ -53,7 +53,7 @@ Apparently, FreeType >= 2.5 is required. These were tested and do work:
 - FreeType 2.12.1
 
 The Pharo 11 VM for Mac and Windows (as of August/2022) comes with Cairo 1.15.4 and FreeType 2.9.1 which don't support rendering this kind of fonts.
-The VM for linux doesn't bring them, so Pharo looks and the shared libraries and, for example in Ubuntu 22.04, it is recent enough.
+The VM for linux doesn't bring them, so Pharo looks at the shared libraries. In the case of Ubuntu 22.04, the lib versions were recent enough.
 
 **On Mac**, those libraries could be installed together as dependencies of gtk3.
 It could be done with:
