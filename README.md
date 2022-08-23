@@ -52,6 +52,12 @@ Apparently, FreeType >= 2.5 is required. These were tested and do work:
 - Cairo 1.16.0
 - FreeType 2.12.1
 
+Find the library versions printing:
+```
+CairoLibrary uniqueInstance versionString.
+FT2Library current libraryVersion.
+```
+
 The Pharo 11 VM for Mac and Windows (as of August/2022) comes with Cairo 1.15.4 and FreeType 2.9.1 which don't support rendering this kind of fonts.
 The VM for linux doesn't bring them, so Pharo looks at the shared libraries. In the case of Ubuntu 22.04, the lib versions were recent enough.
 
@@ -61,8 +67,8 @@ It could be done with:
 - https://ports.macports.org/port/gtk3
 
 And then:
-1. cd pharo-vm/Pharo.app/Contents/MacOS/Plugins/
-2. rm libcairo.* libfreetype.* libpixman-1.* libpng12.*
+1. `cd pharo-vm/Pharo.app/Contents/MacOS/Plugins/`
+2. `rm libcairo.* libfreetype.* libpixman-1.* libpng12.*`
 
 **On Windows**, it wasn't tested yet
 
