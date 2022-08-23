@@ -43,8 +43,7 @@ Metacello new
 
 ## Testing
 
-The project counts with Test packages that pixel-compare the actual output of the render with PNGs previously exported in the 'tests/' directory of this repo. If any pixel doesn't match with the expected output, the test fails. Browse `AeCanvasTest`.
-
+The project counts with Test packages that pixel-compare the actual output of the render with PNGs previously exported in the 'tests/' directory of this repo. If any pixel doesn't match with the expected output, the test fails. Browse `AeCanvasTest`. To run such tests, the `AeFilesystemResources` will look into the registered Iceberg repositories for one named 'Alexandrie' (case-insensitive). This means that the test will ERROR if the repository is not registered at Iceberg. Normally the repository is registered after Metacello load. But it was not the case on the CI jobs (via smalltalk-ci), and that's why the '.ci.ston' executes a pre-install code (located in the 'scripts/' directory) that adds registers the repository explicitely.
 
 ## License
 
