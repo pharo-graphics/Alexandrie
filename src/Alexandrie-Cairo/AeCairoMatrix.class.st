@@ -37,7 +37,6 @@ AeCairoMatrix class >> fieldsDesc [
 AeCairoMatrix class >> newIdentity [
 
 	^ self new
-		  autoRelease;
 		  primInitIdentity;
 		  yourself
 ]
