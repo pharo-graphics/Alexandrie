@@ -89,8 +89,8 @@ AeFontManager >> detectFamilyName: aFamilyName slant: aSlant weight: aWeight str
 	attributes := { aSlant. aWeight. aStretch }.
 
 	entry := faces
-			detect: [ :each | each slantWeightStretch = attributes ]
-			ifNone: [ ^ absentBlock value ].
+		detect: [ :each | each slantWeightStretch = attributes ]
+		ifNone: [ ^ absentBlock value ].
 
 	^ self faceAt: entry
 ]
@@ -184,8 +184,9 @@ AeFontManager >> registerFacesOnFile: aFileReference [
 	self freetypeLibrary
 		fastReadFacesOn: aFileReference
 		do: [ :aFace :index |
-			self registerFace: aFace entry: 
-				(AeFileFaceEntry new
+			self
+				registerFace: aFace
+				entry: (AeFileFaceEntry new
 					location: aFileReference;
 					index: index;
 					yourself) ]
@@ -197,8 +198,9 @@ AeFontManager >> registerFacesOnMemory: aByteArray [
 	self freetypeLibrary
 		fastReadFacesOnMemory: aByteArray
 		do: [ :aFace :index |
-			self registerFace: aFace entry: 
-				(AeMemoryFaceEntry new
+			self
+				registerFace: aFace
+				entry: (AeMemoryFaceEntry new
 					bytes: aByteArray;
 					index: index;
 					yourself) ]
