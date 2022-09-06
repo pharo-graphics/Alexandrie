@@ -126,6 +126,31 @@ AeCanvasTest >> canvasWithCurvedFigure [
 ]
 
 { #category : #tests }
+AeCanvasTest >> canvasWithForm [
+
+	| aeCanvas aForm |
+	aeCanvas := AeCanvas extent: 50@75.
+	aeCanvas clear: Color paleGreen.
+	
+	aForm := Smalltalk ui icons iconNamed: #pharoBig.
+
+	aeCanvas
+		setBackgroundWithForm: aForm
+		alpha: 1.0.
+	aeCanvas setBorderOff.
+
+	aeCanvas pathScale: (aeCanvas extent / aForm extent) asFloatPoint.
+	aeCanvas drawClosedPathWith: [ :cairoContext |
+		"Tip: Use another path to clip the form"
+		cairoContext rectangleTo: aForm extent ].
+
+	aeCanvas drawFigure.
+
+
+	^ aeCanvas
+]
+
+{ #category : #tests }
 AeCanvasTest >> canvasWithOpenFigure [
 
 	| aeCanvas |
