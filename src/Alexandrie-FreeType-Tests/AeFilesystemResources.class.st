@@ -26,6 +26,12 @@ AeFilesystemResources class >> fontsDirectory [
 ]
 
 { #category : #accessing }
+AeFilesystemResources class >> inriaSerifRegularTTF [
+
+	^ self fontsDirectory / 'inria-serif' / 'InriaSerif' / 'TTF' / 'InriaSerif-Regular.ttf'
+]
+
+{ #category : #accessing }
 AeFilesystemResources class >> repositoryDirectory [
 
 	^ (IceRepository registry detect: [ :each | 
