@@ -94,7 +94,7 @@ AeFTFace >> faceIndex: anObject [
 { #category : #accessing }
 AeFTFace >> familyName [
 
-	^ self familyNameAddress readStringUTF8
+	^ self familyNameAddress utf8StringFromCString
 ]
 
 { #category : #'accessing - structure variables' }
@@ -191,7 +191,7 @@ AeFTFace >> styleFlags: anObject [
 { #category : #accessing }
 AeFTFace >> styleName [
 
-	^ self styleNameAddress readStringUTF8
+	^ self styleNameAddress utf8StringFromCString
 ]
 
 { #category : #'accessing - structure variables' }
