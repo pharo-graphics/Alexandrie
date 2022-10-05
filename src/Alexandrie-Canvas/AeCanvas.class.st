@@ -203,6 +203,26 @@ AeCanvas >> initializeWith: aeCairoSurface [
 ]
 
 { #category : #text }
+AeCanvas >> metricsFor: aCairoGlyphsArray font: aCairoScaledFont [
+
+	"Return a AeCairoTextMetrics font metrics for the given glyphs and font"
+
+	| textMetrics |
+	textMetrics := AeCairoTextMetrics new.
+	textMetrics ascent: aCairoScaledFont extents ascent negated.
+	textMetrics descent: aCairoScaledFont extents descent.
+
+	self textExtentsFor: aCairoGlyphsArray scaledFont: aCairoScaledFont do: [ :aTextExtents | 
+		textMetrics advanceX: aTextExtents advanceX.
+		textMetrics bearingX: aTextExtents bearingX.
+		textMetrics bearingY: aTextExtents bearingY.
+		textMetrics width: aTextExtents width.
+		textMetrics height: aTextExtents height ].
+
+	^ textMetrics
+]
+
+{ #category : #text }
 AeCanvas >> newScaledFontForFace: aFTFace size: aSize [
 	"Answer a AeCairoScaledFont that corresponds to the provided font and scale"
 
