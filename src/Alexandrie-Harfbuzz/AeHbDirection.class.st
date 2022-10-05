@@ -1,3 +1,8 @@
+"
+I represent FFI bindings to `hb_direction_t` enum: The direction of a text segment or buffer.
+
+See: https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-direction-t
+"
 Class {
 	#name : #AeHbDirection,
 	#superclass : #FFIEnumeration,
