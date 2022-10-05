@@ -1,3 +1,15 @@
+"
+I represent FFI bindings to `hb_direction_t` enum: The direction of a text segment or buffer.
+
+Members:
+	* `HB_DIRECTION_INVALID`: Initial, unset direction.
+	* `HB_DIRECTION_LTR`: Text is set horizontally from left to right.
+	* `HB_DIRECTION_RTL`: Text is set horizontally from right to left.
+	* `HB_DIRECTION_TTB`: Text is set vertically from top to bottom.
+	* `HB_DIRECTION_BTT`: Text is set vertically from bottom to top.
+
+See: https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-direction-t
+"
 Class {
 	#name : #AeHbDirection,
 	#superclass : #FFIEnumeration,
