@@ -19,10 +19,10 @@ Class {
 { #category : #directories }
 AeFontScanner >> addDefaultDirectories [
 
-	includedDirectories
+	includedDirectories addAll: self platformSpecificDirectories;
 		add: self imageRelativeFontsDirectory;
-	 	add: self vmRelativeFontsDirectory;
-		addAll: self platformSpecificDirectories
+	 	add: self vmRelativeFontsDirectory.
+		
 
 ]
 

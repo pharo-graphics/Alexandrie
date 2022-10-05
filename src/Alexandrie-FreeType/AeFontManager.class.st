@@ -245,6 +245,7 @@ AeFontManager >> scanDirectory: aFileReference [
 { #category : #scanning }
 AeFontManager >> scanEmbeddedFonts [
 
-	AeEmbeddedFontFile allSubclassesDo: [ :each |
-		self registerFacesOnMemory: each fontContentsData ]
+	AeEmbeddedFontFile allSubclassesDo: [ :each | 
+		each isDeprecated ifFalse: [ 
+			self registerFacesOnMemory: each fontContentsData ] ]
 ]
