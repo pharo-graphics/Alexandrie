@@ -128,6 +128,12 @@ AePixelComparison >> isMatch [
 ]
 
 { #category : #accessing }
+AePixelComparison >> label [
+	
+	^ label
+]
+
+{ #category : #accessing }
 AePixelComparison >> label: aString [ 
 	
 	label := aString

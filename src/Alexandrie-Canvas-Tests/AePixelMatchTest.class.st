@@ -96,8 +96,14 @@ AePixelMatchTest >> testAllForms [
 
 "	INSPECT MISMATCHES WITH:
 
-		mismatchingResults inspect
+		mismatchingResults inspect.
 "
 
-	self assertEmpty: mismatchingResults
+	self
+		assert: mismatchingResults isEmpty
+		description: (String streamContents: [ :stream |
+			stream << 'Pixel mismatch on selectors: '.
+			mismatchingResults
+				do: [ :each | stream << each label ]
+				separatedBy: [ stream << ', ' ] ])
 ]
