@@ -20,6 +20,11 @@ Class {
 }
 
 { #category : #accessing }
+AeFontManager class >> defaultFontFamilyName [
+	^ self globalInstance defaultFace familyName
+]
+
+{ #category : #accessing }
 AeFontManager class >> globalInstance [
 	
 	^ globalInstance ifNil: [
@@ -29,7 +34,7 @@ AeFontManager class >> globalInstance [
 			yourself.
 			
 		aFace := globalInstance
-			detectFamilyName: AeSourceSansProRegular familyName
+			detectFamilyName: AeSourceSansPro_Regular familyName
 			slant: AeFontSlant normal
 			weight: AeFontWeight normal
 			stretch: AeFontStretch normal
