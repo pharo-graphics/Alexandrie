@@ -14,6 +14,7 @@ Class {
 		'hb_glyph_info_t',
 		'hb_glyph_position_t',
 		'hb_language_t',
+		'hb_mask_t',
 		'hb_position_t',
 		'hb_script_t',
 		'int32_t',
@@ -27,6 +28,7 @@ AeHbTypes class >> initialize [
 
 	uint32_t := 'uint32'.
 	hb_codepoint_t := uint32_t.
+	hb_mask_t := uint32_t.
 
 	int32_t := 'int32'.
 	hb_position_t := int32_t.
