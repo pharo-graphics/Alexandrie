@@ -38,7 +38,7 @@ The face index is used for blobs of file formats such as TTC and and DFont that 
 	^ self ffiCall: #(
 		hb_face_t *
 		hb_face_create (
-			hb_blob_t * blob,
+			hb_blob_t blob,
 			uint index)
 	)
 ]
