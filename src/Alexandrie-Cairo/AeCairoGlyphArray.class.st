@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : #'instance creation' }
+AeCairoGlyphArray class >> externalNew: aSize [
+
+	^ self externalNewType: AeCairoGlyph size: aSize
+]
+
+{ #category : #'instance creation' }
 AeCairoGlyphArray class >> externalNewEmpty [
 
 	^ self externalNewType: AeCairoGlyph size: 0

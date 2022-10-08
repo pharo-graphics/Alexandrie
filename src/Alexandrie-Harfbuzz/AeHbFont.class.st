@@ -30,13 +30,27 @@ AeHbFont class >> primDestroy: aHandle [
 ]
 
 { #category : #'instance creation' }
-AeHbFont class >> primFontCreateFor: face [
-	"Constructs a new font object from the specified face.
+AeHbFont class >> primFontCreateFor: anHbFace [
+	"Creates a new font object from the specified `AeHbFace` instance.
 	
 	See: https://harfbuzz.github.io/harfbuzz-hb-font.html#hb-font-create"
 
 	^ self ffiCall: #(
 		hb_font_t 
-		hb_font_create (hb_face_t face)
+		hb_font_create (hb_face_t anHbFace)
 		)
+]
+
+{ #category : #'instance creation' }
+AeHbFont class >> primFontCreateForFreetypeReferenced: ft_face [
+	"Creates an hb_font_t font object from the specified `AeFTFace` instance.
+
+	Note: Sender must set the face size on ft_face before calling hb_ft_font_create_referenced() on it. HarfBuzz assumes size is always set and will access `size` member of FT_Face unconditionally.
+
+	See: https://harfbuzz.github.io/harfbuzz-hb-ft.html#hb-ft-font-create-referenced"
+
+	^ self ffiCall: #(
+		hb_font_t
+		hb_ft_font_create_referenced (AeFTFace * ft_face)
+	)
 ]

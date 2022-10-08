@@ -165,6 +165,26 @@ AeHbBuffer >> primGetGlyphPositions: length [
 		)
 ]
 
+{ #category : #'accessing - output' }
+AeHbBuffer >> primGetLength [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-get-length"
+
+	^ self ffiCall: #(
+		uint
+		hb_buffer_get_length ( self )
+		)
+]
+
+{ #category : #'accessing - input' }
+AeHbBuffer >> primGuessSegmentProperties [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-guess-segment-properties"
+
+	^ self ffiCall: #(
+		void
+		hb_buffer_guess_segment_properties ( self )
+		)
+]
+
 { #category : #'shaping text' }
 AeHbBuffer >> primShapeWithFont: font features: features numFeatures: num_features [
 	"Shapes buffer using font turning its Unicode characters content to positioned glyphs. If features is not NULL, it will be used to control the features applied during shaping. If two features have the same tag but overlapping ranges the value of the feature with the higher index takes precedence.

@@ -67,6 +67,28 @@ AeFTFace class >> primDoneFace: aHandle [
 	self ffiCall: #(int FT_Done_Face(void* aHandle))
 ]
 
+{ #category : #accessing }
+AeFTFace >> charSize: aPoint [
+	"Request nominal size, taking resolution of 72 dpi.
+
+	The Point values are 26.6 fractional points."
+
+	^ self charSizeWidth: aPoint x height: aPoint y
+]
+
+{ #category : #accessing }
+AeFTFace >> charSizeWidth: aWidth height: aHeight [
+	"Request nominal size, taking resolution of 72 dpi.
+
+	The nominal width and height are 26.6 fractional points."
+
+	^ self
+		  primSetCharSizeWidth: aWidth
+		  height: aHeight
+		  horizontalResolution: 0
+		  verticalResolution: 0
+]
+
 { #category : #'accessing - structure variables' }
 AeFTFace >> faceFlags [
 	"This method was automatically generated"
@@ -162,6 +184,37 @@ AeFTFace >> numberOfGlyphs: anObject [
 AeFTFace >> postscriptName [
 
 	^ self ffiCall: #(String FT_Get_Postscript_Name (self))
+]
+
+{ #category : #accessing }
+AeFTFace >> primSetCharSizeWidth: char_width height: char_height horizontalResolution: horz_resolution verticalResolution: vert_resolution [
+	"Request nominal size.
+
+	The nominal width and height are 26.6 fractional points.
+	
+	The resolution is represented in dpi.
+
+	While this function allows fractional points as input values, the resulting ppem value for the given resolution is always rounded to the nearest integer.
+
+	If either the character width or height is zero, it is set equal to the other value.
+
+	If either the horizontal or vertical resolution is zero, it is set equal to the other value.
+
+	A character width or height smaller than 1pt is set to 1pt; if both resolution values are zero, they are set to 72dpi.
+
+	Don't use this function if you are using the FreeType cache API.
+	
+	See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_set_char_size"
+
+	^ self ffiCall: #(
+		long
+		FT_Set_Char_Size(
+			self,
+			long char_width,
+			long char_height,
+			uint horz_resolution,
+			uint vert_resolution )
+		)
 ]
 
 { #category : #printing }
