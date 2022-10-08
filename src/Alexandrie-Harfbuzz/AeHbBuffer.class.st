@@ -17,22 +17,16 @@ Class {
 }
 
 { #category : #'instance creation' }
-AeHbBuffer class >> bufferCreate [
+AeHbBuffer class >> new [
 
-	^ self primBufferCreate
+	^ self primCreate
 		autoRelease;
 		yourself
 
 ]
 
 { #category : #'instance creation' }
-AeHbBuffer class >> new [
-
-	^ self shouldNotImplement
-]
-
-{ #category : #'instance creation' }
-AeHbBuffer class >> primBufferCreate [
+AeHbBuffer class >> primCreate [
 
 	^ self ffiCall: #(
 		hb_buffer_t *
@@ -49,17 +43,18 @@ AeHbBuffer class >> primDestroy: aHandle [
 		)
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - input' }
 AeHbBuffer >> addUtf8String: aString [
 
 	| encoded |
 	encoded := aString utf8Encoded.
-	self primBufferAddUtf8: encoded length: encoded size itemOffset: 0 itemLength: encoded size
+	self primAddUtf8: encoded length: encoded size itemOffset: 0 itemLength: encoded size
 
 ]
 
-{ #category : #'instance creation' }
+{ #category : #'accessing - output' }
 AeHbBuffer >> glyphInfos [
+	"Answer an array of `AeHbGlyphInfo` that indicate information of each glyph of this buffer."
 
 	| lengthPointer aHandle |
 	lengthPointer := FFIUInt32 newBuffer.
@@ -73,8 +68,9 @@ AeHbBuffer >> glyphInfos [
 
 ]
 
-{ #category : #'instance creation' }
+{ #category : #'accessing - output' }
 AeHbBuffer >> glyphPositions [
+	"Answer an array of `AeHbGlyphPosition` that indicate the position of each glyph of this buffer."
 
 	| lengthPointer aHandle |
 	lengthPointer := FFIUInt32 newBuffer.
@@ -88,11 +84,11 @@ AeHbBuffer >> glyphPositions [
 
 ]
 
-{ #category : #accessing }
-AeHbBuffer >> primBufferAddUtf8: text length: text_length itemOffset: item_offset itemLength: item_length [
-	"See https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-add-utf8"
+{ #category : #'accessing - input' }
+AeHbBuffer >> primAddUtf8: text length: text_length itemOffset: item_offset itemLength: item_length [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-add-utf8"
 
-	^ self ffiCall: #(
+	self ffiCall: #(
 		void
 		hb_buffer_add_utf8 (
 			self,
@@ -103,43 +99,7 @@ AeHbBuffer >> primBufferAddUtf8: text length: text_length itemOffset: item_offse
 	)
 ]
 
-{ #category : #accessing }
-AeHbBuffer >> primBufferSetDirection: direction [
-	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-direction"
-
-	^ self ffiCall: #(
-		void
-		hb_buffer_set_direction (
-			self,
-			hb_direction_t direction)
-	)
-]
-
-{ #category : #accessing }
-AeHbBuffer >> primBufferSetLanguage: language [
-	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-language"
-
-	^ self ffiCall: #(
-		void
-		hb_buffer_set_language (
-			self,
-			hb_language_t language)
-	)
-]
-
-{ #category : #accessing }
-AeHbBuffer >> primBufferSetScript: script [
-	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-script"
-
-	^ self ffiCall: #(
-		void
-		hb_buffer_set_script (
-			self,
-			hb_script_t script)
-	)
-]
-
-{ #category : #'instance creation' }
+{ #category : #'accessing - output' }
 AeHbBuffer >> primGetGlyphInfos: length [
 	"Returns buffer glyph information array. Returned pointer is valid as long as buffer contents are not modified.
 
@@ -153,7 +113,7 @@ AeHbBuffer >> primGetGlyphInfos: length [
 		)
 ]
 
-{ #category : #'instance creation' }
+{ #category : #'accessing - output' }
 AeHbBuffer >> primGetGlyphPositions: length [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-get-glyph-positions"
 
@@ -183,6 +143,42 @@ AeHbBuffer >> primGuessSegmentProperties [
 		void
 		hb_buffer_guess_segment_properties ( self )
 		)
+]
+
+{ #category : #'accessing - input' }
+AeHbBuffer >> primSetDirection: direction [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-direction"
+
+	self ffiCall: #(
+		void
+		hb_buffer_set_direction (
+			self,
+			hb_direction_t direction)
+	)
+]
+
+{ #category : #'accessing - input' }
+AeHbBuffer >> primSetLanguage: language [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-language"
+
+	self ffiCall: #(
+		void
+		hb_buffer_set_language (
+			self,
+			hb_language_t language)
+	)
+]
+
+{ #category : #'accessing - input' }
+AeHbBuffer >> primSetScript: script [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-script"
+
+	self ffiCall: #(
+		void
+		hb_buffer_set_script (
+			self,
+			hb_script_t script)
+	)
 ]
 
 { #category : #'shaping text' }

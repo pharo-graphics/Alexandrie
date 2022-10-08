@@ -123,14 +123,14 @@ AeHarfbuzzRenderExample >> freetypeFace: anObject [
 AeHarfbuzzRenderExample >> glyphArrayWithHarfbuzz [
 
 	| buffer font len infos positions cairoGlyphsArray currentX currentY |
-	buffer := AeHbBuffer bufferCreate.
+	buffer := AeHbBuffer new.
 
 	buffer addUtf8String: string.
 
 
-	buffer primBufferSetDirection: AeHbDirection HB_DIRECTION_LTR.
-	buffer primBufferSetScript: AeHbScript HB_SCRIPT_LATIN.
-	buffer primBufferSetLanguage: (AeHbLanguage fromString: 'en').
+	buffer primSetDirection: AeHbDirection HB_DIRECTION_LTR.
+	buffer primSetScript: AeHbScript HB_SCRIPT_LATIN.
+	buffer primSetLanguage: (AeHbLanguage fromString: 'en').
 	"buffer primGuessSegmentProperties."
 
 	freetypeFace

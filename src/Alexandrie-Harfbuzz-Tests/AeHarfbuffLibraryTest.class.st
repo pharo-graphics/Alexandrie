@@ -13,13 +13,13 @@ AeHarfbuffLibraryTest >> testSimpleShapingExample [
 
 	| buffer blob face font infos positions |
 	"1. Create a buffer and put your text in it."
-	buffer := AeHbBuffer bufferCreate.
+	buffer := AeHbBuffer new.
 	buffer addUtf8String: 'Hola mundo'.
 
 	"2. Set the script, language and direction of the buffer."
-	buffer primBufferSetDirection: AeHbDirection HB_DIRECTION_LTR.
-	buffer primBufferSetScript: AeHbScript HB_SCRIPT_LATIN.
-	buffer primBufferSetLanguage: (AeHbLanguage fromString: 'en').
+	buffer primSetDirection: AeHbDirection HB_DIRECTION_LTR.
+	buffer primSetScript: AeHbScript HB_SCRIPT_LATIN.
+	buffer primSetLanguage: (AeHbLanguage fromString: 'en').
 
 	"3. Create a face and a font from a font file."
 	blob := AeHbBlob blobCreate: AeFilesystemResources inriaSerifRegularTTF.
