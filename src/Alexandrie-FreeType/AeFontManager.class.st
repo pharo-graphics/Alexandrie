@@ -11,13 +11,19 @@ Class {
 		'faceEntriesByFamilyName',
 		'freetypeLibrary',
 		'faceByEntryCache',
-		'defaultFace'
+		'defaultFace',
+		'defaultCodeFace'
 	],
 	#classInstVars : [
 		'globalInstance'
 	],
 	#category : #'Alexandrie-FreeType-Manager'
 }
+
+{ #category : #accessing }
+AeFontManager class >> defaultCodeFontFamilyName [
+	^ self globalInstance defaultCodeFace familyName
+]
 
 { #category : #accessing }
 AeFontManager class >> defaultFontFamilyName [
@@ -41,7 +47,17 @@ AeFontManager class >> globalInstance [
 			ifNone: [ self error: 'Shouldn''t happen' ].
 		
 		globalInstance defaultFace: aFace.
+
+		aFace := globalInstance
+			detectFamilyName: AeSourceCodePro_Regular familyName
+			slant: AeFontSlant normal
+			weight: AeFontWeight normal
+			stretch: AeFontStretch normal
+			ifNone: [ self error: 'Shouldn''t happen' ].
 		
+		globalInstance defaultCodeFace: aFace.
+
+
 		globalInstance ]
 ]
 
@@ -68,6 +84,19 @@ AeFontManager class >> shutDown: isQuitting [
 AeFontManager >> checkSession [
 
 	session == Smalltalk session ifFalse: [ self reset ]
+]
+
+{ #category : #accessing }
+AeFontManager >> defaultCodeFace [
+	
+	self checkSession.
+	^ defaultCodeFace
+]
+
+{ #category : #accessing }
+AeFontManager >> defaultCodeFace: aFTFace [
+
+	defaultCodeFace := aFTFace
 ]
 
 { #category : #accessing }
