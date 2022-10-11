@@ -7,11 +7,6 @@ Class {
 	#category : #'Alexandrie-Cairo-Tests'
 }
 
-{ #category : #testing }
-AeCairoImageSurfaceTest class >> isAbstract [
-	^ self = AthensCairoExportSurfaceTest
-]
-
 { #category : #tests }
 AeCairoImageSurfaceTest >> testCreateExtentFormat [
 
