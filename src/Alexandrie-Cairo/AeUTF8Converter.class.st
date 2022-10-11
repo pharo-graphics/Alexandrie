@@ -53,13 +53,15 @@ AeUTF8Converter class >> exampleCompareBenchs [
 			toStream: buffer writeStream.
 		buffer ].
 
+"--> Would add an unnecessary dependency to cairo
+
 	cairoConverter := CairoUTF8Converter new.
 	converters add: [ :aString |
 		cairoConverter
 			convert: aString
 			from: 1
 			to: aString size.
-		cairoConverter buffer ].
+		cairoConverter buffer ]."
 
 	aeConverter := AeUTF8Converter new.
 	converters add: [ :aString |
