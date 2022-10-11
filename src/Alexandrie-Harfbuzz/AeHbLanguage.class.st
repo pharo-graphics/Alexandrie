@@ -17,6 +17,12 @@ Class {
 }
 
 { #category : #'instance creation' }
+AeHbLanguage class >> en [
+
+	^ self fromString: 'en'
+]
+
+{ #category : #'instance creation' }
 AeHbLanguage class >> fromString: aString [
 
 	| encoded |
