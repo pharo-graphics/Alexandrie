@@ -54,3 +54,13 @@ AeHbFont class >> primFontCreateForFreetypeReferenced: ft_face [
 		hb_ft_font_create_referenced (AeFTFace * ft_face)
 	)
 ]
+
+{ #category : #'accessing - output' }
+AeHbFont >> primFontChanged [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-ft.html#hb-ft-font-changed"
+
+	^ self ffiCall: #(
+		void
+		hb_ft_font_changed ( self )
+		)
+]
