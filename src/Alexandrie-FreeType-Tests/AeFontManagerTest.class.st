@@ -66,7 +66,7 @@ AeFontManagerTest >> testFamilyNames [
 
 	self
 		assert: aManager familyNames asArray
-		equals: #('Inria Serif' 'Noto Color Emoji' 'Source Code Pro' 'Source Sans Pro')
+		equals: #('Cascadia Code' 'Inria Serif' 'Noto Color Emoji' 'Source Code Pro' 'Source Sans Pro')
 
 ]
 

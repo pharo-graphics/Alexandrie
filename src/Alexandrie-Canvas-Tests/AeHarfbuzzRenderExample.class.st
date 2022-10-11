@@ -1,3 +1,6 @@
+"
+I represent examples to compare usage of Harfbuzz library.
+"
 Class {
 	#name : #AeHarfbuzzRenderExample,
 	#superclass : #Object,
@@ -6,11 +9,23 @@ Class {
 		'string',
 		'fontSize'
 	],
-	#category : #'Alexandrie-Harfbuzz-Tests'
+	#category : #'Alexandrie-Canvas-Tests-Examples'
 }
 
 { #category : #examples }
-AeHarfbuzzRenderExample class >> example1ff [
+AeHarfbuzzRenderExample class >> arrowsFontSize [
+
+	^ 22
+]
+
+{ #category : #examples }
+AeHarfbuzzRenderExample class >> arrowsString [
+		
+	^ 'a := A->B->>C <= c|=>d~~>e.'
+]
+
+{ #category : #examples }
+AeHarfbuzzRenderExample class >> example1SourceSansPro [
 
 	| aFace |
 	aFace := AeFontManager globalInstance
@@ -22,16 +37,18 @@ AeHarfbuzzRenderExample class >> example1ff [
 
 	(self new
 		freetypeFace: aFace;
-		string: 'T.WAV.film.office';
-		fontSize: 72;
+		string: self ffString;
+		fontSize: self ffFontSize;
 		yourself)
 		newForm inspect
 ]
 
 { #category : #examples }
-AeHarfbuzzRenderExample class >> example2fi [
+AeHarfbuzzRenderExample class >> example2InriaSerif [
 
 	| aFace |
+	AeFontManager globalInstance scanDirectory: AeFilesystemResources fontsDirectory.
+
 	aFace := AeFontManager globalInstance
 		detectFamilyName: 'Inria Serif'
 		slant: AeFontSlant normal
@@ -41,39 +58,34 @@ AeHarfbuzzRenderExample class >> example2fi [
 
 	(self new
 		freetypeFace: aFace;
-		string: 'T.WAV.film.office';
-		fontSize: 72;
+		string: self ffString;
+		fontSize: self ffFontSize;
 		yourself)
 		newForm inspect
 ]
 
 { #category : #examples }
-AeHarfbuzzRenderExample class >> example3emoji [
+AeHarfbuzzRenderExample class >> example3Futura [
+	"This fontface comes with Apple MacBook."
 
-	| aFace aWideString |
-	BlSpaceFixture new ensureEmojiFontFace.
-
+	| aFace |
 	aFace := AeFontManager globalInstance
-		detectFamilyName: 'Noto Color Emoji'
+		detectFamilyName: 'Futura'
 		slant: AeFontSlant normal
-		weight: AeFontWeight normal
+		weight: AeFontWeight medium
 		stretch: AeFontStretch normal
 		ifNone: [ NotFound signal ].
 
-	aWideString := (WideString streamContents: [ :stream |
- 	#( 16r1F468 16r200D 16r1F680   ) do: [ :each |
-			stream nextPut: (Unicode value: each) ]]). 
-
 	(self new
 		freetypeFace: aFace;
-		string: aWideString;
-		fontSize: 43;
+		string: self ffString;
+		fontSize: self ffFontSize;
 		yourself)
 		newForm inspect
 ]
 
 { #category : #examples }
-AeHarfbuzzRenderExample class >> example4fira [
+AeHarfbuzzRenderExample class >> example4FiraCode [
 
 	| aFace |
 	"
@@ -89,10 +101,70 @@ AeHarfbuzzRenderExample class >> example4fira [
 
 	(self new
 		freetypeFace: aFace;
-		string: 'a := A->B->>C <= c|=>d~~>e.';
-		fontSize: 32;
+		string: self arrowsString;
+		fontSize: self arrowsFontSize;
 		yourself)
 		newForm inspect
+]
+
+{ #category : #examples }
+AeHarfbuzzRenderExample class >> example5CascadiaCode [
+
+	| aFace |
+	AeCascadiaCodeDownloadedFont new ensureDownloaded.
+	AeFontManager globalInstance scanDirectory: AeFilesystemResources fontsDirectory.
+
+	aFace := AeFontManager globalInstance
+		detectFamilyName: AeCascadiaCodeDownloadedFont new familyName
+		slant: AeFontSlant normal
+		weight: AeFontWeight normal
+		stretch: AeFontStretch normal
+		ifNone: [ NotFound signal ].
+
+	(self new
+		freetypeFace: aFace;
+		string: self arrowsString;
+		fontSize: self arrowsFontSize;
+		yourself)
+		newForm inspect
+]
+
+{ #category : #examples }
+AeHarfbuzzRenderExample class >> example6Emoji [
+
+	| aFace aWideString |
+	BlSpaceFixture new ensureEmojiFontFace.
+
+	aFace := AeFontManager globalInstance
+		detectFamilyName: AeNotoColorEmojiDownloadedFont new familyName
+		slant: AeFontSlant normal
+		weight: AeFontWeight normal
+		stretch: AeFontStretch normal
+		ifNone: [ NotFound signal ].
+
+	aWideString := (WideString streamContents: [ :stream |
+ 	#( 16r1F468 16r1F469 16r1F467 16r1F466 )
+		do: [ :each | stream nextPut: (Unicode value: each) ]
+		separatedBy: [ stream nextPut: Unicode zeroWidthSeparator ]]). 
+
+	(self new
+		freetypeFace: aFace;
+		string: aWideString;
+		fontSize: 40;
+		yourself)
+		newForm inspect
+]
+
+{ #category : #examples }
+AeHarfbuzzRenderExample class >> ffFontSize [
+
+	^ 30
+]
+
+{ #category : #examples }
+AeHarfbuzzRenderExample class >> ffString [
+
+	^ 'The special film starts after coffee et office... (AV.)'
 ]
 
 { #category : #accessing }
@@ -122,41 +194,15 @@ AeHarfbuzzRenderExample >> freetypeFace: anObject [
 { #category : #accessing }
 AeHarfbuzzRenderExample >> glyphArrayWithHarfbuzz [
 
-	| buffer font len infos positions cairoGlyphsArray currentX currentY |
+	| buffer |
 	buffer := AeHbBuffer new.
-
 	buffer addUtf8String: string.
-
-
 	buffer primSetDirection: AeHbDirection HB_DIRECTION_LTR.
 	buffer primSetScript: AeHbScript HB_SCRIPT_LATIN.
-	buffer primSetLanguage: (AeHbLanguage fromString: 'en').
+	buffer primSetLanguage: AeHbLanguage en.
 	"buffer primGuessSegmentProperties."
 
-	freetypeFace
-		charSizeWidth: fontSize * 64
-		height: fontSize * 64.
-	font := AeHbFont primFontCreateForFreetypeReferenced: freetypeFace.
-	buffer shapeWithFont: font.
-
-	len := buffer primGetLength.
-	infos := buffer glyphInfos.
-	positions := buffer glyphPositions.
-
-	cairoGlyphsArray := AeCairoGlyphArray externalNew: len.
-	currentX := 0.
-	currentY := 0.
-	cairoGlyphsArray doWithIndex: [ :each :index |
-		| position |
-		position := positions at: index. 
-		each
-			index: (infos at: index) codepoint;
-			x: currentX + (position x_offset / 64);
-			y: (currentY + (position y_offset / 64)) negated.
-		currentX := currentX + (position x_advance / 64).
-		currentY := currentY + (position y_advance / 64) ].
-
-	^ cairoGlyphsArray
+	^ buffer cairoGlyphArrayForFace: freetypeFace size: fontSize
 ]
 
 { #category : #accessing }
@@ -169,7 +215,7 @@ AeHarfbuzzRenderExample >> glyphArrayWithoutHarfbuzz: cairoScaledFont [
 AeHarfbuzzRenderExample >> newForm [
 
 	| aeCanvas cairoScaledFont |
-	aeCanvas := AeCanvas extent: 900 @ (fontSize * 4).
+	aeCanvas := AeCanvas extent: 1000 @ (fontSize * 4).
 	aeCanvas clear: Color white.
 
 	cairoScaledFont := aeCanvas scaledFontForFace: freetypeFace size: fontSize.

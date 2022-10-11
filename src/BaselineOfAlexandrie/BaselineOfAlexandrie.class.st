@@ -24,9 +24,14 @@ BaselineOfAlexandrie >> baseline: spec [
 				package: 'Alexandrie-FreeType';
 				package: 'Alexandrie-FreeType-Tests'
 					with: [ spec requires: #('Alexandrie-FreeType') ];
-					
+
+				package: 'Alexandrie-Harfbuzz'
+					with: [ spec requires: #('Alexandrie-FreeType') ];
+				package: 'Alexandrie-Harfbuzz-Tests'
+					with: [ spec requires: #('Alexandrie-Harfbuzz' 'Alexandrie-FreeType-Tests') ];
+				
 				package: 'Alexandrie-Canvas'
-					with: [ spec requires: #('Alexandrie-Cairo' 'Alexandrie-FreeType') ];
+					with: [ spec requires: #('Alexandrie-Cairo' 'Alexandrie-FreeType' 'Alexandrie-Harfbuzz') ];
 				package: 'Alexandrie-Canvas-Tests'
 					with: [ spec requires: #('Alexandrie-Canvas' 'Alexandrie-FreeType-Tests' 'Alexandrie-Cairo-Tests') ]
 			]
@@ -38,6 +43,7 @@ BaselineOfAlexandrie >> postload: loader package: packageSpec [
 	"Ignore pre and post loads if already executed"
 	Initialized = true ifTrue: [ ^ self ].
 
+	AeCascadiaCodeDownloadedFont new ensureDownloaded.
 	AeNotoColorEmojiDownloadedFont new ensureDownloaded.
 
 	Initialized := true.
