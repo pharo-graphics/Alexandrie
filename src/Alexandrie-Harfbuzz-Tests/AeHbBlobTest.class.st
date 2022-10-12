@@ -28,7 +28,7 @@ AeHbBlobTest >> testOpenSuccess [
 		raise: Error
 ]
 
-{ #category : #test }
+{ #category : #tests }
 AeHbBlobTest >> testPrimBlobGetLength [
 
 	| aBlob |

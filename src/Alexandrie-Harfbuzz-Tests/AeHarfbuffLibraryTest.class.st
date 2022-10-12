@@ -19,7 +19,7 @@ AeHarfbuffLibraryTest >> testSimpleShapingExample [
 	"2. Set the script, language and direction of the buffer."
 	buffer primSetDirection: AeHbDirection HB_DIRECTION_LTR.
 	buffer primSetScript: AeHbScript HB_SCRIPT_LATIN.
-	buffer primSetLanguage: (AeHbLanguage fromString: 'en').
+	buffer primSetLanguage: AeHbLanguage en.
 
 	"3. Create a face and a font from a font file."
 	blob := AeHbBlob blobCreate: AeFilesystemResources inriaSerifRegularTTF.
