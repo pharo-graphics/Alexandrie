@@ -449,8 +449,7 @@ AeCanvas >> setFigureWithBorderCenter [
 				primClipPreserve;
 				primPaintAlpha: backgroundAlpha;
 				resetClip ].
-		" isPathSetAsClip set to true otherwise there is no drawing outside de border "
-		isPathSetAsClip := true.
+
 		self prepareStroke: false.
 		cairoContext primStroke ]
 
