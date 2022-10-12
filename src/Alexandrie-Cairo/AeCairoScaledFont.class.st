@@ -74,12 +74,11 @@ AeCairoScaledFont >> fontMatrix [
 ]
 
 { #category : #API }
-AeCairoScaledFont >> glyphArrayFor: aString [
-
-	| aBuffer |
-	aBuffer := aString utf8Encoded.
-
-	^ self glyphArrayFor: aBuffer length: aBuffer size
+AeCairoScaledFont >> glyphArrayFor: aString [ 
+	
+	| utf8Encoded |
+	utf8Encoded := aString utf8Encoded.
+	^ self glyphArrayFor: utf8Encoded length: utf8Encoded size
 ]
 
 { #category : #API }
@@ -106,14 +105,6 @@ AeCairoScaledFont >> glyphArrayFor: aBuffer length: aBufferLength [
 	aGlyphsArray autoRelease.
 	
 	^ aGlyphsArray
-]
-
-{ #category : #API }
-AeCairoScaledFont >> glyphArrayForString: aString [ 
-	
-	| utf8Encoded |
-	utf8Encoded := aString utf8Encoded.
-	^ self glyphArrayFor: utf8Encoded length: utf8Encoded size
 ]
 
 { #category : #'private - ffi' }

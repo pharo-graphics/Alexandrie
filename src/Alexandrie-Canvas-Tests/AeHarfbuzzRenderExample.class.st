@@ -207,7 +207,7 @@ AeHarfbuzzRenderExample >> glyphArrayWithHarfbuzz [
 { #category : #accessing }
 AeHarfbuzzRenderExample >> glyphArrayWithoutHarfbuzz: cairoScaledFont [
 
-	^ cairoScaledFont glyphArrayForString: string
+	^ cairoScaledFont glyphArrayFor: string
 ]
 
 { #category : #accessing }
