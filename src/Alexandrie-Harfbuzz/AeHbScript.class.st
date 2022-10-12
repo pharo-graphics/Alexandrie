@@ -1527,3 +1527,9 @@ AeHbScript class >> initialize [
 
 	self initializeEnumeration
 ]
+
+{ #category : #'accessing enum' }
+AeHbScript class >> latin [
+
+	^ self HB_SCRIPT_LATIN
+]

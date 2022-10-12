@@ -196,10 +196,9 @@ AeHarfbuzzRenderExample >> glyphArrayWithHarfbuzz [
 	| buffer |
 	buffer := AeHbBuffer new.
 	buffer addUtf8String: string.
-	buffer primSetDirection: AeHbDirection HB_DIRECTION_LTR.
-	buffer primSetScript: AeHbScript HB_SCRIPT_LATIN.
+	buffer primSetDirection: AeHbDirection leftToRight.
+	buffer primSetScript: AeHbScript latin.
 	buffer primSetLanguage: AeHbLanguage en.
-	"buffer primGuessSegmentProperties."
 
 	^ buffer cairoGlyphArrayForFace: freetypeFace size: fontSize
 ]

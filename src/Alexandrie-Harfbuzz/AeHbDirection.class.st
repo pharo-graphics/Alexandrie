@@ -53,6 +53,12 @@ AeHbDirection class >> HB_DIRECTION_TTB [
 	^ HB_DIRECTION_TTB
 ]
 
+{ #category : #'accessing enum' }
+AeHbDirection class >> bottomToTop [
+
+	^ self HB_DIRECTION_BTT
+]
+
 { #category : #'enum declaration' }
 AeHbDirection class >> enumDecl [
 	"
@@ -72,4 +78,22 @@ AeHbDirection class >> enumDecl [
 AeHbDirection class >> initialize [
 
 	self initializeEnumeration
+]
+
+{ #category : #'accessing enum' }
+AeHbDirection class >> leftToRight [
+
+	^ self HB_DIRECTION_LTR
+]
+
+{ #category : #'accessing enum' }
+AeHbDirection class >> rightToLeft [
+
+	^ self HB_DIRECTION_RTL
+]
+
+{ #category : #'accessing enum' }
+AeHbDirection class >> topToBottom [
+
+	^ self HB_DIRECTION_TTB
 ]
