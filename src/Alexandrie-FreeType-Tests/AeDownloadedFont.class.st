@@ -12,6 +12,15 @@ Class {
 	#category : #'Alexandrie-FreeType-Tests'
 }
 
+{ #category : #convenience }
+AeDownloadedFont class >> ensureAllDownloadedAt: aFileReference [
+
+	self allSubclassesDo: [ :each |
+		each new
+			downloadDirectory: aFileReference;
+			ensureDownloaded ]
+]
+
 { #category : #accessing }
 AeDownloadedFont >> baseUrl [
 
@@ -50,9 +59,7 @@ AeDownloadedFont >> downloadDirectory: aFileReference [
 { #category : #actions }
 AeDownloadedFont >> ensureDownloaded [
 
-	self isDownloaded ifFalse: [
-		self download ]
-
+	self isDownloaded ifFalse: [ self download ]
 ]
 
 { #category : #accessing }
@@ -67,6 +74,12 @@ AeDownloadedFont >> fileName [
 	^ self subclassResponsibility 
 ]
 
+{ #category : #testing }
+AeDownloadedFont >> fileReference [
+
+	^ self downloadDirectory / self fileName
+]
+
 { #category : #initialization }
 AeDownloadedFont >> initialize [
 
@@ -78,5 +91,5 @@ AeDownloadedFont >> initialize [
 { #category : #testing }
 AeDownloadedFont >> isDownloaded [
 
-	^ (self downloadDirectory / self fileName) exists
+	^ self fileReference exists
 ]
