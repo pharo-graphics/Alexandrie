@@ -111,7 +111,6 @@ AeHarfbuzzRenderExample class >> example4FiraCode [
 AeHarfbuzzRenderExample class >> example5CascadiaCode [
 
 	| aFace |
-	AeCascadiaCodeDownloadedFont new ensureDownloaded.
 	AeFontManager globalInstance scanDirectory: AeFilesystemResources fontsDirectory.
 
 	aFace := AeFontManager globalInstance
