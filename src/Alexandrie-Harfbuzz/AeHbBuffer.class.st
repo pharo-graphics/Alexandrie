@@ -16,6 +16,23 @@ Class {
 	#category : #'Alexandrie-Harfbuzz-Core'
 }
 
+{ #category : #convenience }
+AeHbBuffer class >> defaultCairoGlyphArrayFor: aString face: aeFTFace size: fontSize [ 
+	"Answer a Cairo glyph array for a String, with the following parameters: 
+	* left-to-right direction
+	* latin script
+	* English language
+	"
+
+	| aBuffer |
+	aBuffer := self new.
+	aBuffer primSetDirection: AeHbDirection leftToRight.
+	aBuffer primSetScript: AeHbScript latin.
+	aBuffer primSetLanguage: AeHbLanguage en.
+	aBuffer addUtf8String: aString.
+	^ aBuffer cairoGlyphArrayForFace: aeFTFace size: fontSize
+]
+
 { #category : #'instance creation' }
 AeHbBuffer class >> new [
 
