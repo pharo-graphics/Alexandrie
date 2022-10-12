@@ -16,6 +16,7 @@ AeHbBuffer >> cairoGlyphArrayForFace: freetypeFace size: fontSize [
 	self shapeWithFont: font.
 
 	len := self primGetLength.
+	len = 0 ifTrue: [ ^ AeCairoGlyphArray externalNewEmpty ].
 	infos := self glyphInfos.
 	positions := self glyphPositions.
 
