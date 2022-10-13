@@ -4,14 +4,11 @@ Extension { #name : #AeHbBuffer }
 AeHbBuffer >> cairoGlyphArrayForFace: freetypeFace size: fontSize [
 	"Based on: https://github.com/harfbuzz/harfbuzz-tutorial/blob/master/hello-harfbuzz-freetype.c"
 
-	| font len infos positions cairoGlyphsArray currentX currentY multiplier |
-	self flag: #todo.
-	"Why this multiplier? didn't see on documentation"
-	multiplier := 64.
+	| font len infos positions cairoGlyphsArray currentX currentY |
 	
 	freetypeFace
-		charSizeWidth: fontSize * multiplier
-		height: fontSize * multiplier.
+		charSizeWidth: fontSize as26Dot6FractionalPoint
+		height: fontSize as26Dot6FractionalPoint.
 	font := AeHbFont primFontCreateForFreetypeReferenced: freetypeFace.
 	self shapeWithFont: font.
 
@@ -28,10 +25,10 @@ AeHbBuffer >> cairoGlyphArrayForFace: freetypeFace size: fontSize [
 		position := positions at: index.
 		each
 			index: (infos at: index) codepoint;
-			x: currentX + (position x_offset / multiplier);
-			y: (currentY + (position y_offset / multiplier)) negated.
-		currentX := currentX + (position x_advance / multiplier).
-		currentY := currentY + (position y_advance / multiplier) ].
+			x: currentX + (position x_offset from26Dot6FractionalPoint);
+			y: (currentY + (position y_offset from26Dot6FractionalPoint)) negated.
+		currentX := currentX + (position x_advance from26Dot6FractionalPoint).
+		currentY := currentY + (position y_advance from26Dot6FractionalPoint) ].
 
 	^ cairoGlyphsArray
 ]
