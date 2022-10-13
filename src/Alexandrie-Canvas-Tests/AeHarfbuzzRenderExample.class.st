@@ -195,14 +195,13 @@ AeHarfbuzzRenderExample >> freetypeFace: anObject [
 { #category : #accessing }
 AeHarfbuzzRenderExample >> glyphArrayWithHarfbuzz [
 
-	| buffer |
-	buffer := AeHbBuffer new.
-	buffer addUtf8String: string.
-	buffer primSetDirection: AeHbDirection leftToRight.
-	buffer primSetScript: AeHbScript latin.
-	buffer primSetLanguage: AeHbLanguage en.
-
-	^ buffer cairoGlyphArrayForFace: freetypeFace size: fontSize
+	^ AeHbBuffer new
+		primSetDirection: AeHbDirection leftToRight;
+		primSetScript: AeHbScript latin;
+		primSetLanguage: AeHbLanguage en;
+		primSetClusterLevel: AeHbBufferClusterLevel recommended;
+		addUtf8String: string;
+		cairoGlyphArrayForFace: freetypeFace size: fontSize
 ]
 
 { #category : #accessing }

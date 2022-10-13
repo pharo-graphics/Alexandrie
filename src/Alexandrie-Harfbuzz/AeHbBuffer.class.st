@@ -22,15 +22,16 @@ AeHbBuffer class >> defaultCairoGlyphArrayFor: aString face: aeFTFace size: font
 	* left-to-right direction
 	* latin script
 	* English language
+	* HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS cluster level (recommended by lib's documentation)
 	"
 
-	| aBuffer |
-	aBuffer := self new.
-	aBuffer primSetDirection: AeHbDirection leftToRight.
-	aBuffer primSetScript: AeHbScript latin.
-	aBuffer primSetLanguage: AeHbLanguage en.
-	aBuffer addUtf8String: aString.
-	^ aBuffer cairoGlyphArrayForFace: aeFTFace size: fontSize
+	^ self new
+		primSetDirection: AeHbDirection leftToRight;
+		primSetScript: AeHbScript latin;
+		primSetLanguage: AeHbLanguage en;
+		primSetClusterLevel: AeHbBufferClusterLevel recommended;
+		addUtf8String: aString;
+		cairoGlyphArrayForFace: aeFTFace size: fontSize
 ]
 
 { #category : #'instance creation' }
@@ -160,6 +161,18 @@ AeHbBuffer >> primGuessSegmentProperties [
 		void
 		hb_buffer_guess_segment_properties ( self )
 		)
+]
+
+{ #category : #'accessing - input' }
+AeHbBuffer >> primSetClusterLevel: cluster_level [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-cluster-level"
+
+	self ffiCall: #(
+		void
+		hb_buffer_set_cluster_level (
+			self,
+			hb_buffer_cluster_level_t cluster_level)
+	)
 ]
 
 { #category : #'accessing - input' }
