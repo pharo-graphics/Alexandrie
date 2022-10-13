@@ -76,7 +76,7 @@ AeHbBuffer >> glyphInfos [
 	| lengthPointer aHandle |
 	lengthPointer := FFIUInt32 newBuffer.
 	aHandle := self primGetGlyphInfos: lengthPointer.
-	"Library has responsability to free."
+	"Library has responsability to free it."
 	
 	^ FFIExternalArray
 		  fromHandle: aHandle
@@ -118,7 +118,7 @@ AeHbBuffer >> primAddUtf8: text length: text_length itemOffset: item_offset item
 
 { #category : #'accessing - output' }
 AeHbBuffer >> primGetGlyphInfos: length [
-	"Returns buffer glyph information array. Returned pointer is valid as long as buffer contents are not modified.
+	"Returns a collection of `AeHbGlyphInfo` with glyph information. Returned pointer is valid as long as buffer contents are not modified.
 
 	See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-get-glyph-infos"
 

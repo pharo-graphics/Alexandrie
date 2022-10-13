@@ -69,6 +69,8 @@ AeHarfbuzzRenderExample class >> example3Futura [
 	"This fontface comes with Apple MacBook."
 
 	| aFace |
+	 AeFontManager globalInstance scanDefaultDirectories.
+	
 	aFace := AeFontManager globalInstance
 		detectFamilyName: 'Futura'
 		slant: AeFontSlant normal
