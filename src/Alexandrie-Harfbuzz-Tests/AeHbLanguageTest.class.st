@@ -15,6 +15,10 @@ AeHbLanguageTest >> testFromString [
 		equals: (AeHbLanguage fromString: 'en') getHandle.
 
 	self
+		assert: (AeHbLanguage fromString: 'en') getHandle
+		equals: AeHbLanguage en getHandle.
+
+	self
 		deny: (AeHbLanguage fromString: 'en') getHandle
 		equals: (AeHbLanguage fromString: 'fr') getHandle.
 

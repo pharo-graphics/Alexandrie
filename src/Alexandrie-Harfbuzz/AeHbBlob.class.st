@@ -83,7 +83,7 @@ AeHbBlob class >> primDestroy: aHandle [
 ]
 
 { #category : #accessing }
-AeHbBlob >> primBlobGetLength [
+AeHbBlob >> primGetLength [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-blob.html#hb-blob-get-length"
 
 	^ self ffiCall: #(

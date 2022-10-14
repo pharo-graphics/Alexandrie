@@ -118,6 +118,18 @@ AeHbBuffer >> primAddUtf8: text length: text_length itemOffset: item_offset item
 ]
 
 { #category : #'accessing - output' }
+AeHbBuffer >> primClearContents [
+	"Similar to `hb_buffer_reset()`, but does not clear the Unicode functions and the replacement code point.
+
+	See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-clear-contents"
+
+	self ffiCall: #(
+		void
+		hb_buffer_clear_contents ( self )
+		)
+]
+
+{ #category : #'accessing - output' }
 AeHbBuffer >> primGetGlyphInfos: length [
 	"Returns a collection of `AeHbGlyphInfo` with glyph information. Returned pointer is valid as long as buffer contents are not modified.
 
@@ -160,6 +172,18 @@ AeHbBuffer >> primGuessSegmentProperties [
 	^ self ffiCall: #(
 		void
 		hb_buffer_guess_segment_properties ( self )
+		)
+]
+
+{ #category : #'accessing - output' }
+AeHbBuffer >> primReset [
+	"Resets the buffer to its initial status, as if it was just newly created with `hb_buffer_create()`.
+
+	See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-reset"
+
+	self ffiCall: #(
+		void
+		hb_buffer_reset ( self )
 		)
 ]
 

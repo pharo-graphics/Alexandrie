@@ -32,6 +32,7 @@ AeHbLanguage class >> fromString: aString [
 
 { #category : #'instance creation' }
 AeHbLanguage class >> primLanguageFromString: str length: len [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-language-from-string"
 
 	^ self ffiCall: #(
 		hb_language_t

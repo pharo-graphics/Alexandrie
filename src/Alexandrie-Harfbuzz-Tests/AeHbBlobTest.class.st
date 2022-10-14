@@ -29,12 +29,12 @@ AeHbBlobTest >> testOpenSuccess [
 ]
 
 { #category : #tests }
-AeHbBlobTest >> testPrimBlobGetLength [
+AeHbBlobTest >> testPrimGetLength [
 
 	| aBlob |
 	aBlob := AeHbBlob blobCreate: AeFilesystemResources inriaSerifRegularTTF.
 
 	self
-		assert: aBlob primBlobGetLength
+		assert: aBlob primGetLength
 		equals: AeFilesystemResources inriaSerifRegularTTF size
 ]
