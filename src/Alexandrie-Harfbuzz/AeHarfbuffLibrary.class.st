@@ -15,3 +15,12 @@ AeHarfbuffLibrary >> macLibraryName [
 
 	^ FFIMacLibraryFinder findLibrary: 'libharfbuzz.0.dylib'
 ]
+
+{ #category : #versions }
+AeHarfbuffLibrary >> versionString [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-version.html#hb-version-string"
+
+	^ self ffiCall: #(
+		String hb_version_string ( )
+		)
+]
