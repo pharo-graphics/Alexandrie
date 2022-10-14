@@ -244,3 +244,35 @@ AeFTLibrary >> primNewMemoryFace: aFaceAddress buffer: fileBase size: fileSize i
 			"FT_Face" void ** aFaceAddress ))
 
 ]
+
+{ #category : #'private - ffi' }
+AeFTLibrary >> primVersionMajor: major minor: minor patch: patch [
+	"See: https://freetype.org/freetype2/docs/reference/ft2-version.html#ft_library_version"
+
+	self ffiCall: #(
+		void
+		FT_Library_Version (
+			self,
+			int * major,
+			int * minor,
+			int * patch)
+		)
+
+]
+
+{ #category : #accessing }
+AeFTLibrary >> versionString [
+
+	| major minor patch|
+	major := FFIInt32 newBuffer.
+	minor := FFIInt32 newBuffer.
+	patch := FFIInt32 newBuffer.
+	
+	self primVersionMajor: major minor: minor patch: patch. 
+	
+	^ '{1}.{2}.{3}' format: { 
+		major signedLongAt: 1.
+		minor signedLongAt: 1.
+		patch signedLongAt: 1.
+		}
+]
