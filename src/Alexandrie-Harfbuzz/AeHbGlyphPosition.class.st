@@ -64,6 +64,18 @@ AeHbGlyphPosition >> var: anObject [
 	handle unsignedLongAt: OFFSET_VAR put: anObject
 ]
 
+{ #category : #accessing }
+AeHbGlyphPosition >> xAdvanceFrom26Dot6 [
+
+	^ self x_advance from26Dot6FractionalPoint
+]
+
+{ #category : #accessing }
+AeHbGlyphPosition >> xOffsetFrom26Dot6 [
+
+	^ self x_offset from26Dot6FractionalPoint
+]
+
 { #category : #'accessing - structure variables' }
 AeHbGlyphPosition >> x_advance [
 	"This method was automatically generated"
@@ -86,6 +98,18 @@ AeHbGlyphPosition >> x_offset [
 AeHbGlyphPosition >> x_offset: anObject [
 	"This method was automatically generated"
 	handle signedLongAt: OFFSET_X_OFFSET put: anObject
+]
+
+{ #category : #accessing }
+AeHbGlyphPosition >> yAdvanceFrom26Dot6 [
+
+	^ self y_advance from26Dot6FractionalPoint
+]
+
+{ #category : #accessing }
+AeHbGlyphPosition >> yOffsetFrom26Dot6 [
+
+	^ self y_offset from26Dot6FractionalPoint
 ]
 
 { #category : #'accessing - structure variables' }

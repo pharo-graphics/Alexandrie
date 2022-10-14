@@ -69,22 +69,18 @@ AeFTFace class >> primDoneFace: aHandle [
 
 { #category : #accessing }
 AeFTFace >> charSize: aPoint [
-	"Request nominal size, taking resolution of 72 dpi.
-
-	The Point values are 26.6 fractional points."
+	"Request nominal size, taking resolution of 72 dpi."
 
 	^ self charSizeWidth: aPoint x height: aPoint y
 ]
 
 { #category : #accessing }
 AeFTFace >> charSizeWidth: aWidth height: aHeight [
-	"Request nominal size, taking resolution of 72 dpi.
-
-	The nominal width and height are 26.6 fractional points."
+	"Request nominal size, taking resolution of 72 dpi."
 
 	^ self
-		  primSetCharSizeWidth: aWidth
-		  height: aHeight
+		  primSetCharSizeWidth: aWidth as26Dot6FractionalPoint
+		  height: aHeight as26Dot6FractionalPoint
 		  horizontalResolution: 0
 		  verticalResolution: 0
 ]
