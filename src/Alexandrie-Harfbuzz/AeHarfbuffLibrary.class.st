@@ -16,6 +16,12 @@ AeHarfbuffLibrary >> macLibraryName [
 	^ FFIMacLibraryFinder findLibrary: 'libharfbuzz.0.dylib'
 ]
 
+{ #category : #'accessing - platform' }
+AeHarfbuffLibrary >> unix64LibraryName [
+
+	^ FFIUnix64LibraryFinder findLibrary: 'libharfbuzz.so.0'
+]
+
 { #category : #versions }
 AeHarfbuffLibrary >> versionString [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-version.html#hb-version-string"
