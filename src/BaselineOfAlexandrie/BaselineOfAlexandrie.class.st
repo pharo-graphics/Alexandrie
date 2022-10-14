@@ -38,13 +38,47 @@ BaselineOfAlexandrie >> baseline: spec [
 ]
 
 { #category : #actions }
+BaselineOfAlexandrie >> downloadTestFonts [
+
+	AeDownloadedFont ensureAllDownloadedAt: AeFilesystemResources downloadedFontsDirectory.
+	AeFontManager globalInstance scanDirectory: AeFilesystemResources fontsDirectory.
+
+]
+
+{ #category : #actions }
 BaselineOfAlexandrie >> postload: loader package: packageSpec [
 
 	"Ignore pre and post loads if already executed"
 	Initialized = true ifTrue: [ ^ self ].
 
-	AeDownloadedFont ensureAllDownloadedAt: AeFilesystemResources downloadedFontsDirectory.
-	AeFontManager globalInstance scanDirectory: AeFilesystemResources fontsDirectory.
+	self downloadTestFonts; stdoutLibraryVersions.
 
 	Initialized := true.
+]
+
+{ #category : #actions }
+BaselineOfAlexandrie >> stdoutLibraryVersions [
+	
+	Stdio stdout
+		<< '-----------------------------'; lf;
+		<< 'Main graphic library versions'; lf;
+		<< '-----------------------------'; lf.
+
+	Stdio stdout
+		<< 'Cairo: 		';
+		<< AeCairoLibrary uniqueInstance versionString; lf.
+
+	Stdio stdout
+		<< 'Freetype: 	';
+		<< AeFTLibrary newInitialized versionString; lf.
+
+	Stdio stdout
+		<< 'Harfbuzz: 	';
+		<< AeHarfbuffLibrary uniqueInstance versionString; lf.
+
+	Stdio stdout
+		<< 'SDL: 		'.
+	SDL2 version printAsSemanticVersioningOn: Stdio stdout.
+	Stdio stdout lf.
+		
 ]
