@@ -7,6 +7,7 @@ Class {
 	#classVars : [
 		'hb_blob_t',
 		'hb_buffer_cluster_level_t',
+		'hb_buffer_flags_t',
 		'hb_buffer_t',
 		'hb_codepoint_t',
 		'hb_direction_t',
@@ -44,4 +45,5 @@ AeHbTypes class >> initialize [
 	hb_glyph_info_t := AeHbGlyphInfo.
 	hb_glyph_position_t := AeHbGlyphPosition.
 	hb_buffer_cluster_level_t := AeHbBufferClusterLevel.
+	hb_buffer_flags_t := AeHbBufferFlags.
 ]

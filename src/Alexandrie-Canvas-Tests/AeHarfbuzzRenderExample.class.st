@@ -200,6 +200,7 @@ AeHarfbuzzRenderExample >> glyphArrayWithHarfbuzz [
 		primSetScript: AeHbScript latin;
 		primSetLanguage: AeHbLanguage en;
 		primSetClusterLevel: AeHbBufferClusterLevel recommended;
+		primSetFlags: AeHbBufferFlags beginningOrEndingOfText;
 		addUtf8String: string;
 		cairoGlyphArrayForFace: freetypeFace size: fontSize
 ]

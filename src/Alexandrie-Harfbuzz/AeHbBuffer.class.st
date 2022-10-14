@@ -188,6 +188,18 @@ AeHbBuffer >> primSetDirection: direction [
 ]
 
 { #category : #'accessing - input' }
+AeHbBuffer >> primSetFlags: flags [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-flags"
+
+	self ffiCall: #(
+		void
+		hb_buffer_set_flags (
+			self,
+			"hb_buffer_flags_t" uint flags)
+	)
+]
+
+{ #category : #'accessing - input' }
 AeHbBuffer >> primSetLanguage: language [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-language"
 
