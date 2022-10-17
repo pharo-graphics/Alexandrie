@@ -30,3 +30,9 @@ AeHarfbuffLibrary >> versionString [
 		String hb_version_string ( )
 		)
 ]
+
+{ #category : #'accessing - platform' }
+AeHarfbuffLibrary >> win32LibraryName [
+
+	^ FFIWindowsLibraryFinder findLibrary: 'libharfbuzz-0.dll'
+]
