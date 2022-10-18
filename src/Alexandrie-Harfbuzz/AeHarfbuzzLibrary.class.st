@@ -5,25 +5,25 @@ See: https://harfbuzz.github.io/index.html
 
 "
 Class {
-	#name : #AeHarfbuffLibrary,
+	#name : #AeHarfbuzzLibrary,
 	#superclass : #FFILibrary,
 	#category : #'Alexandrie-Harfbuzz-Library'
 }
 
 { #category : #'accessing - platform' }
-AeHarfbuffLibrary >> macLibraryName [
+AeHarfbuzzLibrary >> macLibraryName [
 
 	^ FFIMacLibraryFinder findLibrary: 'libharfbuzz.0.dylib'
 ]
 
 { #category : #'accessing - platform' }
-AeHarfbuffLibrary >> unix64LibraryName [
+AeHarfbuzzLibrary >> unix64LibraryName [
 
 	^ FFIUnix64LibraryFinder findLibrary: 'libharfbuzz.so.0'
 ]
 
 { #category : #versions }
-AeHarfbuffLibrary >> versionString [
+AeHarfbuzzLibrary >> versionString [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-version.html#hb-version-string"
 
 	^ self ffiCall: #(
@@ -32,7 +32,7 @@ AeHarfbuffLibrary >> versionString [
 ]
 
 { #category : #'accessing - platform' }
-AeHarfbuffLibrary >> win32LibraryName [
+AeHarfbuzzLibrary >> win32LibraryName [
 
 	^ FFIWindowsLibraryFinder findLibrary: 'libharfbuzz-0.dll'
 ]

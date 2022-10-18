@@ -9,7 +9,7 @@ Trait {
 { #category : #'library path' }
 AeTHarfbuzzLibrary classSide >> ffiLibraryName [
 
-	^ AeHarfbuffLibrary
+	^ AeHarfbuzzLibrary
 ]
 
 { #category : #'library path' }

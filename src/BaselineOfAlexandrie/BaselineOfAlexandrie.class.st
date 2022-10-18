@@ -66,7 +66,7 @@ BaselineOfAlexandrie >> stdoutLibraryVersions [
 
 	{	'Cairo: 		'. [AeCairoLibrary uniqueInstance versionString].
 		'Freetype: 	'. [AeFTLibrary newInitialized versionString].
-		'Harfbuzz: 	'. [AeHarfbuffLibrary uniqueInstance versionString].
+		'Harfbuzz: 	'. [AeHarfbuzzLibrary uniqueInstance versionString].
 		'SDL: 		'. [SDL2 version versionString]}
 			pairsDo: [ :label :block |
 				Stdio stdout
