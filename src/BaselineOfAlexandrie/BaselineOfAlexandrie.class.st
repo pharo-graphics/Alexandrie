@@ -64,21 +64,14 @@ BaselineOfAlexandrie >> stdoutLibraryVersions [
 		<< 'Main graphic library versions'; lf;
 		<< '-----------------------------'; lf.
 
-	Stdio stdout
-		<< 'Cairo: 		';
-		<< AeCairoLibrary uniqueInstance versionString; lf.
+	{	'Cairo: 		'. [AeCairoLibrary uniqueInstance versionString].
+		'Freetype: 	'. [AeFTLibrary newInitialized versionString].
+		'Harfbuzz: 	'. [AeHarfbuffLibrary uniqueInstance versionString].
+		'SDL: 		'. [SDL2 version versionString]}
+			pairsDo: [ :label :block |
+				Stdio stdout
+					<< label;
+					<< (block onErrorDo: [ '---' ]); lf ]
 
-	Stdio stdout
-		<< 'Freetype: 	';
-		<< AeFTLibrary newInitialized versionString; lf.
 
-	Stdio stdout
-		<< 'Harfbuzz: 	';
-		<< AeHarfbuffLibrary uniqueInstance versionString; lf.
-
-	Stdio stdout
-		<< 'SDL: 		'.
-	SDL2 version printAsSemanticVersioningOn: Stdio stdout.
-	Stdio stdout lf.
-		
 ]
