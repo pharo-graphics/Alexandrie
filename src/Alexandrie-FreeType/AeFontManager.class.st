@@ -74,10 +74,9 @@ AeFontManager class >> resetGlobalInstance [
 ]
 
 { #category : #'system startup' }
-AeFontManager class >> shutDown: isQuitting [
+AeFontManager class >> startUp: isResuming [
 
-	isQuitting ifFalse: [ ^ self ].
-	self resetGlobalInstance.
+	isResuming ifTrue: [ self resetGlobalInstance ]
 ]
 
 { #category : #initialization }
