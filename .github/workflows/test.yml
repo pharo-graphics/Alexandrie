@@ -27,7 +27,7 @@ jobs:
         with:
           smalltalk-image: ${{ matrix.smalltalk }}
       - name: Download DLLs
-        uses: actions/schmiddim-wget-unzip@v1
+        uses: schmiddim/action-wget-unzip@v2
         with:
           url: 'https://github.com/harfbuzz/harfbuzz/releases/download/5.2.0/harfbuzz-win64-5.2.0.zip'
           destination: '/home/runner/.smalltalkCI/_builds/'
