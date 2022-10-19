@@ -4,9 +4,8 @@ Stdio stdout << 'ciPreLoading.st - Adding $GITHUB_WORKSPACE environment variable
 repoPath := Smalltalk os environment
 	at: 'GITHUB_WORKSPACE'
 	ifAbsent: [
-		Stdio stdout nextPutAll: 'Not defined!'; lf.
-		^ self.
-	].
+		Stdio stdout nextPutAll: 'Not defined'; lf.
+		^ self ].
 Stdio stdout print: repoPath; lf.
 
 (IceRepositoryCreator new
