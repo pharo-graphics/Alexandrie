@@ -1,10 +1,10 @@
 | repoPath |
 
-Stdio stdout << 'ciPreLoading.st - Adding $GITHUB_WORKSPACE environment variable to Iceberg: '.
+Stdio stdout << 'ciPreLoading.st - Adding $GITHUB_WORKSPACE directory to Iceberg: '.
 repoPath := Smalltalk os environment
 	at: 'GITHUB_WORKSPACE'
 	ifAbsent: [
-		Stdio stdout nextPutAll: 'Not defined'; lf.
+		Stdio stdout nextPutAll: 'NOT DEFINED, WRONG'; lf.
 		^ self ].
 Stdio stdout print: repoPath; lf.
 
