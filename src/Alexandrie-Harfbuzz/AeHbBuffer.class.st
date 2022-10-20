@@ -224,6 +224,18 @@ AeHbBuffer >> primSetFlags: flags [
 ]
 
 { #category : #'accessing - input' }
+AeHbBuffer >> primSetInvisibleGlyph: invisible [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-invisible-glyph"
+
+	self ffiCall: #(
+		void
+		hb_buffer_set_invisible_glyph (
+			self,
+			hb_codepoint_t invisible)
+	)
+]
+
+{ #category : #'accessing - input' }
 AeHbBuffer >> primSetLanguage: language [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-language"
 
