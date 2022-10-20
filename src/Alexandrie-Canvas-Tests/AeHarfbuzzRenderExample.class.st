@@ -134,7 +134,7 @@ AeHarfbuzzRenderExample class >> example5CascadiaCode [
 AeHarfbuzzRenderExample class >> example6Emoji [
 
 	| aFace aWideString |
-	BlSpaceFixture new ensureEmojiFontFace.
+	AeFontManager globalInstance scanDirectory: AeFilesystemResources fontsDirectory.
 
 	aFace := AeFontManager globalInstance
 		detectFamilyName: AeNotoColorEmojiDownloadedFont new familyName
