@@ -5,22 +5,17 @@ Class {
 }
 
 { #category : #tests }
-Ae26Dot6FractionalPointTest >> testFrom [
+Ae26Dot6FractionalPointTest >> testOnFloat [
 
-	self assert: 78976 from26Dot6FractionalPoint equals: 1234.
-	self assert: 78976 from26Dot6FractionalPoint isInteger.
-	
-
-
+	self assert: 1234.56 as26Dot6FractionalPoint equals: 79011. 
+	self assert: 79011 from26Dot6FractionalPoint closeTo: 1234.56. 
 
 ]
 
 { #category : #tests }
-Ae26Dot6FractionalPointTest >> testTo [
+Ae26Dot6FractionalPointTest >> testOnInteger [
 
 	self assert: 1234 as26Dot6FractionalPoint equals: 1234 << 6.
-	self assert: 1234 as26Dot6FractionalPoint isInteger.	
-
-
+	self assert: (1234 << 6) from26Dot6FractionalPoint equals: 1234.0.
 
 ]

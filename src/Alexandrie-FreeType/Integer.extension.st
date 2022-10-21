@@ -9,5 +9,5 @@ Integer >> as26Dot6FractionalPoint [
 { #category : #'*Alexandrie-FreeType' }
 Integer >> from26Dot6FractionalPoint [
 	
-	^ self >> 6
+	^ self / 64.0
 ]
