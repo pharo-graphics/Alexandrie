@@ -118,13 +118,19 @@ AeFontManagerTest >> testScanDefaultDirectories [
 ]
 
 { #category : #tests }
-AeFontManagerTest >> testScanDirectory [
+AeFontManagerTest >> testScanDirectoryWithoutDuplicates [
 
 	| aManager |
 	aManager := AeFontManager new.
 	aManager scanDirectory: AeFilesystemResources fontsDirectory.
 
-	self denyEmpty: aManager familyNames
+	self denyEmpty: aManager familyNames.
+
+	"This test directory has ttf and otf files"
+	self
+		assert: (AeFilesystemResources fontsDirectory / 'inria-serif' / 'inriaSerif' / 'TTF') files size
+		equals: (aManager faceEntriesByFamilyName at: 'inria serif') size.
+
 ]
 
 { #category : #tests }

@@ -191,6 +191,7 @@ AeFontManager >> initialize [
 { #category : #registering }
 AeFontManager >> registerFace: aFace entry: aFaceEntry [
 
+	| registeredFaceEntries |
 	aFaceEntry 
 		familyName: aFace familyName;
 		styleName: aFace styleName.
@@ -204,10 +205,13 @@ AeFontManager >> registerFace: aFace entry: aFaceEntry [
 			ifFalse: [ AeFontSlant normal ]).
 	aFaceEntry stretch: AeFontStretch normal.
 
-	(faceEntriesByFamilyName
+	registeredFaceEntries := faceEntriesByFamilyName
 		at: aFaceEntry familyName asLowercase
-		ifAbsentPut: [ Set new ])
-		add: aFaceEntry
+		ifAbsentPut: [ Set new ].
+
+	(registeredFaceEntries anySatisfy: [ :each |
+		each slantWeightStretch = aFaceEntry slantWeightStretch ])
+		ifFalse: [ registeredFaceEntries add: aFaceEntry ]
 
 ]
 
