@@ -51,19 +51,19 @@ Class {
 	#category : #'Alexandrie-Canvas-Base'
 }
 
-{ #category : #accessing }
+{ #category : #'instance creation' }
 AeCanvas class >> extent: aPoint [
 
 	^ self newFor: (AeCairoImageSurface extent: aPoint)
 ]
 
-{ #category : #accessing }
+{ #category : #'instance creation' }
 AeCanvas class >> new [
 
 	^ self shouldNotImplement
 ]
 
-{ #category : #accessing }
+{ #category : #'instance creation' }
 AeCanvas class >> newFor: aeCairoSurface [
 
 	^ self basicNew
