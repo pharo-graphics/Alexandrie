@@ -766,22 +766,22 @@ AeCairoContext >> roundedRectangleTo: extentPoint radii: anArrayOfCornerRadii [
 		endAngle: threeHalvesPi.
 
 	self
-		primArcCenterX: b - trR
+		primArcCenterX: r - trR
 		centerY: trR
 		radius: trR
 		startAngle: threeHalvesPi
 		endAngle: Float twoPi.
 
 	self
-		primArcCenterX: b - brR
-		centerY: r - brR
+		primArcCenterX: r - brR
+		centerY: b - brR
 		radius: brR
 		startAngle: 0.0
 		endAngle: Float halfPi.
 
 	self
 		primArcCenterX: blR
-		centerY: r - blR
+		centerY: b - blR
 		radius: blR
 		startAngle: Float halfPi
 		endAngle: Float pi.
