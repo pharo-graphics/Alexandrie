@@ -21,9 +21,6 @@ Class {
 		'OFFSET_STYLEFLAGS',
 		'OFFSET_STYLENAMEADDRESS'
 	],
-	#pools : [
-		'AeFTConstants'
-	],
 	#category : #'Alexandrie-FreeType-FFI'
 }
 
@@ -127,6 +124,12 @@ AeFTFace >> familyNameAddress: anObject [
 	handle pointerAt: OFFSET_FAMILYNAMEADDRESS put: anObject getHandle.
 ]
 
+{ #category : #accessing }
+AeFTFace >> flags [
+
+	^ AeFTFaceFlag bitFlagsAt: self faceFlags
+]
+
 { #category : #'initialize-release' }
 AeFTFace >> free [
 
@@ -137,19 +140,28 @@ AeFTFace >> free [
 { #category : #testing }
 AeFTFace >> isBold [
 
-	^ self styleFlags allMask: StyleFlagBold
+	^ self styleFlags allMask: AeFTStyleFlag FT_STYLE_FLAG_BOLD value
+]
+
+{ #category : #testing }
+AeFTFace >> isFixedSize [
+	"The face contains bitmap strikes. See also the `num_fixed_sizes` and `available_sizes` fields of `FT_FaceRec`.
+	
+	Source: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_face_flag_fixed_sizes"
+
+	^ self styleFlags allMask: AeFTFaceFlag FT_FACE_FLAG_FIXED_SIZES value
 ]
 
 { #category : #testing }
 AeFTFace >> isFixedWidth [
 
-	^ self styleFlags allMask: FaceFlagFixedWidth
+	^ self faceFlags allMask: AeFTFaceFlag FT_FACE_FLAG_FIXED_WIDTH value
 ]
 
 { #category : #testing }
 AeFTFace >> isItalic [
 
-	^ self styleFlags allMask: StyleFlagItalic
+	^ self styleFlags allMask: AeFTStyleFlag FT_STYLE_FLAG_ITALIC value
 ]
 
 { #category : #'accessing - structure variables' }
@@ -214,6 +226,15 @@ AeFTFace >> primSetCharSizeWidth: char_width height: char_height horizontalResol
 ]
 
 { #category : #printing }
+AeFTFace >> printFaceFlagsOn: aStream [
+
+	(AeFTFaceFlag bitFlagNamesAt: self faceFlags) sorted
+		do: [ :each | aStream nextPutAll: each ]
+		separatedBy: [ aStream nextPutAll: ', ' ]
+
+]
+
+{ #category : #printing }
 AeFTFace >> printOn: aStream [
 
 	super printOn: aStream.
@@ -222,7 +243,9 @@ AeFTFace >> printOn: aStream [
 		nextPutAll: ' family: ';
 		print: self familyName;
 		nextPutAll: ' style: ';
-		print: self styleName
+		print: self styleName;
+		nextPutAll: ' flags: '.
+	self printFaceFlagsOn: aStream
 ]
 
 { #category : #'accessing - structure variables' }
