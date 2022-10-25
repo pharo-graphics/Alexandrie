@@ -54,3 +54,27 @@ AeHbFont class >> primFontCreateForFreetypeReferenced: ft_face [
 		hb_ft_font_create_referenced (AeFTFace * ft_face)
 	)
 ]
+
+{ #category : #'accessing - output' }
+AeHbFont >> primFTFontChanged [
+	"Refreshes the state of font when the underlying `FT_Face` has changed. This function should be called after changing the size or variation-axis settings on the `FT_Face`.
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-ft.html#hb-ft-font-changed"
+
+	self ffiCall: #(
+		void
+		hb_ft_font_changed ( self )
+		)
+]
+
+{ #category : #'accessing - output' }
+AeHbFont >> primHbFontChanged [
+	"Refreshes the state of the underlying `FT_Face` of font when the `hb_font_t` font has changed. This function should be called after changing the size or variation-axis settings on the font. This call is fast if nothing has changed on font.
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-ft.html#hb-ft-hb-font-changed"
+
+	^ self ffiCall: #(
+		hb_bool_t
+		hb_ft_hb_font_changed ( self )
+		)
+]
