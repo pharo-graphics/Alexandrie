@@ -74,23 +74,21 @@ AeCairoScaledFont >> fontMatrix [
 ]
 
 { #category : #API }
-AeCairoScaledFont >> glyphArrayFor: aString [ 
+AeCairoScaledFont >> glyphArrayForString: aString [ 
 	
-	| utf8Encoded |
-	utf8Encoded := aString utf8Encoded.
-	^ self glyphArrayFor: utf8Encoded length: utf8Encoded size
+	^ self glyphArrayForUtf8Array: aString utf8Encoded
 ]
 
 { #category : #API }
-AeCairoScaledFont >> glyphArrayFor: aBuffer length: aBufferLength [
+AeCairoScaledFont >> glyphArrayForUtf8Array: aUtf8EncodedByteArray [
 
 	| aGlyphsArrayPtr aGlyphsNumPtr aStatus aGlyphsArray aGlyphsNum |
 	aGlyphsArrayPtr := ExternalAddress new.
 	aGlyphsNumPtr := FFIInt32 newBuffer.
 
 	aStatus := self
-		primTextToGlyphs: aBuffer
-		length: aBufferLength
+		primTextToGlyphs: aUtf8EncodedByteArray
+		length: aUtf8EncodedByteArray size
 		glyphs: aGlyphsArrayPtr
 		num: aGlyphsNumPtr
 		x: 0.0

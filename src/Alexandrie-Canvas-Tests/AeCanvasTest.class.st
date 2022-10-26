@@ -188,7 +188,7 @@ AeCanvasTest >> canvasWithText [
 
 	baselineY := cairoScaledFont extents ascent.
 
-	cairoGlyphsArray := cairoScaledFont glyphArrayFor: 'Office'.
+	cairoGlyphsArray := cairoScaledFont glyphArrayForString: 'Office'.
 
 	aeCanvas
 		textExtentsFor: cairoGlyphsArray
