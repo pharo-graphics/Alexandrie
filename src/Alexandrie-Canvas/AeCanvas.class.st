@@ -386,7 +386,7 @@ AeCanvas >> setBorderBlock: aBlockClosure [
 AeCanvas >> setBorderOff [
 
 	hasBackground
-		ifTrue: [ self setFigureWithoutBorderAndBackground ]
+		ifTrue: [ self setFigureWithBackgroundAndNoBorder ]
 		ifFalse: [ self setFigureIsNull ]
 ]
 
@@ -437,41 +437,73 @@ AeCanvas >> setFigureIsNull [
 ]
 
 { #category : #private }
-AeCanvas >> setFigureWithBorderCenter [
+AeCanvas >> setFigureWithBackgroundAndNoBorder [
+	
+	figureBlock := [
+
+		self preparePath.
+
+		"Paint background"
+		backgroundSourceBlock value.
+		cairoContext
+			primClip;
+			primPaintAlpha: backgroundAlpha.
+		isPathSetAsClip := true.
+		
+		]
+
+]
+
+{ #category : #private }
+AeCanvas >> setFigureWithBorderCenterAndNoBackground [
 
 	figureBlock := [
 
 		self preparePath.
 
-		hasBackground ifTrue: [
-			backgroundSourceBlock value.
-			cairoContext
-				primClipPreserve;
-				primPaintAlpha: backgroundAlpha;
-				resetClip ].
-
+		"Paint border"
 		self prepareStroke: false.
 		cairoContext primStroke ]
 
 ]
 
 { #category : #private }
-AeCanvas >> setFigureWithBorderInsideAndBackground [
+AeCanvas >> setFigureWithBorderCenterAndOpaqueBackground [
 
 	figureBlock := [
 
 		self preparePath.
 
+		"Paint background"
 		backgroundSourceBlock value.
 		cairoContext
 			primClipPreserve;
-			primPaintAlpha: backgroundAlpha.
-		isPathSetAsClip := true.
+			primPaint;
+			resetClip.
 
-		self prepareStroke: true.
-		cairoContext primStroke.
+		"Paint border"
+		self prepareStroke: false.
+		cairoContext primStroke ]
 
-		]
+]
+
+{ #category : #private }
+AeCanvas >> setFigureWithBorderCenterAndTranslucentBackground [
+
+	figureBlock := [
+
+		self preparePath.
+
+		"Paint background"
+		backgroundSourceBlock value.
+		cairoContext
+			primClipPreserve;
+			primPaintAlpha: backgroundAlpha;
+			resetClip.
+
+		"Paint border"
+		self prepareStroke: false.
+		cairoContext primStroke ]
 
 ]
 
@@ -482,11 +514,56 @@ AeCanvas >> setFigureWithBorderInsideAndNoBackground [
 
 		self preparePath.
 
+		"Paint border"
 		self prepareStroke: true.
 		cairoContext 
 			primClipPreserve;
 			primStroke.
 		isPathSetAsClip := true.
+
+		]
+
+]
+
+{ #category : #private }
+AeCanvas >> setFigureWithBorderInsideAndOpaqueBackground [
+
+	figureBlock := [
+
+		self preparePath.
+
+		"Paint background"
+		backgroundSourceBlock value.
+		cairoContext
+			primClipPreserve;
+			primPaint.
+		isPathSetAsClip := true.
+
+		"Paint border"
+		self prepareStroke: true.
+		cairoContext primStroke.
+
+		]
+
+]
+
+{ #category : #private }
+AeCanvas >> setFigureWithBorderInsideAndTranslucentBackground [
+
+	figureBlock := [
+
+		self preparePath.
+
+		"Paint background"
+		backgroundSourceBlock value.
+		cairoContext
+			primClipPreserve;
+			primPaintAlpha: backgroundAlpha.
+		isPathSetAsClip := true.
+
+		"Paint border"
+		self prepareStroke: true.
+		cairoContext primStroke.
 
 		]
 
@@ -500,10 +577,12 @@ AeCanvas >> setFigureWithBorderOutsideAndNoBackground [
 		self preparePath.
 
 		self paintGroupWith: [ 
+			
+			"Paint border with double width"
 			self prepareStroke: true.
 			cairoContext primStrokePreserve.
 	
-			"Clear inside"
+			"Clear the inner half of the border"
 			cairoContext
 				setOperatorClear;
 				primFill ].
@@ -519,9 +598,11 @@ AeCanvas >> setFigureWithBorderOutsideAndOpaqueBackground [
 
 		self preparePath.
 
+		"Paint border"
 		self prepareStroke: true.
 		cairoContext primStrokePreserve.
 
+		"Paint background"
 		backgroundSourceBlock value.
 		cairoContext
 			primClip;
@@ -539,38 +620,24 @@ AeCanvas >> setFigureWithBorderOutsideAndTranslucentBackground [
 
 		self preparePath.
 
-		self paintGroupWith: [ 
+		self paintGroupWith: [
+			
+			"Paint border with double width"
 			self prepareStroke: true.
 			cairoContext primStrokePreserve.
 
-			"Clear inside"
+			"Clear the inner half of the border"
 			cairoContext
 				setOperatorClear;
 				primFillPreserve ].
 
+		"Paint background"
 		backgroundSourceBlock value.
 		cairoContext
 			primClip;
 			primPaintAlpha: backgroundAlpha.
 		isPathSetAsClip := true.
 
-		]
-
-]
-
-{ #category : #private }
-AeCanvas >> setFigureWithoutBorderAndBackground [
-	
-	figureBlock := [
-
-		self preparePath.
-
-		backgroundSourceBlock value.
-		cairoContext
-			primClip;
-			primPaintAlpha: backgroundAlpha.
-		isPathSetAsClip := true.
-		
 		]
 
 ]
@@ -661,14 +728,24 @@ AeCanvas >> setLowQualityOptions [
 { #category : #API }
 AeCanvas >> setOutskirtsCentered [
 
-	self setFigureWithBorderCenter
+	hasBackground
+		ifTrue: [
+			backgroundAlpha = 1.0
+				ifTrue: [ self setFigureWithBorderCenterAndOpaqueBackground ]
+				ifFalse: [ self setFigureWithBorderCenterAndTranslucentBackground ] ]
+		ifFalse: [
+			self setFigureWithBorderCenterAndNoBackground ]
+
 ]
 
 { #category : #API }
 AeCanvas >> setOutskirtsInside [
 
 	hasBackground
-		ifTrue: [ self setFigureWithBorderInsideAndBackground ]
+		ifTrue: [
+			backgroundAlpha = 1.0
+				ifTrue: [ self setFigureWithBorderInsideAndOpaqueBackground ]
+				ifFalse: [ self setFigureWithBorderInsideAndTranslucentBackground ] ]
 		ifFalse: [ self setFigureWithBorderInsideAndNoBackground ]
 ]
 
