@@ -35,7 +35,12 @@ AePixelMatchTest >> deleteAllExports [
 { #category : #private }
 AePixelMatchTest >> expectedFormFor: aSymbol [
 
-	^ Form fromFileNamed: (self fileReferenceFor: aSymbol)
+	| fileReferenceToForm |
+	fileReferenceToForm := self fileReferenceFor: aSymbol.
+	
+	^ fileReferenceToForm exists
+		ifFalse: [ Form extent: 1 asPoint depth: 32 ]
+		ifTrue: [ Form fromFileNamed: fileReferenceToForm ]
 ]
 
 { #category : #hooks }
