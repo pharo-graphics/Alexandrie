@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'freetypeFace',
 		'string',
-		'fontSize'
+		'fontHeight'
 	],
 	#category : #'Alexandrie-Canvas-Tests-Examples'
 }
@@ -35,11 +35,10 @@ AeHarfbuzzRenderExample class >> example1SourceSansPro [
 		stretch: AeFontStretch normal
 		ifNone: [ NotFound signal ].
 
-	(self new
-		freetypeFace: aFace;
-		string: self ffString;
-		fontSize: self ffFontSize;
-		yourself)
+	(self
+		freetypeFace: aFace
+		string: self ffString
+		fontHeight: self ffFontSize)
 		newForm inspect
 ]
 
@@ -56,11 +55,10 @@ AeHarfbuzzRenderExample class >> example2InriaSerif [
 		stretch: AeFontStretch normal
 		ifNone: [ NotFound signal ].
 
-	(self new
-		freetypeFace: aFace;
-		string: self ffString;
-		fontSize: self ffFontSize;
-		yourself)
+	(self
+		freetypeFace: aFace
+		string: self ffString
+		fontHeight: self ffFontSize)
 		newForm inspect
 ]
 
@@ -78,11 +76,10 @@ AeHarfbuzzRenderExample class >> example3Futura [
 		stretch: AeFontStretch normal
 		ifNone: [ NotFound signal ].
 
-	(self new
-		freetypeFace: aFace;
-		string: self ffString;
-		fontSize: self ffFontSize;
-		yourself)
+	(self
+		freetypeFace: aFace
+		string: self ffString
+		fontHeight: self ffFontSize)
 		newForm inspect
 ]
 
@@ -94,6 +91,8 @@ AeHarfbuzzRenderExample class >> example4FiraCode [
 	1. Download from: https://github.com/tonsky/FiraCode
 	2. Evaluate: AeFontManager globalInstance scanDefaultDirectories
 	"
+	AeFontManager globalInstance scanDefaultDirectories.
+	
 	aFace := AeFontManager globalInstance
 		detectFamilyName: 'Fira Code'
 		slant: AeFontSlant normal
@@ -101,11 +100,10 @@ AeHarfbuzzRenderExample class >> example4FiraCode [
 		stretch: AeFontStretch normal
 		ifNone: [ NotFound signal ].
 
-	(self new
-		freetypeFace: aFace;
-		string: self arrowsString;
-		fontSize: self arrowsFontSize;
-		yourself)
+	(self
+		freetypeFace: aFace
+		string: self arrowsString
+		fontHeight: self arrowsFontSize)
 		newForm inspect
 ]
 
@@ -122,11 +120,10 @@ AeHarfbuzzRenderExample class >> example5CascadiaCode [
 		stretch: AeFontStretch normal
 		ifNone: [ NotFound signal ].
 
-	(self new
-		freetypeFace: aFace;
-		string: self arrowsString;
-		fontSize: self arrowsFontSize;
-		yourself)
+	(self
+		freetypeFace: aFace
+		string: self arrowsString
+		fontHeight: self arrowsFontSize)
 		newForm inspect
 ]
 
@@ -148,11 +145,10 @@ AeHarfbuzzRenderExample class >> example6Emoji [
 		do: [ :each | stream nextPut: (Unicode value: each) ]
 		separatedBy: [ stream nextPut: Unicode zeroWidthSeparator ]]). 
 
-	(self new
-		freetypeFace: aFace;
-		string: aWideString;
-		fontSize: 40;
-		yourself)
+	(self
+		freetypeFace: aFace
+		string: aWideString
+		fontHeight: 40)
 		newForm inspect
 ]
 
@@ -168,28 +164,26 @@ AeHarfbuzzRenderExample class >> ffString [
 	^ 'The special film starts after coffee et office... (AV.)'
 ]
 
-{ #category : #accessing }
-AeHarfbuzzRenderExample >> fontSize [
+{ #category : #'instance creation' }
+AeHarfbuzzRenderExample class >> freetypeFace: aFace string: aWideString fontHeight: aNumber [
 
-	^ fontSize
+	^ self new
+		  freetypeFace: aFace;
+		  string: aWideString;
+		  fontHeight: aNumber;
+		  yourself
 ]
 
 { #category : #accessing }
-AeHarfbuzzRenderExample >> fontSize: anObject [
+AeHarfbuzzRenderExample >> fontHeight: aNumber [
 
-	fontSize := anObject
+	fontHeight := aNumber
 ]
 
 { #category : #accessing }
-AeHarfbuzzRenderExample >> freetypeFace [
+AeHarfbuzzRenderExample >> freetypeFace: aeFTFace [
 
-	^ freetypeFace
-]
-
-{ #category : #accessing }
-AeHarfbuzzRenderExample >> freetypeFace: anObject [
-
-	freetypeFace := anObject
+	freetypeFace := aeFTFace
 ]
 
 { #category : #accessing }
@@ -202,7 +196,7 @@ AeHarfbuzzRenderExample >> glyphArrayWithHarfbuzz [
 		primSetClusterLevel: AeHbBufferClusterLevel recommended;
 		primSetFlags: AeHbBufferFlags beginningOrEndingOfText;
 		addUtf8String: string;
-		cairoGlyphArrayForFace: freetypeFace size: fontSize
+		cairoGlyphArrayForFace: freetypeFace size: fontHeight
 ]
 
 { #category : #accessing }
@@ -215,23 +209,23 @@ AeHarfbuzzRenderExample >> glyphArrayWithoutHarfbuzz: cairoScaledFont [
 AeHarfbuzzRenderExample >> newForm [
 
 	| aeCanvas cairoScaledFont |
-	aeCanvas := AeCanvas extent: 1000 @ (fontSize * 4).
+	aeCanvas := AeCanvas extent: 1000 @ (fontHeight * 4).
 	aeCanvas clear: Color white.
 
-	cairoScaledFont := aeCanvas scaledFontForFace: freetypeFace size: fontSize.
+	cairoScaledFont := aeCanvas scaledFontForFace: freetypeFace size: fontHeight.
 
 	"Margin"
-	aeCanvas pathTranslate: (fontSize/2) @ 0.
+	aeCanvas pathTranslate: (fontHeight/2) @ 0.
 
 	"Draw text withOUT Harfbuzz:"
-	aeCanvas pathTranslate: 0 @ (fontSize*1.1).
+	aeCanvas pathTranslate: 0 @ (fontHeight*1.1).
 	aeCanvas setSourceColor: Color red muchDarker.
 	aeCanvas
 		drawText: (self glyphArrayWithoutHarfbuzz: cairoScaledFont)
 		font: cairoScaledFont.
 
 	"Draw text with Harfbuzz:"
-	aeCanvas pathTranslate: 0 @ (fontSize*1.1).
+	aeCanvas pathTranslate: 0 @ (fontHeight*1.1).
 	aeCanvas setSourceColor: Color green muchDarker.
 	aeCanvas
 		drawText: self glyphArrayWithHarfbuzz
@@ -241,13 +235,7 @@ AeHarfbuzzRenderExample >> newForm [
 ]
 
 { #category : #accessing }
-AeHarfbuzzRenderExample >> string [
+AeHarfbuzzRenderExample >> string: aString [
 
-	^ string
-]
-
-{ #category : #accessing }
-AeHarfbuzzRenderExample >> string: anObject [
-
-	string := anObject
+	string := aString
 ]

@@ -392,6 +392,13 @@ AeCairoContext >> primMoveToX: aX y: aY [
 			double aY ) )
 ]
 
+{ #category : #'API - path' }
+AeCairoContext >> primNewPath [
+	"See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-new-path"
+
+	self ffiCall: #(void cairo_new_path ( self ) )
+]
+
 { #category : #'API - painting' }
 AeCairoContext >> primPaint [
 

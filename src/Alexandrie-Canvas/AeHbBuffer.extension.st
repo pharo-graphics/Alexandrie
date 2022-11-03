@@ -6,7 +6,7 @@ AeHbBuffer >> cairoGlyphArrayForFace: freetypeFace size: fontSize [
 
 	| font length infos positions cairoGlyphsArray currentX currentY |
 	
-	freetypeFace charSizeWidth: fontSize height: fontSize.
+	freetypeFace charHeight: fontSize.
 	font := AeHbFont primFontCreateForFreetypeReferenced: freetypeFace.
 	self shapeWithFont: font.
 

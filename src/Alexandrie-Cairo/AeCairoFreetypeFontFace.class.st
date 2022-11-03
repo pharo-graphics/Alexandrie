@@ -28,7 +28,11 @@ AeCairoFreetypeFontFace class >> newForFace: aFTFace [
 { #category : #'private - ffi' }
 AeCairoFreetypeFontFace class >> primCreate: aFreetypeFontFace [
 
-	^ self ffiCall: #( AeCairoFreetypeFontFace cairo_ft_font_face_create_for_ft_face ( void* aFreetypeFontFace, 0 ) )
+	^ self ffiCall: #(
+		AeCairoFreetypeFontFace
+		cairo_ft_font_face_create_for_ft_face (
+			void* aFreetypeFontFace,
+			0 ) )
 ]
 
 { #category : #'instance creation' }

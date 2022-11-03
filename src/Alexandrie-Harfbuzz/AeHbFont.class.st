@@ -55,7 +55,7 @@ AeHbFont class >> primFontCreateForFreetypeReferenced: ft_face [
 	)
 ]
 
-{ #category : #'accessing - output' }
+{ #category : #refreshing }
 AeHbFont >> primFTFontChanged [
 	"Refreshes the state of font when the underlying `FT_Face` has changed. This function should be called after changing the size or variation-axis settings on the `FT_Face`.
 	
@@ -67,7 +67,7 @@ AeHbFont >> primFTFontChanged [
 		)
 ]
 
-{ #category : #'accessing - output' }
+{ #category : #refreshing }
 AeHbFont >> primHbFontChanged [
 	"Refreshes the state of the underlying `FT_Face` of font when the `hb_font_t` font has changed. This function should be called after changing the size or variation-axis settings on the font. This call is fast if nothing has changed on font.
 	
@@ -77,4 +77,22 @@ AeHbFont >> primHbFontChanged [
 		hb_bool_t
 		hb_ft_hb_font_changed ( self )
 		)
+]
+
+{ #category : #concurrency }
+AeHbFont >> primLock [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-ft.html#hb-ft-font-lock-face"
+	
+	^ self ffiCall: #(
+		AeFTFace *
+		hb_ft_font_lock_face (self) )
+]
+
+{ #category : #concurrency }
+AeHbFont >> primUnlock [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-ft.html#hb-ft-font-unlock-face"
+	
+	self ffiCall: #(
+		void
+		hb_ft_font_unlock_face (self) )
 ]

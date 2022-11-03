@@ -6,6 +6,7 @@ Class {
 	#superclass : #SharedPool,
 	#classVars : [
 		'hb_blob_t',
+		'hb_bool_t',
 		'hb_buffer_cluster_level_t',
 		'hb_buffer_flags_t',
 		'hb_buffer_t',
@@ -28,6 +29,8 @@ Class {
 { #category : #initialization }
 AeHbTypes class >> initialize [
 
+	hb_bool_t := 'bool'.
+	
 	uint32_t := 'uint32'.
 	hb_codepoint_t := uint32_t.
 	hb_mask_t := uint32_t.

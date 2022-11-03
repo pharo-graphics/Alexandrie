@@ -12,7 +12,7 @@ Class {
 { #category : #'accessing - platform' }
 AeCairoLibrary >> macLibraryName [
 
-	^ FFIMacLibraryFinder findLibrary: 'libcairo.2.dylib'
+	^ FFIMacLibraryFinder findLibrary: 'libcairo.dylib'
 ]
 
 { #category : #'accessing - platform' }
