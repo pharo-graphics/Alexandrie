@@ -127,6 +127,32 @@ AeCairoContext >> clearTransparent [
 
 ]
 
+{ #category : #'API - clipping' }
+AeCairoContext >> clippingAreaAsForm [ 
+	
+	| clippingForm |
+	"Temporarily reset CTM matrix"
+	self
+		primSave;
+		primLoadIdentity.
+
+	clippingForm := Form extent: surface extent depth: 1.
+	0 to: clippingForm width - 1 do: [ :x |
+		0 to: clippingForm height - 1 do: [ :y |
+			| isInClip |
+			isInClip := self primInClipX: x y: y.
+			clippingForm
+				colorAt: x@y
+				put: (isInClip
+					ifTrue: [ Color black ]
+					ifFalse: [ Color white ]).
+			] ].
+
+	self primRestore.
+		
+	^ clippingForm
+]
+
 { #category : #'API - path' }
 AeCairoContext >> copyPath [
 
@@ -346,6 +372,18 @@ AeCairoContext >> primGlyphExtents: theGlyphs num: aGlyphsNum metrics: aTextMetr
 		AeCairoGlyphArray theGlyphs,
 		int aGlyphsNum,
 		AeCairoTextExtents* aTextMetrics ) )
+]
+
+{ #category : #'API - clipping' }
+AeCairoContext >> primInClipX: x y: y [ 
+	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-in-clip"
+
+	^ self ffiCall: #(
+		Boolean
+		cairo_in_clip (
+			self,
+			double x,
+			double y ) )
 ]
 
 { #category : #'API - hit testing' }
