@@ -64,6 +64,10 @@ AeCanvasTest >> canvasWithClippedFigures [
 	aeCanvas := AeCanvas extent: 50 asPoint.
 	aeCanvas clear: Color yellow.
 
+	"Key message being tested"
+	aeCanvas shouldClipAfterDrawingFigure: true.
+
+	"Draw container figure (a rectangle)"
 	aeCanvas pathTranslate: 10 asPoint.
 	aeCanvas setBackgroundWith: [
 		aeCanvas setSourceColor: Color blue ].
@@ -71,9 +75,6 @@ AeCanvasTest >> canvasWithClippedFigures [
 	aeCanvas drawClosedPathWith: [ :cairoContext |
 		cairoContext rectangleTo: 30 asPoint ].
 	aeCanvas drawFigure.
-
-	"Key message being tested:"
-	aeCanvas prepareToDrawChildrenWithClipping: true.
 
 	"Draw a child circle that is clipped by the parent rectangle."
 	aeCanvas pathTranslate: 15 asPoint.

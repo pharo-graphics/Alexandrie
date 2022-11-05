@@ -21,9 +21,9 @@ Note: Background MUST be set BEFORE border.
 # Nesting figures
 
 I'm prepared to draw a tree of figures, A node's children can be either clipped or not.
-It depends on the argument sent to `prepareToDrawChildrenWithClipping:`.
+It depends on the argument sent to `shouldClipAfterDrawingFigure:`.
 
-See my test suite for some examples, and Bloc-Alexandrie package.
+See my test suite for some examples, and 'Bloc-Alexandrie' package.
 "
 Class {
 	#name : #AeCanvas,
@@ -36,7 +36,6 @@ Class {
 		'cairoSurface',
 		'backgroundSourceBlock',
 		'pathBlock',
-		'isPathSetAsClip',
 		'cairoContext',
 		'fontOptions',
 		'identityMatrix',
@@ -46,7 +45,8 @@ Class {
 		'hasJoins',
 		'hasCaps',
 		'scaledFontCache',
-		'dashesCache'
+		'dashesCache',
+		'shouldClipAfterDrawingFigure'
 	],
 	#category : #'Alexandrie-Canvas-Base'
 }
@@ -166,6 +166,7 @@ AeCanvas >> flush [
 { #category : #initialization }
 AeCanvas >> initializeCaches [
 
+	shouldClipAfterDrawingFigure := false.
 	identityMatrix := AeCairoMatrix newIdentity.
 	textExtents := AeCairoTextExtents new.
 
@@ -289,7 +290,7 @@ AeCanvas >> preparePath [
 ]
 
 { #category : #private }
-AeCanvas >> prepareStroke: aBoolean [
+AeCanvas >> prepareStrokeDoubleWidth: aBoolean [
 
 	borderBlock value.
 
@@ -298,18 +299,22 @@ AeCanvas >> prepareStroke: aBoolean [
 
 ]
 
-{ #category : #API }
-AeCanvas >> prepareToDrawChildrenWithClipping: aBoolean [
+{ #category : #private }
+AeCanvas >> prepareStrokeWithDoubledWidth [
 
-	aBoolean
-		ifTrue: [
-			isPathSetAsClip ifFalse: [ 
-				self preparePath.
-				cairoContext primClip ] ]
-		ifFalse: [
-			isPathSetAsClip ifTrue: [
-				cairoContext resetClip ] ].
-	isPathSetAsClip := aBoolean
+	borderBlock value.
+
+	cairoContext primSetLineWidth: borderWidth * 2.0.
+
+]
+
+{ #category : #private }
+AeCanvas >> prepareStrokeWithSingleWidth [
+
+	borderBlock value.
+
+	cairoContext primSetLineWidth: borderWidth.
+
 ]
 
 { #category : #private }
@@ -326,6 +331,15 @@ AeCanvas >> restoreContextAfter: aBlock [
 	aBlock value.
 
 	cairoContext primRestore
+]
+
+{ #category : #private }
+AeCanvas >> restoreContextIfShouldClipAfter: aBlock [
+
+	shouldClipAfterDrawingFigure
+		ifTrue: aBlock
+		ifFalse: [ self restoreContextAfter: aBlock ]
+
 ]
 
 { #category : #text }
@@ -443,14 +457,13 @@ AeCanvas >> setFigureWithBackgroundAndNoBorder [
 
 		self preparePath.
 
-		"Paint background"
-		backgroundSourceBlock value.
-		cairoContext
-			primClip;
-			primPaintAlpha: backgroundAlpha.
-		isPathSetAsClip := true.
-		
-		]
+		self restoreContextIfShouldClipAfter: [
+
+			"Paint background"
+			backgroundSourceBlock value.
+			cairoContext
+				primClip;
+				primPaintAlpha: backgroundAlpha ] ]
 
 ]
 
@@ -461,9 +474,16 @@ AeCanvas >> setFigureWithBorderCenterAndNoBackground [
 
 		self preparePath.
 
-		"Paint border"
-		self prepareStroke: false.
-		cairoContext primStroke ]
+		"Paint border, and clip if required"
+		self prepareStrokeWithSingleWidth.
+		shouldClipAfterDrawingFigure
+			ifTrue: [
+				cairoContext
+					primStrokePreserve;
+					primClip ]
+			ifFalse: [
+				cairoContext primStroke ]
+		 ]
 
 ]
 
@@ -474,16 +494,24 @@ AeCanvas >> setFigureWithBorderCenterAndOpaqueBackground [
 
 		self preparePath.
 
-		"Paint background"
-		backgroundSourceBlock value.
-		cairoContext
-			primClipPreserve;
-			primPaint;
-			resetClip.
+		"Need to restore clipping area to draw the border afterwards"
+		self restoreContextAfter: [
 
-		"Paint border"
-		self prepareStroke: false.
-		cairoContext primStroke ]
+			"Paint background"
+			backgroundSourceBlock value.
+			cairoContext
+				primClipPreserve;
+				primPaint ].
+				
+		"Paint border, and clip if required"
+		self prepareStrokeWithSingleWidth.
+		shouldClipAfterDrawingFigure
+			ifTrue: [
+				cairoContext
+					primStrokePreserve;
+					primClip ]
+			ifFalse: [
+				cairoContext primStroke ] ] 
 
 ]
 
@@ -494,16 +522,24 @@ AeCanvas >> setFigureWithBorderCenterAndTranslucentBackground [
 
 		self preparePath.
 
-		"Paint background"
-		backgroundSourceBlock value.
-		cairoContext
-			primClipPreserve;
-			primPaintAlpha: backgroundAlpha;
-			resetClip.
+		"Need to restore clipping area to draw the border afterwards"
+		self restoreContextAfter: [
 
-		"Paint border"
-		self prepareStroke: false.
-		cairoContext primStroke ]
+	 		"Paint background"
+			backgroundSourceBlock value.
+			cairoContext
+				primClipPreserve;
+				primPaintAlpha: backgroundAlpha ].
+
+		"Paint border, and clip if required"
+		self prepareStrokeWithSingleWidth.
+		shouldClipAfterDrawingFigure
+			ifTrue: [
+				cairoContext
+					primStrokePreserve;
+					primClip ]
+			ifFalse: [
+				cairoContext primStroke ] ]
 
 ]
 
@@ -514,14 +550,13 @@ AeCanvas >> setFigureWithBorderInsideAndNoBackground [
 
 		self preparePath.
 
-		"Paint border"
-		self prepareStroke: true.
-		cairoContext 
-			primClipPreserve;
-			primStroke.
-		isPathSetAsClip := true.
+		self restoreContextIfShouldClipAfter: [
 
-		]
+			"Paint border"
+			self prepareStrokeWithDoubledWidth.
+			cairoContext 
+				primClipPreserve;
+				primStroke ] ]
 
 ]
 
@@ -532,18 +567,17 @@ AeCanvas >> setFigureWithBorderInsideAndOpaqueBackground [
 
 		self preparePath.
 
-		"Paint background"
-		backgroundSourceBlock value.
-		cairoContext
-			primClipPreserve;
-			primPaint.
-		isPathSetAsClip := true.
+		self restoreContextIfShouldClipAfter: [
 
-		"Paint border"
-		self prepareStroke: true.
-		cairoContext primStroke.
+			"Paint background"
+			backgroundSourceBlock value.
+			cairoContext
+				primClipPreserve;
+				primPaint.
 
-		]
+			"Paint border"
+			self prepareStrokeWithDoubledWidth.
+			cairoContext primStroke ] ]
 
 ]
 
@@ -554,18 +588,17 @@ AeCanvas >> setFigureWithBorderInsideAndTranslucentBackground [
 
 		self preparePath.
 
-		"Paint background"
-		backgroundSourceBlock value.
-		cairoContext
-			primClipPreserve;
-			primPaintAlpha: backgroundAlpha.
-		isPathSetAsClip := true.
+		self restoreContextIfShouldClipAfter: [
 
-		"Paint border"
-		self prepareStroke: true.
-		cairoContext primStroke.
+			"Paint background"
+			backgroundSourceBlock value.
+			cairoContext
+				primClipPreserve;
+				primPaintAlpha: backgroundAlpha.
 
-		]
+			"Paint border"
+			self prepareStrokeWithDoubledWidth.
+			cairoContext primStroke ] ]
 
 ]
 
@@ -579,15 +612,21 @@ AeCanvas >> setFigureWithBorderOutsideAndNoBackground [
 		self paintGroupWith: [ 
 			
 			"Paint border with double width"
-			self prepareStroke: true.
+			self prepareStrokeWithDoubledWidth.
 			cairoContext primStrokePreserve.
-	
-			"Clear the inner half of the border"
-			cairoContext
-				setOperatorClear;
-				primFill ].
-
-		 ]
+			
+			"Clear the inner half of the border.
+			Needs to be done inside a group to do not erase the target surface.
+			The changed operator will be restored when the group is poped."
+			cairoContext setOperatorClear.
+			shouldClipAfterDrawingFigure
+				ifTrue: [ cairoContext primFillPreserve ]
+				ifFalse: [ cairoContext primFill ] ].
+		
+		"Clip if required.
+		Needs to be doen after poping the group (above)."
+		shouldClipAfterDrawingFigure
+			ifTrue: [ cairoContext primClip ] ]
 
 ]
 
@@ -598,18 +637,17 @@ AeCanvas >> setFigureWithBorderOutsideAndOpaqueBackground [
 
 		self preparePath.
 
-		"Paint border"
-		self prepareStroke: true.
-		cairoContext primStrokePreserve.
+		self restoreContextIfShouldClipAfter: [ 
 
-		"Paint background"
-		backgroundSourceBlock value.
-		cairoContext
-			primClip;
-			primPaint.
-		isPathSetAsClip := true.
+			"Paint border"
+			self prepareStrokeWithDoubledWidth.
+			cairoContext primStrokePreserve.
 
-		]
+			"Paint background"
+			backgroundSourceBlock value.
+			cairoContext
+				primClip;
+				primPaint ] ]
 
 ]
 
@@ -623,22 +661,21 @@ AeCanvas >> setFigureWithBorderOutsideAndTranslucentBackground [
 		self paintGroupWith: [
 			
 			"Paint border with double width"
-			self prepareStroke: true.
+			self prepareStrokeWithDoubledWidth.
 			cairoContext primStrokePreserve.
 
 			"Clear the inner half of the border"
-			cairoContext
-				setOperatorClear;
-				primFillPreserve ].
-
+			self restoreContextAfter: [ 
+				cairoContext
+					setOperatorClear;
+					primFillPreserve ] ].
+		
 		"Paint background"
-		backgroundSourceBlock value.
-		cairoContext
-			primClip;
-			primPaintAlpha: backgroundAlpha.
-		isPathSetAsClip := true.
-
-		]
+		self restoreContextIfShouldClipAfter: [
+			backgroundSourceBlock value.
+			cairoContext
+				primClip;
+				primPaintAlpha: backgroundAlpha ] ]
 
 ]
 
@@ -772,7 +809,6 @@ AeCanvas >> setPathKey: anObject hasJoins: hasJoinsBoolean hasCaps: hasCapsBoole
 	path. The block must only send messages in the 'API - path' protocol of AeCairoContext.
 	This is, only the bindings of: https://www.cairographics.org/manual/cairo-Paths.html"
 
-	isPathSetAsClip := false.
 	hasJoins := hasJoinsBoolean.
 	hasCaps := hasCapsBoolean.
 	pathBlock := aUnaryBlock
@@ -782,7 +818,6 @@ AeCanvas >> setPathKey: anObject hasJoins: hasJoinsBoolean hasCaps: hasCapsBoole
 AeCanvas >> setSourceColor: aColor [
 
 	"TODO: The default source pattern is opaque black, (that is, it is equivalent to cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 1.0))."
-"	aColor isBlack ifTrue: [ ^ self ]."
 
 	aColor isTranslucent
 		ifTrue: [ self setSourceTranslucentColor: aColor ]
@@ -830,6 +865,12 @@ AeCanvas >> setSourceTranslucentColor: aColor [
 
 	cairoContext setSourceRGBAColor: aColor
 
+]
+
+{ #category : #API }
+AeCanvas >> shouldClipAfterDrawingFigure: aBoolean [
+
+	shouldClipAfterDrawingFigure := aBoolean
 ]
 
 { #category : #text }
