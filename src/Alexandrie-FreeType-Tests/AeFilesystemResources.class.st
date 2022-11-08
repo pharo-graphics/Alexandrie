@@ -8,6 +8,12 @@ Class {
 }
 
 { #category : #accessing }
+AeFilesystemResources class >> cairoDirectory [ 
+
+	^ self testsDirectory / 'cairo'
+]
+
+{ #category : #accessing }
 AeFilesystemResources class >> canvasDirectory [ 
 
 	^ self testsDirectory / 'canvas'

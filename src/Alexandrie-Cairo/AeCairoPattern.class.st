@@ -12,8 +12,42 @@ Class {
 	#category : #'Alexandrie-Cairo-Patterns'
 }
 
+{ #category : #'instance creation' }
+AeCairoPattern class >> new [
+	"Instance are created via FFI, with specialized class side methods of each subclass."
+
+	^ self shouldNotImplement
+]
+
 { #category : #'private - ffi' }
 AeCairoPattern class >> primDestroy: aHandle [
 	
 	self ffiCall: #( void cairo_pattern_destroy ( void * aHandle ) )
+]
+
+{ #category : #API }
+AeCairoPattern >> primSetExtend: anExtendMode [
+	"Sets the mode to be used for drawing outside the area of a pattern. See cairo_extend_t for details on the semantics of each extend strategy.
+
+The default extend mode is CAIRO_EXTEND_NONE for surface patterns and CAIRO_EXTEND_PAD for gradient patterns.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-set-extend"
+
+	self ffiCall: #(
+		void cairo_pattern_set_extend (
+			self,
+			AeCairoExtendMode anExtendMode ) )
+]
+
+{ #category : #API }
+AeCairoPattern >> primSetFilter: filter [
+	"Sets the filter to be used for resizing when using this pattern.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-set-filter"
+
+	self ffiCall: #(
+		void
+		cairo_pattern_set_filter (
+			self,
+			AeCairoSamplingFilter filter ) )
 ]

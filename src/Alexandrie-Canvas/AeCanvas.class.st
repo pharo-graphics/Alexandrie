@@ -239,28 +239,14 @@ AeCanvas >> newScaledFontForFace: aFTFace size: aSize [
 
 { #category : #API }
 AeCanvas >> paintGroupWith: aBlock [
-	"Note: Cairo already saves and restores its state with push_group and pop_group"
 
-	cairoContext primPushGroup.
-
-	aBlock value.
-
-	cairoContext
-		primPopGroupToSource;
-		primPaint
+	cairoContext paintGroupWith: aBlock
 ]
 
 { #category : #API }
 AeCanvas >> paintGroupWith: aBlock alpha: aNumber [
-	"Note: Cairo already saves and restores its state with push_group and pop_group"
 
-	cairoContext primPushGroup.
-
-	aBlock value.
-
-	cairoContext
-		primPopGroupToSource;
-		primPaintAlpha: aNumber
+	cairoContext paintGroupWith: aBlock alpha: aNumber
 ]
 
 { #category : #API }
@@ -326,11 +312,7 @@ AeCanvas >> privateAeCairoContext [
 { #category : #API }
 AeCanvas >> restoreContextAfter: aBlock [
 
-	cairoContext primSave.
-
-	aBlock value.
-
-	cairoContext primRestore
+	cairoContext restoreAfter: aBlock
 ]
 
 { #category : #private }

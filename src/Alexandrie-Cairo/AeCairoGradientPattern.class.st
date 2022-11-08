@@ -1,7 +1,5 @@
 "
 I am a Cairo FFI binding for a `cairo_pattern_t` with a gradient source.
-
-See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html
 "
 Class {
 	#name : #AeCairoGradientPattern,

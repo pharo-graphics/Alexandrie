@@ -26,11 +26,13 @@ AeCairoRadialGradientPattern class >> innerCenter: anInnerCenter innerRadius: an
 { #category : #'private - ffi' }
 AeCairoRadialGradientPattern class >> primCreateInnerX: anInnerX innerY: anInnerY innerRadius: anInnerRadius outerX: anOuterX outerY: anOuterY outerRadius: anOuterRadius [
 
-	self ffiCall: #(AeCairoRadialGradientPattern cairo_pattern_create_radial (
+	^ self ffiCall: #(
+		AeCairoRadialGradientPattern
+		cairo_pattern_create_radial (
 			double anInnerX,
 			double anInnerY,
 			double anInnerRadius,
 			double anOuterX,
 			double anOuterY,
-			double anOuterRadius))
+			double anOuterRadius ) )
 ]

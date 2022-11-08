@@ -12,8 +12,10 @@ Class {
 { #category : #'private - ffi' }
 AeCairoSurfacePattern class >> primCreateSurface: aCairoSurface [
 
-	^ self ffiCall: #(AeCairoSurfacePattern cairo_pattern_create_for_surface (
-		AeCairoSurface aCairoSurface ) )
+	^ self ffiCall: #(
+		AeCairoSurfacePattern
+		cairo_pattern_create_for_surface (
+			AeCairoSurface aCairoSurface ) )
 ]
 
 { #category : #'instance creation' }

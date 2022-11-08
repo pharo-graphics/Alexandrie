@@ -251,6 +251,32 @@ AeCairoContext >> moveTo: aPoint [
 	self primMoveToX: aPoint x asFloat y: aPoint y asFloat
 ]
 
+{ #category : #convenience }
+AeCairoContext >> paintGroupWith: aBlock [
+	"Note: Cairo already saves and restores its state with push_group and pop_group"
+
+	self primPushGroup.
+
+	aBlock value.
+
+	self
+		primPopGroupToSource;
+		primPaint
+]
+
+{ #category : #convenience }
+AeCairoContext >> paintGroupWith: aBlockClosure alpha: aNumber [
+	"Note: Cairo already saves and restores its state with push_group and pop_group"
+
+	self primPushGroup.
+
+	aBlockClosure value.
+
+	self
+		primPopGroupToSource;
+		primPaintAlpha: aNumber
+]
+
 { #category : #'API - compositing' }
 AeCairoContext >> popGroup [
 
@@ -364,6 +390,12 @@ AeCairoContext >> primGetMatrix: aCairoMatrix [
 		AeCairoMatrix *aCairoMatrix) )
 ]
 
+{ #category : #'API - path' }
+AeCairoContext >> primGetSource [
+
+	^ self ffiCall: #( AeCairoPattern cairo_get_source ( self ) )
+]
+
 { #category : #'API - text' }
 AeCairoContext >> primGlyphExtents: theGlyphs num: aGlyphsNum metrics: aTextMetrics [
 
@@ -419,6 +451,30 @@ AeCairoContext >> primLineToX: aX y: aY [
 AeCairoContext >> primLoadIdentity [
 
 	self ffiCall: #( void cairo_identity_matrix ( self ) )
+]
+
+{ #category : #'API - clipping' }
+AeCairoContext >> primMask: pattern [
+	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-mask"
+
+	^ self ffiCall: #(
+		void
+		cairo_mask (
+			self,
+			AeCairoPattern pattern ) )
+]
+
+{ #category : #'API - clipping' }
+AeCairoContext >> primMaskSurface: aSurface x: x y: y [
+	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-mask-surface"
+
+	^ self ffiCall: #(
+		void
+		cairo_mask_surface (
+			self,
+			AeCairoSurface aSurface,
+			double x
+			double y ) )
 ]
 
 { #category : #'API - path' }
@@ -496,6 +552,12 @@ AeCairoContext >> primRelativeMoveToX: aX y: aY [
 			self,
 			double aX,
 			double aY ) )
+]
+
+{ #category : #'API - clipping' }
+AeCairoContext >> primResetClip [
+
+	self ffiCall: #( void cairo_reset_clip #( self ) )
 ]
 
 { #category : #'API - states' }
@@ -649,6 +711,15 @@ AeCairoContext >> primShowGlyphs: aGlyphsArray num: aNumberOfGlyphs [
 		int aNumberOfGlyphs ) )
 ]
 
+{ #category : #'API - states' }
+AeCairoContext >> primStatus [
+	"Answer a `AeCairoStatus` that indicates the error status of this Cairo context.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-status"
+
+	^ self ffiCall: #(AeCairoStatus cairo_status ( self ) )
+]
+
 { #category : #'API - painting' }
 AeCairoContext >> primStroke [
 
@@ -723,10 +794,12 @@ AeCairoContext >> rectangleTo: extentPoint [
 		height:extentPoint y
 ]
 
-{ #category : #'API - clipping' }
-AeCairoContext >> resetClip [
-
-	self ffiCall: #( void cairo_reset_clip #( self ) )
+{ #category : #convenience }
+AeCairoContext >> restoreAfter: aBlockClosure [ 
+	
+	self primSave.
+	aBlockClosure value.
+	self primRestore.
 ]
 
 { #category : #'API - path' }
