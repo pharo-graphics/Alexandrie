@@ -527,6 +527,7 @@ AeCairoContext >> primPushGroup [
 
 { #category : #'API - path' }
 AeCairoContext >> primRectangleX: aX y: aY width: aWidth height: aHeight [
+	"Note: aWidth and aHeight can be negative"
 
 	self ffiCall: #(void cairo_rectangle (
 			self,
