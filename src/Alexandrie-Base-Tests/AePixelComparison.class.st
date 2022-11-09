@@ -15,7 +15,7 @@ Class {
 		'expectedForm',
 		'label'
 	],
-	#category : #'Alexandrie-Canvas-Tests-Utilities'
+	#category : #'Alexandrie-Base-Tests'
 }
 
 { #category : #'instance creation' }
@@ -93,32 +93,6 @@ AePixelComparison >> expectedForm [
 AePixelComparison >> expectedForm: aForm [
 
 	expectedForm := aForm
-]
-
-{ #category : #spec }
-AePixelComparison >> inspectionActualVsExpected: aBuilder [
-	<inspectorPresentationOrder: 1 title: 'Actual/Expected'>
-
-	^ aBuilder newMorph
-		morph: (self actualVsExpectedMergedForm  magnifyBy:
-			self inspectionMagnification) asMorph;
-		yourself
-]
-
-{ #category : #spec }
-AePixelComparison >> inspectionActualVsExpectedDiff: aBuilder [
-	<inspectorPresentationOrder: 2 title: 'Actual/Expected Diff'>
-
-	^ aBuilder newMorph
-		  morph: (self actualVsExpectedMergedDiffForm magnifyBy:
-				self inspectionMagnification) asMorph;
-		  yourself
-]
-
-{ #category : #spec }
-AePixelComparison >> inspectionMagnification [
-
-	^ 2
 ]
 
 { #category : #testing }

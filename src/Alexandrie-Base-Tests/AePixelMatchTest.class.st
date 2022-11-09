@@ -1,7 +1,7 @@
 Class {
 	#name : #AePixelMatchTest,
 	#superclass : #TestCase,
-	#category : #'Alexandrie-Canvas-Tests-Utilities'
+	#category : #'Alexandrie-Base-Tests'
 }
 
 { #category : #testing }
