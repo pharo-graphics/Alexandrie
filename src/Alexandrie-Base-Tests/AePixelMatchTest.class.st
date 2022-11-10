@@ -1,8 +1,29 @@
 Class {
 	#name : #AePixelMatchTest,
 	#superclass : #TestCase,
+	#instVars : [
+		'formSelector'
+	],
 	#category : #'Alexandrie-Base-Tests'
 }
+
+{ #category : #'building suites' }
+AePixelMatchTest class >> buildSuite [
+
+	| suite formSelectors |
+	
+	suite := self suiteClass named: self name.
+	
+	formSelectors := self new allFormSelectors.
+	
+	formSelectors do: [ :each |
+		| internalSuite |
+		internalSuite := self buildSuiteFromSelectors.
+		internalSuite tests do: [ :aTest | aTest formSelector: each ].
+		suite addTests: internalSuite tests. ].
+
+	^ suite
+]
 
 { #category : #testing }
 AePixelMatchTest class >> isAbstract [
@@ -81,6 +102,27 @@ AePixelMatchTest >> fileReferenceFor: aSymbol [
 
 ]
 
+{ #category : #accessing }
+AePixelMatchTest >> formSelector: aString [
+
+	formSelector := aString
+]
+
+{ #category : #private }
+AePixelMatchTest >> instanceVariablesToKeep [
+
+	^ super instanceVariablesToKeep, #(formSelector)
+]
+
+{ #category : #tests }
+AePixelMatchTest >> performTest [
+
+	formSelector ifNil: [
+		self error: 'formSelector is nil. Please, run this suite from Test Runner.' ].
+
+	^ super performTest
+]
+
 { #category : #private }
 AePixelMatchTest >> pixelComparisonFor: aSymbol [
 
@@ -91,24 +133,24 @@ AePixelMatchTest >> pixelComparisonFor: aSymbol [
 ]
 
 { #category : #tests }
-AePixelMatchTest >> testAllForms [
+AePixelMatchTest >> printOn: aStream [
 
-	| results mismatchingResults |
-	results := self allFormSelectors collect: [ :each |
-		self pixelComparisonFor: each ].
+	super printOn: aStream.
+	aStream
+		space;
+		<< 'formSelector: ';
+		print: formSelector
+]
 
-	mismatchingResults := results reject: [ :each | each isMatch ].
+{ #category : #tests }
+AePixelMatchTest >> testFormPixelMatch [
 
-"	INSPECT MISMATCHES WITH:
+	| result |
+	result := self pixelComparisonFor: formSelector.
 
-		mismatchingResults inspect.
+"	INSPECT MISMATCH WITH:
+
+		result inspect.
 "
-
-	self
-		assert: mismatchingResults isEmpty
-		description: (String streamContents: [ :stream |
-			stream << 'Pixel mismatch on selectors: '.
-			mismatchingResults
-				do: [ :each | stream << each label ]
-				separatedBy: [ stream << ', ' ] ])
+	self assert: result isMatch description: 'Pixel mismatch'
 ]
