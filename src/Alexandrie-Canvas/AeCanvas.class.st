@@ -147,8 +147,8 @@ AeCanvas >> drawOpenPathWith: aUnaryBlock [
 AeCanvas >> drawText: aeGlyphArray font: aScaledFont [
 
 	cairoContext
-		primSetScaledFont: aScaledFont;
-		primShowGlyphs: aeGlyphArray num: aeGlyphArray size
+		scaledFont: aScaledFont;
+		showGlyphs: aeGlyphArray size: aeGlyphArray size
 ]
 
 { #category : #accessing }
@@ -252,21 +252,21 @@ AeCanvas >> paintGroupWith: aBlock alpha: aNumber [
 { #category : #API }
 AeCanvas >> pathScale: aPoint [
 
-	cairoContext scale: aPoint
+	cairoContext scaleBy: aPoint
 ]
 
 { #category : #API }
 AeCanvas >> pathTransform: aeCairoMatrix [
 
 	aeCairoMatrix isIdentity ifTrue: [ ^self ].
-	cairoContext primApplyTransform: aeCairoMatrix
+	cairoContext transformWith: aeCairoMatrix
 ]
 
 { #category : #API }
 AeCanvas >> pathTranslate: aPoint [
 
 	aPoint isZero ifTrue: [ ^self ].
-	cairoContext translate: aPoint
+	cairoContext translateBy: aPoint
 ]
 
 { #category : #private }
@@ -281,7 +281,7 @@ AeCanvas >> prepareStrokeDoubleWidth: aBoolean [
 	borderBlock value.
 
 	aBoolean ifTrue:[ borderWidth := borderWidth * 2.0 ].	
-	cairoContext primSetLineWidth: borderWidth.
+	cairoContext lineWidth: borderWidth.
 
 ]
 
@@ -290,7 +290,7 @@ AeCanvas >> prepareStrokeWithDoubledWidth [
 
 	borderBlock value.
 
-	cairoContext primSetLineWidth: borderWidth * 2.0.
+	cairoContext lineWidth: borderWidth * 2.0.
 
 ]
 
@@ -299,7 +299,7 @@ AeCanvas >> prepareStrokeWithSingleWidth [
 
 	borderBlock value.
 
-	cairoContext primSetLineWidth: borderWidth.
+	cairoContext lineWidth: borderWidth.
 
 ]
 
@@ -312,7 +312,7 @@ AeCanvas >> privateAeCairoContext [
 { #category : #API }
 AeCanvas >> restoreContextAfter: aBlock [
 
-	cairoContext restoreAfter: aBlock
+	cairoContext restoreStateAfter: aBlock
 ]
 
 { #category : #private }
@@ -367,7 +367,7 @@ AeCanvas >> setBackgroundWithForm: aForm alpha: aDouble [
 		setBackgroundWith: [ 
 			| aCairoSurface |
 			aCairoSurface := formToCairoSurfaceCache at: aForm.
-			cairoContext primSetSourceSurface: aCairoSurface x: 0.0 y: 0.0 ]
+			cairoContext sourceSurface: aCairoSurface x: 0.0 y: 0.0 ]
  		alpha: aDouble
 
 ]
@@ -403,13 +403,13 @@ AeCanvas >> setCapButt [
 { #category : #API }
 AeCanvas >> setCapRound [
 	
-	cairoContext primSetLineCap: AeCairoCapStyle CAIRO_LINE_CAP_ROUND
+	cairoContext lineCap: AeCairoCapStyle CAIRO_LINE_CAP_ROUND
 ]
 
 { #category : #API }
 AeCanvas >> setCapSquare [
 	
-	cairoContext primSetLineCap: AeCairoCapStyle CAIRO_LINE_CAP_SQUARE
+	cairoContext lineCap: AeCairoCapStyle CAIRO_LINE_CAP_SQUARE
 ]
 
 { #category : #API }
@@ -419,7 +419,7 @@ AeCanvas >> setDashes: dashArray offset: dashOffset [
 	See https://www.cairographics.org/samples/dash/"
 
 	cairoContext
-		primSetDash: (dashesCache at: dashArray)
+		dash: (dashesCache at: dashArray)
 		count: dashArray size
 		offset: dashOffset
 
@@ -444,8 +444,8 @@ AeCanvas >> setFigureWithBackgroundAndNoBorder [
 			"Paint background"
 			backgroundSourceBlock value.
 			cairoContext
-				primClip;
-				primPaintAlpha: backgroundAlpha ] ]
+				clip;
+				paintWithAlpha: backgroundAlpha ] ]
 
 ]
 
@@ -461,10 +461,10 @@ AeCanvas >> setFigureWithBorderCenterAndNoBackground [
 		shouldClipAfterDrawingFigure
 			ifTrue: [
 				cairoContext
-					primStrokePreserve;
-					primClip ]
+					strokePreserve;
+					clip ]
 			ifFalse: [
-				cairoContext primStroke ]
+				cairoContext stroke ]
 		 ]
 
 ]
@@ -482,18 +482,18 @@ AeCanvas >> setFigureWithBorderCenterAndOpaqueBackground [
 			"Paint background"
 			backgroundSourceBlock value.
 			cairoContext
-				primClipPreserve;
-				primPaint ].
+				clipPreserve;
+				paint ].
 				
 		"Paint border, and clip if required"
 		self prepareStrokeWithSingleWidth.
 		shouldClipAfterDrawingFigure
 			ifTrue: [
 				cairoContext
-					primStrokePreserve;
-					primClip ]
+					strokePreserve;
+					clip ]
 			ifFalse: [
-				cairoContext primStroke ] ] 
+				cairoContext stroke ] ] 
 
 ]
 
@@ -510,18 +510,18 @@ AeCanvas >> setFigureWithBorderCenterAndTranslucentBackground [
 	 		"Paint background"
 			backgroundSourceBlock value.
 			cairoContext
-				primClipPreserve;
-				primPaintAlpha: backgroundAlpha ].
+				clipPreserve;
+				paintWithAlpha: backgroundAlpha ].
 
 		"Paint border, and clip if required"
 		self prepareStrokeWithSingleWidth.
 		shouldClipAfterDrawingFigure
 			ifTrue: [
 				cairoContext
-					primStrokePreserve;
-					primClip ]
+					strokePreserve;
+					clip ]
 			ifFalse: [
-				cairoContext primStroke ] ]
+				cairoContext stroke ] ]
 
 ]
 
@@ -537,8 +537,8 @@ AeCanvas >> setFigureWithBorderInsideAndNoBackground [
 			"Paint border"
 			self prepareStrokeWithDoubledWidth.
 			cairoContext 
-				primClipPreserve;
-				primStroke ] ]
+				clipPreserve;
+				stroke ] ]
 
 ]
 
@@ -554,12 +554,12 @@ AeCanvas >> setFigureWithBorderInsideAndOpaqueBackground [
 			"Paint background"
 			backgroundSourceBlock value.
 			cairoContext
-				primClipPreserve;
-				primPaint.
+				clipPreserve;
+				paint.
 
 			"Paint border"
 			self prepareStrokeWithDoubledWidth.
-			cairoContext primStroke ] ]
+			cairoContext stroke ] ]
 
 ]
 
@@ -575,12 +575,12 @@ AeCanvas >> setFigureWithBorderInsideAndTranslucentBackground [
 			"Paint background"
 			backgroundSourceBlock value.
 			cairoContext
-				primClipPreserve;
-				primPaintAlpha: backgroundAlpha.
+				clipPreserve;
+				paintWithAlpha: backgroundAlpha.
 
 			"Paint border"
 			self prepareStrokeWithDoubledWidth.
-			cairoContext primStroke ] ]
+			cairoContext stroke ] ]
 
 ]
 
@@ -595,20 +595,20 @@ AeCanvas >> setFigureWithBorderOutsideAndNoBackground [
 			
 			"Paint border with double width"
 			self prepareStrokeWithDoubledWidth.
-			cairoContext primStrokePreserve.
+			cairoContext strokePreserve.
 			
 			"Clear the inner half of the border.
 			Needs to be done inside a group to do not erase the target surface.
 			The changed operator will be restored when the group is poped."
 			cairoContext setOperatorClear.
 			shouldClipAfterDrawingFigure
-				ifTrue: [ cairoContext primFillPreserve ]
-				ifFalse: [ cairoContext primFill ] ].
+				ifTrue: [ cairoContext fillPreserve ]
+				ifFalse: [ cairoContext fill ] ].
 		
 		"Clip if required.
 		Needs to be doen after poping the group (above)."
 		shouldClipAfterDrawingFigure
-			ifTrue: [ cairoContext primClip ] ]
+			ifTrue: [ cairoContext clip ] ]
 
 ]
 
@@ -623,13 +623,13 @@ AeCanvas >> setFigureWithBorderOutsideAndOpaqueBackground [
 
 			"Paint border"
 			self prepareStrokeWithDoubledWidth.
-			cairoContext primStrokePreserve.
+			cairoContext strokePreserve.
 
 			"Paint background"
 			backgroundSourceBlock value.
 			cairoContext
-				primClip;
-				primPaint ] ]
+				clip;
+				paint ] ]
 
 ]
 
@@ -644,20 +644,20 @@ AeCanvas >> setFigureWithBorderOutsideAndTranslucentBackground [
 			
 			"Paint border with double width"
 			self prepareStrokeWithDoubledWidth.
-			cairoContext primStrokePreserve.
+			cairoContext strokePreserve.
 
 			"Clear the inner half of the border"
 			self restoreContextAfter: [ 
 				cairoContext
 					setOperatorClear;
-					primFillPreserve ] ].
+					fillPreserve ] ].
 		
 		"Paint background"
 		self restoreContextIfShouldClipAfter: [
 			backgroundSourceBlock value.
 			cairoContext
-				primClip;
-				primPaintAlpha: backgroundAlpha ] ]
+				clip;
+				paintWithAlpha: backgroundAlpha ] ]
 
 ]
 
@@ -668,8 +668,8 @@ AeCanvas >> setHighQualityOptions [
 	antialiasOption := AeCairoAntialias CAIRO_ANTIALIAS_FAST.
 
 	cairoContext
-		primSetTolerance: 0.2;
-		primSetAntialias: antialiasOption.
+		tolerance: 0.2;
+		antialias: antialiasOption.
 
 	fontOptions := AeCairoFontOptions new
 		antialias: antialiasOption;
@@ -692,7 +692,7 @@ AeCanvas >> setHighQualityOptions [
 { #category : #API }
 AeCanvas >> setJoinBevel [
 
-	cairoContext primSetLineJoin: AeCairoJoinStyle CAIRO_LINE_JOIN_BEVEL
+	cairoContext lineJoin: AeCairoJoinStyle CAIRO_LINE_JOIN_BEVEL
 ]
 
 { #category : #API }
@@ -704,14 +704,14 @@ AeCanvas >> setJoinMiter: limit [
 	"But we might need to set the miter limit if it's not the default"
 	"https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-miter-limit"
 	limit = 10.0 ifFalse: [ 
-		cairoContext primSetMiterLimit: limit ]
+		cairoContext miterLimit: limit ]
 
 ]
 
 { #category : #API }
 AeCanvas >> setJoinRound [
 
-	cairoContext primSetLineJoin: AeCairoJoinStyle CAIRO_LINE_JOIN_ROUND
+	cairoContext lineJoin: AeCairoJoinStyle CAIRO_LINE_JOIN_ROUND
 ]
 
 { #category : #API }
@@ -732,8 +732,8 @@ AeCanvas >> setLineJoinBlock: aFullBlockClosure [
 AeCanvas >> setLowQualityOptions [
 
 	cairoContext
-		primSetTolerance: 0.5;
-		primSetAntialias: AeCairoAntialias CAIRO_ANTIALIAS_NONE.
+		tolerance: 0.5;
+		antialias: AeCairoAntialias CAIRO_ANTIALIAS_NONE.
 
 	fontOptions := AeCairoFontOptions new
 		antialias: AeCairoAntialias CAIRO_ANTIALIAS_FAST;
@@ -814,7 +814,7 @@ AeCanvas >> setSourceLinearPatternStops: aCollection start: startPoint end: endP
 	aCollection do: [ :each |
 		aPattern addStopAt: each key color: each value ].
 	
-	cairoContext primSetSource: aPattern.
+	cairoContext source: aPattern.
 ]
 
 { #category : #API }
@@ -830,14 +830,14 @@ AeCanvas >> setSourceRadialPatternStops: aCollection center: aPoint radius: aNum
 	aCollection do: [ :each |
 		aPattern addStopAt: each key color: each value ].
 	
-	cairoContext primSetSource: aPattern.
+	cairoContext source: aPattern.
 ]
 
 { #category : #private }
 AeCanvas >> setSourceSolidColor: aColor [
 
 	cairoContext
-		primSetSourceR: aColor red
+		sourceColorR: aColor red
 		g: aColor green
 		b: aColor blue
 ]
@@ -845,7 +845,7 @@ AeCanvas >> setSourceSolidColor: aColor [
 { #category : #private }
 AeCanvas >> setSourceTranslucentColor: aColor [
 
-	cairoContext setSourceRGBAColor: aColor
+	cairoContext sourceColorRGBA: aColor
 
 ]
 
@@ -864,9 +864,9 @@ AeCanvas >> textExtentsFor: aeGlyphsArray scaledFont: aeScaledFont do: aUnaryBlo
 	the execution of the block closure."
 	
 	cairoContext
-		primSetScaledFont: aeScaledFont;
-		primGlyphExtents: aeGlyphsArray
-			num: aeGlyphsArray size
-			metrics: textExtents.
+		scaledFont: aeScaledFont;
+		getGlyphExtentsOf: aeGlyphsArray
+			size: aeGlyphsArray size
+			on: textExtents.
 	aUnaryBlockClosure value: textExtents
 ]

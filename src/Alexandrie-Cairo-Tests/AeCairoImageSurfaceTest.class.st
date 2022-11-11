@@ -11,7 +11,7 @@ Class {
 AeCairoImageSurfaceTest >> testCreateExtentFormat [
 
 	surface := AeCairoImageSurface
-		           createExtent: 100 @ 50
+		           extent: 100 @ 50
 		           format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
 
 	self assert: surface extent equals: 100 @ 50
@@ -23,7 +23,7 @@ AeCairoImageSurfaceTest >> testCreateForDataExtentFormat [
 	| extent format stride data |
 	extent := 200 @ 150.
 	format := AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
-	stride := AeCairoImageSurface primStrideForWidth: extent x format: format.
+	stride := AeCairoImageSurface strideForWidth: extent x format: format.
 
 	data := FFIExternalArray externalNewType: FFIUInt8 size: stride * extent y.
 
@@ -41,7 +41,7 @@ AeCairoImageSurfaceTest >> testCreateSimilarFormatWidthHeight [
 
 	| aSimilarSurface |
 	surface := AeCairoImageSurface
-		           createExtent: 100 @ 50
+		           extent: 100 @ 50
 		           format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
 
 	aSimilarSurface := surface
@@ -84,7 +84,7 @@ AeCairoImageSurfaceTest >> testPrimFormatStrideForWidth [
 
 	self
 		assert: (AeCairoImageSurface
-				 primStrideForWidth: 150
+				 strideForWidth: 150
 				 format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32)
 		equals: 150 * 4
 ]

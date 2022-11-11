@@ -13,31 +13,22 @@ Class {
 }
 
 { #category : #finalization }
-AeCairoFontFace class >> primDestroy: aHandle [
+AeCairoFontFace class >> destroyHandle: aHandle [
 	
-	self ffiCall: #( void cairo_font_face_destroy ( void* aHandle) )
+	self ffiCall: #( void cairo_font_face_destroy ( void * aHandle) )
 ]
 
 { #category : #'private - ffi' }
-AeCairoFontFace >> primStatus [
-
-	^ self ffiCall: #(AeCairoStatus cairo_font_face_status ( self ) )
-]
-
-{ #category : #'private - ffi' }
-AeCairoFontFace >> primType [
-
-	^ self ffiCall: #(AeCairoFontType cairo_font_face_get_type ( self ) )
-]
-
-{ #category : #accessing }
 AeCairoFontFace >> status [
 
-	^ self primStatus
+	^ self ffiCall: #( AeCairoStatus cairo_font_face_status ( self ) )
 ]
 
-{ #category : #accessing }
+{ #category : #'private - ffi' }
 AeCairoFontFace >> type [
+	"Returns the type of the backend used to create a font face.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-font-face-t.html#cairo-font-face-get-type"
 
-	^ self primType
+	^ self ffiCall: #( AeCairoFontType cairo_font_face_get_type ( self ) )
 ]

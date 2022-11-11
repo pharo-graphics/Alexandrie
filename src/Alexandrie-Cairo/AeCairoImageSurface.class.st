@@ -10,22 +10,22 @@ Class {
 }
 
 { #category : #'instance creation' }
-AeCairoImageSurface class >> createExtent: anExtent format: aSurfaceFormat [
+AeCairoImageSurface class >> extent: aPoint [
+
+	^ self
+		  extent: aPoint
+		  format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32
+]
+
+{ #category : #'instance creation' }
+AeCairoImageSurface class >> extent: anExtent format: aSurfaceFormat [
 
 	^ (self
-		   primCreateWidth: anExtent x
+		   unownedNewForWidth: anExtent x
 		   height: anExtent y
 		   format: aSurfaceFormat)
 		  autoRelease;
 		  yourself
-]
-
-{ #category : #'instance creation' }
-AeCairoImageSurface class >> extent: aPoint [
-
-	^ self
-		  createExtent: aPoint
-		  format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32
 ]
 
 { #category : #'instance creation' }
@@ -35,7 +35,7 @@ AeCairoImageSurface class >> fromForm: aForm [
 	form := aForm unhibernate; asFormOfDepth: 32.
 
 	aSurface := AeCairoImageSurface
-		createExtent: aForm extent
+		extent: aForm extent
 		format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
 	
 	"Convert form bits with premultiplied alpha"
@@ -51,7 +51,7 @@ AeCairoImageSurface class >> fromForm: aForm [
 	
 	LibC
 		memCopy: newBits
-		to: aSurface primData getHandle
+		to: aSurface data getHandle
 		size: (form width * form height * 4).
 	
 	^ aSurface
@@ -63,7 +63,7 @@ AeCairoImageSurface class >> fromForm: aForm [
 AeCairoImageSurface class >> newForData: aData extent: aPoint stride: stride format: aSurfaceFormat [
 
 	^ (self
-		   primCreateForData: aData
+		   unownedNewForData: aData
 		   width: aPoint x
 		   height: aPoint y
 		   stride: stride
@@ -72,32 +72,38 @@ AeCairoImageSurface class >> newForData: aData extent: aPoint stride: stride for
 		  yourself
 ]
 
-{ #category : #'private - ffi' }
-AeCairoImageSurface class >> primCreateForData: aData width: width height: height stride: stride format: aSurfaceFormat [
-
-	^ self ffiCall: #( AeCairoImageSurface cairo_image_surface_create_for_data (
-		void* aData,
-		AeCairoSurfaceFormat aSurfaceFormat,
-		int width,
-		int height,
-		int stride) )
-]
-
-{ #category : #'private - ffi' }
-AeCairoImageSurface class >> primCreateWidth: aWidth height: aHeight format: aSurfaceFormat [
-
-	^ self ffiCall: #( AeCairoImageSurface cairo_image_surface_create (
-		AeCairoSurfaceFormat	aSurfaceFormat,
-		int	 aWidth,
-		int	 aHeight ) )
-]
-
 { #category : #'private - fii' }
-AeCairoImageSurface class >> primStrideForWidth: aWidth format: aSurfaceFormat [
+AeCairoImageSurface class >> strideForWidth: aWidth format: aSurfaceFormat [
 
-	^ self ffiCall: #( int cairo_format_stride_for_width (
-		AeCairoSurfaceFormat	aSurfaceFormat,
-		int	 aWidth ) )
+	^ self ffiCall: #(
+		int
+		cairo_format_stride_for_width (
+			AeCairoSurfaceFormat	aSurfaceFormat,
+			int aWidth ) )
+]
+
+{ #category : #'private - ffi' }
+AeCairoImageSurface class >> unownedNewForData: aData width: width height: height stride: stride format: aSurfaceFormat [
+
+	^ self ffiCall: #(
+		AeCairoImageSurface
+		cairo_image_surface_create_for_data (
+			void* aData,
+			AeCairoSurfaceFormat aSurfaceFormat,
+			int width,
+			int height,
+			int stride ) )
+]
+
+{ #category : #'private - ffi' }
+AeCairoImageSurface class >> unownedNewForWidth: aWidth height: aHeight format: aSurfaceFormat [
+
+	^ self ffiCall: #(
+		AeCairoImageSurface
+		cairo_image_surface_create (
+			AeCairoSurfaceFormat	aSurfaceFormat,
+			int aWidth,
+			int aHeight ) )
 ]
 
 { #category : #converting }
@@ -110,47 +116,72 @@ AeCairoImageSurface >> asForm [
 	self flush.
 
 	theData := FFIExternalArray
-		fromHandle: self primData getHandle
+		fromHandle: self data getHandle
 		type: FFIUInt32
-		size: self primHeight * self primStride / 4.
+		size: self height * self stride / 4.
 	aBitmap := Bitmap newFrom: theData.
 
 	^ Form extent: self extent depth: 32 bits: aBitmap
 
 ]
 
+{ #category : #'private - ffi' }
+AeCairoImageSurface >> data [
+	"Get a pointer to the data of the image surface, for direct inspection or modification.
+
+A call to `cairo_surface_flush()` is required before accessing the pixel data to ensure that all pending drawing operations are finished. A call to `cairo_surface_mark_dirty()` is required after the data is modified.
+
+	See: https://www.cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-get-data"
+
+	^ self ffiCall: #( uchar* cairo_image_surface_get_data ( self ) )
+]
+
 { #category : #API }
 AeCairoImageSurface >> extent [
 
-	^ self primWidth @ self primHeight
+	^ self width @ self height
 ]
 
-{ #category : #API }
+{ #category : #'private - ffi' }
 AeCairoImageSurface >> format [
 
-	^ self primFormat
+	^ self ffiCall: #( AeCairoSurfaceFormat cairo_image_surface_get_format (self) )
 ]
 
-{ #category : #API }
+{ #category : #'private - ffi' }
 AeCairoImageSurface >> height [
 
-	^ self primHeight
+	^ self ffiCall: #( int cairo_image_surface_get_height ( self ) )
 ]
 
 { #category : #'private - ffi' }
 AeCairoImageSurface >> newSimilarImageFormat: aFormat width: aWidth height: aHeight [
 
 	^ self
-		  primCreateSimilarImageFormat: aFormat
+		  unownedSimilarImageFormat: aFormat
 		  width: aWidth
 		  height: aHeight
 ]
 
 { #category : #'private - ffi' }
-AeCairoImageSurface >> primCreateSimilarImageFormat: aFormat width: aWidth height: aHeight [
+AeCairoImageSurface >> stride [
+
+	^ self ffiCall: #( int cairo_image_surface_get_stride ( self ) )
+]
+
+{ #category : #'private - ffi' }
+AeCairoImageSurface >> unownedSimilarImageFormat: aFormat width: aWidth height: aHeight [
+	"Create a new image surface that is as compatible as possible for uploading to and the use in conjunction with an existing surface. However, this surface can still be used like any normal image surface. Unlike `cairo_surface_create_similar()` the new image surface won't inherit the device scale from other.
+
+	Initially the surface contents are all 0 (transparent if contents have transparency, black otherwise.)
+
+	Answer a pointer to the newly allocated image surface. The caller owns the surface and should call `cairo_surface_destroy()` when done with it.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-create-similar-image"
 
 	^ self ffiCall: #(
-		AeCairoImageSurface cairo_surface_create_similar_image (
+		AeCairoImageSurface
+		cairo_surface_create_similar_image (
 			self,
 			AeCairoSurfaceFormat aFormat,
 			int aWidth,
@@ -158,37 +189,7 @@ AeCairoImageSurface >> primCreateSimilarImageFormat: aFormat width: aWidth heigh
 ]
 
 { #category : #'private - ffi' }
-AeCairoImageSurface >> primData [
-
-	^ self ffiCall: #(uchar* cairo_image_surface_get_data ( self ) )
-]
-
-{ #category : #'private - ffi' }
-AeCairoImageSurface >> primFormat [
-
-	^ self ffiCall: #(AeCairoSurfaceFormat cairo_image_surface_get_format (self) )
-]
-
-{ #category : #'private - ffi' }
-AeCairoImageSurface >> primHeight [
-
-	^ self ffiCall: #(int cairo_image_surface_get_height ( self ) )
-]
-
-{ #category : #'private - ffi' }
-AeCairoImageSurface >> primStride [
-
-	^ self ffiCall: #(int cairo_image_surface_get_stride ( self ) )
-]
-
-{ #category : #'private - ffi' }
-AeCairoImageSurface >> primWidth [
-
-	^ self ffiCall: #(int cairo_image_surface_get_width ( self ) )
-]
-
-{ #category : #API }
 AeCairoImageSurface >> width [
 
-	^ self primWidth
+	^ self ffiCall: #( int cairo_image_surface_get_width ( self ) )
 ]

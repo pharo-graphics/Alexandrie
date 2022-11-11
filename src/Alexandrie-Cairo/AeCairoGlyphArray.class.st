@@ -9,6 +9,12 @@ Class {
 	#category : #'Alexandrie-Cairo-Text'
 }
 
+{ #category : #finalization }
+AeCairoGlyphArray class >> destroyHandle: aHandle [
+	
+	self ffiCall: #( void cairo_glyph_free ( void * aHandle ) )
+]
+
 { #category : #'instance creation' }
 AeCairoGlyphArray class >> externalNew: aSize [
 
@@ -28,12 +34,6 @@ AeCairoGlyphArray class >> fromHandle: aGlyphsArrayPtr size: aGlyphsNum [
 		  fromHandle: aGlyphsArrayPtr
 		  type: AeCairoGlyph
 		  size: aGlyphsNum
-]
-
-{ #category : #finalization }
-AeCairoGlyphArray class >> primDestroy: aHandle [
-	
-	self ffiCall: #( void cairo_glyph_free (void *aHandle) )
 ]
 
 { #category : #'external resource management' }

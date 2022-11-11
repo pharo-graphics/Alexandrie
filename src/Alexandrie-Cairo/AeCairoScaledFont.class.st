@@ -17,11 +17,17 @@ Class {
 	#category : #'Alexandrie-Cairo-Text'
 }
 
+{ #category : #finalization }
+AeCairoScaledFont class >> destroyHandle: aHandle [
+	
+	self ffiCall: #( void cairo_scaled_font_destroy ( void * aHandle ) )
+]
+
 { #category : #'instance creation' }
 AeCairoScaledFont class >> fontFace: aCairoFontFace fontMatrix: aFontMatrix userToDeviceMatrix: aUserToDeviceCairoMatrix options: theFontOptions [
 
 	^ (self
-		   primCreate: aCairoFontFace
+		   unownedNewFor: aCairoFontFace
 		   fontMatrix: aFontMatrix
 		   userToDeviceMatrix: aUserToDeviceCairoMatrix
 		   options: theFontOptions)
@@ -30,7 +36,7 @@ AeCairoScaledFont class >> fontFace: aCairoFontFace fontMatrix: aFontMatrix user
 ]
 
 { #category : #'private - ffi' }
-AeCairoScaledFont class >> primCreate: aCairoFontFace fontMatrix: aFontMatrix userToDeviceMatrix: aCTM options: theFontOptions [
+AeCairoScaledFont class >> unownedNewFor: aCairoFontFace fontMatrix: aFontMatrix userToDeviceMatrix: aCTM options: theFontOptions [
 
 	^ self ffiCall: #(
 		AeCairoScaledFont cairo_scaled_font_create (
@@ -38,12 +44,6 @@ AeCairoScaledFont class >> primCreate: aCairoFontFace fontMatrix: aFontMatrix us
 			AeCairoMatrix * aFontMatrix,
 			AeCairoMatrix * aCTM,
 			AeCairoFontOptions theFontOptions ) )
-]
-
-{ #category : #finalization }
-AeCairoScaledFont class >> primDestroy: aHandle [
-	
-	self ffiCall: #(void cairo_scaled_font_destroy ( void* aHandle ) )
 ]
 
 { #category : #API }
@@ -167,12 +167,6 @@ AeCairoScaledFont >> primLock [
 ]
 
 { #category : #'private - ffi' }
-AeCairoScaledFont >> primStatus [
-
-	^ self ffiCall: #(AeCairoStatus cairo_scaled_font_status ( self ) )
-]
-
-{ #category : #'private - ffi' }
 AeCairoScaledFont >> primTextToGlyphs: aBuffer length: aLength glyphs: theGlyphs num: aGlyphsCount x: aX y: aY [
 
 	^ self ffiCall: #(
@@ -207,8 +201,8 @@ AeCairoScaledFont >> scaleMatrix [
 	^ aCairoMatrix
 ]
 
-{ #category : #API }
+{ #category : #'private - ffi' }
 AeCairoScaledFont >> status [
 
-	^ self primStatus
+	^ self ffiCall: #(AeCairoStatus cairo_scaled_font_status ( self ) )
 ]

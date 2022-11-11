@@ -19,12 +19,9 @@ Class {
 }
 
 { #category : #finalization }
-AeHbFace class >> primDestroy: aHandle [
+AeHbFace class >> destroyHandle: aHandle [
 
-	self ffiCall: #(
-		void
-		hb_face_destroy (void *aHandle)
-		)
+	self ffiCall: #( void hb_face_destroy ( void * aHandle ) )
 ]
 
 { #category : #'instance creation' }

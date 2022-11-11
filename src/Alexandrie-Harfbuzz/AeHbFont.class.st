@@ -21,12 +21,9 @@ Class {
 }
 
 { #category : #finalization }
-AeHbFont class >> primDestroy: aHandle [
+AeHbFont class >> destroyHandle: aHandle [
 
-	self ffiCall: #(
-		void
-		hb_font_destroy (void *aHandle)
-		)
+	self ffiCall: #( void hb_font_destroy ( void * aHandle ) )
 ]
 
 { #category : #'instance creation' }

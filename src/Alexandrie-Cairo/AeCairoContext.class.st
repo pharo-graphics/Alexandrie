@@ -18,28 +18,29 @@ Class {
 
 { #category : #converting }
 AeCairoContext class >> asExternalTypeOn: generator [
+
 	^ FFIExternalObjectType objectClass: self
+]
+
+{ #category : #finalization }
+AeCairoContext class >> destroyHandle: aHandle [
+	
+	self ffiCall: #( void cairo_destroy ( void * aHandle ) )
 ]
 
 { #category : #'instance creation' }
 AeCairoContext class >> newFor: aSurface [
 
-	^ (self primCreate: aSurface)
+	^ (self unownedNewFor: aSurface)
 		initializeWith: aSurface;
 		autoRelease;
 		yourself
 ]
 
 { #category : #'private - ffi' }
-AeCairoContext class >> primCreate: aSurface [
+AeCairoContext class >> unownedNewFor: aSurface [
 
-	^ self ffiCall: #(AeCairoContext cairo_create (AeCairoImageSurface aSurface) )
-]
-
-{ #category : #finalization }
-AeCairoContext class >> primDestroy: aHandle [
-	
-	self ffiCall: #( void cairo_destroy ( void * aHandle ) )
+	^ self ffiCall: #( AeCairoContext cairo_create ( AeCairoImageSurface aSurface ) )
 ]
 
 { #category : #'API - path' }
@@ -47,25 +48,72 @@ AeCairoContext >> annulusSectorCenter: aPoint from: radiansStart to: radiansStop
 	"Precondition: radiansStart < radiansStop"
 
 	self
-		primArcCenterX: aPoint x
+		arcCenterX: aPoint x
 			centerY: aPoint y
 			radius: outerRadius
 			startAngle: radiansStart
 			endAngle: radiansStop;
-		primArcNegativeCenterX: aPoint x
+		arcNegativeCenterX: aPoint x
 			centerY: aPoint y
 			radius: innerRadius
 			startAngle: radiansStop
 			endAngle: radiansStart;
-		primClosePath
+		closePath
 
+]
+
+{ #category : #'API - path settings' }
+AeCairoContext >> antialias: aCairoAntialias [
+
+	self ffiCall: #(
+		void
+		cairo_set_antialias (
+			self,
+			AeCairoAntialias aCairoAntialias ) )
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> appendPath: aCairoPath [
+
+	self ffiCall: #(
+		void
+		cairo_append_path (
+			self,
+			AeCairoPath aCairoPath ) )
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> arcCenterX: centerX centerY: centerY radius: aRadius startAngle: aStartAngle endAngle: anEndAngle [ 
+
+	self ffiCall: #(
+		void
+		cairo_arc (
+			self,
+			double centerX,
+			double centerY,
+			double aRadius,
+			double aStartAngle,
+			double anEndAngle ) )
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> arcNegativeCenterX: centerX centerY: centerY radius: aRadius startAngle: aStartAngle endAngle: anEndAngle [ 
+	self ffiCall: #(
+		void
+		cairo_arc_negative (
+			self,
+			double centerX,
+			double centerY,
+			double aRadius,
+			double aStartAngle,
+			double anEndAngle ) )
 ]
 
 { #category : #'API - path' }
 AeCairoContext >> circleCenterX: x y: y radius: radius [
 
 	self
-		primArcCenterX: x
+		arcCenterX: x
 		centerY: y
 		radius: radius
 		startAngle: 0.0
@@ -76,7 +124,7 @@ AeCairoContext >> circleCenterX: x y: y radius: radius [
 AeCairoContext >> circleRadius: radius [
 
 	self
-		primArcCenterX: radius
+		arcCenterX: radius
 		centerY: radius
 		radius: radius
 		startAngle: 0.0
@@ -88,14 +136,14 @@ AeCairoContext >> circleSectorCenter: aPoint from: radiansStart to: radiansStop 
 	"Precondition: radiansStart < radiansStop"
 
 	self
-		primArcCenterX: aPoint x
+		arcCenterX: aPoint x
 			centerY: aPoint y
 			radius: radius
 			startAngle: radiansStart
 			endAngle: radiansStop;
-		primLineToX: aPoint x
+		lineToX: aPoint x
 			y: aPoint y;
-		primClosePath
+		closePath
 
 ]
 
@@ -104,14 +152,14 @@ AeCairoContext >> clearR: r g: g b: b a: a [
 	"See https://www.cairographics.org/FAQ/#clear_a_surface"
 
 	self
-		primSave;
+		saveState;
 		setOperatorSource;
-		primSetSourceR: r
+		sourceColorR: r
 			g: g
 			b: b
 			a: a;
-		primPaint;
-		primRestore
+		paint;
+		restoreState
 
 ]
 
@@ -120,11 +168,23 @@ AeCairoContext >> clearTransparent [
 	"See https://www.cairographics.org/FAQ/#clear_a_surface"
 
 	self
-		primSave;
+		saveState;
 		setOperatorClear;
-		primPaint;
-		primRestore
+		paint;
+		restoreState
 
+]
+
+{ #category : #'API - clipping' }
+AeCairoContext >> clip [
+
+	self ffiCall: #( void cairo_clip ( self ) )
+]
+
+{ #category : #'API - clipping' }
+AeCairoContext >> clipPreserve [
+
+	self ffiCall: #( void cairo_clip_preserve ( self ) )
 ]
 
 { #category : #'API - clipping' }
@@ -133,14 +193,14 @@ AeCairoContext >> clippingAreaAsForm [
 	| clippingForm |
 	"Temporarily reset CTM matrix"
 	self
-		primSave;
-		primLoadIdentity.
+		saveState;
+		setIdentityMatrix.
 
 	clippingForm := Form extent: surface extent depth: 1.
 	0 to: clippingForm width - 1 do: [ :x |
 		0 to: clippingForm height - 1 do: [ :y |
 			| isInClip |
-			isInClip := self primInClipX: x y: y.
+			isInClip := self isInClipX: x y: y.
 			clippingForm
 				colorAt: x@y
 				put: (isInClip
@@ -148,26 +208,24 @@ AeCairoContext >> clippingAreaAsForm [
 					ifFalse: [ Color white ]).
 			] ].
 
-	self primRestore.
+	self restoreState.
 		
 	^ clippingForm
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> copyPath [
-
-	^ self primCopyPath
-		  autoRelease;
-		  yourself
+AeCairoContext >> closePath [
+	
+	self ffiCall: #( void cairo_close_path ( self ) )
 ]
 
 { #category : #'API - path' }
 AeCairoContext >> cubicCurveFrom: startPoint controlPoint1: cp1 controlPoint2: cp2 to: endPoint [
 
 	self
-		primMoveToX: startPoint x
+		moveToX: startPoint x
 			y: startPoint y;
-		primCurveViaX: cp1 x
+		curveViaX: cp1 x
 			y: cp1 y
 			viaX: cp2 x
 			y: cp2 y
@@ -176,183 +234,21 @@ AeCairoContext >> cubicCurveFrom: startPoint controlPoint1: cp1 controlPoint2: c
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> ellipseWidth: width height: height [
-	"See: https://www.cairographics.org/cookbook/ellipses/"
+AeCairoContext >> currentPath [
+	"Return a copy of the current path."
 
-	self primSave.
-
-	self
-		primScaleX: width
-			y: height;
-		primArcCenterX: 0.5
-			centerY: 0.5
-			radius: 0.5
-			startAngle: 0.0
-			endAngle: Float twoPi.
-
-	self primRestore.
-
-]
-
-{ #category : #initialization }
-AeCairoContext >> initializeWith: anAeCairoSurface [
-	"Note: don't send super initialize as it nullifies the handle."
-
-	surface := anAeCairoSurface
-]
-
-{ #category : #'API - path' }
-AeCairoContext >> lineFrom: aPoint to: anotherPoint [
-
-	self
-		moveTo: aPoint;
-		lineTo: anotherPoint
-]
-
-{ #category : #'API - path' }
-AeCairoContext >> lineRelativeTo: aPoint [
-
-	^ self primRelativeLineToX: aPoint x asFloat y: aPoint y asFloat
-]
-
-{ #category : #'API - path' }
-AeCairoContext >> lineTo: aPoint [
-
-	^ self primLineToX: aPoint x asFloat y: aPoint y asFloat
-]
-
-{ #category : #'API - matrix' }
-AeCairoContext >> matrix [
-
-	| aCairoMatrix |
-	aCairoMatrix := AeCairoMatrix externalNew.
-	self primGetMatrix: aCairoMatrix.
-	^ aCairoMatrix
-		  autoRelease;
-		  yourself
-]
-
-{ #category : #'API - matrix' }
-AeCairoContext >> matrix: aeMatrix [
-
-	self primGetMatrix: aeMatrix
-
-]
-
-{ #category : #'API - path' }
-AeCairoContext >> moveRelativeTo: aPoint [
-
-	self primRelativeMoveToX: aPoint x asFloat y: aPoint y asFloat
-]
-
-{ #category : #'API - path' }
-AeCairoContext >> moveTo: aPoint [
-
-	self primMoveToX: aPoint x asFloat y: aPoint y asFloat
-]
-
-{ #category : #convenience }
-AeCairoContext >> paintGroupWith: aBlock [
-	"Note: Cairo already saves and restores its state with push_group and pop_group"
-
-	self primPushGroup.
-
-	aBlock value.
-
-	self
-		primPopGroupToSource;
-		primPaint
-]
-
-{ #category : #convenience }
-AeCairoContext >> paintGroupWith: aBlockClosure alpha: aNumber [
-	"Note: Cairo already saves and restores its state with push_group and pop_group"
-
-	self primPushGroup.
-
-	aBlockClosure value.
-
-	self
-		primPopGroupToSource;
-		primPaintAlpha: aNumber
-]
-
-{ #category : #'API - compositing' }
-AeCairoContext >> popGroup [
-
-	^ self primPopGroup
+	^ self unownedCurrentPath
 		  autoRelease;
 		  yourself
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> primAppendPath: aCairoPath [
-
-	self ffiCall: #( void cairo_append_path (
-			self,
-			AeCairoPath aCairoPath ) )
-]
-
-{ #category : #'API - matrix' }
-AeCairoContext >> primApplyTransform: aCairoMatrix [ 
-
-	self ffiCall: #( void cairo_transform (
-		self,
-		AeCairoMatrix *aCairoMatrix) )
-]
-
-{ #category : #'API - path' }
-AeCairoContext >> primArcCenterX: centerX centerY: centerY radius: aRadius startAngle: aStartAngle endAngle: anEndAngle [ 
-	self ffiCall: #(void cairo_arc (
-			self,
-			double centerX,
-			double centerY,
-			double aRadius,
-			double aStartAngle,
-			double anEndAngle) )
-]
-
-{ #category : #'API - path' }
-AeCairoContext >> primArcNegativeCenterX: centerX centerY: centerY radius: aRadius startAngle: aStartAngle endAngle: anEndAngle [ 
-	self ffiCall: #(void cairo_arc_negative (
-			self,
-			double centerX,
-			double centerY,
-			double aRadius,
-			double aStartAngle,
-			double anEndAngle) )
-]
-
-{ #category : #'API - clipping' }
-AeCairoContext >> primClip [
-
-	self ffiCall: #(void cairo_clip ( self ) )
-]
-
-{ #category : #'API - clipping' }
-AeCairoContext >> primClipPreserve [
-
-	self ffiCall: #(void cairo_clip_preserve ( self ) )
-]
-
-{ #category : #'API - path' }
-AeCairoContext >> primClosePath [
-	
-	self ffiCall: #(void cairo_close_path ( self ) )
-]
-
-{ #category : #'API - path' }
-AeCairoContext >> primCopyPath [
-
-	^ self ffiCall: #(AeCairoPath cairo_copy_path ( self ) )
-]
-
-{ #category : #'API - path' }
-AeCairoContext >> primCurveViaX: x1 y: y1 viaX: x2 y: y2 toX: x3 y: y3 [
+AeCairoContext >> curveViaX: x1 y: y1 viaX: x2 y: y2 toX: x3 y: y3 [
 	"See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-curve-to"	
 
 	self ffiCall: #(
-		void cairo_curve_to (
+		void
+		cairo_curve_to (
 			self,
 			double x1,
 			double y1,
@@ -362,52 +258,99 @@ AeCairoContext >> primCurveViaX: x1 y: y1 viaX: x2 y: y2 toX: x3 y: y3 [
 			double y3 ) )
 ]
 
-{ #category : #'API - painting' }
-AeCairoContext >> primFill [
+{ #category : #'API - path settings' }
+AeCairoContext >> dash: anArrayOfDoubles count: aNumberOfDashes offset: anOffset [
 
-	self ffiCall: #( void cairo_fill ( self ))
-]
-
-{ #category : #'API - painting' }
-AeCairoContext >> primFillPreserve [
-
-	self ffiCall: #( void cairo_fill_preserve ( self ))
-]
-
-{ #category : #'API - text' }
-AeCairoContext >> primFontExtents: aFontExtents [
-
-	self ffiCall: #( void cairo_font_extents (
-		self,
-		AeCairoFontExtents* aFontExtents ) )
-]
-
-{ #category : #'API - matrix' }
-AeCairoContext >> primGetMatrix: aCairoMatrix [
-
-	self ffiCall: #( void cairo_get_matrix (
-		self,
-		AeCairoMatrix *aCairoMatrix) )
+	self ffiCall: #(
+		void
+		cairo_set_dash (
+			self,
+			double* anArrayOfDoubles,
+			int aNumberOfDashes,
+			double anOffset ) )
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> primGetSource [
+AeCairoContext >> ellipseWidth: width height: height [
+	"See: https://www.cairographics.org/cookbook/ellipses/"
 
-	^ self ffiCall: #( AeCairoPattern cairo_get_source ( self ) )
+	self saveState.
+
+	self
+		scaleByX: width
+			y: height;
+		arcCenterX: 0.5
+			centerY: 0.5
+			radius: 0.5
+			startAngle: 0.0
+			endAngle: Float twoPi.
+
+	self restoreState.
+
+]
+
+{ #category : #'API - painting' }
+AeCairoContext >> fill [
+
+	self ffiCall: #( void cairo_fill ( self ) )
+]
+
+{ #category : #'API - painting' }
+AeCairoContext >> fillPreserve [
+
+	self ffiCall: #( void cairo_fill_preserve ( self ) )
 ]
 
 { #category : #'API - text' }
-AeCairoContext >> primGlyphExtents: theGlyphs num: aGlyphsNum metrics: aTextMetrics [
+AeCairoContext >> getFontExtentsOn: aFontExtents [
+	"Gets the font extents for the currently selected font.
+	
+	See: https://www.cairographics.org/manual/cairo-text.html#cairo-font-extents"
 
-	self ffiCall: #( void cairo_glyph_extents (
-		self,
-		AeCairoGlyphArray theGlyphs,
-		int aGlyphsNum,
-		AeCairoTextExtents* aTextMetrics ) )
+	self ffiCall: #(
+		void
+		cairo_font_extents (
+			self,
+			AeCairoFontExtents* aFontExtents ) )
+]
+
+{ #category : #'API - text' }
+AeCairoContext >> getGlyphExtentsOf: theGlyphs size: aGlyphsNum on: aTextMetrics [
+	"Gets the extents for an array of glyphs. The extents describe a user-space rectangle that encloses the 'inked' portion of the glyphs, (as they would be drawn by `cairo_show_glyphs()`). Additionally, the `x_advance` and `y_advance` values indicate the amount by which the current point would be advanced by `cairo_show_glyphs()`.
+	
+	See: https://www.cairographics.org/manual/cairo-text.html#cairo-glyph-extents"
+
+	self ffiCall: #(
+		void
+		cairo_glyph_extents (
+			self,
+			AeCairoGlyphArray theGlyphs,
+			int aGlyphsNum,
+			AeCairoTextExtents* aTextMetrics ) )
+]
+
+{ #category : #'API - matrix' }
+AeCairoContext >> getMatrixOn: aCairoMatrix [
+	"Stores the current transformation matrix (CTM) into to argument.
+	
+	See: https://www.cairographics.org/manual/cairo-Transformations.html#cairo-get-matrix"
+
+	self ffiCall: #(
+		void
+		cairo_get_matrix (
+			self,
+			AeCairoMatrix *aCairoMatrix ) )
+]
+
+{ #category : #initialization }
+AeCairoContext >> initializeWith: anAeCairoSurface [
+	"Note: don't send super initialize as it nullifies the handle."
+
+	surface := anAeCairoSurface
 ]
 
 { #category : #'API - clipping' }
-AeCairoContext >> primInClipX: x y: y [ 
+AeCairoContext >> isInClipX: x y: y [ 
 	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-in-clip"
 
 	^ self ffiCall: #(
@@ -419,42 +362,83 @@ AeCairoContext >> primInClipX: x y: y [
 ]
 
 { #category : #'API - hit testing' }
-AeCairoContext >> primInFillX: x y: y [ 
+AeCairoContext >> isInFillX: x y: y [ 
 	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-in-fill"
 
-	^ self ffiCall: #( Boolean cairo_in_fill (
-		self,
-		double x,
-		double y ) )
+	^ self ffiCall: #(
+		Boolean
+		cairo_in_fill (
+			self,
+			double x,
+			double y ) )
 ]
 
 { #category : #'API - hit testing' }
-AeCairoContext >> primInStrokeX: x y: y [ 
+AeCairoContext >> isInStrokeX: x y: y [ 
 	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-in-stroke"
 
-	^ self ffiCall: #( Boolean cairo_in_stroke (
-		self,
-		double x,
-		double y ) )
+	^ self ffiCall: #(
+		Boolean cairo_in_stroke (
+			self,
+			double x,
+			double y ) )
+]
+
+{ #category : #'API - path settings' }
+AeCairoContext >> lineCap: aCairoCapStyle [
+
+	self ffiCall: #(
+		void
+		cairo_set_line_cap (
+			self,
+			AeCairoCapStyle aCairoCapStyle ) )
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> primLineToX: aX y: aY [
+AeCairoContext >> lineFrom: aPoint to: anotherPoint [
 
-	self ffiCall: #(void cairo_line_to (
+	self
+		moveTo: aPoint;
+		lineTo: anotherPoint
+]
+
+{ #category : #'API - path settings' }
+AeCairoContext >> lineJoin: aCairoJoinStyle [
+
+	self ffiCall: #( void cairo_set_line_join (
+		self,
+      AeCairoJoinStyle aCairoJoinStyle ) )
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> lineTo: aPoint [
+
+	^ self lineToX: aPoint x asFloat y: aPoint y asFloat
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> lineToX: aX y: aY [
+
+	self ffiCall: #(
+		void
+		cairo_line_to (
 			self,
 			double aX,
 			double aY ) )
 ]
 
-{ #category : #'API - matrix' }
-AeCairoContext >> primLoadIdentity [
+{ #category : #'API - path settings' }
+AeCairoContext >> lineWidth: aNumber [
 
-	self ffiCall: #( void cairo_identity_matrix ( self ) )
+	self ffiCall: #(
+		void
+		cairo_set_line_width (
+			self,
+			double aNumber ) )
 ]
 
 { #category : #'API - clipping' }
-AeCairoContext >> primMask: pattern [
+AeCairoContext >> mask: pattern [
 	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-mask"
 
 	^ self ffiCall: #(
@@ -465,7 +449,7 @@ AeCairoContext >> primMask: pattern [
 ]
 
 { #category : #'API - clipping' }
-AeCairoContext >> primMaskSurface: aSurface x: x y: y [
+AeCairoContext >> maskSurface: aSurface x: x y: y [
 	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-mask-surface"
 
 	^ self ffiCall: #(
@@ -477,269 +461,122 @@ AeCairoContext >> primMaskSurface: aSurface x: x y: y [
 			double y ) )
 ]
 
-{ #category : #'API - path' }
-AeCairoContext >> primMoveToX: aX y: aY [
+{ #category : #'API - matrix' }
+AeCairoContext >> matrix [
 
-	self ffiCall: #(void cairo_move_to (
-			self,
-			double aX,
-			double aY ) )
-]
-
-{ #category : #'API - path' }
-AeCairoContext >> primNewPath [
-	"See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-new-path"
-
-	self ffiCall: #(void cairo_new_path ( self ) )
-]
-
-{ #category : #'API - painting' }
-AeCairoContext >> primPaint [
-
-	self ffiCall: #( void cairo_paint ( self ) )
-]
-
-{ #category : #'API - painting' }
-AeCairoContext >> primPaintAlpha: aNumber [
-
-	self ffiCall: #(void cairo_paint_with_alpha (
-			self,
-			double aNumber ) )
-]
-
-{ #category : #'API - compositing' }
-AeCairoContext >> primPopGroup [
-
-	^ self ffiCall: #( AeCairoSurfacePattern cairo_pop_group ( self ) )
-]
-
-{ #category : #'API - compositing' }
-AeCairoContext >> primPopGroupToSource [
-
-	self ffiCall: #( void cairo_pop_group_to_source ( self ) )
-]
-
-{ #category : #'API - compositing' }
-AeCairoContext >> primPushGroup [
-
-	self ffiCall: #( void cairo_push_group ( self ) )
-]
-
-{ #category : #'API - path' }
-AeCairoContext >> primRectangleX: aX y: aY width: aWidth height: aHeight [
-	"Note: aWidth and aHeight can be negative"
-
-	self ffiCall: #(void cairo_rectangle (
-			self,
-			double aX,
-			double aY,
-			double aWidth,
-			double aHeight ) )
-]
-
-{ #category : #'API - path' }
-AeCairoContext >> primRelativeLineToX: aX y: aY [
-
-	self ffiCall: #(void cairo_rel_line_to (
-			self,
-			double aX,
-			double aY ) )
-]
-
-{ #category : #'API - path' }
-AeCairoContext >> primRelativeMoveToX: aX y: aY [
-
-	self ffiCall: #(void cairo_rel_move_to (
-			self,
-			double aX,
-			double aY ) )
-]
-
-{ #category : #'API - clipping' }
-AeCairoContext >> primResetClip [
-
-	self ffiCall: #( void cairo_reset_clip #( self ) )
-]
-
-{ #category : #'API - states' }
-AeCairoContext >> primRestore [
-
-	self ffiCall: #( void cairo_restore ( self ) )
-]
-
-{ #category : #'API - states' }
-AeCairoContext >> primSave [
-
-	self ffiCall: #( void cairo_save ( self ) )
+	| aCairoMatrix |
+	aCairoMatrix := AeCairoMatrix externalNew.
+	self getMatrixOn: aCairoMatrix.
+	^ aCairoMatrix
+		  autoRelease;
+		  yourself
 ]
 
 { #category : #'API - matrix' }
-AeCairoContext >> primScaleX: aX y: aY [
+AeCairoContext >> matrix: aCairoMatrix [
 
-	self ffiCall: #( void cairo_scale (
+	self ffiCall: #(
+		void
+		cairo_set_matrix (
 			self,
-			double aX,
-			double aY) )
+			AeCairoMatrix *aCairoMatrix ) )
 ]
 
 { #category : #'API - path settings' }
-AeCairoContext >> primSetAntialias: aCairoAntialias [
-
-	self ffiCall: #( void cairo_set_antialias (
-		self,
-      AeCairoAntialias aCairoAntialias ) )
-]
-
-{ #category : #'API - path settings' }
-AeCairoContext >> primSetDash: anArrayOfDoubles count: aNumberOfDashes offset: anOffset [
-
-	self ffiCall: #( void cairo_set_dash (
-		self,
-      double* anArrayOfDoubles,
-		int aNumberOfDashes,
-		double anOffset ) )
-]
-
-{ #category : #'API - path settings' }
-AeCairoContext >> primSetLineCap: aCairoCapStyle [
-
-	self ffiCall: #( void cairo_set_line_cap (
-		self,
-      AeCairoCapStyle aCairoCapStyle ) )
-]
-
-{ #category : #'API - path settings' }
-AeCairoContext >> primSetLineJoin: aCairoJoinStyle [
-
-	self ffiCall: #( void cairo_set_line_join (
-		self,
-      AeCairoJoinStyle aCairoJoinStyle ) )
-]
-
-{ #category : #'API - path settings' }
-AeCairoContext >> primSetLineWidth: aNumber [
-
-	self ffiCall: #( void cairo_set_line_width (
-		self,
-      double aNumber ) )
-]
-
-{ #category : #'API - matrix' }
-AeCairoContext >> primSetMatrix: aCairoMatrix [
-
-	self ffiCall: #( void cairo_set_matrix (
-		self,
-		AeCairoMatrix *aCairoMatrix) )
-]
-
-{ #category : #'API - path settings' }
-AeCairoContext >> primSetMiterLimit: aNumber [
+AeCairoContext >> miterLimit: aNumber [
 
 	self ffiCall: #( void cairo_set_miter_limit (
 		self,
       double aNumber ) )
 ]
 
+{ #category : #'API - path' }
+AeCairoContext >> moveTo: aPoint [
+
+	self moveToX: aPoint x asFloat y: aPoint y asFloat
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> moveToX: aX y: aY [
+
+	self ffiCall: #(
+		void
+		cairo_move_to (
+			self,
+			double aX,
+			double aY ) )
+]
+
 { #category : #'API - compositing' }
-AeCairoContext >> primSetOperator: aCairoOperator [
+AeCairoContext >> operator: aCairoOperator [
 
-	self ffiCall: #( void cairo_set_operator (
-		self,
-      AeCairoCompositionOp aCairoOperator ) )
-]
-
-{ #category : #'API - text' }
-AeCairoContext >> primSetScaledFont: aScaledFont [
-
-	self ffiCall: #( void cairo_set_scaled_font (
-		self,
-		AeCairoScaledFont aScaledFont ) )
-]
-
-{ #category : #'API - source' }
-AeCairoContext >> primSetSource: aPattern [
-
-	self ffiCall: #( void cairo_set_source (
-		self,
-		AeCairoPattern aPattern ))
-]
-
-{ #category : #'API - source' }
-AeCairoContext >> primSetSourceR: aRed g: aGreen b: aBlue [
-	
-	self ffiCall: #( void cairo_set_source_rgb (
+	self ffiCall: #(
+		void
+		cairo_set_operator (
 			self,
-			double aRed,
-			double aGreen,
-			double aBlue) )
-]
-
-{ #category : #'API - source' }
-AeCairoContext >> primSetSourceR: aRed g: aGreen b: aBlue a: anAlpha [
-	
-	self ffiCall: #( void cairo_set_source_rgba (
-			self,
-			double aRed,
-			double aGreen,
-			double aBlue,
-			double anAlpha) )
-]
-
-{ #category : #'API - source' }
-AeCairoContext >> primSetSourceSurface: aCairoSurface x: aX y: aY [
-
-	self ffiCall: #( void cairo_set_source_surface (
-			self,
-			AeCairoSurface aCairoSurface,
-			double aX,
-			double aY) )
-]
-
-{ #category : #'API - path settings' }
-AeCairoContext >> primSetTolerance: aNumber [ 
-
-	self ffiCall: #( void cairo_set_tolerance (
-		self,
-      double aNumber ) )
-]
-
-{ #category : #'API - text' }
-AeCairoContext >> primShowGlyphs: aGlyphsArray num: aNumberOfGlyphs [
-
-	self ffiCall: #( void cairo_show_glyphs (
-		self,
-		void * aGlyphsArray,
-		int aNumberOfGlyphs ) )
-]
-
-{ #category : #'API - states' }
-AeCairoContext >> primStatus [
-	"Answer a `AeCairoStatus` that indicates the error status of this Cairo context.
-
-	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-status"
-
-	^ self ffiCall: #(AeCairoStatus cairo_status ( self ) )
+			AeCairoCompositionOp aCairoOperator ) )
 ]
 
 { #category : #'API - painting' }
-AeCairoContext >> primStroke [
+AeCairoContext >> paint [
 
-	self ffiCall: #( void cairo_stroke ( self ) )
+	self ffiCall: #( void cairo_paint ( self ) )
 ]
 
 { #category : #'API - painting' }
-AeCairoContext >> primStrokePreserve [
+AeCairoContext >> paintGroupWith: aBlock [
+	"Note: Cairo already saves and restores its state with push_group and pop_group"
 
-	self ffiCall: #( void cairo_stroke_preserve ( self ))
+	self pushGroup.
+
+	aBlock value.
+
+	self
+		popGroupToSource;
+		paint
 ]
 
-{ #category : #'API - matrix' }
-AeCairoContext >> primTranslateX: aX y: aY [
+{ #category : #'API - painting' }
+AeCairoContext >> paintGroupWith: aBlockClosure alpha: aNumber [
+	"Note: Cairo already saves and restores its state with push_group and pop_group"
 
-	self ffiCall: #( void cairo_translate (
+	self pushGroup.
+
+	aBlockClosure value.
+
+	self
+		popGroupToSource;
+		paintWithAlpha: aNumber
+]
+
+{ #category : #'API - painting' }
+AeCairoContext >> paintWithAlpha: aNumber [
+
+	self ffiCall: #(
+		void
+		cairo_paint_with_alpha (
 			self,
-			double aX,
-			double aY) )
+			double aNumber ) )
+]
+
+{ #category : #'API - compositing' }
+AeCairoContext >> popGroup [
+
+	^ self unownedPopGroup
+		  autoRelease;
+		  yourself
+]
+
+{ #category : #'API - compositing' }
+AeCairoContext >> popGroupToSource [
+
+	self ffiCall: #( void cairo_pop_group_to_source ( self ) )
+]
+
+{ #category : #'API - compositing' }
+AeCairoContext >> pushGroup [
+
+	self ffiCall: #( void cairo_push_group ( self ) )
 ]
 
 { #category : #'API - path' }
@@ -765,9 +602,9 @@ AeCairoContext >> quadraticCurveFrom: startPoint controlPoint: qp1 to: endPoint 
 	cp2 := (qp1 - endPoint)   * 0.6666666666666666 + endPoint.
 
 	self
-		primMoveToX: startPoint x
+		moveToX: startPoint x
 			y: startPoint y;
-		primCurveViaX: cp1 x
+		curveViaX: cp1 x
 			y: cp1 y
 			viaX: cp2 x
 			y: cp2 y
@@ -779,7 +616,7 @@ AeCairoContext >> quadraticCurveFrom: startPoint controlPoint: qp1 to: endPoint 
 AeCairoContext >> rectangle: aRectangle [
 
 	self
-		primRectangleX: aRectangle left
+		rectangleX: aRectangle left
 		y: aRectangle top
 		width: aRectangle width
 		height: aRectangle height
@@ -789,18 +626,103 @@ AeCairoContext >> rectangle: aRectangle [
 AeCairoContext >> rectangleTo: extentPoint [
 
 	self
-		primRectangleX: 0
+		rectangleX: 0
 		y: 0
 		width: extentPoint x
 		height:extentPoint y
 ]
 
-{ #category : #convenience }
-AeCairoContext >> restoreAfter: aBlockClosure [ 
+{ #category : #'API - path' }
+AeCairoContext >> rectangleX: aX y: aY width: aWidth height: aHeight [
+	"Note: aWidth and aHeight can be negative"
+
+	self ffiCall: #(
+		void
+		cairo_rectangle (
+			self,
+			double aX,
+			double aY,
+			double aWidth,
+			double aHeight ) )
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> relativeLineTo: aPoint [
+
+	^ self relativeLineToX: aPoint x asFloat y: aPoint y asFloat
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> relativeLineToX: aX y: aY [
+
+	self ffiCall: #(
+		void
+		cairo_rel_line_to (
+			self,
+			double aX,
+			double aY ) )
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> relativeMoveTo: aPoint [
+
+	self relativeMoveToX: aPoint x asFloat y: aPoint y asFloat
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> relativeMoveToX: aX y: aY [
+
+	self ffiCall: #(
+		void
+		cairo_rel_move_to (
+			self,
+			double aX,
+			double aY ) )
+]
+
+{ #category : #'API - clipping' }
+AeCairoContext >> resetClip [
+
+	self ffiCall: #( void cairo_reset_clip #( self ) )
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> resetPath [
+	"See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-new-path"
+
+	self ffiCall: #( void cairo_new_path ( self ) )
+]
+
+{ #category : #'API - states' }
+AeCairoContext >> restoreState [
+	"Restores me to the state saved by a preceding call to `cairo_save()` and removes that state from the stack of saved states.
 	
-	self primSave.
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-restore"
+
+	self ffiCall: #( void cairo_restore ( self ) )
+]
+
+{ #category : #'API - states' }
+AeCairoContext >> restoreStateAfter: aBlockClosure [ 
+	
+	self saveState.
 	aBlockClosure value.
-	self primRestore.
+	self restoreState.
+]
+
+{ #category : #'API - matrix' }
+AeCairoContext >> rotateByRadians: angle [
+	"Modifies the current transformation matrix (CTM) by rotating the user-space axes by angle radians. 
+	The rotation of the axes takes places after any existing transformation of user space. 
+	The rotation direction for positive angles is from the positive X axis toward the positive Y axis.
+	
+	See: https://www.cairographics.org/manual/cairo-Transformations.html#cairo-rotate"
+
+	self ffiCall: #(
+		void
+		cairo_rotate (
+			self,
+			double angle ) )
 ]
 
 { #category : #'API - path' }
@@ -826,34 +748,34 @@ AeCairoContext >> roundedRectangle: aRectangle radii: anArrayOfCornerRadii [
 	threeHalvesPi := 3.0 * Float halfPi.
 
 	self
-		primArcCenterX: t + tlR
+		arcCenterX: t + tlR
 		centerY: l + tlR
 		radius: tlR
 		startAngle: Float pi
 		endAngle: threeHalvesPi.
 
 	self
-		primArcCenterX: b - trR
+		arcCenterX: b - trR
 		centerY: l + trR
 		radius: trR
 		startAngle: threeHalvesPi
 		endAngle: Float twoPi.
 
 	self
-		primArcCenterX: b - brR
+		arcCenterX: b - brR
 		centerY: r - brR
 		radius: brR
 		startAngle: 0.0
 		endAngle: Float halfPi.
 
 	self
-		primArcCenterX: t + blR
+		arcCenterX: t + blR
 		centerY: r - blR
 		radius: blR
 		startAngle: Float halfPi
 		endAngle: Float pi.
 
-	self primClosePath.
+	self closePath.
 
 ]
 
@@ -878,41 +800,83 @@ AeCairoContext >> roundedRectangleTo: extentPoint radii: anArrayOfCornerRadii [
 	threeHalvesPi := 3.0 * Float halfPi.
 
 	self
-		primArcCenterX: tlR
+		arcCenterX: tlR
 		centerY: tlR
 		radius: tlR
 		startAngle: Float pi
 		endAngle: threeHalvesPi.
 
 	self
-		primArcCenterX: r - trR
+		arcCenterX: r - trR
 		centerY: trR
 		radius: trR
 		startAngle: threeHalvesPi
 		endAngle: Float twoPi.
 
 	self
-		primArcCenterX: r - brR
+		arcCenterX: r - brR
 		centerY: b - brR
 		radius: brR
 		startAngle: 0.0
 		endAngle: Float halfPi.
 
 	self
-		primArcCenterX: blR
+		arcCenterX: blR
 		centerY: b - blR
 		radius: blR
 		startAngle: Float halfPi
 		endAngle: Float pi.
 
-	self primClosePath.
+	self closePath.
 
 ]
 
-{ #category : #'API - matrix' }
-AeCairoContext >> scale: aPoint [
+{ #category : #'API - states' }
+AeCairoContext >> saveState [
+	"Makes a copy of the current state of self and saves it on an internal stack of saved states for self . When `cairo_restore()` is called, self will be restored to the saved state. Multiple calls to `cairo_save()` and `cairo_restore()` can be nested; each call to `cairo_restore()` restores the state from the matching paired `cairo_save()`.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-save"
 
-	self primScaleX: aPoint x y: aPoint y
+	self ffiCall: #( void cairo_save ( self ) )
+]
+
+{ #category : #'API - matrix' }
+AeCairoContext >> scaleBy: aPoint [
+
+	self scaleByX: aPoint x y: aPoint y
+]
+
+{ #category : #'API - matrix' }
+AeCairoContext >> scaleByX: sx y: sy [
+	"Modifies the current transformation matrix (CTM) by scaling the X and Y user-space axes by sx and sy respectively. 
+	The scaling of the axes takes place after any existing transformation of user space.
+	
+	See: https://www.cairographics.org/manual/cairo-Transformations.html#cairo-scale"
+
+	self ffiCall: #(
+		void cairo_scale (
+			self,
+			double sx,
+			double sy ) )
+]
+
+{ #category : #'API - text' }
+AeCairoContext >> scaledFont: aScaledFont [
+	"Replaces the current font face, font matrix, and font options in self with those of the received `cairo_scaled_font_t`.
+	
+	See: https://www.cairographics.org/manual/cairo-text.html#cairo-set-scaled-font"
+
+	self ffiCall: #(
+		void
+		cairo_set_scaled_font (
+			self,
+			AeCairoScaledFont aScaledFont ) )
+]
+
+{ #category : #'API - matrix' }
+AeCairoContext >> setIdentityMatrix [
+
+	self ffiCall: #( void cairo_identity_matrix ( self ) )
 ]
 
 { #category : #'API - compositing' }
@@ -923,7 +887,7 @@ AeCairoContext >> setOperatorClear [
 	
 	See https://www.cairographics.org/operators/"
 	
-	^ self primSetOperator: AeCairoCompositionOp CAIRO_OPERATOR_CLEAR
+	^ self operator: AeCairoCompositionOp CAIRO_OPERATOR_CLEAR
 ]
 
 { #category : #'API - compositing' }
@@ -932,23 +896,111 @@ AeCairoContext >> setOperatorSource [
 
 	See https://www.cairographics.org/operators/"
 	
-	^ self primSetOperator: AeCairoCompositionOp CAIRO_OPERATOR_SOURCE
+	^ self operator: AeCairoCompositionOp CAIRO_OPERATOR_SOURCE
+]
+
+{ #category : #'API - text' }
+AeCairoContext >> showGlyphs: aGlyphsArray size: aNumberOfGlyphs [
+
+	self ffiCall: #(
+		void
+		cairo_show_glyphs (
+			self,
+			void * aGlyphsArray,
+			int aNumberOfGlyphs ) )
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> source [
+	"Answer the current source pattern. This object is owned by cairo. To keep a reference to it, you must call `cairo_pattern_reference()`.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-source"
+
+	^ self ffiCall: #( AeCairoPattern cairo_get_source ( self ) )
 ]
 
 { #category : #'API - source' }
-AeCairoContext >> setSourceRGBAColor: aColor [
+AeCairoContext >> source: aPattern [
+
+	self ffiCall: #(
+		void
+		cairo_set_source (
+			self,
+			AeCairoPattern aPattern ) )
+]
+
+{ #category : #'API - source' }
+AeCairoContext >> sourceColorR: aRed g: aGreen b: aBlue [
+	
+	self ffiCall: #(
+		void
+		cairo_set_source_rgb (
+			self,
+			double aRed,
+			double aGreen,
+			double aBlue ) )
+]
+
+{ #category : #'API - source' }
+AeCairoContext >> sourceColorR: aRed g: aGreen b: aBlue a: anAlpha [
+	
+	self ffiCall: #(
+		void
+		cairo_set_source_rgba (
+			self,
+			double aRed,
+			double aGreen,
+			double aBlue,
+			double anAlpha ) )
+]
+
+{ #category : #'API - source' }
+AeCairoContext >> sourceColorRGB: aColor [
+
+	self sourceColorR: aColor red g: aColor green b: aColor blue
+]
+
+{ #category : #'API - source' }
+AeCairoContext >> sourceColorRGBA: aColor [
 
 	self
-		primSetSourceR: aColor red
+		sourceColorR: aColor red
 		g: aColor green
 		b: aColor blue
 		a: aColor alpha
 ]
 
 { #category : #'API - source' }
-AeCairoContext >> setSourceRGBColor: aColor [
+AeCairoContext >> sourceSurface: aCairoSurface x: aX y: aY [
 
-	self primSetSourceR: aColor red g: aColor green b: aColor blue
+	self ffiCall: #(
+		void
+		cairo_set_source_surface (
+			self,
+			AeCairoSurface aCairoSurface,
+			double aX,
+			double aY ) )
+]
+
+{ #category : #'API - states' }
+AeCairoContext >> status [
+	"Answer a `AeCairoStatus` that indicates the error status of this Cairo context.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-status"
+
+	^ self ffiCall: #( AeCairoStatus cairo_status ( self ) )
+]
+
+{ #category : #'API - painting' }
+AeCairoContext >> stroke [
+
+	self ffiCall: #( void cairo_stroke ( self ) )
+]
+
+{ #category : #'API - painting' }
+AeCairoContext >> strokePreserve [
+
+	self ffiCall: #( void cairo_stroke_preserve ( self ))
 ]
 
 { #category : #accessing }
@@ -957,8 +1009,62 @@ AeCairoContext >> surface [
 	^ surface
 ]
 
-{ #category : #'API - matrix' }
-AeCairoContext >> translate: aPoint [
+{ #category : #'API - path settings' }
+AeCairoContext >> tolerance: aNumber [ 
 
-	self primTranslateX: aPoint x y: aPoint y
+	self ffiCall: #( void cairo_set_tolerance (
+		self,
+      double aNumber ) )
+]
+
+{ #category : #'API - matrix' }
+AeCairoContext >> transformWith: aCairoMatrix [ 
+	"Modifies the current transformation matrix (CTM) by applying aCairoMatrix as an additional transformation.
+	The new transformation of user space takes place after any existing transformation.
+	
+	See: https://www.cairographics.org/manual/cairo-Transformations.html#cairo-transform"
+
+	self ffiCall: #(
+		void
+		cairo_transform (
+			self,
+			AeCairoMatrix *aCairoMatrix) )
+]
+
+{ #category : #'API - matrix' }
+AeCairoContext >> translateBy: aPoint [
+
+	self translateByX: aPoint x y: aPoint y
+]
+
+{ #category : #'API - matrix' }
+AeCairoContext >> translateByX: tx y: ty [
+	"Modifies the current transformation matrix (CTM) by translating the user-space origin by (tx,ty). 
+	This offset is interpreted as a user-space coordinate according to the CTM in place before the new 
+	call to `cairo_translate()`. In other words, the translation of the user-space origin takes place
+	after any existing transformation.
+	
+	See: https://www.cairographics.org/manual/cairo-Transformations.html#cairo-translate"
+
+	self ffiCall: #(
+		void
+		cairo_translate (
+			self,
+			double tx,
+			double ty ) )
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> unownedCurrentPath [
+	"Return a copy of the current path.
+	
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-copy-path"
+
+	^ self ffiCall: #( AeCairoPath cairo_copy_path ( self ) )
+]
+
+{ #category : #'API - compositing' }
+AeCairoContext >> unownedPopGroup [
+
+	^ self ffiCall: #( AeCairoSurfacePattern cairo_pop_group ( self ) )
 ]

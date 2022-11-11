@@ -7,8 +7,20 @@ Class {
 	#category : #'Alexandrie-Cairo-Patterns'
 }
 
+{ #category : #'instance creation' }
+AeCairoTranslucentColorPattern class >> r: red g: green b: blue alpha: alpha [
+
+	^ (self
+		   unownedNewR: red
+		   g: green
+		   b: blue
+		   alpha: alpha)
+		  autoRelease;
+		  yourself
+]
+
 { #category : #'private - ffi' }
-AeCairoTranslucentColorPattern class >> primCreateR: red g: green b: blue alpha: alpha [
+AeCairoTranslucentColorPattern class >> unownedNewR: red g: green b: blue alpha: alpha [
 	"See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-rgba"
 
 	^ self ffiCall: #(
@@ -18,16 +30,4 @@ AeCairoTranslucentColorPattern class >> primCreateR: red g: green b: blue alpha:
 			double green,
 			double blue,
 			double alpha ) )
-]
-
-{ #category : #'instance creation' }
-AeCairoTranslucentColorPattern class >> r: red g: green b: blue alpha: alpha [
-
-	^ (self
-		   primCreateR: red
-		   g: green
-		   b: blue
-		   alpha: alpha)
-		  autoRelease;
-		  yourself
 ]

@@ -14,7 +14,7 @@ AeCairoFreetypeFontFace class >> newForFace: aFTFace [
 	"Create a cairo font face for a given freetype face"
 
 	| aCairoFontFace |
-	aCairoFontFace := self primCreate: aFTFace.
+	aCairoFontFace := self unownedNewFor: aFTFace.
 
 	aCairoFontFace status isSuccess ifFalse: [
 		self error: aCairoFontFace status asString ].
@@ -26,7 +26,7 @@ AeCairoFreetypeFontFace class >> newForFace: aFTFace [
 ]
 
 { #category : #'private - ffi' }
-AeCairoFreetypeFontFace class >> primCreate: aFreetypeFontFace [
+AeCairoFreetypeFontFace class >> unownedNewFor: aFreetypeFontFace [
 
 	^ self ffiCall: #(
 		AeCairoFreetypeFontFace
@@ -46,13 +46,17 @@ AeCairoFreetypeFontFace >> newScaledFontWithFontMatrix: aFontMatrix userToDevice
 ]
 
 { #category : #'private - ffi' }
-AeCairoFreetypeFontFace >> primGetSynthesize [
+AeCairoFreetypeFontFace >> synthesize [
 
-	^ self ffiCall: #(uint cairo_ft_font_face_get_synthesize ( self ) )
+	^ self ffiCall: #( uint cairo_ft_font_face_get_synthesize ( self ) )
 ]
 
 { #category : #'private - ffi' }
-AeCairoFreetypeFontFace >> primSetSynthesize: aNumber [
+AeCairoFreetypeFontFace >> synthesize: aNumber [
 
-	self ffiCall: #(void cairo_ft_font_face_set_synthesize ( self, uint aNumber ) )
+	self ffiCall: #(
+		void
+		cairo_ft_font_face_set_synthesize (
+			self,
+			uint aNumber ) )
 ]

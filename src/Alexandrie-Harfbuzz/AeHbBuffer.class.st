@@ -34,6 +34,12 @@ AeHbBuffer class >> defaultCairoGlyphArrayFor: aString face: aeFTFace size: font
 		cairoGlyphArrayForFace: aeFTFace size: fontSize
 ]
 
+{ #category : #finalization }
+AeHbBuffer class >> destroyHandle: aHandle [
+
+	self ffiCall: #( void hb_buffer_destroy ( void * aHandle ) )
+]
+
 { #category : #'instance creation' }
 AeHbBuffer class >> new [
 
@@ -50,15 +56,6 @@ AeHbBuffer class >> primCreate [
 		hb_buffer_t *
 		hb_buffer_create (void)
 	)
-]
-
-{ #category : #finalization }
-AeHbBuffer class >> primDestroy: aHandle [
-
-	self ffiCall: #(
-		void
-		hb_buffer_destroy (void *aHandle)
-		)
 ]
 
 { #category : #'accessing - input' }

@@ -8,15 +8,15 @@ Trait {
 }
 
 { #category : #finalization }
-AeHbTDestroy classSide >> finalizeResourceData: aHandle [
-
-	aHandle isNull ifTrue: [ ^ self ].
-	self primDestroy: aHandle.
-	aHandle beNull
+AeHbTDestroy classSide >> destroyHandle: aHandle [
+	
+	self explicitRequirement
 ]
 
 { #category : #finalization }
-AeHbTDestroy classSide >> primDestroy: aHandle [
-	
-	self explicitRequirement
+AeHbTDestroy classSide >> finalizeResourceData: aHandle [
+
+	aHandle isNull ifTrue: [ ^ self ].
+	self destroyHandle: aHandle.
+	aHandle beNull
 ]

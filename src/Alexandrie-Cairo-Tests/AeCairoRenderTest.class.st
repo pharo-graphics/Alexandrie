@@ -30,14 +30,14 @@ AeCairoRenderTest >> drawTestPaintCheckeredOn: aContext [
 	| checkSurface |
 	checkSurface := self newCheckSurfaceExtent: 12 @ 12.
 	
-	aContext restoreAfter: [
+	aContext restoreStateAfter: [
 
-		aContext primSetSourceSurface: checkSurface x: 0 y: 0.
+		aContext sourceSurface: checkSurface x: 0 y: 0.
 		
-		aContext primGetSource
-			primSetFilter: AeCairoSamplingFilter CAIRO_FILTER_NEAREST;
-			primSetExtend: AeCairoExtendMode CAIRO_EXTEND_REPEAT.
-		aContext primPaint
+		aContext source
+			filter: AeCairoSamplingFilter CAIRO_FILTER_NEAREST;
+			extend: AeCairoExtendMode CAIRO_EXTEND_REPEAT.
+		aContext paint
 		
 		]
 ]
@@ -61,28 +61,28 @@ AeCairoRenderTest >> newCheckSurfaceExtent: aPoint [
 	
 	| aSurface aContext |
 	aSurface := AeCairoImageSurface
-		createExtent: aPoint
+		extent: aPoint
 		format: AeCairoSurfaceFormat CAIRO_FORMAT_RGB24.
 	
 	aContext := aSurface newContext.
 	
 	"light gray"
 	aContext
-		primSetSourceR: 0.75 g: 0.75 b: 0.75;
-		primPaint.
+		sourceColorR: 0.75 g: 0.75 b: 0.75;
+		paint.
 		
 	"dark gray"
 	aContext
-		primSetSourceR: 0.25 g: 0.25 b: 0.25;
-		primRectangleX: aPoint x / 2
+		sourceColorR: 0.25 g: 0.25 b: 0.25;
+		rectangleX: aPoint x / 2
 			y: 0
 			width: aPoint x / 2
 			height: aPoint y / 2;
-		primRectangleX: 0
+		rectangleX: 0
 			y: aPoint y / 2
 			width: aPoint x / 2
 			height: aPoint y / 2;
-		primFill.
+		fill.
 
 	^ aSurface
 ]
@@ -109,20 +109,20 @@ AeCairoRenderTest >> surfaceWithFillAndStroke [
 
 	aContext
 		rectangle: (pad asPoint extent: size asPoint);
-		setSourceRGBColor: Color blue;
-		primFillPreserve;
-		setSourceRGBColor: Color red;
-		primStroke.
+		sourceColorRGB: Color blue;
+		fillPreserve;
+		sourceColorRGB: Color red;
+		stroke.
 
-	aContext primTranslateX: size + (2 * pad) y: 0.
+	aContext translateByX: size + (2 * pad) y: 0.
 
 	aContext
 		circleCenterX: pad + (size/2)
 			y: pad + (size/2)
 			radius: size/2;
-		primFillPreserve;
-		setSourceRGBColor: Color blue;
-		primStroke.
+		fillPreserve;
+		sourceColorRGB: Color blue;
+		stroke.
 
 	^ aSurface
 ]
@@ -149,10 +149,10 @@ AeCairoRenderTest >> surfaceWithFillAndStrokeAlpha [
 				paintGroupWith: [
 					pathBlock value.
 					aContext
-						primSetSource: fillPattern;
-						primFillPreserve;
-						primSetSource: strokePattern;
-						primStroke ]
+						source: fillPattern;
+						fillPreserve;
+						source: strokePattern;
+						stroke ]
 				alpha: 0.5 ].
 
 
@@ -168,7 +168,7 @@ AeCairoRenderTest >> surfaceWithFillAndStrokeAlpha [
 		value: blue
 		value: red.
 
-	aContext primTranslateX: size + (2*pad) y: 0.
+	aContext translateByX: size + (2*pad) y: 0.
 
 	fillAndStrokeAlphaBlock
 		value: [
@@ -205,20 +205,20 @@ AeCairoRenderTest >> surfaceWithFillAndStrokeAlphaAdd [
 				paintGroupWith: [
 					pathBlock value.
 					aContext
-						primSetSource: fillPattern;
-						primFillPreserve.
+						source: fillPattern;
+						fillPreserve.
 
 					"Use DEST_OUT to subtract stroke from fill."
 					aContext
-						setSourceRGBColor: Color black;
-						primSetOperator: AeCairoCompositionOp CAIRO_OPERATOR_DEST_OUT;
-						primStrokePreserve.
+						sourceColorRGB: Color black;
+						operator: AeCairoCompositionOp CAIRO_OPERATOR_DEST_OUT;
+						strokePreserve.
 					
 					"Then use ADD to draw the stroke without a seam."
 					aContext
-						primSetSource: strokePattern;
-						primSetOperator: AeCairoCompositionOp CAIRO_OPERATOR_ADD;
-						primStroke ] ].
+						source: strokePattern;
+						operator: AeCairoCompositionOp CAIRO_OPERATOR_ADD;
+						stroke ] ].
 
 
 
@@ -233,7 +233,7 @@ AeCairoRenderTest >> surfaceWithFillAndStrokeAlphaAdd [
 		value: blue
 		value: red.
 
-	aContext primTranslateX: size + (2*pad) y: 0.
+	aContext translateByX: size + (2*pad) y: 0.
 
 	fillAndStrokeBlock
 		value: [
@@ -264,21 +264,21 @@ AeCairoRenderTest >> surfaceWithFillDisjoint [
 
 	"black background"
 	aContext
-		setSourceRGBColor: Color black;
-		primPaint.
+		sourceColorRGB: Color black;
+		paint.
 
 	"white rectangles"
-	aContext setSourceRGBColor: Color white.
+	aContext sourceColorRGB: Color white.
 
 	"fill with a set of rectangles that the rectangular tessellator
 	will not emit sorted."
 	0 to: surfaceSize x - 10 by: 15 do: [ :each |
 		aContext
-			primRectangleX: each
+			rectangleX: each
 				y: each
 				width: 10
 				height: (surfaceSize y - (2*each));
-			primFill ].
+			fill ].
 
 	^ aSurface
 ]
@@ -296,25 +296,25 @@ AeCairoRenderTest >> surfaceWithFillEmpty [
 	aContext := aSurface newContext.
 
 	aContext
-		setSourceRGBColor: Color blue;
-		primPaint.
+		sourceColorRGB: Color blue;
+		paint.
 
-	aContext setSourceRGBColor: Color red.
+	aContext sourceColorRGB: Color red.
 	
 	"first drawn an ordinary empty path"
-	aContext restoreAfter: [
+	aContext restoreStateAfter: [
 		aContext
 			rectangle: (0 asPoint extent: size @ (size/2));
-			primClip;
-			primFill ].
+			clip;
+			fill ].
 
 	"and then an unbounded empty path"
-	aContext restoreAfter: [ 
+	aContext restoreStateAfter: [ 
 		aContext
 			rectangle: (0 @ (size / 2) extent: size @ (size/2));
-			primClip;
-			primSetOperator: AeCairoCompositionOp CAIRO_OPERATOR_DEST_IN;
-			primFill ].
+			clip;
+			operator: AeCairoCompositionOp CAIRO_OPERATOR_DEST_IN;
+			fill ].
 	
 	^ aSurface
 ]
@@ -350,17 +350,17 @@ AeCairoRenderTest >> surfaceWithFillMissedStop [
 	aContext := aSurface newContext.
 
 	aContext
-		setSourceRGBColor: Color red;
-		primTranslateX: 1 y: 1.
+		sourceColorRGB: Color red;
+		translateByX: 1 y: 1.
 
 	aContext
-		primMoveToX: 0 y: 0;
-		primLineToX: size/2 y: size;
-		primLineToX: size/2 y: 0;
-		primLineToX: size y: size/2;
-		primLineToX: 0 y: size/2;
-		primClosePath;
-		primFill.
+		moveToX: 0 y: 0;
+		lineToX: size/2 y: size;
+		lineToX: size/2 y: 0;
+		lineToX: size y: size/2;
+		lineToX: 0 y: size/2;
+		closePath;
+		fill.
 
 	^ aSurface
 ]
@@ -383,8 +383,8 @@ AeCairoRenderTest >> surfaceWithGradientAlpha [
 	aGradient addStopAt: 1.0 color: (Color blue alpha: 0.5).
 	
 	aContext
-		primSetSource: aGradient;
-		primPaint.
+		source: aGradient;
+		paint.
 	
 	^ aSurface
 ]
@@ -408,8 +408,8 @@ AeCairoRenderTest >> surfaceWithGradientConstantAlpha [
 	aGradient addStopAt: 1.0 color: (Color blue alpha: 0.5).
 	
 	aContext
-		primSetSource: aGradient;
-		primPaint.
+		source: aGradient;
+		paint.
 	
 	^ aSurface
 ]
@@ -429,8 +429,8 @@ AeCairoRenderTest >> surfaceWithGradientZeroStops [
 		from: 0 @ 0
 		to: 1 @ 1.
 	aContext
-		primSetSource: aLinearGradient;
-		primPaint.
+		source: aLinearGradient;
+		paint.
 
 	aRadialGradient := AeCairoRadialGradientPattern 
 		innerCenter: 0@0
@@ -438,8 +438,8 @@ AeCairoRenderTest >> surfaceWithGradientZeroStops [
 		outerCenter: 1@1
 		outerRadius: 1.
 	aContext
-		primSetSource: aRadialGradient;
-		primPaint.
+		source: aRadialGradient;
+		paint.
 
 	^ aSurface
 ]
@@ -455,19 +455,19 @@ AeCairoRenderTest >> surfaceWithGradientZeroStopsMask [
 	aSurface := self newSurfaceExtent: surfaceSize.
 	aContext := aSurface newContext.
 
-	aContext setSourceRGBColor: Color red.
+	aContext sourceColorRGB: Color red.
 
 	aLinearGradient := AeCairoLinearGradientPattern
 		from: 0 @ 0
 		to: 1 @ 1.
-	aContext primMask: aLinearGradient.
+	aContext mask: aLinearGradient.
 
 	aRadialGradient := AeCairoRadialGradientPattern 
 		innerCenter: 0@0
 		innerRadius: 0
 		outerCenter: 1@1
 		outerRadius: 1.
-	aContext primMask: aRadialGradient.
+	aContext mask: aRadialGradient.
 
 	^ aSurface
 ]
@@ -484,24 +484,24 @@ AeCairoRenderTest >> surfaceWithGroupClip [
 	aContext := aSurface newContext.
 
 	aContext
-		setSourceRGBColor: Color white;
-		primPaint.
+		sourceColorRGB: Color white;
+		paint.
 
 	aContext
 		rectangle: (25@25 extent: surfaceSize);
-		primClipPreserve;
-		primPushGroup;
-		setSourceRGBColor: Color blue;
-		primFill;
+		clipPreserve;
+		pushGroup;
+		sourceColorRGB: Color blue;
+		fill;
 		rectangle: (0@0 extent: surfaceSize);
-		primPopGroupToSource;
-		primPaint.
+		popGroupToSource;
+		paint.
 
 	aContext
-		primResetClip;
-		primClipPreserve;
-		setSourceRGBAColor: (Color red alpha: 0.5);
-		primPaint.
+		resetClip;
+		clipPreserve;
+		sourceColorRGBA: (Color red alpha: 0.5);
+		paint.
 
 	^ aSurface
 ]
@@ -515,16 +515,16 @@ AeCairoRenderTest >> surfaceWithGroupPaint [
 	aSurface := self newSurfaceExtent: surfaceSize.
 	aContext := aSurface newContext.
 
-	aContext primPushGroup.
+	aContext pushGroup.
 
 	aContext
-		setSourceRGBColor: Color blue;
-		primPaint.
+		sourceColorRGB: Color blue;
+		paint.
 
 	aContext
-		primPopGroupToSource;
+		popGroupToSource;
 		setOperatorSource;
-		primPaint.
+		paint.
 
 	^ aSurface
 ]
@@ -539,21 +539,21 @@ AeCairoRenderTest >> surfaceWithGroupUnaligned [
 	aContext := aSurface newContext.
 
 	aContext
-		setSourceRGBColor: Color white;
-		primPaint.
+		sourceColorRGB: Color white;
+		paint.
 
 	aContext
-		setSourceRGBColor: Color red;
+		sourceColorRGB: Color red;
 		circleCenterX: 12.5 y: 12.5 radius: 10.0;
-		primFill.
+		fill.
 
 	aContext
-		primPushGroup;
-		setSourceRGBColor: Color blue;
+		pushGroup;
+		sourceColorRGB: Color blue;
 		circleCenterX: 12.5 y: 12.5 radius: 10.0;
-		primFill;
-		primPopGroupToSource;
-		primPaint.
+		fill;
+		popGroupToSource;
+		paint.
 		
 	^ aSurface
 ]

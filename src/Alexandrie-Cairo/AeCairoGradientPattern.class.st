@@ -11,15 +11,15 @@ Class {
 AeCairoGradientPattern >> addStopAt: offset color: aColor [
 
 	aColor isTranslucent
-		ifTrue: [ self addStopAt: offset translucentColor: aColor ]
-		ifFalse: [ self addStopAt: offset solidColor: aColor ]
+		ifTrue: [ self addStopAt: offset colorRGBA: aColor ]
+		ifFalse: [ self addStopAt: offset colorRGB: aColor ]
 ]
 
 { #category : #accessing }
-AeCairoGradientPattern >> addStopAt: offset solidColor: aColor [
+AeCairoGradientPattern >> addStopAt: offset colorRGB: aColor [
 
 	self
-		primAddStop: offset
+		addStopAt: offset
 		r: aColor red
 		g: aColor green
 		b: aColor blue
@@ -27,10 +27,10 @@ AeCairoGradientPattern >> addStopAt: offset solidColor: aColor [
 ]
 
 { #category : #accessing }
-AeCairoGradientPattern >> addStopAt: offset translucentColor: aColor [
+AeCairoGradientPattern >> addStopAt: offset colorRGBA: aColor [
 
 	self
-		primAddStop: offset
+		addStopAt: offset
 		r: aColor red
 		g: aColor green
 		b: aColor blue
@@ -38,9 +38,11 @@ AeCairoGradientPattern >> addStopAt: offset translucentColor: aColor [
 ]
 
 { #category : #'private - ffi' }
-AeCairoGradientPattern >> primAddStop: anOffset r: aRed g: aGreen b: aBlue [
+AeCairoGradientPattern >> addStopAt: anOffset r: aRed g: aGreen b: aBlue [
 
-	self ffiCall: #( void cairo_pattern_add_color_stop_rgb (
+	self ffiCall: #(
+		void
+		cairo_pattern_add_color_stop_rgb (
 			self,
 			double anOffset,
 			double aRed,
@@ -49,9 +51,11 @@ AeCairoGradientPattern >> primAddStop: anOffset r: aRed g: aGreen b: aBlue [
 ]
 
 { #category : #'private - ffi' }
-AeCairoGradientPattern >> primAddStop: anOffset r: aRed g: aGreen b: aBlue a: anAlpha [
+AeCairoGradientPattern >> addStopAt: anOffset r: aRed g: aGreen b: aBlue a: anAlpha [
 
-	self ffiCall: #( void cairo_pattern_add_color_stop_rgba (
+	self ffiCall: #(
+		void
+		cairo_pattern_add_color_stop_rgba (
 			self,
 			double anOffset,
 			double aRed,

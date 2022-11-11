@@ -13,7 +13,7 @@ Class {
 AeCairoRadialGradientPattern class >> innerCenter: anInnerCenter innerRadius: anInnerRadius outerCenter: anOuterCenter outerRadius: anOuterRadius [
 
 	^ (self
-		   primCreateInnerX: anInnerCenter x
+		   unownedNewWithInnerX: anInnerCenter x
 		   innerY: anInnerCenter y
 		   innerRadius: anInnerRadius
 		   outerX: anOuterCenter x
@@ -24,7 +24,7 @@ AeCairoRadialGradientPattern class >> innerCenter: anInnerCenter innerRadius: an
 ]
 
 { #category : #'private - ffi' }
-AeCairoRadialGradientPattern class >> primCreateInnerX: anInnerX innerY: anInnerY innerRadius: anInnerRadius outerX: anOuterX outerY: anOuterY outerRadius: anOuterRadius [
+AeCairoRadialGradientPattern class >> unownedNewWithInnerX: anInnerX innerY: anInnerY innerRadius: anInnerRadius outerX: anOuterX outerY: anOuterY outerRadius: anOuterRadius [
 
 	^ self ffiCall: #(
 		AeCairoRadialGradientPattern

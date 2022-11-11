@@ -9,19 +9,19 @@ Class {
 	#category : #'Alexandrie-Cairo-Patterns'
 }
 
+{ #category : #'instance creation' }
+AeCairoSurfacePattern class >> surface: aCairoSurface [
+
+	^ (self unownedNewFor: aCairoSurface)
+		  autoRelease;
+		  yourself
+]
+
 { #category : #'private - ffi' }
-AeCairoSurfacePattern class >> primCreateSurface: aCairoSurface [
+AeCairoSurfacePattern class >> unownedNewFor: aCairoSurface [
 
 	^ self ffiCall: #(
 		AeCairoSurfacePattern
 		cairo_pattern_create_for_surface (
 			AeCairoSurface aCairoSurface ) )
-]
-
-{ #category : #'instance creation' }
-AeCairoSurfacePattern class >> surface: aCairoSurface [
-
-	^ (self primCreateSurface: aCairoSurface)
-		  autoRelease;
-		  yourself
 ]

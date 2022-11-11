@@ -13,7 +13,7 @@ Class {
 AeCairoLinearGradientPattern class >> from: aFromPoint to: aToPoint [
 
 	^ (self
-		   primCreateFromX: aFromPoint x
+		   unownedNewFromX: aFromPoint x
 		   fromY: aFromPoint y
 		   toX: aToPoint x
 		   toY: aToPoint y)
@@ -22,9 +22,11 @@ AeCairoLinearGradientPattern class >> from: aFromPoint to: aToPoint [
 ]
 
 { #category : #'private - ffi' }
-AeCairoLinearGradientPattern class >> primCreateFromX: fromX fromY: fromY toX: toX toY: toY [
+AeCairoLinearGradientPattern class >> unownedNewFromX: fromX fromY: fromY toX: toX toY: toY [
 
-	^ self ffiCall: #( AeCairoLinearGradientPattern cairo_pattern_create_linear (
+	^ self ffiCall: #(
+		AeCairoLinearGradientPattern
+		cairo_pattern_create_linear (
 			double fromX,
 			double fromY,
 			double toX,

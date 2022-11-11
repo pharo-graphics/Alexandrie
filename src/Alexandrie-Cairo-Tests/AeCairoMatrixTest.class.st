@@ -75,22 +75,6 @@ AeCairoMatrixTest >> testScaleBy [
 ]
 
 { #category : #test }
-AeCairoMatrixTest >> testTransform [
-	"Formulas adapted from documentation.
-	See: https://www.cairographics.org/manual/cairo-cairo-matrix-t.html"
-
-	| input expectedX expectedY |
-	matrix := AeCairoMatrix x: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
-
-	input := 2@3.
-	expectedX := (matrix sx * input x) + (matrix shx * input y) + matrix x.
-	expectedY := (matrix sy * input y) + (matrix shy * input x) + matrix y.
-
-	self assert: (matrix transform: input) equals: expectedX @ expectedY
-
-]
-
-{ #category : #test }
 AeCairoMatrixTest >> testTranslateBy [
 
 	matrix := AeCairoMatrix newIdentity.
@@ -102,5 +86,21 @@ AeCairoMatrixTest >> testTranslateBy [
 	self assert: matrix sy  equals: 1.0.
 	self assert: matrix shx equals: 0.0.
 	self assert: matrix shy equals: 0.0.
+
+]
+
+{ #category : #test }
+AeCairoMatrixTest >> testValue [
+	"Formulas adapted from documentation.
+	See: https://www.cairographics.org/manual/cairo-cairo-matrix-t.html"
+
+	| input expectedX expectedY |
+	matrix := AeCairoMatrix x: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
+
+	input := 2@3.
+	expectedX := (matrix sx * input x) + (matrix shx * input y) + matrix x.
+	expectedY := (matrix sy * input y) + (matrix shy * input x) + matrix y.
+
+	self assert: (matrix value: input) equals: expectedX @ expectedY
 
 ]

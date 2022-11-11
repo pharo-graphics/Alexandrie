@@ -32,6 +32,15 @@ AeHbBlob class >> blobCreate: aFileReference [
 		  yourself
 ]
 
+{ #category : #finalization }
+AeHbBlob class >> destroyHandle: aHandle [
+	"Decreases the reference count on blob, and if it reaches zero, destroys blob, freeing all memory, possibly calling the destroy-callback the blob was created for if it has not been called already.
+
+	See: https://harfbuzz.github.io/harfbuzz-hb-blob.html#hb-blob-destroy"
+
+	self ffiCall: #( void hb_blob_destroy ( void * aHandle ) )
+]
+
 { #category : #'instance creation' }
 AeHbBlob class >> primBlobCreate: file_name [
 	"Creates a new blob containing the data from the specified binary font file.
@@ -68,18 +77,6 @@ AeHbBlob class >> primBlobGetEmpty [
 		hb_blob_t *
 		hb_blob_get_empty (void)
 	)
-]
-
-{ #category : #finalization }
-AeHbBlob class >> primDestroy: aHandle [
-	"Decreases the reference count on blob, and if it reaches zero, destroys blob, freeing all memory, possibly calling the destroy-callback the blob was created for if it has not been called already.
-
-	See: https://harfbuzz.github.io/harfbuzz-hb-blob.html#hb-blob-destroy"
-
-	self ffiCall: #(
-		void
-		hb_blob_destroy (void *aHandle)
-		)
 ]
 
 { #category : #accessing }

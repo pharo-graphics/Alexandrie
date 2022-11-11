@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : #finalization }
-AeCairoPath class >> primDestroy: aHandle [
+AeCairoPath class >> destroyHandle: aHandle [
 	
 	self ffiCall: #( void cairo_path_destroy ( void * aHandle ) )
 ]

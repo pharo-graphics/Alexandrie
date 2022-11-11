@@ -7,15 +7,15 @@ Trait {
 }
 
 { #category : #finalization }
-AeTCairoDestroy classSide >> finalizeResourceData: aHandle [
-
-	aHandle isNull ifTrue: [ ^ self ].
-	self primDestroy: aHandle.
-	aHandle beNull
+AeTCairoDestroy classSide >> destroyHandle: aHandle [
+	
+	self explicitRequirement
 ]
 
 { #category : #finalization }
-AeTCairoDestroy classSide >> primDestroy: aHandle [
-	
-	self explicitRequirement
+AeTCairoDestroy classSide >> finalizeResourceData: aHandle [
+
+	aHandle isNull ifTrue: [ ^ self ].
+	self destroyHandle: aHandle.
+	aHandle beNull
 ]

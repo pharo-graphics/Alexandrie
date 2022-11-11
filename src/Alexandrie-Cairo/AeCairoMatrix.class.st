@@ -37,7 +37,7 @@ AeCairoMatrix class >> fieldsDesc [
 AeCairoMatrix class >> newIdentity [
 
 	^ self new
-		  primInitIdentity;
+		  initializeAsIdentity;
 		  yourself
 ]
 
@@ -56,7 +56,7 @@ AeCairoMatrix class >> scaleBy: aFactor [
 AeCairoMatrix class >> x: x y: y sx: sx sy: sy shx: shx shy: shy [
 
 	^ self new
-		  primInitX: x
+		  initializeWithX: x
 		  y: y
 		  sx: sx
 		  sy: sy
@@ -65,28 +65,14 @@ AeCairoMatrix class >> x: x y: y sx: sx sy: sy shx: shx shy: shy [
 		  yourself
 ]
 
-{ #category : #transformations }
-AeCairoMatrix >> invert [
-
-	self primInvert
-]
-
-{ #category : #testing }
-AeCairoMatrix >> isIdentity [
-
-	^ self x = 0.0 and: [ self y = 0.0 and: [ 
-		self sx = 1.0 and: [ self sy = 1.0 and: [
-			self shx = 0.0 and: [ self shy = 0.0 ] ] ] ] ]
-]
-
 { #category : #'private - ffi' }
-AeCairoMatrix >> primInitIdentity [
+AeCairoMatrix >> initializeAsIdentity [
 
 	self ffiCall: #( void cairo_matrix_init_identity ( self ) )
 ]
 
 { #category : #'private - ffi' }
-AeCairoMatrix >> primInitX: x y: y sx: sx sy: sy shx: shx shy: shy [
+AeCairoMatrix >> initializeWithX: x y: y sx: sx sy: sy shx: shx shy: shy [
 
 	self ffiCall: #(
 		void
@@ -101,45 +87,17 @@ AeCairoMatrix >> primInitX: x y: y sx: sx sy: sy shx: shx shy: shy [
 ]
 
 { #category : #'private - ffi' }
-AeCairoMatrix >> primInvert [
+AeCairoMatrix >> invert [
 
 	self ffiCall: #( AeCairoStatus cairo_matrix_invert ( self ) )
 ]
 
-{ #category : #'private - ffi' }
-AeCairoMatrix >> primRotateByRadians: angle [
+{ #category : #testing }
+AeCairoMatrix >> isIdentity [
 
-	self ffiCall: #( void cairo_matrix_rotate (
-		self,
-		double angle ) )
-]
-
-{ #category : #'private - ffi' }
-AeCairoMatrix >> primScaleX: x y: y [
-
-	self ffiCall: #( void cairo_matrix_scale (
-			self,
-			double x,
-			double y ) )
-]
-
-{ #category : #'private - ffi' }
-AeCairoMatrix >> primTransformX: xPointer y: yPointer [
-	
-	^ self ffiCall: #( void cairo_matrix_transform_point (
-			self,
-			double * xPointer, 
-			double * yPointer))
-]
-
-{ #category : #'private - ffi' }
-AeCairoMatrix >> primTranslateX: px y: py [
-
-	self ffiCall: #( void cairo_matrix_translate (
-		self,
-		double px,
-		double py ))
-
+	^ self x = 0.0 and: [ self y = 0.0 and: [ 
+		self sx = 1.0 and: [ self sy = 1.0 and: [
+			self shx = 0.0 and: [ self shy = 0.0 ] ] ] ] ]
 ]
 
 { #category : #printing }
@@ -164,16 +122,31 @@ AeCairoMatrix >> printOn: aStream [
 
 ]
 
-{ #category : #transformations }
+{ #category : #'private - ffi' }
 AeCairoMatrix >> rotateByRadians: angle [
 
-	^ self primRotateByRadians: angle asFloat.
+	self ffiCall: #(
+		void
+		cairo_matrix_rotate (
+			self,
+			double angle ) )
 ]
 
 { #category : #transformations }
 AeCairoMatrix >> scaleBy: aPoint [
 
-	self primScaleX: aPoint x y: aPoint y
+	self scaleByX: aPoint x y: aPoint y
+]
+
+{ #category : #'private - ffi' }
+AeCairoMatrix >> scaleByX: x y: y [
+
+	self ffiCall: #(
+		void
+		cairo_matrix_scale (
+			self,
+			double x,
+			double y ) )
 ]
 
 { #category : #'accessing - structure variables' }
@@ -225,22 +198,46 @@ AeCairoMatrix >> sy: anObject [
 ]
 
 { #category : #transformations }
-AeCairoMatrix >> transform: aPoint [
+AeCairoMatrix >> translateBy: aPoint [
+
+	self translateByX: aPoint x y: aPoint y
+]
+
+{ #category : #'private - ffi' }
+AeCairoMatrix >> translateByX: px y: py [
+
+	self ffiCall: #(
+		void
+		cairo_matrix_translate (
+			self,
+			double px,
+			double py ) )
+
+]
+
+{ #category : #transformations }
+AeCairoMatrix >> value: aPoint [
+	"Answer aPoint transformed by self."
 
 	| x y |
 	x := ByteArray new: 8.
 	y := ByteArray new: 8.
 	x doubleAt: 1 put: aPoint x.
 	y doubleAt: 1 put: aPoint y.
-	self primTransformX: x y: y.
+	self valueOnX: x onY: y.
 
 	^ (x doubleAt: 1) @ (y doubleAt: 1)
 ]
 
-{ #category : #transformations }
-AeCairoMatrix >> translateBy: aPoint [
-
-	self primTranslateX: aPoint x y: aPoint y
+{ #category : #'private - ffi' }
+AeCairoMatrix >> valueOnX: xPointer onY: yPointer [
+	
+	^ self ffiCall: #(
+		void
+		cairo_matrix_transform_point (
+			self,
+			double * xPointer, 
+			double * yPointer ) )
 ]
 
 { #category : #'accessing - structure variables' }
