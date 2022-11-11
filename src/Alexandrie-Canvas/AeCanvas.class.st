@@ -316,7 +316,7 @@ AeCanvas >> restoreContextAfter: aBlock [
 ]
 
 { #category : #private }
-AeCanvas >> restoreContextIfShouldClipAfter: aBlock [
+AeCanvas >> restoreContextIfShouldntClipAfter: aBlock [
 
 	shouldClipAfterDrawingFigure
 		ifTrue: aBlock
@@ -439,7 +439,7 @@ AeCanvas >> setFigureWithBackgroundAndNoBorder [
 
 		self preparePath.
 
-		self restoreContextIfShouldClipAfter: [
+		self restoreContextIfShouldntClipAfter: [
 
 			"Paint background"
 			backgroundSourceBlock value.
@@ -532,7 +532,7 @@ AeCanvas >> setFigureWithBorderInsideAndNoBackground [
 
 		self preparePath.
 
-		self restoreContextIfShouldClipAfter: [
+		self restoreContextIfShouldntClipAfter: [
 
 			"Paint border"
 			self prepareStrokeWithDoubledWidth.
@@ -549,7 +549,7 @@ AeCanvas >> setFigureWithBorderInsideAndOpaqueBackground [
 
 		self preparePath.
 
-		self restoreContextIfShouldClipAfter: [
+		self restoreContextIfShouldntClipAfter: [
 
 			"Paint background"
 			backgroundSourceBlock value.
@@ -570,7 +570,7 @@ AeCanvas >> setFigureWithBorderInsideAndTranslucentBackground [
 
 		self preparePath.
 
-		self restoreContextIfShouldClipAfter: [
+		self restoreContextIfShouldntClipAfter: [
 
 			"Paint background"
 			backgroundSourceBlock value.
@@ -619,7 +619,7 @@ AeCanvas >> setFigureWithBorderOutsideAndOpaqueBackground [
 
 		self preparePath.
 
-		self restoreContextIfShouldClipAfter: [ 
+		self restoreContextIfShouldntClipAfter: [ 
 
 			"Paint border"
 			self prepareStrokeWithDoubledWidth.
@@ -653,7 +653,7 @@ AeCanvas >> setFigureWithBorderOutsideAndTranslucentBackground [
 					fillPreserve ] ].
 		
 		"Paint background"
-		self restoreContextIfShouldClipAfter: [
+		self restoreContextIfShouldntClipAfter: [
 			backgroundSourceBlock value.
 			cairoContext
 				clip;
