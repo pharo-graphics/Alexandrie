@@ -18,7 +18,7 @@ AeCanvasTest >> actualFormFor: aSymbol [
 { #category : #hooks }
 AeCanvasTest >> allFormSelectors [
 
-	^ self class selectors select: [ :each | each beginsWith: 'canvasWith' ]
+	^ self class selectors select: [ :each | each isUnary and: [each beginsWith: 'canvasWith'] ]
 ]
 
 { #category : #tests }
@@ -149,6 +149,152 @@ AeCanvasTest >> canvasWithForm [
 
 
 	^ aeCanvas
+]
+
+{ #category : #tests }
+AeCanvasTest >> canvasWithNestedFiguresAndBackgroundAlpha: backgroundAlpha hasBorder: hasBorder outskirtsSelector: outskirtsSelector [
+
+	| aeCanvas drawFigureBlock size |
+	size := 50 asPoint.
+	aeCanvas := AeCanvas extent: size.
+	aeCanvas clear: Color yellow.
+
+	drawFigureBlock := [ :depth |
+
+		aeCanvas restoreContextAfter: [ 
+
+			aeCanvas
+				pathTranslate: size / -10;
+				pathScale: 0.75 asPoint.
+
+			aeCanvas setBackgroundWith: [
+				aeCanvas setSourceColor: 
+					(depth odd
+						ifTrue: [ Color green alpha: backgroundAlpha ]
+						ifFalse: [ Color red alpha: backgroundAlpha ]) ].
+
+			hasBorder
+				ifTrue: [ 
+					aeCanvas setBorderBlock: [
+						aeCanvas setSourceColor: Color black.
+						aeCanvas setBorderWidth: 4 ].
+						aeCanvas perform: outskirtsSelector ]
+				ifFalse: [ aeCanvas setBorderOff ].
+
+			aeCanvas drawClosedCurvedPathWith: [ :cairoContext |
+				cairoContext circleRadius: size x / 2 ].
+
+			aeCanvas
+				shouldClipAfterDrawingFigure: depth odd;
+				drawFigure.
+				
+			depth > 0 ifTrue: [
+				drawFigureBlock value: depth-1 ] ] ].
+
+	"Move to initial position and draw with depth=2"
+	aeCanvas pathTranslate: size / 4.
+	drawFigureBlock value: 2.
+
+	^ aeCanvas
+]
+
+{ #category : #tests }
+AeCanvasTest >> canvasWithNestedFiguresWithBorderCenterAndNoBackground [
+
+	^ self
+		  canvasWithNestedFiguresAndBackgroundAlpha: 0.0
+		  hasBorder: true
+		  outskirtsSelector: #setOutskirtsCentered
+]
+
+{ #category : #tests }
+AeCanvasTest >> canvasWithNestedFiguresWithBorderCenterAndOpaqueBackground [
+
+	^ self
+		  canvasWithNestedFiguresAndBackgroundAlpha: 1.0
+		  hasBorder: true
+		  outskirtsSelector: #setOutskirtsCentered
+]
+
+{ #category : #tests }
+AeCanvasTest >> canvasWithNestedFiguresWithBorderCenterAndTranslucentBackground [
+
+	^ self
+		  canvasWithNestedFiguresAndBackgroundAlpha: 0.5
+		  hasBorder: true
+		  outskirtsSelector: #setOutskirtsCentered
+]
+
+{ #category : #tests }
+AeCanvasTest >> canvasWithNestedFiguresWithBorderInsideAndNoBackground [
+
+	^ self
+		  canvasWithNestedFiguresAndBackgroundAlpha: 0.0
+		  hasBorder: true
+		  outskirtsSelector: #setOutskirtsInside
+]
+
+{ #category : #tests }
+AeCanvasTest >> canvasWithNestedFiguresWithBorderInsideAndOpaqueBackground [
+
+	^ self
+		  canvasWithNestedFiguresAndBackgroundAlpha: 1.0
+		  hasBorder: true
+		  outskirtsSelector: #setOutskirtsInside
+]
+
+{ #category : #tests }
+AeCanvasTest >> canvasWithNestedFiguresWithBorderInsideAndTranslucentBackground [
+
+	^ self
+		  canvasWithNestedFiguresAndBackgroundAlpha: 0.5
+		  hasBorder: true
+		  outskirtsSelector: #setOutskirtsInside
+]
+
+{ #category : #tests }
+AeCanvasTest >> canvasWithNestedFiguresWithBorderOutsideAndNoBackground [
+
+	^ self
+		  canvasWithNestedFiguresAndBackgroundAlpha: 0.0
+		  hasBorder: true
+		  outskirtsSelector: #setOutskirtsOutside
+]
+
+{ #category : #tests }
+AeCanvasTest >> canvasWithNestedFiguresWithBorderOutsideAndOpaqueBackground [
+
+	^ self
+		  canvasWithNestedFiguresAndBackgroundAlpha: 1.0
+		  hasBorder: true
+		  outskirtsSelector: #setOutskirtsOutside
+]
+
+{ #category : #tests }
+AeCanvasTest >> canvasWithNestedFiguresWithBorderOutsideAndTranslucentBackground [
+
+	^ self
+		  canvasWithNestedFiguresAndBackgroundAlpha: 0.5
+		  hasBorder: true
+		  outskirtsSelector: #setOutskirtsOutside
+]
+
+{ #category : #tests }
+AeCanvasTest >> canvasWithNestedFiguresWithoutBorderAndOpaqueBackground [
+
+	^ self
+		  canvasWithNestedFiguresAndBackgroundAlpha: 1.0
+		  hasBorder: false
+		  outskirtsSelector: nil
+]
+
+{ #category : #tests }
+AeCanvasTest >> canvasWithNestedFiguresWithoutBorderAndTranslucentBackground [
+
+	^ self
+		  canvasWithNestedFiguresAndBackgroundAlpha: 0.5
+		  hasBorder: false
+		  outskirtsSelector: nil
 ]
 
 { #category : #tests }
