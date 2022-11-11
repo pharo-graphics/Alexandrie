@@ -7,7 +7,7 @@ See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_st
 "
 Class {
 	#name : #AeFTStyleFlag,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'FT_STYLE_FLAG_BOLD',
 		'FT_STYLE_FLAG_ITALIC'

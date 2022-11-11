@@ -13,7 +13,7 @@ See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-cluster-level-
 "
 Class {
 	#name : #AeHbBufferClusterLevel,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'HB_BUFFER_CLUSTER_LEVEL_CHARACTERS',
 		'HB_BUFFER_CLUSTER_LEVEL_DEFAULT',
@@ -65,12 +65,6 @@ AeHbBufferClusterLevel class >> enumDecl [
 	  HB_BUFFER_CLUSTER_LEVEL_CHARACTERS 2
 	  HB_BUFFER_CLUSTER_LEVEL_DEFAULT 0
 	)
-]
-
-{ #category : #initialization }
-AeHbBufferClusterLevel class >> initialize [
-
-	self initializeEnumeration
 ]
 
 { #category : #'accessing enum' }

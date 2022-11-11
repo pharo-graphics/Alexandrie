@@ -10,8 +10,8 @@ See: https://harfbuzz.github.io/harfbuzz-hb-face.html
 Class {
 	#name : #AeHbFace,
 	#superclass : #FFIExternalObject,
-	#traits : 'AeTHarfbuzzLibrary + AeHbTDestroy',
-	#classTraits : 'AeTHarfbuzzLibrary classTrait + AeHbTDestroy classTrait',
+	#traits : 'AeTHarfbuzzLibrary + AeTExternalFree',
+	#classTraits : 'AeTHarfbuzzLibrary classTrait + AeTExternalFree classTrait',
 	#pools : [
 		'AeHbTypes'
 	],
@@ -19,7 +19,7 @@ Class {
 }
 
 { #category : #finalization }
-AeHbFace class >> destroyHandle: aHandle [
+AeHbFace class >> externallyFree: aHandle [
 
 	self ffiCall: #( void hb_face_destroy ( void * aHandle ) )
 ]

@@ -8,8 +8,8 @@ See: https://harfbuzz.github.io/harfbuzz-hb-blob.html
 Class {
 	#name : #AeHbBlob,
 	#superclass : #FFIExternalObject,
-	#traits : 'AeTHarfbuzzLibrary + AeHbTDestroy',
-	#classTraits : 'AeTHarfbuzzLibrary classTrait + AeHbTDestroy classTrait',
+	#traits : 'AeTHarfbuzzLibrary + AeTExternalFree',
+	#classTraits : 'AeTHarfbuzzLibrary classTrait + AeTExternalFree classTrait',
 	#pools : [
 		'AeHbTypes'
 	],
@@ -33,7 +33,7 @@ AeHbBlob class >> blobCreate: aFileReference [
 ]
 
 { #category : #finalization }
-AeHbBlob class >> destroyHandle: aHandle [
+AeHbBlob class >> externallyFree: aHandle [
 	"Decreases the reference count on blob, and if it reaches zero, destroys blob, freeing all memory, possibly calling the destroy-callback the blob was created for if it has not been called already.
 
 	See: https://harfbuzz.github.io/harfbuzz-hb-blob.html#hb-blob-destroy"

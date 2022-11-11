@@ -6,8 +6,8 @@ See: https://www.cairographics.org/manual/cairo-cairo-surface-t.html
 Class {
 	#name : #AeCairoSurface,
 	#superclass : #FFIExternalReference,
-	#traits : 'AeTCairoLibrary + AeTCairoDestroy',
-	#classTraits : 'AeTCairoLibrary classTrait + AeTCairoDestroy classTrait',
+	#traits : 'AeTCairoLibrary + AeTExternalFree',
+	#classTraits : 'AeTCairoLibrary classTrait + AeTExternalFree classTrait',
 	#category : #'Alexandrie-Cairo-Surfaces'
 }
 
@@ -17,7 +17,7 @@ AeCairoSurface class >> asExternalTypeOn: generator [
 ]
 
 { #category : #finalization }
-AeCairoSurface class >> destroyHandle: aHandle [
+AeCairoSurface class >> externallyFree: aHandle [
 	
 	self ffiCall: #( void cairo_surface_destroy ( void * aHandle ) )
 ]

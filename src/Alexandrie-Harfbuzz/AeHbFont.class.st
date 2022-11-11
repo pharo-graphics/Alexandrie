@@ -12,8 +12,8 @@ See: https://harfbuzz.github.io/harfbuzz-hb-font.html
 Class {
 	#name : #AeHbFont,
 	#superclass : #FFIExternalObject,
-	#traits : 'AeTHarfbuzzLibrary + AeHbTDestroy',
-	#classTraits : 'AeTHarfbuzzLibrary classTrait + AeHbTDestroy classTrait',
+	#traits : 'AeTHarfbuzzLibrary + AeTExternalFree',
+	#classTraits : 'AeTHarfbuzzLibrary classTrait + AeTExternalFree classTrait',
 	#pools : [
 		'AeHbTypes'
 	],
@@ -21,7 +21,7 @@ Class {
 }
 
 { #category : #finalization }
-AeHbFont class >> destroyHandle: aHandle [
+AeHbFont class >> externallyFree: aHandle [
 
 	self ffiCall: #( void hb_font_destroy ( void * aHandle ) )
 ]

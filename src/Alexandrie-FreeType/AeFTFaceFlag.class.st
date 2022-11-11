@@ -7,7 +7,7 @@ See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_fa
 "
 Class {
 	#name : #AeFTFaceFlag,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'FT_FACE_FLAG_CID_KEYED',
 		'FT_FACE_FLAG_COLOR',

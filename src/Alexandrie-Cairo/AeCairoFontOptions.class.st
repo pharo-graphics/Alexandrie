@@ -9,13 +9,13 @@ See: https://www.cairographics.org/manual/cairo-cairo-font-options-t.html
 Class {
 	#name : #AeCairoFontOptions,
 	#superclass : #FFIExternalObject,
-	#traits : 'AeTCairoLibrary + AeTCairoDestroy',
-	#classTraits : 'AeTCairoLibrary classTrait + AeTCairoDestroy classTrait',
+	#traits : 'AeTCairoLibrary + AeTExternalFree',
+	#classTraits : 'AeTCairoLibrary classTrait + AeTExternalFree classTrait',
 	#category : #'Alexandrie-Cairo-Text'
 }
 
 { #category : #finalization }
-AeCairoFontOptions class >> destroyHandle: aHandle [
+AeCairoFontOptions class >> externallyFree: aHandle [
 	
 	self ffiCall: #( void cairo_font_options_destroy ( void * aHandle ) )
 ]

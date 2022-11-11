@@ -9,8 +9,8 @@ See: https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html
 Class {
 	#name : #AeCairoScaledFont,
 	#superclass : #FFIExternalObject,
-	#traits : 'AeTCairoLibrary + AeTCairoDestroy',
-	#classTraits : 'AeTCairoLibrary classTrait + AeTCairoDestroy classTrait',
+	#traits : 'AeTCairoLibrary + AeTExternalFree',
+	#classTraits : 'AeTCairoLibrary classTrait + AeTExternalFree classTrait',
 	#instVars : [
 		'extents'
 	],
@@ -18,7 +18,7 @@ Class {
 }
 
 { #category : #finalization }
-AeCairoScaledFont class >> destroyHandle: aHandle [
+AeCairoScaledFont class >> externallyFree: aHandle [
 	
 	self ffiCall: #( void cairo_scaled_font_destroy ( void * aHandle ) )
 ]

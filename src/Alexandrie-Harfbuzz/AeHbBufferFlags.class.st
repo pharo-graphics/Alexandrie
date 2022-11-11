@@ -5,7 +5,7 @@ See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-flags-t
 "
 Class {
 	#name : #AeHbBufferFlags,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'HB_BUFFER_FLAG_BOT',
 		'HB_BUFFER_FLAG_DEFAULT',
@@ -120,10 +120,4 @@ AeHbBufferFlags class >> enumDecl [
 
   HB_BUFFER_FLAG_DEFINED 16rFF
 	)
-]
-
-{ #category : #initialization }
-AeHbBufferFlags class >> initialize [
-
-	self initializeEnumeration
 ]

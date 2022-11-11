@@ -12,7 +12,7 @@ See: https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-direction-t
 "
 Class {
 	#name : #AeHbDirection,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'HB_DIRECTION_BTT',
 		'HB_DIRECTION_INVALID',
@@ -72,12 +72,6 @@ AeHbDirection class >> enumDecl [
   HB_DIRECTION_TTB 6
   HB_DIRECTION_BTT 7
 	)
-]
-
-{ #category : #initialization }
-AeHbDirection class >> initialize [
-
-	self initializeEnumeration
 ]
 
 { #category : #'accessing enum' }

@@ -8,8 +8,8 @@ See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html
 Class {
 	#name : #AeHbBuffer,
 	#superclass : #FFIExternalObject,
-	#traits : 'AeTHarfbuzzLibrary + AeHbTDestroy',
-	#classTraits : 'AeTHarfbuzzLibrary classTrait + AeHbTDestroy classTrait',
+	#traits : 'AeTHarfbuzzLibrary + AeTExternalFree',
+	#classTraits : 'AeTHarfbuzzLibrary classTrait + AeTExternalFree classTrait',
 	#pools : [
 		'AeHbTypes'
 	],
@@ -35,7 +35,7 @@ AeHbBuffer class >> defaultCairoGlyphArrayFor: aString face: aeFTFace size: font
 ]
 
 { #category : #finalization }
-AeHbBuffer class >> destroyHandle: aHandle [
+AeHbBuffer class >> externallyFree: aHandle [
 
 	self ffiCall: #( void hb_buffer_destroy ( void * aHandle ) )
 ]

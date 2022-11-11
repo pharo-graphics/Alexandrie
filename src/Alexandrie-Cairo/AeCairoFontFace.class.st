@@ -7,13 +7,13 @@ See: https://www.cairographics.org/manual/cairo-cairo-font-face-t.html
 Class {
 	#name : #AeCairoFontFace,
 	#superclass : #FFIExternalObject,
-	#traits : 'AeTCairoLibrary + AeTCairoDestroy',
-	#classTraits : 'AeTCairoLibrary classTrait + AeTCairoDestroy classTrait',
+	#traits : 'AeTCairoLibrary + AeTExternalFree',
+	#classTraits : 'AeTCairoLibrary classTrait + AeTExternalFree classTrait',
 	#category : #'Alexandrie-Cairo-Text'
 }
 
 { #category : #finalization }
-AeCairoFontFace class >> destroyHandle: aHandle [
+AeCairoFontFace class >> externallyFree: aHandle [
 	
 	self ffiCall: #( void cairo_font_face_destroy ( void * aHandle) )
 ]

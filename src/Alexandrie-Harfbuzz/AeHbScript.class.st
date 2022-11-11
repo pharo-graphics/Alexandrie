@@ -8,7 +8,7 @@ See: https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-script-t
 "
 Class {
 	#name : #AeHbScript,
-	#superclass : #FFIEnumeration,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'HB_SCRIPT_ADLAM',
 		'HB_SCRIPT_AHOM',
@@ -1520,12 +1520,6 @@ HB_SCRIPT_MATH Zmth
 
 	self rebuildEnumAccessors.
 
-]
-
-{ #category : #'enum declaration' }
-AeHbScript class >> initialize [
-
-	self initializeEnumeration
 ]
 
 { #category : #'accessing enum' }

@@ -17,13 +17,16 @@ BaselineOfAlexandrie >> baseline: spec [
 			spec postLoadDoIt: #'postload:package:'.
 
 			spec
+				package: 'Alexandrie-Base';
 				package: 'Alexandrie-Base-Tests';
 
-				package: 'Alexandrie-Cairo';
+				package: 'Alexandrie-Cairo'
+					with: [ spec requires: #('Alexandrie-Base') ];
 				package: 'Alexandrie-Cairo-Tests'
 					with: [ spec requires: #('Alexandrie-Cairo' 'Alexandrie-Base-Tests') ];
 					
-				package: 'Alexandrie-FreeType';
+				package: 'Alexandrie-FreeType'
+					with: [ spec requires: #('Alexandrie-Base') ];
 				package: 'Alexandrie-FreeType-Tests'
 					with: [ spec requires: #('Alexandrie-FreeType' 'Alexandrie-Base-Tests') ];
 

@@ -7,13 +7,13 @@ See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html
 Class {
 	#name : #AeCairoPattern,
 	#superclass : #FFIExternalObject,
-	#traits : 'AeTCairoLibrary + AeTCairoDestroy',
-	#classTraits : 'AeTCairoLibrary classTrait + AeTCairoDestroy classTrait',
+	#traits : 'AeTCairoLibrary + AeTExternalFree',
+	#classTraits : 'AeTCairoLibrary classTrait + AeTExternalFree classTrait',
 	#category : #'Alexandrie-Cairo-Patterns'
 }
 
 { #category : #'private - ffi' }
-AeCairoPattern class >> destroyHandle: aHandle [
+AeCairoPattern class >> externallyFree: aHandle [
 	
 	self ffiCall: #( void cairo_pattern_destroy ( void * aHandle ) )
 ]

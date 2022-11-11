@@ -8,8 +8,8 @@ See: https://www.cairographics.org/manual/cairo-cairo-t.html
 Class {
 	#name : #AeCairoContext,
 	#superclass : #FFIExternalReference,
-	#traits : 'AeTCairoLibrary + AeTCairoDestroy',
-	#classTraits : 'AeTCairoLibrary classTrait + AeTCairoDestroy classTrait',
+	#traits : 'AeTCairoLibrary + AeTExternalFree',
+	#classTraits : 'AeTCairoLibrary classTrait + AeTExternalFree classTrait',
 	#instVars : [
 		'surface'
 	],
@@ -23,7 +23,7 @@ AeCairoContext class >> asExternalTypeOn: generator [
 ]
 
 { #category : #finalization }
-AeCairoContext class >> destroyHandle: aHandle [
+AeCairoContext class >> externallyFree: aHandle [
 	
 	self ffiCall: #( void cairo_destroy ( void * aHandle ) )
 ]
