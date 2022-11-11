@@ -70,3 +70,9 @@ AeCairoSubpixelOrder class >> enumDecl [
 		CAIRO_SUBPIXEL_ORDER_VBGR 4
 	)
 ]
+
+{ #category : #hook }
+AeCairoSubpixelOrder class >> underlinedNamePrefix [
+	
+	^ 'CAIRO_SUBPIXEL_'
+]

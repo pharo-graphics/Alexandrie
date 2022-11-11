@@ -44,3 +44,9 @@ AeFTStyleFlag class >> initialize [
 
 	self initializeEnumeration
 ]
+
+{ #category : #hook }
+AeFTStyleFlag class >> underlinedNamePrefix [
+	
+	^ 'FT_STYLE_FLAG_'
+]

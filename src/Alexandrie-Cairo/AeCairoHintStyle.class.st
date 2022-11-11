@@ -70,3 +70,9 @@ AeCairoHintStyle class >> enumDecl [
 		CAIRO_HINT_STYLE_FULL 4
 	)
 ]
+
+{ #category : #hook }
+AeCairoHintStyle class >> underlinedNamePrefix [
+	
+	^ 'CAIRO_HINT_STYLE_'
+]

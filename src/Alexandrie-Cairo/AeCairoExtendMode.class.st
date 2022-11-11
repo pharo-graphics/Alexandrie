@@ -65,3 +65,9 @@ AeCairoExtendMode class >> enumDecl [
 		CAIRO_EXTEND_PAD 3
 	)
 ]
+
+{ #category : #hook }
+AeCairoExtendMode class >> underlinedNamePrefix [
+	
+	^ 'CAIRO_EXTEND_'
+]

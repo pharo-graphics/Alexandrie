@@ -52,3 +52,9 @@ AeCairoCapStyle class >> enumDecl [
 		CAIRO_LINE_CAP_SQUARE 2
 	)
 ]
+
+{ #category : #hook }
+AeCairoCapStyle class >> underlinedNamePrefix [
+	
+	^ 'CAIRO_LINE_CAP_'
+]

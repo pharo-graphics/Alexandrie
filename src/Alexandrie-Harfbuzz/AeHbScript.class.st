@@ -1527,3 +1527,9 @@ AeHbScript class >> latin [
 
 	^ self HB_SCRIPT_LATIN
 ]
+
+{ #category : #hook }
+AeHbScript class >> underlinedNamePrefix [
+	
+	^ 'HB_SCRIPT_'
+]

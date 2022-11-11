@@ -91,3 +91,9 @@ AeHbDirection class >> topToBottom [
 
 	^ self HB_DIRECTION_TTB
 ]
+
+{ #category : #hook }
+AeHbDirection class >> underlinedNamePrefix [
+	
+	^ 'HB_DIRECTION_'
+]

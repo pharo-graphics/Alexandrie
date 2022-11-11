@@ -62,3 +62,9 @@ AeCairoFontType class >> enumDecl [
 		CAIRO_FONT_TYPE_USER 4
 	)
 ]
+
+{ #category : #hook }
+AeCairoFontType class >> underlinedNamePrefix [
+	
+	^ 'CAIRO_FONT_'
+]

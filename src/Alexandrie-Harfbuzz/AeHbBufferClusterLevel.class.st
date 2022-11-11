@@ -78,3 +78,9 @@ AeHbBufferClusterLevel class >> recommended [
 
 	^ HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS
 ]
+
+{ #category : #hook }
+AeHbBufferClusterLevel class >> underlinedNamePrefix [
+	
+	^ 'HB_BUFFER_CLUSTER_LEVEL_'
+]

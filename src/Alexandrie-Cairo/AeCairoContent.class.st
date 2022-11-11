@@ -52,3 +52,9 @@ AeCairoContent class >> enumDecl [
 		CAIRO_CONTENT_COLOR_ALPHA 16r3000
 	)
 ]
+
+{ #category : #hook }
+AeCairoContent class >> underlinedNamePrefix [
+
+	^ 'CAIRO_CONTENT_'
+]

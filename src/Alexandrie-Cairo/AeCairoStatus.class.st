@@ -338,6 +338,12 @@ AeCairoStatus class >> enumDecl [
 	)
 ]
 
+{ #category : #hook }
+AeCairoStatus class >> underlinedNamePrefix [
+	
+	^ 'CAIRO_STATUS_'
+]
+
 { #category : #testing }
 AeCairoStatus >> isSuccess [
 

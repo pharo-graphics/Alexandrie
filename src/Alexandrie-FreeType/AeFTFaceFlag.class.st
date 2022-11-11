@@ -166,3 +166,9 @@ AeFTFaceFlag class >> initialize [
 
 	self initializeEnumeration
 ]
+
+{ #category : #hook }
+AeFTFaceFlag class >> underlinedNamePrefix [
+	
+	^ 'FT_FACE_FLAG'
+]

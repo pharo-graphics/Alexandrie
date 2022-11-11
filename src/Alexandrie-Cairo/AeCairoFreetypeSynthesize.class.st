@@ -38,3 +38,9 @@ AeCairoFreetypeSynthesize class >> enumDecl [
 		CAIRO_FT_SYNTHESIZE_OBLIQUE 2
 	)
 ]
+
+{ #category : #hook }
+AeCairoFreetypeSynthesize class >> underlinedNamePrefix [
+	
+	^ 'CAIRO_FT_SYNTHESIZE_'
+]

@@ -70,3 +70,9 @@ AeCairoSamplingFilter class >> enumDecl [
 		CAIRO_FILTER_GAUSSIAN 5
 	)
 ]
+
+{ #category : #hook }
+AeCairoSamplingFilter class >> underlinedNamePrefix [
+	
+	^ 'CAIRO_FILTER_'
+]

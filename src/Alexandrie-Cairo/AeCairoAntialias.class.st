@@ -92,3 +92,9 @@ AeCairoAntialias class >> enumDecl [
 		CAIRO_ANTIALIAS_BEST 6
 	)
 ]
+
+{ #category : #hook }
+AeCairoAntialias class >> underlinedNamePrefix [
+
+	^ 'CAIRO_ANTIALIAS_'
+]

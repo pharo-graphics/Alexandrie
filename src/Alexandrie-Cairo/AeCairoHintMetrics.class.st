@@ -52,3 +52,9 @@ AeCairoHintMetrics class >> enumDecl [
 		CAIRO_HINT_METRICS_ON 2
 	)
 ]
+
+{ #category : #hook }
+AeCairoHintMetrics class >> underlinedNamePrefix [
+	
+	^ 'CAIRO_HINT_METRICS_'
+]

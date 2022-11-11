@@ -45,3 +45,9 @@ AeCairoFillRule class >> enumDecl [
 		CAIRO_FILL_RULE_EVEN_ODD 1
 	)
 ]
+
+{ #category : #hook }
+AeCairoFillRule class >> underlinedNamePrefix [
+	
+	^ 'CAIRO_FILL_'
+]

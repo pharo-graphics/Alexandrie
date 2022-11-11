@@ -78,3 +78,9 @@ AeCairoSurfaceFormat class >> enumDecl [
 		CAIRO_FORMAT_RGB30	5
 	)
 ]
+
+{ #category : #hook }
+AeCairoSurfaceFormat class >> underlinedNamePrefix [
+	
+	^ 'CAIRO_FORMAT_'
+]

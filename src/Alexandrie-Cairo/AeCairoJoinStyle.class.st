@@ -54,3 +54,9 @@ AeCairoJoinStyle class >> enumDecl [
 		CAIRO_LINE_JOIN_BEVEL 2
 	)
 ]
+
+{ #category : #hook }
+AeCairoJoinStyle class >> underlinedNamePrefix [
+	
+	^ 'CAIRO_LINE_JOIN_'
+]

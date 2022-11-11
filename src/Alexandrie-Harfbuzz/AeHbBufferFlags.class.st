@@ -121,3 +121,9 @@ AeHbBufferFlags class >> enumDecl [
   HB_BUFFER_FLAG_DEFINED 16rFF
 	)
 ]
+
+{ #category : #hook }
+AeHbBufferFlags class >> underlinedNamePrefix [
+	
+	^ 'HB_BUFFER_FLAG_'
+]

@@ -257,3 +257,9 @@ AeCairoCompositionOp class >> enumDecl [
 		CAIRO_OPERATOR_HSL_LUMINOSITY 28
 	)
 ]
+
+{ #category : #hook }
+AeCairoCompositionOp class >> underlinedNamePrefix [
+	
+	^ 'CAIRO_OPERATOR_'
+]
