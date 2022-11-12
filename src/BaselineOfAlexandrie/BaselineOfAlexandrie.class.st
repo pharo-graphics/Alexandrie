@@ -60,6 +60,8 @@ BaselineOfAlexandrie >> postload: loader package: packageSpec [
 	"Ignore pre and post loads if already executed"
 	Initialized = true ifTrue: [ ^ self ].
 
+	AeEnumeration initialize. "Workaround a bug: initialize is executed before the subclasses are loaded"
+
 	self downloadTestFonts; stdoutLibraryVersions.
 
 	Initialized := true.
