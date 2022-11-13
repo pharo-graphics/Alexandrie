@@ -138,19 +138,22 @@ AePixelMatchTest >> printOn: aStream [
 	super printOn: aStream.
 	aStream
 		space;
-		<< 'formSelector: ';
-		print: formSelector
+		nextPut: $(;
+		print: formSelector;
+		nextPut: $)
+
 ]
 
 { #category : #tests }
-AePixelMatchTest >> testFormPixelMatch [
+AePixelMatchTest >> testFormSelectorMatches [
 
 	| result |
 	result := self pixelComparisonFor: formSelector.
-
+	self assert: result isMatch description: 'Pixel mismatch in ', formSelector.
+	
 "	INSPECT MISMATCH WITH:
 
 		result inspect.
 "
-	self assert: result isMatch description: 'Pixel mismatch'
+
 ]
