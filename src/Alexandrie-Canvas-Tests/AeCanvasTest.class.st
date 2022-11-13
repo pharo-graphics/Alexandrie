@@ -18,11 +18,11 @@ AeCanvasTest >> actualFormFor: aSymbol [
 { #category : #hooks }
 AeCanvasTest >> allFormSelectors [
 
-	^ self class selectors select: [ :each | each isUnary and: [each beginsWith: 'canvasWith'] ]
+	^ self class selectors select: [ :each | each isUnary and: [each beginsWith: 'render'] ]
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithArbitraryFigure [
+AeCanvasTest >> renderArbitraryFigure [
 
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 50 asPoint.
@@ -47,7 +47,7 @@ AeCanvasTest >> canvasWithArbitraryFigure [
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithClear [
+AeCanvasTest >> renderClear [
 
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 10 asPoint.
@@ -58,7 +58,7 @@ AeCanvasTest >> canvasWithClear [
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithClippedFigures [
+AeCanvasTest >> renderClippedFigures [
 
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 50 asPoint.
@@ -89,7 +89,7 @@ AeCanvasTest >> canvasWithClippedFigures [
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithClosedFigure [
+AeCanvasTest >> renderClosedFigure [
 
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 50 asPoint.
@@ -108,7 +108,7 @@ AeCanvasTest >> canvasWithClosedFigure [
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithCurvedFigure [
+AeCanvasTest >> renderCurvedFigure [
 
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 50 asPoint.
@@ -127,7 +127,7 @@ AeCanvasTest >> canvasWithCurvedFigure [
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithForm [
+AeCanvasTest >> renderForm [
 
 	| aeCanvas aForm |
 	aeCanvas := AeCanvas extent: 50@75.
@@ -152,7 +152,7 @@ AeCanvasTest >> canvasWithForm [
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithNestedFiguresAndBackgroundAlpha: backgroundAlpha hasBorder: hasBorder outskirtsSelector: outskirtsSelector [
+AeCanvasTest >> renderBackgroundAlpha: backgroundAlpha hasBorder: hasBorder outskirtsSelector: outskirtsSelector [
 
 	| aeCanvas drawFigureBlock referenceExtent |
 	referenceExtent := 50 asPoint.
@@ -201,106 +201,106 @@ AeCanvasTest >> canvasWithNestedFiguresAndBackgroundAlpha: backgroundAlpha hasBo
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithNestedFiguresWithBorderCenterAndNoBackground [
+AeCanvasTest >> renderBorderCenterAndNoBackground [
 
 	^ self
-		  canvasWithNestedFiguresAndBackgroundAlpha: 0.0
+		  renderBackgroundAlpha: 0.0
 		  hasBorder: true
 		  outskirtsSelector: #setOutskirtsCentered
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithNestedFiguresWithBorderCenterAndOpaqueBackground [
+AeCanvasTest >> renderBorderCenterAndOpaqueBackground [
 
 	^ self
-		  canvasWithNestedFiguresAndBackgroundAlpha: 1.0
+		  renderBackgroundAlpha: 1.0
 		  hasBorder: true
 		  outskirtsSelector: #setOutskirtsCentered
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithNestedFiguresWithBorderCenterAndTranslucentBackground [
+AeCanvasTest >> renderBorderCenterAndTranslucentBackground [
 
 	^ self
-		  canvasWithNestedFiguresAndBackgroundAlpha: 0.5
+		  renderBackgroundAlpha: 0.5
 		  hasBorder: true
 		  outskirtsSelector: #setOutskirtsCentered
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithNestedFiguresWithBorderInsideAndNoBackground [
+AeCanvasTest >> renderBorderInsideAndNoBackground [
 
 	^ self
-		  canvasWithNestedFiguresAndBackgroundAlpha: 0.0
+		  renderBackgroundAlpha: 0.0
 		  hasBorder: true
 		  outskirtsSelector: #setOutskirtsInside
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithNestedFiguresWithBorderInsideAndOpaqueBackground [
+AeCanvasTest >> renderBorderInsideAndOpaqueBackground [
 
 	^ self
-		  canvasWithNestedFiguresAndBackgroundAlpha: 1.0
+		  renderBackgroundAlpha: 1.0
 		  hasBorder: true
 		  outskirtsSelector: #setOutskirtsInside
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithNestedFiguresWithBorderInsideAndTranslucentBackground [
+AeCanvasTest >> renderBorderInsideAndTranslucentBackground [
 
 	^ self
-		  canvasWithNestedFiguresAndBackgroundAlpha: 0.5
+		  renderBackgroundAlpha: 0.5
 		  hasBorder: true
 		  outskirtsSelector: #setOutskirtsInside
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithNestedFiguresWithBorderOutsideAndNoBackground [
+AeCanvasTest >> renderBorderOutsideAndNoBackground [
 
 	^ self
-		  canvasWithNestedFiguresAndBackgroundAlpha: 0.0
+		  renderBackgroundAlpha: 0.0
 		  hasBorder: true
 		  outskirtsSelector: #setOutskirtsOutside
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithNestedFiguresWithBorderOutsideAndOpaqueBackground [
+AeCanvasTest >> renderBorderOutsideAndOpaqueBackground [
 
 	^ self
-		  canvasWithNestedFiguresAndBackgroundAlpha: 1.0
+		  renderBackgroundAlpha: 1.0
 		  hasBorder: true
 		  outskirtsSelector: #setOutskirtsOutside
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithNestedFiguresWithBorderOutsideAndTranslucentBackground [
+AeCanvasTest >> renderBorderOutsideAndTranslucentBackground [
 
 	^ self
-		  canvasWithNestedFiguresAndBackgroundAlpha: 0.5
+		  renderBackgroundAlpha: 0.5
 		  hasBorder: true
 		  outskirtsSelector: #setOutskirtsOutside
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithNestedFiguresWithoutBorderAndOpaqueBackground [
+AeCanvasTest >> renderWithoutBorderAndOpaqueBackground [
 
 	^ self
-		  canvasWithNestedFiguresAndBackgroundAlpha: 1.0
+		  renderBackgroundAlpha: 1.0
 		  hasBorder: false
 		  outskirtsSelector: nil
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithNestedFiguresWithoutBorderAndTranslucentBackground [
+AeCanvasTest >> renderWithoutBorderAndTranslucentBackground [
 
 	^ self
-		  canvasWithNestedFiguresAndBackgroundAlpha: 0.5
+		  renderBackgroundAlpha: 0.5
 		  hasBorder: false
 		  outskirtsSelector: nil
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithOpenFigure [
+AeCanvasTest >> renderOpenFigure [
 
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 50 asPoint.
@@ -326,7 +326,7 @@ AeCanvasTest >> canvasWithOpenFigure [
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithText [
+AeCanvasTest >> renderText [
 
 	| aeCanvas aFTFace cairoScaledFont cairoGlyphsArray baselineY baselineX |
 	aeCanvas := AeCanvas extent: 100 @ 50.
@@ -353,7 +353,7 @@ AeCanvasTest >> canvasWithText [
 ]
 
 { #category : #tests }
-AeCanvasTest >> canvasWithTextWithHarfbuzz [
+AeCanvasTest >> renderTextWithHarfbuzz [
 
 	| aeCanvas aFTFace cairoScaledFont cairoGlyphsArray baselineY baselineX |
 	aeCanvas := AeCanvas extent: 100 @ 50.
