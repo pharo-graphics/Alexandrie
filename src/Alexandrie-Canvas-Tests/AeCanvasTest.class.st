@@ -21,6 +21,26 @@ AeCanvasTest >> allFormSelectors [
 	^ self class selectors select: [ :each | each isUnary and: [each beginsWith: 'render'] ]
 ]
 
+{ #category : #convenience }
+AeCanvasTest >> deleteAllExports [
+	<script: 'self new deleteAllExports' >
+
+	super deleteAllExports
+]
+
+{ #category : #hooks }
+AeCanvasTest >> expectedFormsDirectory [
+
+	^ AeFilesystemResources canvasDirectory
+]
+
+{ #category : #convenience }
+AeCanvasTest >> exportAll [
+	<script: 'self new exportAll' >
+
+	super exportAll
+]
+
 { #category : #tests }
 AeCanvasTest >> renderArbitraryFigure [
 
@@ -39,111 +59,6 @@ AeCanvasTest >> renderArbitraryFigure [
 			cairoContext
 				rectangle: (0 asPoint extent: 20 asPoint);
 				circleRadius: 20 ].
-
-	aeCanvas drawFigure.
-
-
-	^ aeCanvas
-]
-
-{ #category : #tests }
-AeCanvasTest >> renderClear [
-
-	| aeCanvas |
-	aeCanvas := AeCanvas extent: 10 asPoint.
-	aeCanvas clearTransparent.
-	aeCanvas clear: Color green.
-
-	^ aeCanvas
-]
-
-{ #category : #tests }
-AeCanvasTest >> renderClippedFigures [
-
-	| aeCanvas |
-	aeCanvas := AeCanvas extent: 50 asPoint.
-	aeCanvas clear: Color yellow.
-
-	"Key message being tested"
-	aeCanvas shouldClipAfterDrawingFigure: true.
-
-	"Draw container figure (a rectangle)"
-	aeCanvas pathTranslate: 10 asPoint.
-	aeCanvas setBackgroundWith: [
-		aeCanvas setSourceColor: Color blue ].
-	aeCanvas setBorderOff.
-	aeCanvas drawClosedPathWith: [ :cairoContext |
-		cairoContext rectangleTo: 30 asPoint ].
-	aeCanvas drawFigure.
-
-	"Draw a child circle that is clipped by the parent rectangle."
-	aeCanvas pathTranslate: 15 asPoint.
-	aeCanvas setBackgroundWith: [
-		aeCanvas setSourceColor: Color orange ].
-	aeCanvas setBorderOff.
-	aeCanvas drawClosedCurvedPathWith: [ :cairoContext |
-		cairoContext circleRadius: 15 ].
-	aeCanvas drawFigure.
-
-	^ aeCanvas
-]
-
-{ #category : #tests }
-AeCanvasTest >> renderClosedFigure [
-
-	| aeCanvas |
-	aeCanvas := AeCanvas extent: 50 asPoint.
-
-	aeCanvas setBackgroundWith: [
-		aeCanvas setSourceColor: Color blue ].
-	aeCanvas setBorderOff.
-
-	aeCanvas drawClosedPathWith: [ :cairoContext |
-		cairoContext rectangle: (10 asPoint extent: 20 asPoint) ].
-
-	aeCanvas drawFigure.
-
-
-	^ aeCanvas
-]
-
-{ #category : #tests }
-AeCanvasTest >> renderCurvedFigure [
-
-	| aeCanvas |
-	aeCanvas := AeCanvas extent: 50 asPoint.
-
-	aeCanvas setBackgroundWith: [
-		aeCanvas setSourceColor: Color blue ].
-	aeCanvas setBorderOff.
-
-	aeCanvas drawClosedCurvedPathWith: [ :cairoContext |
-		cairoContext circleRadius: 25 ].
-
-	aeCanvas drawFigure.
-
-
-	^ aeCanvas
-]
-
-{ #category : #tests }
-AeCanvasTest >> renderForm [
-
-	| aeCanvas aForm |
-	aeCanvas := AeCanvas extent: 50@75.
-	aeCanvas clear: Color paleGreen.
-	
-	aForm := Smalltalk ui icons iconNamed: #pharoBig.
-
-	aeCanvas
-		setBackgroundWithForm: aForm
-		alpha: 1.0.
-	aeCanvas setBorderOff.
-
-	aeCanvas pathScale: (aeCanvas extent / aForm extent) asFloatPoint.
-	aeCanvas drawClosedPathWith: [ :cairoContext |
-		"Tip: Use another path to clip the form"
-		cairoContext rectangleTo: aForm extent ].
 
 	aeCanvas drawFigure.
 
@@ -255,6 +170,24 @@ AeCanvasTest >> renderBorderInsideAndTranslucentBackground [
 ]
 
 { #category : #tests }
+AeCanvasTest >> renderBorderOffAndOpaqueBackground [
+
+	^ self
+		  renderBackgroundAlpha: 1.0
+		  hasBorder: false
+		  outskirtsSelector: nil
+]
+
+{ #category : #tests }
+AeCanvasTest >> renderBorderOffAndTranslucentBackground [
+
+	^ self
+		  renderBackgroundAlpha: 0.5
+		  hasBorder: false
+		  outskirtsSelector: nil
+]
+
+{ #category : #tests }
 AeCanvasTest >> renderBorderOutsideAndNoBackground [
 
 	^ self
@@ -282,21 +215,108 @@ AeCanvasTest >> renderBorderOutsideAndTranslucentBackground [
 ]
 
 { #category : #tests }
-AeCanvasTest >> renderWithoutBorderAndOpaqueBackground [
+AeCanvasTest >> renderClear [
 
-	^ self
-		  renderBackgroundAlpha: 1.0
-		  hasBorder: false
-		  outskirtsSelector: nil
+	| aeCanvas |
+	aeCanvas := AeCanvas extent: 10 asPoint.
+	aeCanvas clearTransparent.
+	aeCanvas clear: Color green.
+
+	^ aeCanvas
 ]
 
 { #category : #tests }
-AeCanvasTest >> renderWithoutBorderAndTranslucentBackground [
+AeCanvasTest >> renderClippedFigures [
 
-	^ self
-		  renderBackgroundAlpha: 0.5
-		  hasBorder: false
-		  outskirtsSelector: nil
+	| aeCanvas |
+	aeCanvas := AeCanvas extent: 50 asPoint.
+	aeCanvas clear: Color yellow.
+
+	"Key message being tested"
+	aeCanvas shouldClipAfterDrawingFigure: true.
+
+	"Draw container figure (a rectangle)"
+	aeCanvas pathTranslate: 10 asPoint.
+	aeCanvas setBackgroundWith: [
+		aeCanvas setSourceColor: Color blue ].
+	aeCanvas setBorderOff.
+	aeCanvas drawClosedPathWith: [ :cairoContext |
+		cairoContext rectangleTo: 30 asPoint ].
+	aeCanvas drawFigure.
+
+	"Draw a child circle that is clipped by the parent rectangle."
+	aeCanvas pathTranslate: 15 asPoint.
+	aeCanvas setBackgroundWith: [
+		aeCanvas setSourceColor: Color orange ].
+	aeCanvas setBorderOff.
+	aeCanvas drawClosedCurvedPathWith: [ :cairoContext |
+		cairoContext circleRadius: 15 ].
+	aeCanvas drawFigure.
+
+	^ aeCanvas
+]
+
+{ #category : #tests }
+AeCanvasTest >> renderClosedFigure [
+
+	| aeCanvas |
+	aeCanvas := AeCanvas extent: 50 asPoint.
+
+	aeCanvas setBackgroundWith: [
+		aeCanvas setSourceColor: Color blue ].
+	aeCanvas setBorderOff.
+
+	aeCanvas drawClosedPathWith: [ :cairoContext |
+		cairoContext rectangle: (10 asPoint extent: 20 asPoint) ].
+
+	aeCanvas drawFigure.
+
+
+	^ aeCanvas
+]
+
+{ #category : #tests }
+AeCanvasTest >> renderCurvedFigure [
+
+	| aeCanvas |
+	aeCanvas := AeCanvas extent: 50 asPoint.
+
+	aeCanvas setBackgroundWith: [
+		aeCanvas setSourceColor: Color blue ].
+	aeCanvas setBorderOff.
+
+	aeCanvas drawClosedCurvedPathWith: [ :cairoContext |
+		cairoContext circleRadius: 25 ].
+
+	aeCanvas drawFigure.
+
+
+	^ aeCanvas
+]
+
+{ #category : #tests }
+AeCanvasTest >> renderForm [
+
+	| aeCanvas aForm |
+	aeCanvas := AeCanvas extent: 50@75.
+	aeCanvas clear: Color paleGreen.
+	
+	aForm := Smalltalk ui icons iconNamed: #pharoBig.
+
+	aeCanvas
+		setBackgroundWithForm: aForm
+		alpha: 1.0.
+	aeCanvas setBorderOff.
+
+	aeCanvas pathScale: (aeCanvas extent / aForm extent) asFloatPoint.
+	aeCanvas drawClosedPathWith: [ :cairoContext |
+		"Tip: Use another path to clip the form"
+		cairoContext rectangleTo: aForm extent ].
+
+	aeCanvas drawFigure.
+
+
+	^ aeCanvas
 ]
 
 { #category : #tests }
@@ -377,24 +397,4 @@ AeCanvasTest >> renderTextWithHarfbuzz [
 		aeCanvas drawText: cairoGlyphsArray font: cairoScaledFont ].
 
 	^ aeCanvas
-]
-
-{ #category : #convenience }
-AeCanvasTest >> deleteAllExports [
-	<script: 'self new deleteAllExports' >
-
-	super deleteAllExports
-]
-
-{ #category : #hooks }
-AeCanvasTest >> expectedFormsDirectory [
-
-	^ AeFilesystemResources canvasDirectory
-]
-
-{ #category : #convenience }
-AeCanvasTest >> exportAll [
-	<script: 'self new exportAll' >
-
-	super exportAll
 ]
