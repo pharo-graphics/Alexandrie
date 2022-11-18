@@ -205,20 +205,24 @@ AeCanvas >> initializeWith: aeCairoSurface [
 
 { #category : #text }
 AeCanvas >> metricsFor: aCairoGlyphsArray font: aCairoScaledFont [
-
 	"Return a AeCairoTextMetrics font metrics for the given glyphs and font"
 
 	| textMetrics |
-	textMetrics := AeCairoTextMetrics new.
-	textMetrics ascent: aCairoScaledFont extents ascent negated.
-	textMetrics descent: aCairoScaledFont extents descent.
+	textMetrics := AeCairoTextMetrics new
+		ascent: aCairoScaledFont extents ascent negated;
+		descent: aCairoScaledFont extents descent;
+		yourself.
 
-	self textExtentsFor: aCairoGlyphsArray scaledFont: aCairoScaledFont do: [ :aTextExtents | 
-		textMetrics advanceX: aTextExtents advanceX.
-		textMetrics bearingX: aTextExtents bearingX.
-		textMetrics bearingY: aTextExtents bearingY.
-		textMetrics width: aTextExtents width.
-		textMetrics height: aTextExtents height ].
+	self
+		textExtentsFor: aCairoGlyphsArray
+		scaledFont: aCairoScaledFont
+		do: [ :aTextExtents | 
+			textMetrics
+				advanceX: aTextExtents advanceX;
+				bearingX: aTextExtents bearingX;
+				bearingY: aTextExtents bearingY;
+				width: aTextExtents width;
+				height: aTextExtents height ].
 
 	^ textMetrics
 ]
