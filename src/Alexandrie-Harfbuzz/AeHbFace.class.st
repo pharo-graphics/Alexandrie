@@ -25,7 +25,23 @@ AeHbFace class >> externallyFree: aHandle [
 ]
 
 { #category : #'instance creation' }
-AeHbFace class >> primFaceCreateInBlob: blob index: index [
+AeHbFace class >> newForBlob: blob index: index [
+
+	^ (self unownedNewForBlob: blob index: index)
+		  autoRelease;
+		  yourself
+]
+
+{ #category : #'instance creation' }
+AeHbFace class >> newForCachedFTFace: ft_face [
+
+	^ (self unownedNewForCachedFTFace: ft_face)
+		  autoRelease;
+		  yourself
+]
+
+{ #category : #'instance creation' }
+AeHbFace class >> unownedNewForBlob: blob index: index [
 	"Constructs a new face object from the specified blob and a face index into that blob.
 
 The face index is used for blobs of file formats such as TTC and and DFont that can contain more than one face. Face indices within such collections are zero-based.
@@ -37,5 +53,21 @@ The face index is used for blobs of file formats such as TTC and and DFont that 
 		hb_face_create (
 			hb_blob_t blob,
 			uint index)
+	)
+]
+
+{ #category : #'instance creation' }
+AeHbFace class >> unownedNewForCachedFTFace: ft_face [
+	"Creates an `hb_face_t` face object from the specified `FT_Face`.
+
+	This variant of the function caches the newly created `hb_face_t` face object, using the generic pointer of `ft_face`. Subsequent function calls that are passed the same `ft_face` parameter will have the same `hb_face_t` returned to them, and that `hb_face_t` will be correctly reference counted.
+
+	However, client programs are still responsible for destroying `ft_face` after the last `hb_face_t` face object has been destroyed.
+
+	See: https://harfbuzz.github.io/harfbuzz-hb-ft.html#hb-ft-face-create-cached"
+
+	^ self ffiCall: #(
+		hb_face_t
+		hb_ft_face_create_cached (AeFTFace * ft_face)
 	)
 ]

@@ -10,8 +10,8 @@ See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_fa
 Class {
 	#name : #AeFTFace,
 	#superclass : #FFIExternalStructure,
-	#traits : 'AeTFreeTypeLibrary',
-	#classTraits : 'AeTFreeTypeLibrary classTrait',
+	#traits : 'AeTFreeTypeLibrary + AeTExternalFree',
+	#classTraits : 'AeTFreeTypeLibrary classTrait + AeTExternalFree classTrait',
 	#classVars : [
 		'OFFSET_FACEFLAGS',
 		'OFFSET_FACEINDEX',
@@ -23,6 +23,15 @@ Class {
 	],
 	#category : #'Alexandrie-FreeType-FFI'
 }
+
+{ #category : #finalization }
+AeFTFace class >> externallyFree: aHandle [
+	"Discard a given face object.
+	
+	See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_done_face"
+
+	self ffiCall: #( int FT_Done_Face ( void * aHandle ) )
+]
 
 { #category : #'field definition' }
 AeFTFace class >> fieldsDesc [
@@ -46,30 +55,12 @@ AeFTFace class >> fieldsDesc [
 	"... we ignore remaining fields"
 ]
 
-{ #category : #'private - ffi' }
-AeFTFace class >> finalizeResourceData: aHandle [
-
-	aHandle isNull ifTrue: [ ^ self ].
-	self primDoneFace: aHandle.
-	aHandle beNull
-
-]
-
-{ #category : #'private - ffi' }
-AeFTFace class >> primDoneFace: aHandle [
-	"Discard a given face object.
-	
-	See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_done_face"
-
-	self ffiCall: #(int FT_Done_Face(void* aHandle))
-]
-
 { #category : #accessing }
 AeFTFace >> charHeight: aNumber [
 	"Request nominal height, taking resolution of 72 dpi."
 
 	^ self
-		  primSetCharSizeWidth: 0
+		  charSizeWidth: 0
 		  height: aNumber as26Dot6FractionalPoint
 		  horizontalResolution: 0
 		  verticalResolution: 0
@@ -80,10 +71,41 @@ AeFTFace >> charSizeWidth: aWidth height: aHeight [
 	"Request nominal size, taking resolution of 72 dpi."
 
 	^ self
-		  primSetCharSizeWidth: aWidth as26Dot6FractionalPoint
+		  charSizeWidth: aWidth as26Dot6FractionalPoint
 		  height: aHeight as26Dot6FractionalPoint
 		  horizontalResolution: 0
 		  verticalResolution: 0
+]
+
+{ #category : #accessing }
+AeFTFace >> charSizeWidth: char_width height: char_height horizontalResolution: horz_resolution verticalResolution: vert_resolution [
+	"Request nominal size.
+
+	The nominal width and height are 26.6 fractional points.
+	
+	The resolution is represented in dpi.
+
+	While this function allows fractional points as input values, the resulting ppem value for the given resolution is always rounded to the nearest integer.
+
+	If either the character width or height is zero, it is set equal to the other value.
+
+	If either the horizontal or vertical resolution is zero, it is set equal to the other value.
+
+	A character width or height smaller than 1pt is set to 1pt; if both resolution values are zero, they are set to 72dpi.
+
+	Don't use this function if you are using the FreeType cache API.
+	
+	See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_set_char_size"
+
+	^ self ffiCall: #(
+		long
+		FT_Set_Char_Size(
+			self,
+			long char_width,
+			long char_height,
+			uint horz_resolution,
+			uint vert_resolution )
+		)
 ]
 
 { #category : #'accessing - structure variables' }
@@ -132,13 +154,6 @@ AeFTFace >> familyNameAddress: anObject [
 AeFTFace >> flags [
 
 	^ AeFTFaceFlag bitFlagsAt: self faceFlags
-]
-
-{ #category : #'initialize-release' }
-AeFTFace >> free [
-
-	self class finalizeResourceData: handle.
-	handle := nil.
 ]
 
 { #category : #testing }
@@ -196,37 +211,6 @@ AeFTFace >> numberOfGlyphs: anObject [
 AeFTFace >> postscriptName [
 
 	^ self ffiCall: #(String FT_Get_Postscript_Name (self))
-]
-
-{ #category : #accessing }
-AeFTFace >> primSetCharSizeWidth: char_width height: char_height horizontalResolution: horz_resolution verticalResolution: vert_resolution [
-	"Request nominal size.
-
-	The nominal width and height are 26.6 fractional points.
-	
-	The resolution is represented in dpi.
-
-	While this function allows fractional points as input values, the resulting ppem value for the given resolution is always rounded to the nearest integer.
-
-	If either the character width or height is zero, it is set equal to the other value.
-
-	If either the horizontal or vertical resolution is zero, it is set equal to the other value.
-
-	A character width or height smaller than 1pt is set to 1pt; if both resolution values are zero, they are set to 72dpi.
-
-	Don't use this function if you are using the FreeType cache API.
-	
-	See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_set_char_size"
-
-	^ self ffiCall: #(
-		long
-		FT_Set_Char_Size(
-			self,
-			long char_width,
-			long char_height,
-			uint horz_resolution,
-			uint vert_resolution )
-		)
 ]
 
 { #category : #printing }

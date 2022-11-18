@@ -12,8 +12,8 @@ AeHbBufferTest >> inriaSerifHbFont [
 
 	| blob face |
 	blob := AeHbBlob blobCreate: AeFilesystemResources inriaSerifRegularTTF.
-	face := AeHbFace primFaceCreateInBlob: blob index: 0. 
-	^ AeHbFont primFontCreateFor: face
+	face := AeHbFace newForBlob: blob index: 0. 
+	^ AeHbFont newForHbFace: face
 
 ]
 
@@ -22,9 +22,9 @@ AeHbBufferTest >> testMultipleAdd [
 
 	| buffer |
 	buffer := AeHbBuffer new
-		primSetDirection: AeHbDirection leftToRight;
-		primSetScript: AeHbScript latin;
-		primSetLanguage: AeHbLanguage en;
+		direction: AeHbDirection leftToRight;
+		script: AeHbScript latin;
+		language: AeHbLanguage en;
 		yourself.
 
 	self assert: buffer primGetLength equals: 0.
@@ -42,13 +42,13 @@ AeHbBufferTest >> testPrimClearContents [
 
 	| buffer |
 	buffer := AeHbBuffer new
-		primSetDirection: AeHbDirection leftToRight;
-		primSetScript: AeHbScript latin;
-		primSetLanguage: AeHbLanguage en;
+		direction: AeHbDirection leftToRight;
+		script: AeHbScript latin;
+		language: AeHbLanguage en;
 		yourself.
 
 	buffer addUtf8String: 'ab'.
-	buffer primClearContents.
+	buffer clearContents.
 	self assert: buffer primGetLength equals: 0.
 
 ]
@@ -58,13 +58,13 @@ AeHbBufferTest >> testPrimReset [
 
 	| buffer |
 	buffer := AeHbBuffer new
-		primSetDirection: AeHbDirection leftToRight;
-		primSetScript: AeHbScript latin;
-		primSetLanguage: AeHbLanguage en;
+		direction: AeHbDirection leftToRight;
+		script: AeHbScript latin;
+		language: AeHbLanguage en;
 		yourself.
 
 	buffer addUtf8String: 'ab'.
-	buffer primReset.
+	buffer reset.
 	self assert: buffer primGetLength equals: 0.
 
 ]
@@ -79,9 +79,9 @@ AeHbBufferTest >> testSimpleExample [
 	buffer addUtf8String: 'flor'.
 
 	"2. Set the script, language and direction of the buffer."
-	buffer primSetDirection: AeHbDirection leftToRight.
-	buffer primSetScript: AeHbScript latin.
-	buffer primSetLanguage: AeHbLanguage en.
+	buffer direction: AeHbDirection leftToRight.
+	buffer script: AeHbScript latin.
+	buffer language: AeHbLanguage en.
 
 	"3. Create a face and a font from a font file."
 	font := self inriaSerifHbFont.

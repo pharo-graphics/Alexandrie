@@ -106,6 +106,14 @@ AeCairoScaledFont >> glyphArrayForUtf8Array: aUtf8EncodedByteArray [
 ]
 
 { #category : #'private - ffi' }
+AeCairoScaledFont >> lock [
+	"See: https://www.cairographics.org/manual/cairo-FreeType-Fonts.html#cairo-ft-scaled-font-lock-face"
+	
+	^ self ffiCall: #(
+		AeFTFace * cairo_ft_scaled_font_lock_face (self) )
+]
+
+{ #category : #'private - ffi' }
 AeCairoScaledFont >> primExtents: aFontExtents [
 
 	self ffiCall: #(
@@ -159,14 +167,6 @@ AeCairoScaledFont >> primGetScaleMatrixInto: aeCairoMatrix [
 ]
 
 { #category : #'private - ffi' }
-AeCairoScaledFont >> primLock [
-	"See: https://www.cairographics.org/manual/cairo-FreeType-Fonts.html#cairo-ft-scaled-font-lock-face"
-	
-	^ self ffiCall: #(
-		AeFTFace * cairo_ft_scaled_font_lock_face (self) )
-]
-
-{ #category : #'private - ffi' }
 AeCairoScaledFont >> primTextToGlyphs: aBuffer length: aLength glyphs: theGlyphs num: aGlyphsCount x: aX y: aY [
 
 	^ self ffiCall: #(
@@ -184,14 +184,6 @@ AeCairoScaledFont >> primTextToGlyphs: aBuffer length: aLength glyphs: theGlyphs
 			nil))
 ]
 
-{ #category : #'private - ffi' }
-AeCairoScaledFont >> primUnlock [
-	"See: https://www.cairographics.org/manual/cairo-FreeType-Fonts.html#cairo-ft-scaled-font-unlock-face"
-	
-	self ffiCall: #(
-		void cairo_ft_scaled_font_unlock_face (self) )
-]
-
 { #category : #API }
 AeCairoScaledFont >> scaleMatrix [
 
@@ -205,4 +197,12 @@ AeCairoScaledFont >> scaleMatrix [
 AeCairoScaledFont >> status [
 
 	^ self ffiCall: #(AeCairoStatus cairo_scaled_font_status ( self ) )
+]
+
+{ #category : #'private - ffi' }
+AeCairoScaledFont >> unlock [
+	"See: https://www.cairographics.org/manual/cairo-FreeType-Fonts.html#cairo-ft-scaled-font-unlock-face"
+	
+	self ffiCall: #(
+		void cairo_ft_scaled_font_unlock_face (self) )
 ]

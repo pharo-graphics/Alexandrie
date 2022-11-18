@@ -80,7 +80,7 @@ AeHbBlob class >> primBlobGetEmpty [
 ]
 
 { #category : #accessing }
-AeHbBlob >> primGetLength [
+AeHbBlob >> length [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-blob.html#hb-blob-get-length"
 
 	^ self ffiCall: #(

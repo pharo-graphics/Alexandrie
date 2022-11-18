@@ -4,21 +4,21 @@ Extension { #name : #AeHbBuffer }
 AeHbBuffer >> cairoGlyphArrayForFace: freetypeFace size: fontSize [
 	"Based on: https://github.com/harfbuzz/harfbuzz-tutorial/blob/master/hello-harfbuzz-freetype.c"
 
-	| font length infos positions cairoGlyphsArray currentX currentY |
+	| hbFont length infos positions cairoGlyphsArray currentX currentY |
 	
 	freetypeFace charHeight: fontSize.
-	font := AeHbFont primFontCreateForFreetypeReferenced: freetypeFace.
-	self shapeWithFont: font.
+	hbFont := AeHbFont newForFTFaceReferenced: freetypeFace.
+	self shapeWithFont: hbFont.
 
-	length := self primGetLength.
+	length := self length.
 	length = 0 ifTrue: [ ^ AeCairoGlyphArray externalNewEmpty ].
 
 	infos := FFIExternalArray
-		  fromHandle: (self primGetGlyphInfos: ExternalAddress null)
+		  fromHandle: (self getGlyphInfosOn: ExternalAddress null)
 		  type: AeHbGlyphInfo
 		  size: length.
 	positions := FFIExternalArray
-		  fromHandle: (self primGetGlyphPositions: ExternalAddress null)
+		  fromHandle: (self getGlyphPositionsOn: ExternalAddress null)
 		  type: AeHbGlyphPosition
 		  size: length.
 

@@ -10,6 +10,9 @@ Class {
 	#superclass : #FFIExternalObject,
 	#traits : 'AeTHarfbuzzLibrary',
 	#classTraits : 'AeTHarfbuzzLibrary classTrait',
+	#classVars : [
+		'EN'
+	],
 	#pools : [
 		'AeHbTypes'
 	],

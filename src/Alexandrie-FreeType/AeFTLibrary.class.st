@@ -8,37 +8,13 @@ See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_li
 Class {
 	#name : #AeFTLibrary,
 	#superclass : #FFIExternalObject,
-	#traits : 'AeTFreeTypeLibrary',
-	#classTraits : 'AeTFreeTypeLibrary classTrait',
+	#traits : 'AeTFreeTypeLibrary + AeTExternalFree',
+	#classTraits : 'AeTFreeTypeLibrary classTrait + AeTExternalFree classTrait',
 	#category : #'Alexandrie-FreeType-FFI'
 }
 
-{ #category : #'as yet unclassified' }
-AeFTLibrary class >> finalizeResourceData: aHandle [
-
-	aHandle isNull ifTrue: [ ^ self ].
-	self primDoneFreeType: aHandle.
-	aHandle beNull
-
-]
-
-{ #category : #'instance creation' }
-AeFTLibrary class >> newInitialized [
-
-	| aPointer returnCode |
-	aPointer := ExternalAddress new.
-
-	returnCode := self primInitFreeType: aPointer.
-
-	returnCode = 0 ifFalse: [ AeFreeTypeError signalForCode: returnCode ].
-
-	^ (self fromHandle: aPointer)
-		  autoRelease;
-		  yourself
-]
-
-{ #category : #'as yet unclassified' }
-AeFTLibrary class >> primDoneFreeType: aHandle [
+{ #category : #finalization }
+AeFTLibrary class >> externallyFree: aHandle [
 	"Destroy a given FreeType library object and all of its children, including resources, drivers, faces, sizes, etc.
 	
 	See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_done_freetype"
@@ -46,13 +22,28 @@ AeFTLibrary class >> primDoneFreeType: aHandle [
 	^ self ffiCall: #(
 		int 
 		FT_Done_FreeType (
-			void * aHandle ))
+			void * aHandle ) )
 
 ]
 
-{ #category : #'as yet unclassified' }
-AeFTLibrary class >> primInitFreeType: aPointer [
-	"Initialize a new FreeType library object.
+{ #category : #'instance creation' }
+AeFTLibrary class >> newInitialized [
+
+	| aPointer errorCode |
+	aPointer := ExternalAddress new.
+
+	errorCode := self unownedNewInitializedOn: aPointer.
+
+	errorCode = 0 ifFalse: [ AeFreeTypeError signalForCode: errorCode ].
+
+	^ (self fromHandle: aPointer)
+		  autoRelease;
+		  yourself
+]
+
+{ #category : #'instance creation' }
+AeFTLibrary class >> unownedNewInitializedOn: aPointer [
+	"Initialize a new FreeType library object. Answer an error code.
 	
 	See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_init_freetype"
 
@@ -68,7 +59,7 @@ AeFTLibrary >> facesOn: aFileReference [
 
 	^ Array streamContents: [ :aStream |
 		self
-			lowLevelFacesOn: aFileReference
+			unownedNewFacesFromFile: aFileReference
 			withIndexDo: [ :eachFace :index |
 				eachFace autoRelease.
 				aStream nextPut: eachFace ] ]
@@ -80,10 +71,10 @@ AeFTLibrary >> fastReadFacesOn: aFileReference do: aBlock [
 	IMPORTANT: The Face will be freed (done) after each iteration."
 
 	self
-		lowLevelFacesOn: aFileReference
+		unownedNewFacesFromFile: aFileReference
 		withIndexDo: [ :eachFace :index |
 			aBlock value: eachFace value: index.
-			eachFace free. ]
+			eachFace externallyFree ]
 ]
 
 { #category : #iteration }
@@ -92,82 +83,36 @@ AeFTLibrary >> fastReadFacesOnMemory: aByteArray do: aBlock [
 	IMPORTANT: The Face will be freed (done) after each iteration."
 
 	self
-		lowLevelFacesOnMemory: aByteArray
+		unownedNewFacesFromBytes: aByteArray
 		withIndexDo: [ :eachFace :index |
 			aBlock value: eachFace value: index.
-			eachFace free. ]
+			eachFace externallyFree ]
 ]
 
-{ #category : #iteration }
-AeFTLibrary >> lowLevelFacesOn: aFileReference withIndexDo: aBlock [
-	"Iterate over the faces in a file path. NOTE: Sender is responsible to RELEASE.
+{ #category : #'private - ffi' }
+AeFTLibrary >> getVersionOnMajor: majorPointer minor: minorPointer patch: patchPointer [
+	"See: https://freetype.org/freetype2/docs/reference/ft2-version.html#ft_library_version"
 
-	See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_facerec"
+	self ffiCall: #(
+		void
+		FT_Library_Version (
+			self,
+			int * majorPointer,
+			int * minorPointer,
+			int * patchPointer ) )
 
-	| faceIndex numberOfFaces |
-	"If there is any face on this file, there will be a face with 0 index."
-	faceIndex := 0.
-	
-	[	| aPointer returnCode aFace |
-		aPointer := ExternalAddress new.
-		returnCode := self 
-			primNewFace: aPointer 
-			path: aFileReference pathString 
-			index: faceIndex.
-
-		returnCode = 0 ifFalse: [ ^ self ].
-
-		aFace := AeFTFace fromHandle: aPointer.
-
-		faceIndex = 0 ifTrue: [
-			numberOfFaces := aFace numberOfFaces ].
-
-		aBlock value: aFace value: faceIndex.
-			
-		faceIndex := faceIndex + 1 ]
-			doWhileTrue: [ faceIndex < numberOfFaces ]
-]
-
-{ #category : #iteration }
-AeFTLibrary >> lowLevelFacesOnMemory: aByteArray withIndexDo: aBlock [
-	"Iterate over the faces in a ByteArray. NOTE: Sender is responsible to RELEASE.
-
-	See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_facerec"
-
-	| faceIndex numberOfFaces |
-	"If there is any face on this file, there will be a face with 0 index."
-	faceIndex := 0.
-	
-	[	| aPointer returnCode aFace |
-		aPointer := ExternalAddress new.
-		returnCode := self 
-			primNewMemoryFace: aPointer 
-			buffer: aByteArray
-			size: aByteArray size
-			index: faceIndex.
-
-		returnCode = 0 ifFalse: [ ^ self ].
-
-		aFace := AeFTFace fromHandle: aPointer.
-
-		faceIndex = 0 ifTrue: [
-			numberOfFaces := aFace numberOfFaces ].
-
-		aBlock value: aFace value: faceIndex.
-			
-		faceIndex := faceIndex + 1 ]
-			doWhileTrue: [ faceIndex < numberOfFaces ]
 ]
 
 { #category : #'instance creation' }
-AeFTLibrary >> newFaceFromFile: aFileReference index: aZeroBasedIndex [
+AeFTLibrary >> newFaceFromBytes: aByteArray index: aZeroBasedIndex [
 
 	| aPointer returnCode |
 	aPointer := ExternalAddress new.
 	
 	returnCode := self
-		primNewFace: aPointer
-		path: aFileReference pathString
+		unownedNewFaceOn: aPointer
+		fromBytes: aByteArray
+		size: aByteArray size 
 		index: aZeroBasedIndex.
 
 	returnCode = 0 ifFalse: [
@@ -179,15 +124,14 @@ AeFTLibrary >> newFaceFromFile: aFileReference index: aZeroBasedIndex [
 ]
 
 { #category : #'instance creation' }
-AeFTLibrary >> newFaceFromMemory: aByteArray index: aZeroBasedIndex [
+AeFTLibrary >> newFaceFromFile: aFileReference index: aZeroBasedIndex [
 
 	| aPointer returnCode |
 	aPointer := ExternalAddress new.
 	
 	returnCode := self
-		primNewMemoryFace: aPointer
-		buffer: aByteArray
-		size: aByteArray size 
+		unownedNewFaceOn: aPointer
+		fromPath: aFileReference pathString
 		index: aZeroBasedIndex.
 
 	returnCode = 0 ifFalse: [
@@ -211,26 +155,9 @@ AeFTLibrary >> numberOfFacesOn: aFileReference [
 ]
 
 { #category : #'private - ffi' }
-AeFTLibrary >> primNewFace: aFaceAddress path: filepathname index: face_index [
-	"Create a new FT_Face object, answered in the pointer. Use FT_Done_Face to destroy it. 
-	Return a FreeType error code. 0 means success.
-	
-	See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_new_face"
-
-	^ self ffiCall: #(
-		int
-		FT_New_Face(
-			self,
-			String filepathname,
-			"FT_Long" long face_index,
-			"FT_Face" void ** aFaceAddress ))
-
-]
-
-{ #category : #'private - ffi' }
-AeFTLibrary >> primNewMemoryFace: aFaceAddress buffer: fileBase size: fileSize index: faceIndex [
-	"Create a new FT_Face object, answered in the pointer. Use FT_Done_Face to destroy it. 
-	Return a FreeType error code. 0 means success.
+AeFTLibrary >> unownedNewFaceOn: aFaceAddress fromBytes: fileBase size: fileSize index: faceIndex [
+	"Create a new FT_Face object, answered in the pointer. Sender must free.
+	Return an error code. 0 means success.
 	
 	See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_new_memory_face"
 
@@ -246,33 +173,96 @@ AeFTLibrary >> primNewMemoryFace: aFaceAddress buffer: fileBase size: fileSize i
 ]
 
 { #category : #'private - ffi' }
-AeFTLibrary >> primVersionMajor: major minor: minor patch: patch [
-	"See: https://freetype.org/freetype2/docs/reference/ft2-version.html#ft_library_version"
+AeFTLibrary >> unownedNewFaceOn: aFaceAddress fromPath: filepathname index: face_index [
+	"Create a new FT_Face object, answered in the pointer. Use FT_Done_Face to destroy it. 
+	Return an error code. 0 means success.
+	
+	See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_new_face"
 
-	self ffiCall: #(
-		void
-		FT_Library_Version (
+	^ self ffiCall: #(
+		int
+		FT_New_Face(
 			self,
-			int * major,
-			int * minor,
-			int * patch)
-		)
+			String filepathname,
+			"FT_Long" long face_index,
+			"FT_Face" void ** aFaceAddress ))
 
+]
+
+{ #category : #iteration }
+AeFTLibrary >> unownedNewFacesFromBytes: aByteArray withIndexDo: aBlock [
+	"Iterate over the faces in a ByteArray. IMPORTANT: The block must free each face.
+
+	See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_facerec"
+
+	| faceIndex numberOfFaces |
+	"If there is any face on this file, there will be a face with 0 index."
+	faceIndex := 0.
+	
+	[	| aPointer returnCode aFace |
+		aPointer := ExternalAddress new.
+		returnCode := self 
+			unownedNewFaceOn: aPointer 
+			fromBytes: aByteArray
+			size: aByteArray size
+			index: faceIndex.
+
+		returnCode = 0 ifFalse: [ ^ self ].
+
+		aFace := AeFTFace fromHandle: aPointer.
+
+		faceIndex = 0 ifTrue: [
+			numberOfFaces := aFace numberOfFaces ].
+
+		aBlock value: aFace value: faceIndex.
+			
+		faceIndex := faceIndex + 1 ]
+			doWhileTrue: [ faceIndex < numberOfFaces ]
+]
+
+{ #category : #iteration }
+AeFTLibrary >> unownedNewFacesFromFile: aFileReference withIndexDo: aBlock [
+	"Iterate over the faces in a file path. IMPORTANT: The block must free each face.
+
+	See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_facerec"
+
+	| faceIndex numberOfFaces |
+	"If there is any face on this file, there will be a face with 0 index."
+	faceIndex := 0.
+	
+	[	| aPointer returnCode aFace |
+		aPointer := ExternalAddress new.
+		returnCode := self 
+			unownedNewFaceOn: aPointer 
+			fromPath: aFileReference pathString 
+			index: faceIndex.
+
+		returnCode = 0 ifFalse: [ ^ self ].
+
+		aFace := AeFTFace fromHandle: aPointer.
+
+		faceIndex = 0 ifTrue: [
+			numberOfFaces := aFace numberOfFaces ].
+
+		aBlock value: aFace value: faceIndex.
+			
+		faceIndex := faceIndex + 1 ]
+			doWhileTrue: [ faceIndex < numberOfFaces ]
 ]
 
 { #category : #accessing }
 AeFTLibrary >> versionString [
 
-	| major minor patch|
-	major := FFIInt32 newBuffer.
-	minor := FFIInt32 newBuffer.
-	patch := FFIInt32 newBuffer.
+	| majorPointer minorPointer patchPointer|
+	majorPointer := FFIInt32 newBuffer.
+	minorPointer := FFIInt32 newBuffer.
+	patchPointer := FFIInt32 newBuffer.
 	
-	self primVersionMajor: major minor: minor patch: patch. 
+	self getVersionOnMajor: majorPointer minor: minorPointer patch: patchPointer. 
 	
 	^ '{1}.{2}.{3}' format: { 
-		major signedLongAt: 1.
-		minor signedLongAt: 1.
-		patch signedLongAt: 1.
+		majorPointer signedLongAt: 1.
+		minorPointer signedLongAt: 1.
+		patchPointer signedLongAt: 1.
 		}
 ]

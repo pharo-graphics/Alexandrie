@@ -8,22 +8,22 @@ Class {
 }
 
 { #category : #tests }
-AeHbLanguageTest >> testFromString [
+AeHbLanguageTest >> testBCP47Tag [
 
 	self
-		assert: (AeHbLanguage fromString: 'en') getHandle
-		equals: (AeHbLanguage fromString: 'en') getHandle.
+		assert: (AeHbLanguage fromBCP47Tag: 'en') getHandle
+		equals: (AeHbLanguage fromBCP47Tag: 'en') getHandle.
 
 	self
-		assert: (AeHbLanguage fromString: 'en') getHandle
+		assert: (AeHbLanguage fromBCP47Tag: 'en') getHandle
 		equals: AeHbLanguage en getHandle.
 
 	self
-		deny: (AeHbLanguage fromString: 'en') getHandle
-		equals: (AeHbLanguage fromString: 'fr') getHandle.
+		deny: (AeHbLanguage fromBCP47Tag: 'en') getHandle
+		equals: (AeHbLanguage fromBCP47Tag: 'fr') getHandle.
 
 	self
-		deny: (AeHbLanguage fromString: 'es-AR') getHandle
-		equals: (AeHbLanguage fromString: 'es-MX') getHandle.
+		deny: (AeHbLanguage fromBCP47Tag: 'es-AR') getHandle
+		equals: (AeHbLanguage fromBCP47Tag: 'es-MX') getHandle.
 
 ]

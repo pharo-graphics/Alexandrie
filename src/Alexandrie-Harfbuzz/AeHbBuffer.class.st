@@ -26,10 +26,10 @@ AeHbBuffer class >> defaultCairoGlyphArrayFor: aString face: aeFTFace size: font
 	"
 
 	^ self new
-		primSetDirection: AeHbDirection leftToRight;
-		primSetScript: AeHbScript latin;
-		primSetLanguage: AeHbLanguage en;
-		primSetClusterLevel: AeHbBufferClusterLevel recommended;
+		direction: AeHbDirection leftToRight;
+		script: AeHbScript latin;
+		language: AeHbLanguage en;
+		clusterLevel: AeHbBufferClusterLevel recommended;
 		addUtf8String: aString;
 		cairoGlyphArrayForFace: aeFTFace size: fontSize
 ]
@@ -59,12 +59,101 @@ AeHbBuffer class >> primCreate [
 ]
 
 { #category : #'accessing - input' }
+AeHbBuffer >> addUTF8ByteArray: text length: text_length itemOffset: item_offset itemLength: item_length [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-add-utf8"
+
+	self ffiCall: #(
+		void
+		hb_buffer_add_utf8 (
+			self,
+			char *text,
+			int text_length,
+			uint item_offset,
+			int item_length)
+	)
+]
+
+{ #category : #'accessing - input' }
 AeHbBuffer >> addUtf8String: aString [
 
 	| encoded |
 	encoded := aString utf8Encoded.
-	self primAddUtf8: encoded length: encoded size itemOffset: 0 itemLength: encoded size
+	self addUTF8ByteArray: encoded length: encoded size itemOffset: 0 itemLength: encoded size
 
+]
+
+{ #category : #'accessing - output' }
+AeHbBuffer >> clearContents [
+	"Similar to `hb_buffer_reset()`, but does not clear the Unicode functions and the replacement code point.
+
+	See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-clear-contents"
+
+	self ffiCall: #(
+		void
+		hb_buffer_clear_contents ( self )
+		)
+]
+
+{ #category : #'accessing - input' }
+AeHbBuffer >> clusterLevel: cluster_level [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-cluster-level"
+
+	self ffiCall: #(
+		void
+		hb_buffer_set_cluster_level (
+			self,
+			hb_buffer_cluster_level_t cluster_level)
+	)
+]
+
+{ #category : #'accessing - input' }
+AeHbBuffer >> direction: direction [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-direction"
+
+	self ffiCall: #(
+		void
+		hb_buffer_set_direction (
+			self,
+			hb_direction_t direction)
+	)
+]
+
+{ #category : #'accessing - input' }
+AeHbBuffer >> flags: flags [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-flags"
+
+	self ffiCall: #(
+		void
+		hb_buffer_set_flags (
+			self,
+			"hb_buffer_flags_t" uint flags)
+	)
+]
+
+{ #category : #'accessing - output' }
+AeHbBuffer >> getGlyphInfosOn: aPointer [
+	"Returns a collection of `AeHbGlyphInfo` with glyph information. Returned pointer is valid as long as buffer contents are not modified.
+
+	See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-get-glyph-infos"
+
+	^ self ffiCall: #(
+		"hb_glyph_info_t" void *
+		hb_buffer_get_glyph_infos (
+			self,
+			uint * aPointer)
+		)
+]
+
+{ #category : #'accessing - output' }
+AeHbBuffer >> getGlyphPositionsOn: aPointer [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-get-glyph-positions"
+
+	^ self ffiCall: #(
+		"hb_glyph_position_t" void *
+		hb_buffer_get_glyph_positions (
+			self,
+			uint * aPointer)
+		)
 ]
 
 { #category : #'accessing - output' }
@@ -73,7 +162,7 @@ AeHbBuffer >> glyphInfos [
 
 	| lengthPointer aHandle |
 	lengthPointer := FFIUInt32 newBuffer.
-	aHandle := self primGetGlyphInfos: lengthPointer.
+	aHandle := self getGlyphInfosOn: lengthPointer.
 	"Library has responsability to free it."
 	
 	^ FFIExternalArray
@@ -89,7 +178,7 @@ AeHbBuffer >> glyphPositions [
 
 	| lengthPointer aHandle |
 	lengthPointer := FFIUInt32 newBuffer.
-	aHandle := self primGetGlyphPositions: lengthPointer.
+	aHandle := self getGlyphPositionsOn: lengthPointer.
 	"Library has responsability to free."
 
 	^ FFIExternalArray
@@ -100,70 +189,7 @@ AeHbBuffer >> glyphPositions [
 ]
 
 { #category : #'accessing - input' }
-AeHbBuffer >> primAddUtf8: text length: text_length itemOffset: item_offset itemLength: item_length [
-	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-add-utf8"
-
-	self ffiCall: #(
-		void
-		hb_buffer_add_utf8 (
-			self,
-			char *text,
-			int text_length,
-			uint item_offset,
-			int item_length)
-	)
-]
-
-{ #category : #'accessing - output' }
-AeHbBuffer >> primClearContents [
-	"Similar to `hb_buffer_reset()`, but does not clear the Unicode functions and the replacement code point.
-
-	See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-clear-contents"
-
-	self ffiCall: #(
-		void
-		hb_buffer_clear_contents ( self )
-		)
-]
-
-{ #category : #'accessing - output' }
-AeHbBuffer >> primGetGlyphInfos: length [
-	"Returns a collection of `AeHbGlyphInfo` with glyph information. Returned pointer is valid as long as buffer contents are not modified.
-
-	See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-get-glyph-infos"
-
-	^ self ffiCall: #(
-		"hb_glyph_info_t" void *
-		hb_buffer_get_glyph_infos (
-			self,
-			uint *length)
-		)
-]
-
-{ #category : #'accessing - output' }
-AeHbBuffer >> primGetGlyphPositions: length [
-	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-get-glyph-positions"
-
-	^ self ffiCall: #(
-		"hb_glyph_position_t" void *
-		hb_buffer_get_glyph_positions (
-			self,
-			uint *length)
-		)
-]
-
-{ #category : #'accessing - output' }
-AeHbBuffer >> primGetLength [
-	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-get-length"
-
-	^ self ffiCall: #(
-		uint
-		hb_buffer_get_length ( self )
-		)
-]
-
-{ #category : #'accessing - input' }
-AeHbBuffer >> primGuessSegmentProperties [
+AeHbBuffer >> guessSegmentProperties [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-guess-segment-properties"
 
 	^ self ffiCall: #(
@@ -172,56 +198,8 @@ AeHbBuffer >> primGuessSegmentProperties [
 		)
 ]
 
-{ #category : #'accessing - output' }
-AeHbBuffer >> primReset [
-	"Resets the buffer to its initial status, as if it was just newly created with `hb_buffer_create()`.
-
-	See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-reset"
-
-	self ffiCall: #(
-		void
-		hb_buffer_reset ( self )
-		)
-]
-
 { #category : #'accessing - input' }
-AeHbBuffer >> primSetClusterLevel: cluster_level [
-	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-cluster-level"
-
-	self ffiCall: #(
-		void
-		hb_buffer_set_cluster_level (
-			self,
-			hb_buffer_cluster_level_t cluster_level)
-	)
-]
-
-{ #category : #'accessing - input' }
-AeHbBuffer >> primSetDirection: direction [
-	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-direction"
-
-	self ffiCall: #(
-		void
-		hb_buffer_set_direction (
-			self,
-			hb_direction_t direction)
-	)
-]
-
-{ #category : #'accessing - input' }
-AeHbBuffer >> primSetFlags: flags [
-	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-flags"
-
-	self ffiCall: #(
-		void
-		hb_buffer_set_flags (
-			self,
-			"hb_buffer_flags_t" uint flags)
-	)
-]
-
-{ #category : #'accessing - input' }
-AeHbBuffer >> primSetInvisibleGlyph: invisible [
+AeHbBuffer >> invisibleGlyph: invisible [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-invisible-glyph"
 
 	self ffiCall: #(
@@ -233,27 +211,27 @@ AeHbBuffer >> primSetInvisibleGlyph: invisible [
 ]
 
 { #category : #'accessing - input' }
-AeHbBuffer >> primSetLanguage: language [
-	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-language"
+AeHbBuffer >> language: aHbLanguage [
+	"Establish the received `AeHbLanguage` as language.
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-language"
 
 	self ffiCall: #(
 		void
 		hb_buffer_set_language (
 			self,
-			hb_language_t language)
+			hb_language_t aHbLanguage)
 	)
 ]
 
-{ #category : #'accessing - input' }
-AeHbBuffer >> primSetScript: script [
-	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-script"
+{ #category : #'accessing - output' }
+AeHbBuffer >> length [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-get-length"
 
-	self ffiCall: #(
-		void
-		hb_buffer_set_script (
-			self,
-			hb_script_t script)
-	)
+	^ self ffiCall: #(
+		uint
+		hb_buffer_get_length ( self )
+		)
 ]
 
 { #category : #'shaping text' }
@@ -270,6 +248,30 @@ AeHbBuffer >> primShapeWithFont: font features: features numFeatures: num_featur
 			"hb_feature_t" void *features,
 			uint num_features)
 		)
+]
+
+{ #category : #'accessing - output' }
+AeHbBuffer >> reset [
+	"Resets the buffer to its initial status, as if it was just newly created with `hb_buffer_create()`.
+
+	See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-reset"
+
+	self ffiCall: #(
+		void
+		hb_buffer_reset ( self )
+		)
+]
+
+{ #category : #'accessing - input' }
+AeHbBuffer >> script: script [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-script"
+
+	self ffiCall: #(
+		void
+		hb_buffer_set_script (
+			self,
+			hb_script_t script)
+	)
 ]
 
 { #category : #'shaping text' }

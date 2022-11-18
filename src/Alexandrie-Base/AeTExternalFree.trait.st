@@ -19,3 +19,9 @@ AeTExternalFree classSide >> finalizeResourceData: aHandle [
 	self externallyFree: aHandle.
 	aHandle beNull
 ]
+
+{ #category : #finalization }
+AeTExternalFree >> externallyFree [
+
+	self class finalizeResourceData: self getHandle
+]

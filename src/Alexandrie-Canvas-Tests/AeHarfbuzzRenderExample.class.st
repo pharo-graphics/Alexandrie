@@ -190,11 +190,11 @@ AeHarfbuzzRenderExample >> freetypeFace: aeFTFace [
 AeHarfbuzzRenderExample >> glyphArrayWithHarfbuzz [
 
 	^ AeHbBuffer new
-		primSetDirection: AeHbDirection leftToRight;
-		primSetScript: AeHbScript latin;
-		primSetLanguage: AeHbLanguage en;
-		primSetClusterLevel: AeHbBufferClusterLevel recommended;
-		primSetFlags: AeHbBufferFlags beginningOrEndingOfText;
+		direction: AeHbDirection leftToRight;
+		script: AeHbScript latin;
+		language: AeHbLanguage en;
+		clusterLevel: AeHbBufferClusterLevel recommended;
+		flags: AeHbBufferFlags beginningOrEndingOfText;
 		addUtf8String: string;
 		cairoGlyphArrayForFace: freetypeFace size: fontHeight
 ]
