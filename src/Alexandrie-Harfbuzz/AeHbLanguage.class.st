@@ -22,20 +22,14 @@ Class {
 { #category : #'instance creation' }
 AeHbLanguage class >> en [
 
-	^ self fromString: 'en'
+	^ EN
 ]
 
 { #category : #'instance creation' }
-AeHbLanguage class >> fromString: aString [
-
-	| encoded |
-	encoded := aString asByteArray.
-	^ self primLanguageFromString: encoded length: encoded size
-]
-
-{ #category : #'instance creation' }
-AeHbLanguage class >> primLanguageFromString: str length: len [
-	"See: https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-language-from-string"
+AeHbLanguage class >> fromBCP47ByteArray: str length: len [
+	"Converts str representing a BCP 47 language tag. Library-owned, don't free manually.
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-language-from-string"
 
 	^ self ffiCall: #(
 		hb_language_t
@@ -43,4 +37,18 @@ AeHbLanguage class >> primLanguageFromString: str length: len [
 			const char *str,
 			int len)
 	)
+]
+
+{ #category : #'instance creation' }
+AeHbLanguage class >> fromBCP47Tag: aString [
+
+	| encoded |
+	encoded := aString asByteArray.
+	^ self fromBCP47ByteArray: encoded length: encoded size
+]
+
+{ #category : #initialization }
+AeHbLanguage class >> initialize [
+
+	EN := self fromString: 'en'.
 ]
