@@ -10,11 +10,14 @@ Class {
 { #category : #accessing }
 AeFilesystemResources class >> repositoryDirectory [
 
-	"DEBUG CI:"
-	IceRepository registry do: [ :each | Stdio stdout << each name ] separatedBy: [ Stdio stdout lf; flush ].
+	| expectedName myRepository |
+	expectedName := 'alexandrie'.
 
-	^ (IceRepository registry detect: [ :each | 
-		   each name asLowercase = 'alexandrie' ]) location
+	myRepository := IceRepository registry
+		detect: [ :each | each name asLowercase = expectedName ]
+		ifNone: [ self error: ('Did not find any repository named ''{1}'' in Iceberg (case insensitive). Alexandrie tests require it to access resources.' format: { expectedName }) ].
+	
+	^ myRepository location
 ]
 
 { #category : #accessing }
