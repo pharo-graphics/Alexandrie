@@ -32,9 +32,9 @@ AeHbLanguage class >> fromBCP47ByteArray: str length: len [
 	See: https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-language-from-string"
 
 	^ self ffiCall: #(
-		hb_language_t
+		AeHbLanguage
 		hb_language_from_string (
-			const char *str,
+			const char * str,
 			int len)
 	)
 ]
