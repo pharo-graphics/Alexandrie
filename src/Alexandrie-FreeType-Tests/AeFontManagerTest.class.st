@@ -104,17 +104,13 @@ AeFontManagerTest >> testNewIsEmpty [
 
 { #category : #tests }
 AeFontManagerTest >> testScanDefaultDirectories [
-	"May take long"
+	"May take long as it scans several disk directories, according to the OS platform."
 
 	| aManager |
 	aManager := AeFontManager new.
 	aManager scanDefaultDirectories.
 	
 	self denyEmpty: aManager familyNames.
-	
-	Stdio stdout << '#scanDefaultDirectories found: '; lf.
-	aManager familyNames printOn: Stdio stdout delimiter: ' '.
-	Stdio stdout flush.
 
 ]
 
