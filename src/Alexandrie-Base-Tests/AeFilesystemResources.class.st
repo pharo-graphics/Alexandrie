@@ -10,6 +10,9 @@ Class {
 { #category : #accessing }
 AeFilesystemResources class >> repositoryDirectory [
 
+	"DEBUG CI:"
+	IceRepository registry do: [ :each | Stdio stdout << each name ] separatedBy: [ Stdio stdout lf; flush ].
+
 	^ (IceRepository registry detect: [ :each | 
 		   each name asLowercase = 'alexandrie' ]) location
 ]
