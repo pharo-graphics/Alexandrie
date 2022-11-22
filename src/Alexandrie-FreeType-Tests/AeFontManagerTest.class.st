@@ -112,9 +112,10 @@ AeFontManagerTest >> testScanDefaultDirectories [
 	
 	self denyEmpty: aManager familyNames.
 	
-	aManager faceEntries do: [ :each |
-		each slantWeightStretch.
-		(aManager faceAt: each) traceCr ]
+	Stdio stdout << '#scanDefaultDirectories found: '; lf.
+	aManager familyNames printOn: Stdio stdout delimiter: ' '.
+	Stdio stdout flush.
+
 ]
 
 { #category : #tests }
