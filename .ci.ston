@@ -8,7 +8,6 @@ SmalltalkCISpec {
     }
   ],
   #testing : {
-    // Exclude Harfbuzz tests until we have new VMs with updated libs
     #exclude : {
       #packages : [ 'Alexandrie-Harfbuzz-Tests' ]
     }
