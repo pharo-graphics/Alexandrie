@@ -376,6 +376,11 @@ AeCanvasTest >> renderText [
 AeCanvasTest >> renderTextWithHarfbuzz [
 
 	| aeCanvas aFTFace cairoScaledFont cairoGlyphsArray baselineY baselineX |
+	self skip. "Until PharoVM comes with an updated Harfbuzz library."
+	
+
+
+	
 	aeCanvas := AeCanvas extent: 100 @ 50.
 	aeCanvas clear: Color paleBlue.
 
