@@ -50,5 +50,5 @@ AeHbLanguage class >> fromBCP47Tag: aString [
 { #category : #initialization }
 AeHbLanguage class >> initialize [
 
-	EN := self fromString: 'en'.
+	EN := self fromBCP47Tag: 'en'.
 ]
