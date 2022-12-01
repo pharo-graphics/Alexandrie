@@ -233,7 +233,7 @@ AeCanvas >> newScaledFontForFace: aFTFace size: aSize [
 
  	| aCairoFontFace aFontMatrix |
 	aCairoFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
-	aFontMatrix := AeCairoMatrix scaleBy: aSize.
+	aFontMatrix := AeCairoMatrix newScalingByX: aSize y: aSize.
 	
 	^ aCairoFontFace 
 			newScaledFontWithFontMatrix: aFontMatrix

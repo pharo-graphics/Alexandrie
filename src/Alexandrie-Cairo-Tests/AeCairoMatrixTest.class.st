@@ -13,7 +13,7 @@ Class {
 { #category : #tests }
 AeCairoMatrixTest >> testCreation [ 
 
-	matrix := AeCairoMatrix x: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
+	matrix := AeCairoMatrix newX: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
 
 	"Translation factors"
 	self assert: matrix x   equals: 0.1.
@@ -36,9 +36,53 @@ AeCairoMatrixTest >> testIsIdentity [
 	
 	self assert: matrix isIdentity.
 	
-	matrix := AeCairoMatrix x: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
+	matrix := AeCairoMatrix newX: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
 	
 	self deny: matrix isIdentity.
+
+]
+
+{ #category : #test }
+AeCairoMatrixTest >> testNewRotationByRadians [
+
+	| radians |
+	radians := 45 degreesToRadians.
+	matrix := AeCairoMatrix newRotationByRadians: radians.
+	
+	self assert: matrix x   equals: 0.
+	self assert: matrix y   equals: 0.
+	self assert: matrix sx  equals: radians cos.
+	self assert: matrix sy  equals: radians cos.
+	self assert: matrix shx equals: radians sin negated.
+	self assert: matrix shy equals: radians sin.
+
+]
+
+{ #category : #tests }
+AeCairoMatrixTest >> testNewScalingBy [
+
+	matrix := AeCairoMatrix newScalingBy: 2@3.
+	
+	self assert: matrix x   equals: 0.0.
+	self assert: matrix y   equals: 0.0.
+	self assert: matrix sx  equals: 2.0.
+	self assert: matrix sy  equals: 3.0.
+	self assert: matrix shx equals: 0.0.
+	self assert: matrix shy equals: 0.0.
+
+]
+
+{ #category : #tests }
+AeCairoMatrixTest >> testNewTranslationBy [
+
+	matrix := AeCairoMatrix newTranslationBy: 2@3.
+	
+	self assert: matrix x   equals: 2.0.
+	self assert: matrix y   equals: 3.0.
+	self assert: matrix sx  equals: 1.0.
+	self assert: matrix sy  equals: 1.0.
+	self assert: matrix shx equals: 0.0.
+	self assert: matrix shy equals: 0.0.
 
 ]
 
@@ -59,6 +103,23 @@ AeCairoMatrixTest >> testRotateByRadians [
 
 ]
 
+{ #category : #test }
+AeCairoMatrixTest >> testRotateTwice [
+
+	| radians |
+	radians := 5 degreesToRadians.
+	matrix := AeCairoMatrix newRotationByRadians: radians.
+	matrix rotateByRadians: radians.
+
+	self assert: matrix x   equals: 0.
+	self assert: matrix y   equals: 0.
+	self assert: matrix sx 	closeTo: (2 * radians) cos.
+	self assert: matrix sy  closeTo: (2 * radians) cos.
+	self assert: matrix shx equals: (2 * radians) sin negated.
+	self assert: matrix shy equals: (2 * radians) sin.
+
+]
+
 { #category : #tests }
 AeCairoMatrixTest >> testScaleBy [
 
@@ -69,6 +130,21 @@ AeCairoMatrixTest >> testScaleBy [
 	self assert: matrix y   equals: 0.0.
 	self assert: matrix sx  equals: 2.0.
 	self assert: matrix sy  equals: 3.0.
+	self assert: matrix shx equals: 0.0.
+	self assert: matrix shy equals: 0.0.
+
+]
+
+{ #category : #test }
+AeCairoMatrixTest >> testScaleTwice [
+
+	matrix := AeCairoMatrix newScalingBy: 2@3.
+	matrix scaleBy: 10 @ 100.
+	
+	self assert: matrix x   equals: 0.0.
+	self assert: matrix y   equals: 0.0.
+	self assert: matrix sx  equals: 20.0.
+	self assert: matrix sy  equals: 300.0.
 	self assert: matrix shx equals: 0.0.
 	self assert: matrix shy equals: 0.0.
 
@@ -90,12 +166,27 @@ AeCairoMatrixTest >> testTranslateBy [
 ]
 
 { #category : #test }
+AeCairoMatrixTest >> testTranslateTwice [
+
+	matrix := AeCairoMatrix newTranslationBy: 2@3.
+	matrix translateBy: 10 @ 100.
+	
+	self assert: matrix x   equals: 12.0.
+	self assert: matrix y   equals: 103.0.
+	self assert: matrix sx  equals: 1.0.
+	self assert: matrix sy  equals: 1.0.
+	self assert: matrix shx equals: 0.0.
+	self assert: matrix shy equals: 0.0.
+
+]
+
+{ #category : #test }
 AeCairoMatrixTest >> testValue [
 	"Formulas adapted from documentation.
 	See: https://www.cairographics.org/manual/cairo-cairo-matrix-t.html"
 
 	| input expectedX expectedY |
-	matrix := AeCairoMatrix x: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
+	matrix := AeCairoMatrix newX: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
 
 	input := 2@3.
 	expectedX := (matrix sx * input x) + (matrix shx * input y) + matrix x.

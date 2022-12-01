@@ -37,26 +37,51 @@ AeCairoMatrix class >> fieldsDesc [
 AeCairoMatrix class >> newIdentity [
 
 	^ self new
-		  initializeAsIdentity;
+		  beIdentity;
 		  yourself
 ]
 
 { #category : #'instance creation' }
-AeCairoMatrix class >> scaleBy: aFactor [
-	
-	^ self x: 0
-		y: 0
-		sx: aFactor
-		sy: aFactor
-		shx: 0
-		shy: 0
+AeCairoMatrix class >> newRotationByRadians: angle [
+
+	^ self new
+		  beRotationByRadians: angle;
+		  yourself
 ]
 
 { #category : #'instance creation' }
-AeCairoMatrix class >> x: x y: y sx: sx sy: sy shx: shx shy: shy [
+AeCairoMatrix class >> newScalingBy: aPoint [
+
+	^ self newScalingByX: aPoint x y: aPoint y
+]
+
+{ #category : #'instance creation' }
+AeCairoMatrix class >> newScalingByX: sx y: sy [
 
 	^ self new
-		  initializeWithX: x
+		  beScaleByX: sx y: sy;
+		  yourself
+]
+
+{ #category : #'instance creation' }
+AeCairoMatrix class >> newTranslationBy: aPoint [
+
+	^ self newTranslationByX: aPoint x y: aPoint y
+]
+
+{ #category : #'instance creation' }
+AeCairoMatrix class >> newTranslationByX: x y: y [
+
+	^ self new
+		  beTranslationByX: x y: y;
+		  yourself
+]
+
+{ #category : #'instance creation' }
+AeCairoMatrix class >> newX: x y: y sx: sx sy: sy shx: shx shy: shy [
+
+	^ self new
+		  beX: x
 		  y: y
 		  sx: sx
 		  sy: sy
@@ -66,30 +91,83 @@ AeCairoMatrix class >> x: x y: y sx: sx sy: sy shx: shx shy: shy [
 ]
 
 { #category : #'private - ffi' }
-AeCairoMatrix >> initializeAsIdentity [
+AeCairoMatrix >> beIdentity [
+	"Mutate myself to be an identity transformation.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-matrix-t.html#cairo-matrix-init-identity"
 
 	self ffiCall: #( void cairo_matrix_init_identity ( self ) )
 ]
 
 { #category : #'private - ffi' }
-AeCairoMatrix >> initializeWithX: x y: y sx: sx sy: sy shx: shx shy: shy [
+AeCairoMatrix >> beRotationByRadians: angle [
+	"Mutate myself to be a transformation that rotates.
+
+	Receives the angle of rotation, in radians. The direction of rotation is defined such that positive angles rotate in the direction from the positive X axis toward the positive Y axis. With the default axis orientation of cairo, positive angles rotate in a clockwise direction.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-matrix-t.html#cairo-matrix-init-rotate"
+
+	self ffiCall: #(
+		void
+		cairo_matrix_init_rotate (
+			self,
+			double angle ) )
+]
+
+{ #category : #'private - ffi' }
+AeCairoMatrix >> beScaleByX: sx y: sy [
+	"Mutate myself to be a transformation that scales by sx and sy in the X and Y dimensions, respectively.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-matrix-t.html#cairo-matrix-init-scale"
+	
+	self ffiCall: #(
+		void
+		cairo_matrix_init_scale (
+			self,
+			double sx,
+			double sy ) )
+]
+
+{ #category : #'private - ffi' }
+AeCairoMatrix >> beTranslationByX: tx y: ty [
+	"Mutate myself to be a transformation that translates by tx and ty in the X and Y dimensions, respectively.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-matrix-t.html#cairo-matrix-init-translate"
+
+	self ffiCall: #(
+		void
+		cairo_matrix_init_translate (
+			self,
+			double tx,
+			double ty ) )
+]
+
+{ #category : #'private - ffi' }
+AeCairoMatrix >> beX: x0 y: y0 sx: xx sy: yy shx: xy shy: yx [
+	"Mutate myself to be the affine transformation given by xx, yx, xy, yy, x0, and y0.
+	The transformation is given by:
+
+		x_new = xx * x + xy * y + x0;
+		y_new = yx * x + yy * y + y0;
+
+	See: https://www.cairographics.org/manual/cairo-cairo-matrix-t.html#cairo-matrix-init"
 
 	self ffiCall: #(
 		void
 		cairo_matrix_init (
 			self,
-			double sx,
-			double shy,
-			double shx,
-			double sy,
-			double x,
-			double y ) )
+			double xx,
+			double yx,
+			double xy,
+			double yy,
+			double x0,
+			double y0 ) )
 ]
 
 { #category : #'private - ffi' }
 AeCairoMatrix >> invert [
 
-	self ffiCall: #( AeCairoStatus cairo_matrix_invert ( self ) )
+	^ self ffiCall: #( AeCairoStatus cairo_matrix_invert ( self ) )
 ]
 
 { #category : #testing }
