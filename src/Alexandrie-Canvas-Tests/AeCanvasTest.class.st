@@ -107,9 +107,7 @@ AeCanvasTest >> renderBackgroundAlpha: backgroundAlpha hasBorder: hasBorder outs
 			aeCanvas drawClosedCurvedPathWith: [ :cairoContext |
 				cairoContext circleRadius: referenceExtent x / 2 ].
 
-			aeCanvas
-				shouldClipAfterDrawingFigure: depth odd;
-				drawFigure.
+			aeCanvas drawFigureAndPrepareToClip: depth odd.
 				
 			depth > 0 ifTrue: [
 				drawFigureBlock value: depth-1 ] ] ].
@@ -238,9 +236,6 @@ AeCanvasTest >> renderClippedFigures [
 	aeCanvas := AeCanvas extent: 50 asPoint.
 	aeCanvas clear: Color yellow.
 
-	"Key message being tested"
-	aeCanvas shouldClipAfterDrawingFigure: true.
-
 	"Draw container figure (a rectangle)"
 	aeCanvas pathTranslate: 10 asPoint.
 	aeCanvas setBackgroundWith: [
@@ -248,7 +243,9 @@ AeCanvasTest >> renderClippedFigures [
 	aeCanvas setBorderOff.
 	aeCanvas drawClosedPathWith: [ :cairoContext |
 		cairoContext rectangleTo: 30 asPoint ].
-	aeCanvas drawFigure.
+
+	"Key message for this test"
+	aeCanvas drawFigureAndPrepareToClip.
 
 	"Draw a child circle that is clipped by the parent rectangle."
 	aeCanvas pathTranslate: 15 asPoint.

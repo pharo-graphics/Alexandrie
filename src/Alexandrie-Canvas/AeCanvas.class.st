@@ -9,7 +9,7 @@ using this order:
 1. set up background
 2. set up border and outskirts
 3. set up path
-4. send `drawFigure`
+4. send a variant of `drawFigure*`
 
 Note: Background MUST be set BEFORE border.
 
@@ -21,7 +21,7 @@ Note: Background MUST be set BEFORE border.
 # Nesting figures
 
 I'm prepared to draw a tree of figures, A node's children can be either clipped or not.
-It depends on the argument sent to `shouldClipAfterDrawingFigure:`.
+It depends on the chosen variant of `drawFigure*` method.
 
 See my test suite for some examples, and 'Bloc-Alexandrie' package.
 "
@@ -126,6 +126,21 @@ AeCanvas >> drawClosedPathWith: aUnaryBlock [
 { #category : #API }
 AeCanvas >> drawFigure [
 
+	shouldClipAfterDrawingFigure := false.
+	figureBlock value
+]
+
+{ #category : #API }
+AeCanvas >> drawFigureAndPrepareToClip [
+
+	shouldClipAfterDrawingFigure := true.
+	figureBlock value
+]
+
+{ #category : #API }
+AeCanvas >> drawFigureAndPrepareToClip: aBoolean [
+
+	shouldClipAfterDrawingFigure := aBoolean.
 	figureBlock value
 ]
 
@@ -166,7 +181,6 @@ AeCanvas >> flush [
 { #category : #initialization }
 AeCanvas >> initializeCaches [
 
-	shouldClipAfterDrawingFigure := false.
 	identityMatrix := AeCairoMatrix newIdentity.
 	textExtents := AeCairoTextExtents new.
 
@@ -857,12 +871,6 @@ AeCanvas >> setSourceTranslucentColor: aColor [
 
 	cairoContext sourceColorRGBA: aColor
 
-]
-
-{ #category : #API }
-AeCanvas >> shouldClipAfterDrawingFigure: aBoolean [
-
-	shouldClipAfterDrawingFigure := aBoolean
 ]
 
 { #category : #text }
