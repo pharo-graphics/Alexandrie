@@ -5,22 +5,29 @@ Class {
 }
 
 { #category : #hooks }
-AeCairoRenderTest >> actualFormFor: aSymbol [
-
-	^ (self perform: aSymbol) asForm
-]
-
-{ #category : #hooks }
-AeCairoRenderTest >> allFormSelectors [
+AeCairoRenderTest class >> allFormSelectors [
 
 	^ self class selectors select: [ :each | each beginsWith: 'surfaceWith' ]
 ]
 
 { #category : #convenience }
-AeCairoRenderTest >> deleteAllExports [
-	<script: 'self new deleteAllExports' >
+AeCairoRenderTest class >> deleteAllExports [
+	<script: 'self deleteAllExports' >
 
 	super deleteAllExports
+]
+
+{ #category : #convenience }
+AeCairoRenderTest class >> exportAll [
+	<script: 'self exportAll' >
+
+	super exportAll
+]
+
+{ #category : #hooks }
+AeCairoRenderTest >> actualForm [
+
+	^ (self perform: formSelector) asForm
 ]
 
 { #category : #private }
@@ -48,11 +55,10 @@ AeCairoRenderTest >> expectedFormsDirectory [
 	^ AeFilesystemResources cairoDirectory
 ]
 
-{ #category : #convenience }
-AeCairoRenderTest >> exportAll [
-	<script: 'self new exportAll' >
+{ #category : #hooks }
+AeCairoRenderTest >> formBehavior [
 
-	super exportAll
+	^ self
 ]
 
 { #category : #private }

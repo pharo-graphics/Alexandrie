@@ -8,24 +8,31 @@ Class {
 }
 
 { #category : #hooks }
-AeCanvasTest >> actualFormFor: aSymbol [
-
-	^ (self perform: aSymbol)
-		flush;
-		asForm
-]
-
-{ #category : #hooks }
-AeCanvasTest >> allFormSelectors [
+AeCanvasTest class >> allFormSelectors [
 
 	^ self class selectors select: [ :each | each isUnary and: [each beginsWith: 'render'] ]
 ]
 
 { #category : #convenience }
-AeCanvasTest >> deleteAllExports [
-	<script: 'self new deleteAllExports' >
+AeCanvasTest class >> deleteAllExports [
+	<script: 'self deleteAllExports' >
 
 	super deleteAllExports
+]
+
+{ #category : #convenience }
+AeCanvasTest class >> exportAll [
+	<script: 'self exportAll' >
+
+	super exportAll
+]
+
+{ #category : #hooks }
+AeCanvasTest >> actualForm [
+
+	^ (self perform: formSelector)
+		flush;
+		asForm
 ]
 
 { #category : #hooks }
@@ -34,11 +41,10 @@ AeCanvasTest >> expectedFormsDirectory [
 	^ AeFilesystemResources canvasDirectory
 ]
 
-{ #category : #convenience }
-AeCanvasTest >> exportAll [
-	<script: 'self new exportAll' >
+{ #category : #hooks }
+AeCanvasTest >> formBehavior [
 
-	super exportAll
+	^ self
 ]
 
 { #category : #tests }
