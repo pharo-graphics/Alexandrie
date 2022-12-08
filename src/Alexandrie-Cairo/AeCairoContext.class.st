@@ -448,6 +448,14 @@ AeCairoContext >> mask: pattern [
 			AeCairoPattern pattern ) )
 ]
 
+{ #category : #'API - painting' }
+AeCairoContext >> maskGroupWith: aBlockClosure [
+
+	self pushGroup.
+	aBlockClosure value.
+	self mask: self popGroup
+]
+
 { #category : #'API - clipping' }
 AeCairoContext >> maskSurface: aSurface x: x y: y [
 	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-mask-surface"

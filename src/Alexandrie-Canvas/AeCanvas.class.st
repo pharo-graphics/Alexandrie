@@ -203,6 +203,12 @@ AeCanvas >> initializeWith: aeCairoSurface [
 
 ]
 
+{ #category : #API }
+AeCanvas >> maskGroupWith: aBlockClosure [
+
+	cairoContext maskGroupWith: aBlockClosure
+]
+
 { #category : #text }
 AeCanvas >> metricsFor: aCairoGlyphsArray font: aCairoScaledFont [
 	"Return a AeCairoTextMetrics font metrics for the given glyphs and font"
