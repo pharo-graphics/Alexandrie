@@ -10,6 +10,8 @@ See: https://www.cairographics.org/manual/cairo-Error-handling.html#cairo-status
 Class {
 	#name : #AeCairoStatus,
 	#superclass : #AeEnumeration,
+	#traits : 'AeTCairoLibrary',
+	#classTraits : 'AeTCairoLibrary classTrait',
 	#classVars : [
 		'CAIRO_STATUS_CLIP_NOT_REPRESENTABLE',
 		'CAIRO_STATUS_DEVICE_ERROR',
@@ -342,6 +344,23 @@ AeCairoStatus class >> enumDecl [
 AeCairoStatus class >> underlinedNamePrefix [
 	
 	^ 'CAIRO_STATUS_'
+]
+
+{ #category : #printing }
+AeCairoStatus >> description [
+	"Return a string representation of this status.
+	
+	See: https://www.cairographics.org/manual/cairo-Error-handling.html#cairo-status-to-string"
+	
+	^ self ffiCall: #( String cairo_status_to_string ( self ) )
+]
+
+{ #category : #signalling }
+AeCairoStatus >> ensureIsSuccess [
+
+	self isSuccess ifFalse: [
+		AeCairoStatusError signalFor: self ]
+
 ]
 
 { #category : #testing }

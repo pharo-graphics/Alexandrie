@@ -51,3 +51,29 @@ AeCairoPattern >> filter: filter [
 			self,
 			AeCairoSamplingFilter filter ) )
 ]
+
+{ #category : #API }
+AeCairoPattern >> matrix: matrix [
+	"Sets the pattern's transformation matrix to matrix . This matrix is a transformation from user space to pattern space.
+
+	When a pattern is first created it always has the identity matrix for its transformation matrix, which means that pattern space is initially identical to user space.
+
+	Important: Please note that the direction of this transformation matrix is from user space to pattern space. This means that if you imagine the flow from a pattern to user space (and on to device space), then coordinates in that flow will be transformed by the inverse of the pattern matrix.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-set-matrix"
+
+	self ffiCall: #(
+		void
+		cairo_pattern_set_matrix (
+			self,
+			AeCairoMatrix * matrix ) )
+]
+
+{ #category : #API }
+AeCairoPattern >> status [
+	"Checks whether an error has previously occurred for this pattern.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-status"
+
+	^ self ffiCall: #( AeCairoStatus cairo_pattern_status ( self ) )
+]

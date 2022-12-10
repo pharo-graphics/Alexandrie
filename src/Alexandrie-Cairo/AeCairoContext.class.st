@@ -453,7 +453,7 @@ AeCairoContext >> maskGroupWith: aBlockClosure [
 
 	self pushGroup.
 	aBlockClosure value.
-	self mask: self popGroup
+	self mask: self popGroupAsSurfacePattern
 ]
 
 { #category : #'API - clipping' }
@@ -568,15 +568,18 @@ AeCairoContext >> paintWithAlpha: aNumber [
 ]
 
 { #category : #'API - compositing' }
-AeCairoContext >> popGroup [
+AeCairoContext >> popGroupAsSurfacePattern [
 
-	^ self unownedPopGroup
+	^ self unownedPopGroupAsSurfacePattern
 		  autoRelease;
 		  yourself
 ]
 
 { #category : #'API - compositing' }
 AeCairoContext >> popGroupToSource [
+	"Terminates the redirection begun by a call to cairo_push_group() or cairo_push_group_with_content() and installs the resulting pattern as the source pattern in the given cairo context.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-pop-group-to-source"
 
 	self ffiCall: #( void cairo_pop_group_to_source ( self ) )
 ]
@@ -899,6 +902,15 @@ AeCairoContext >> setOperatorClear [
 ]
 
 { #category : #'API - compositing' }
+AeCairoContext >> setOperatorOver [
+	"Set 'CAIRO_OPERATOR_OVER' drawing mode. This is the default.
+
+	See https://www.cairographics.org/operators/"
+	
+	^ self operator: AeCairoCompositionOp CAIRO_OPERATOR_OVER
+]
+
+{ #category : #'API - compositing' }
 AeCairoContext >> setOperatorSource [
 	"Set 'CAIRO_OPERATOR_SOURCE' drawing mode.
 
@@ -980,6 +992,7 @@ AeCairoContext >> sourceColorRGBA: aColor [
 
 { #category : #'API - source' }
 AeCairoContext >> sourceSurface: aCairoSurface x: aX y: aY [
+	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-source-surface"
 
 	self ffiCall: #(
 		void
@@ -1072,7 +1085,14 @@ AeCairoContext >> unownedCurrentPath [
 ]
 
 { #category : #'API - compositing' }
-AeCairoContext >> unownedPopGroup [
+AeCairoContext >> unownedPopGroupAsSurfacePattern [
+	"Terminates the redirection begun by a call to cairo_push_group() or cairo_push_group_with_content() and returns a new pattern containing the results of all drawing operations performed to the group.
+
+	The cairo_pop_group() function calls cairo_restore(), (balancing a call to cairo_save() by the push_group function), so that any changes to the graphics state will not be visible outside the group.
+
+	Return a newly created (surface) pattern containing the results of all drawing operations performed to the group. The caller owns the returned object and should call cairo_pattern_destroy() when finished with it.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-pop-group"
 
 	^ self ffiCall: #( AeCairoSurfacePattern cairo_pop_group ( self ) )
 ]

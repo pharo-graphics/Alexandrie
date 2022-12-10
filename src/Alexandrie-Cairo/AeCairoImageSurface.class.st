@@ -21,9 +21,9 @@ AeCairoImageSurface class >> extent: aPoint [
 AeCairoImageSurface class >> extent: anExtent format: aSurfaceFormat [
 
 	^ (self
-		   unownedNewForWidth: anExtent x
-		   height: anExtent y
-		   format: aSurfaceFormat)
+		   unownedNewWithFormat: aSurfaceFormat
+		   width: anExtent x
+		   height: anExtent y)
 		  autoRelease;
 		  yourself
 ]
@@ -34,7 +34,7 @@ AeCairoImageSurface class >> fromForm: aForm [
 	| form aSurface newBits |
 	form := aForm unhibernate; asFormOfDepth: 32.
 
-	aSurface := AeCairoImageSurface
+	aSurface := self
 		extent: aForm extent
 		format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
 	
@@ -84,6 +84,17 @@ AeCairoImageSurface class >> strideForWidth: aWidth format: aSurfaceFormat [
 
 { #category : #'private - ffi' }
 AeCairoImageSurface class >> unownedNewForData: aData width: width height: height stride: stride format: aSurfaceFormat [
+	"Creates an image surface for the provided pixel data. The output buffer must be kept around until the cairo_surface_t is destroyed or cairo_surface_finish() is called on the surface. The initial contents of data will be used as the initial image contents; you must explicitly clear the buffer, using, for example, cairo_rectangle() and cairo_fill() if you want it cleared.
+
+	The stride is the number of bytes between the start of rows in the buffer as allocated. This value should always be computed by cairo_format_stride_for_width() before allocating the data buffer.
+	
+	Note that the stride may be larger than width*bytes_per_pixel to provide proper alignment for each pixel and row. This alignment is required to allow high-performance rendering within cairo. The correct way to obtain a legal stride value is to call cairo_format_stride_for_width() with the desired format and maximum image width value, and then use the resulting stride value to allocate the data and to create the image surface.
+
+	Return a pointer to the newly created surface. The caller owns the surface and should call cairo_surface_destroy() when done with it.
+
+	This function always returns a valid pointer, but it will return a pointer to a ""nil"" surface in the case of an error such as out of memory or an invalid stride value. In case of invalid stride value the error status of the returned surface will be CAIRO_STATUS_INVALID_STRIDE. You can use cairo_surface_status() to check for this.
+
+	See: https://www.cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-create-for-data"
 
 	^ self ffiCall: #(
 		AeCairoImageSurface
@@ -96,7 +107,7 @@ AeCairoImageSurface class >> unownedNewForData: aData width: width height: heigh
 ]
 
 { #category : #'private - ffi' }
-AeCairoImageSurface class >> unownedNewForWidth: aWidth height: aHeight format: aSurfaceFormat [
+AeCairoImageSurface class >> unownedNewWithFormat: aSurfaceFormat width: aWidth height: aHeight [
 
 	^ self ffiCall: #(
 		AeCairoImageSurface
@@ -107,21 +118,69 @@ AeCairoImageSurface class >> unownedNewForWidth: aWidth height: aHeight format: 
 ]
 
 { #category : #converting }
+AeCairoImageSurface >> asAlphaChannelGrayscaleImage [
+	"Answer new image surface with my pixels converted to grayscale."
+
+	| colorSurface aContext |
+	colorSurface := self
+		newSimilarImageFormat: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32
+		width: self width 
+		height: self height.
+	colorSurface status ensureIsSuccess.
+		
+	aContext := colorSurface newContext.
+	aContext
+		sourceColorRGB: Color black;
+	 	maskSurface: self x: 0 y: 0.
+
+	^ colorSurface
+
+]
+
+{ #category : #converting }
 AeCairoImageSurface >> asForm [
-	"Answer a Form with a copy of my current pixels.
-	Only implemented for ARGB32 format, i.e.:
+	"Answer a Form representation of myself."
+
+	self format = AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32
+		ifTrue: [ ^ self asFormARGB32 ].
+	self format = AeCairoSurfaceFormat CAIRO_FORMAT_A8
+		ifTrue: [ ^ self asFormA8 ].
+	self notYetImplemented
+]
+
+{ #category : #converting }
+AeCairoImageSurface >> asFormA8 [
+	"Answer a 32-bits Form where each of my A8 pixels is converted to grayscale ARGB8.
+	Not the most efficient implementation, but should be enough for debugging purposes.
+
+	Assumes:
+		self format = AeCairoSurfaceFormat CAIRO_FORMAT_A8
+	"
+
+	^ self asAlphaChannelGrayscaleImage asForm
+
+]
+
+{ #category : #converting }
+AeCairoImageSurface >> asFormARGB32 [
+	"Answer myself converted as a 32-bits Form. Loseless conversion.
+
+	Assumes:
 		self format = AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32
 	"
-	| theData aBitmap |
-	self flush.
 
+	| theData |
+	self flush.
+	
 	theData := FFIExternalArray
 		fromHandle: self data getHandle
 		type: FFIUInt32
 		size: self height * self stride / 4.
-	aBitmap := Bitmap newFrom: theData.
 
-	^ Form extent: self extent depth: 32 bits: aBitmap
+	^ Form
+		extent: self extent
+		depth: 32
+		bits: (Bitmap newFrom: theData)
 
 ]
 
@@ -157,10 +216,12 @@ AeCairoImageSurface >> height [
 { #category : #'private - ffi' }
 AeCairoImageSurface >> newSimilarImageFormat: aFormat width: aWidth height: aHeight [
 
-	^ self
-		  unownedSimilarImageFormat: aFormat
-		  width: aWidth
-		  height: aHeight
+	^ (self
+		   unownedSimilarImageFormat: aFormat
+		   width: aWidth
+		   height: aHeight)
+		  autoRelease;
+		  yourself
 ]
 
 { #category : #'private - ffi' }

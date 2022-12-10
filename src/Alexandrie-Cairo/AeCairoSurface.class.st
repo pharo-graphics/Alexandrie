@@ -84,3 +84,9 @@ AeCairoSurface >> newContext [
 
 	^ AeCairoContext newFor: self
 ]
+
+{ #category : #'private - ffi' }
+AeCairoSurface >> status [
+
+	^ self ffiCall: #( AeCairoStatus cairo_surface_status ( self ) )
+]
