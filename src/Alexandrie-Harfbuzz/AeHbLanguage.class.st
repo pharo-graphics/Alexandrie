@@ -19,6 +19,12 @@ Class {
 	#category : #'Alexandrie-Harfbuzz-Core'
 }
 
+{ #category : #converting }
+AeHbLanguage class >> asExternalTypeOn: generator [
+
+	^ FFIExternalObjectType objectClass: self
+]
+
 { #category : #'instance creation' }
 AeHbLanguage class >> en [
 
