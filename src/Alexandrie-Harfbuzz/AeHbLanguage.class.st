@@ -19,16 +19,10 @@ Class {
 	#category : #'Alexandrie-Harfbuzz-Core'
 }
 
-{ #category : #converting }
-AeHbLanguage class >> asExternalTypeOn: generator [
-
-	^ FFIExternalObjectType objectClass: self
-]
-
 { #category : #'instance creation' }
 AeHbLanguage class >> en [
 
-	^ EN
+	^ EN ifNil: [ EN := self fromBCP47Tag: 'en' ]
 ]
 
 { #category : #'instance creation' }
@@ -51,10 +45,4 @@ AeHbLanguage class >> fromBCP47Tag: aString [
 	| encoded |
 	encoded := aString asByteArray.
 	^ self fromBCP47ByteArray: encoded length: encoded size
-]
-
-{ #category : #initialization }
-AeHbLanguage class >> initialize [
-
-	EN := self fromBCP47Tag: 'en'.
 ]
