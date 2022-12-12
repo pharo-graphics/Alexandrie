@@ -123,6 +123,17 @@ AeFontManagerTest >> testScanDirectoryWithoutDuplicates [
 
 	self denyEmpty: aManager familyNames.
 
+[	|path|
+	path := FileSystem workingDirectory path.
+	[	('{1}: 	{2}' format: {
+		path asFileReference exists.
+		path pathString }) traceCr.
+
+		path := path parent ]
+			doWhileFalse: [ path isRoot ].
+] value. "DEBUGGING CI"
+
+		
 	"This test directory has ttf and otf files"
 	self
 		assert: (AeFilesystemResources fontsDirectory / 'inria-serif' / 'inriaSerif' / 'TTF') files size
