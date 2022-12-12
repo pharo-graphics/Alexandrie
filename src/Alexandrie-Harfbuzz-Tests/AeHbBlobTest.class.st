@@ -35,6 +35,6 @@ AeHbBlobTest >> testPrimGetLength [
 	aBlob := AeHbBlob blobCreate: AeFilesystemResources inriaSerifRegularTTF.
 
 	self
-		assert: aBlob primGetLength
+		assert: aBlob length
 		equals: AeFilesystemResources inriaSerifRegularTTF size
 ]
