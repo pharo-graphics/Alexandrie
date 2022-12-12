@@ -337,7 +337,7 @@ AeCairoRenderTest >> surfaceWithFillMissedStop [
      *     \#|
      *      \|
      *
-     * What it looke like with the bug, when the rightmost edge's end
+     * What it looked like with the bug, when the rightmost edge's end
      * is missed:
      *
      * |\    |\
