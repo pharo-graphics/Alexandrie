@@ -124,7 +124,7 @@ AeFontManagerTest >> testScanDirectoryWithoutDuplicates [
 	self denyEmpty: aManager familyNames.
 
 [	|path|
-	path := FileSystem workingDirectory path.
+	path := (AeFilesystemResources fontsDirectory / 'inria-serif' / 'inriaSerif' / 'TTF') path.
 	[	('{1}: 	{2}' format: {
 		path asFileReference exists.
 		path pathString }) traceCr.
