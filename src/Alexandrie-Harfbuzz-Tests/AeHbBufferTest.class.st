@@ -18,6 +18,22 @@ AeHbBufferTest >> inriaSerifHbFont [
 ]
 
 { #category : #tests }
+AeHbBufferTest >> testClearContents [
+
+	| buffer |
+	buffer := AeHbBuffer new
+		direction: AeHbDirection leftToRight;
+		script: AeHbScript latin;
+		language: AeHbLanguage en;
+		yourself.
+
+	buffer addUtf8String: 'ab'.
+	buffer clearContents.
+	self assert: buffer length equals: 0.
+
+]
+
+{ #category : #tests }
 AeHbBufferTest >> testMultipleAdd [
 
 	| buffer |
@@ -38,23 +54,7 @@ AeHbBufferTest >> testMultipleAdd [
 ]
 
 { #category : #tests }
-AeHbBufferTest >> testPrimClearContents [
-
-	| buffer |
-	buffer := AeHbBuffer new
-		direction: AeHbDirection leftToRight;
-		script: AeHbScript latin;
-		language: AeHbLanguage en;
-		yourself.
-
-	buffer addUtf8String: 'ab'.
-	buffer clearContents.
-	self assert: buffer length equals: 0.
-
-]
-
-{ #category : #tests }
-AeHbBufferTest >> testPrimReset [
+AeHbBufferTest >> testReset [
 
 	| buffer |
 	buffer := AeHbBuffer new

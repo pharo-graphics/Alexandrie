@@ -8,6 +8,17 @@ Class {
 }
 
 { #category : #tests }
+AeHbBlobTest >> testLength [
+
+	| aBlob |
+	aBlob := AeHbBlob blobCreate: AeFilesystemResources inriaSerifRegularTTF.
+
+	self
+		assert: aBlob length
+		equals: AeFilesystemResources inriaSerifRegularTTF size
+]
+
+{ #category : #tests }
 AeHbBlobTest >> testOpenFailure [
 
 	self
@@ -26,15 +37,4 @@ AeHbBlobTest >> testOpenSuccess [
 		shouldnt: [
 			AeHbBlob blobCreate: AeFilesystemResources inriaSerifRegularTTF ]
 		raise: Error
-]
-
-{ #category : #tests }
-AeHbBlobTest >> testPrimGetLength [
-
-	| aBlob |
-	aBlob := AeHbBlob blobCreate: AeFilesystemResources inriaSerifRegularTTF.
-
-	self
-		assert: aBlob length
-		equals: AeFilesystemResources inriaSerifRegularTTF size
 ]
