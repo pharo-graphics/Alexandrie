@@ -22,6 +22,39 @@ AeCairoSurface class >> externallyFree: aHandle [
 	self ffiCall: #( void cairo_surface_destroy ( void * aHandle ) )
 ]
 
+{ #category : #'instance creation' }
+AeCairoSurface class >> newSimilarTo: aSurface contentType: aContent width: aWidth height: aHeight [
+
+	^ (self
+		   unownedNewSimilarTo: aSurface
+		   contentType: aContent
+		   width: aWidth
+		   height: aHeight)
+		  autoRelease;
+		  yourself
+]
+
+{ #category : #'instance creation' }
+AeCairoSurface class >> unownedNewSimilarTo: aSurface contentType: aContentType width: aWidth height: aHeight [
+	"Create a new surface that is as compatible as possible with an existing surface. For example the new surface will have the same device scale, fallback resolution and font options as other . Generally, the new surface will also use the same backend as other , unless that is not possible for some reason. The type of the returned surface may be examined with cairo_surface_get_type().
+
+	Initially the surface contents are all 0 (transparent if contents have transparency, black otherwise).
+	
+	Return a pointer to the newly allocated surface. The caller owns the surface and should call cairo_surface_destroy() when done with it.
+
+	This function always returns a valid pointer, but it will return a pointer to a ""nil"" surface if other is already in an error state or any other error occurs.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-create-similar"
+
+	^ self ffiCall: #(
+		AeCairoSurface
+		cairo_surface_create_similar (
+			AeCairoSurface * aSurface
+			AeCairoContent	aContentType,
+			int aWidth,
+			int aHeight ) )
+]
+
 { #category : #'private - ffi' }
 AeCairoSurface >> deviceScale [
 
