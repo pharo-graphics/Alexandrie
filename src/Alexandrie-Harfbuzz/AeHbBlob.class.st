@@ -16,22 +16,6 @@ Class {
 	#category : #'Alexandrie-Harfbuzz-Core'
 }
 
-{ #category : #'instance creation' }
-AeHbBlob class >> blobCreate: aFileReference [
-
-	| pathString blob |
-	pathString := aFileReference pathString "utf8Encoded".
-
-	blob := self primBlobCreateOrFail: pathString.
-
-	blob getHandle isNull ifTrue: [
-		self error: 'Failed to open file: ', aFileReference pathString ].
-	
-	^ blob
-		  autoRelease;
-		  yourself
-]
-
 { #category : #finalization }
 AeHbBlob class >> externallyFree: aHandle [
 	"Decreases the reference count on blob, and if it reaches zero, destroys blob, freeing all memory, possibly calling the destroy-callback the blob was created for if it has not been called already.
@@ -42,7 +26,35 @@ AeHbBlob class >> externallyFree: aHandle [
 ]
 
 { #category : #'instance creation' }
-AeHbBlob class >> primBlobCreate: file_name [
+AeHbBlob class >> newEmpty [
+	"Answer a new Pharo object whose handle is the singleton empty blob.
+
+	See: https://harfbuzz.github.io/harfbuzz-hb-blob.html#hb-blob-get-empty"
+
+	^ self ffiCall: #(
+		hb_blob_t *
+		hb_blob_get_empty (void)
+	)
+]
+
+{ #category : #'instance creation' }
+AeHbBlob class >> newLocatedAt: aFileReference [
+
+	| pathString blob |
+	pathString := aFileReference pathString "utf8Encoded".
+
+	blob := self unboundedNewLocatedAtOrFail: pathString.
+
+	blob getHandle isNull ifTrue: [
+		self error: 'Failed to open file: ', aFileReference pathString ].
+	
+	^ blob
+		  autoRelease;
+		  yourself
+]
+
+{ #category : #'instance creation' }
+AeHbBlob class >> unboundedNewLocatedAt: aPathString [
 	"Creates a new blob containing the data from the specified binary font file.
 	Returns: An hb_blob_t pointer with the content of the file, or hb_blob_get_empty() if failed.
 
@@ -50,12 +62,12 @@ AeHbBlob class >> primBlobCreate: file_name [
 
 	^ self ffiCall: #(
 		hb_blob_t *
-		hb_blob_create_from_file (const char *file_name)
+		hb_blob_create_from_file (const char *aPathString)
 	)
 ]
 
 { #category : #'instance creation' }
-AeHbBlob class >> primBlobCreateOrFail: file_name [
+AeHbBlob class >> unboundedNewLocatedAtOrFail: file_name [
 	"Creates a new blob containing the data from the specified binary font file.
 	Returns: An hb_blob_t pointer with the content of the file, or NULL if failed.
 
@@ -64,18 +76,6 @@ AeHbBlob class >> primBlobCreateOrFail: file_name [
 	^ self ffiCall: #(
 		hb_blob_t *
 		hb_blob_create_from_file_or_fail (const char *file_name)
-	)
-]
-
-{ #category : #'instance creation' }
-AeHbBlob class >> primBlobGetEmpty [
-	"Returns the singleton empty blob.
-
-	See: https://harfbuzz.github.io/harfbuzz-hb-blob.html#hb-blob-get-empty"
-
-	^ self ffiCall: #(
-		hb_blob_t *
-		hb_blob_get_empty (void)
 	)
 ]
 

@@ -11,7 +11,7 @@ Class {
 AeHbBlobTest >> testLength [
 
 	| aBlob |
-	aBlob := AeHbBlob blobCreate: AeFilesystemResources inriaSerifRegularTTF.
+	aBlob := AeHbBlob newLocatedAt: AeFilesystemResources inriaSerifRegularTTF.
 
 	self
 		assert: aBlob length
@@ -19,11 +19,21 @@ AeHbBlobTest >> testLength [
 ]
 
 { #category : #tests }
+AeHbBlobTest >> testNewEmpty [
+
+	| aBlob |
+	aBlob := AeHbBlob newEmpty.
+
+	self assert: aBlob length equals: 0.
+	self assert: AeHbBlob newEmpty getHandle equals: aBlob getHandle
+]
+
+{ #category : #tests }
 AeHbBlobTest >> testOpenFailure [
 
 	self
 		should: [
-			AeHbBlob blobCreate: AeFilesystemResources inriaSerifRegularTTF / '.doesNotExist' ]
+			AeHbBlob newLocatedAt: AeFilesystemResources inriaSerifRegularTTF / '.doesNotExist' ]
 		raise: Error
 		whoseDescriptionIncludes: 'Failed to open'
 		description: 'Should have problems to open this file.'.
@@ -35,6 +45,6 @@ AeHbBlobTest >> testOpenSuccess [
 
 	self
 		shouldnt: [
-			AeHbBlob blobCreate: AeFilesystemResources inriaSerifRegularTTF ]
+			AeHbBlob newLocatedAt: AeFilesystemResources inriaSerifRegularTTF ]
 		raise: Error
 ]

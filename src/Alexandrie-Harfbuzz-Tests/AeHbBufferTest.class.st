@@ -11,7 +11,7 @@ Class {
 AeHbBufferTest >> inriaSerifHbFont [
 
 	| blob face |
-	blob := AeHbBlob blobCreate: AeFilesystemResources inriaSerifRegularTTF.
+	blob := AeHbBlob newLocatedAt: AeFilesystemResources inriaSerifRegularTTF.
 	face := AeHbFace newForBlob: blob index: 0. 
 	^ AeHbFont newForHbFace: face
 
