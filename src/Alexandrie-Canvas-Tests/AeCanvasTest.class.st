@@ -28,14 +28,6 @@ AeCanvasTest class >> exportAll [
 ]
 
 { #category : #hooks }
-AeCanvasTest >> actualForm [
-
-	^ (self perform: formSelector)
-		flush;
-		asForm
-]
-
-{ #category : #hooks }
 AeCanvasTest >> expectedFormsDirectory [
 
 	^ AeFilesystemResources canvasDirectory

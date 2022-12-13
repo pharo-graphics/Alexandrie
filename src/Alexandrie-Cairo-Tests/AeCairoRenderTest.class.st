@@ -24,12 +24,6 @@ AeCairoRenderTest class >> exportAll [
 	super exportAll
 ]
 
-{ #category : #hooks }
-AeCairoRenderTest >> actualForm [
-
-	^ (self perform: formSelector) asForm
-]
-
 { #category : #private }
 AeCairoRenderTest >> drawTestPaintCheckeredOn: aContext [
 	"Based on the cairo_test_paint_checkered function, defined in cairo-test.c"

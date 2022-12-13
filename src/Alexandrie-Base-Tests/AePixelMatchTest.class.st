@@ -58,12 +58,14 @@ AePixelMatchTest class >> isAbstract [
 
 { #category : #hooks }
 AePixelMatchTest >> actualForm [
+	"Build and answer a Form that corresponds to current formSelector parameter."
 
-	^ self subclassResponsibility
+	^ (self formBehavior perform: formSelector) asForm
 ]
 
 { #category : #private }
 AePixelMatchTest >> expectedForm [
+	"Answer the expected Form, reading it from a file."
 
 	| aFileReference |
 	aFileReference := self fileReferenceToExpectedPNG.
@@ -99,8 +101,16 @@ AePixelMatchTest >> fileReferenceToExpectedPNG [
 
 { #category : #hooks }
 AePixelMatchTest >> formBehavior [
+	"Answer the class or trait that defines the `formSelector`."
 
 	^ self subclassResponsibility
+]
+
+{ #category : #debugging }
+AePixelMatchTest >> formMethod [
+	"Answer the `CompiledMethod` corresponding to `formSelector`."
+
+	^ self formBehavior class >> formSelector
 ]
 
 { #category : #accessing }
@@ -144,18 +154,17 @@ AePixelMatchTest >> printOn: aStream [
 ]
 
 { #category : #tests }
-AePixelMatchTest >> testFormSelectorMatches [
+AePixelMatchTest >> testFormSelector [
 
-	| result |
-	result := self newPixelComparison.
-	self assert: result isMatch description: 'Pixel mismatch in ', formSelector.
+	| aPixelComparison |
+	aPixelComparison := self newPixelComparison.
+	self assert: aPixelComparison isMatch description: 'Pixel mismatch: #', formSelector.
 	
-"	TO DEBUG:
+"DEBUG PIXEL MISMATCH WITH:
 
-		result inspect.
+		aPixelComparison inspect.
 
-		(self formBehavior >> formSelector) browse.
-
+		self formMethod browse.
 "
 
 ]
