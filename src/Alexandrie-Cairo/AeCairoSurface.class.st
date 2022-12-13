@@ -5,16 +5,11 @@ See: https://www.cairographics.org/manual/cairo-cairo-surface-t.html
 "
 Class {
 	#name : #AeCairoSurface,
-	#superclass : #FFIExternalReference,
+	#superclass : #FFIExternalObject,
 	#traits : 'AeTCairoLibrary + AeTExternalFree',
 	#classTraits : 'AeTCairoLibrary classTrait + AeTExternalFree classTrait',
 	#category : #'Alexandrie-Cairo-Surfaces'
 }
-
-{ #category : #converting }
-AeCairoSurface class >> asExternalTypeOn: generator [
-	^ FFIExternalObjectType objectClass: self
-]
 
 { #category : #finalization }
 AeCairoSurface class >> externallyFree: aHandle [

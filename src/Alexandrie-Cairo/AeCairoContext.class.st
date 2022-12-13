@@ -7,7 +7,7 @@ See: https://www.cairographics.org/manual/cairo-cairo-t.html
 "
 Class {
 	#name : #AeCairoContext,
-	#superclass : #FFIExternalReference,
+	#superclass : #FFIExternalObject,
 	#traits : 'AeTCairoLibrary + AeTExternalFree',
 	#classTraits : 'AeTCairoLibrary classTrait + AeTExternalFree classTrait',
 	#instVars : [
@@ -15,12 +15,6 @@ Class {
 	],
 	#category : #'Alexandrie-Cairo-Core'
 }
-
-{ #category : #converting }
-AeCairoContext class >> asExternalTypeOn: generator [
-
-	^ FFIExternalObjectType objectClass: self
-]
 
 { #category : #finalization }
 AeCairoContext class >> externallyFree: aHandle [
