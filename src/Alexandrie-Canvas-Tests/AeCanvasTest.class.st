@@ -328,9 +328,11 @@ AeCanvasTest >> renderOpenFigure [
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 50 asPoint.
 
+	"Background and other outskirts than centered are an option but
+	they do not look well on open figures."
 	aeCanvas setBackgroundOff.
-
 	aeCanvas setOutskirtsCentered.
+
 	aeCanvas setBorderBlock: [
 		aeCanvas setSourceColor: Color red.
 		aeCanvas setDashes: #(4 6) offset: 2.
