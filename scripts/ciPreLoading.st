@@ -7,7 +7,6 @@ repoPath := Smalltalk os environment
 		Stdio stdout nextPutAll: 'NOT DEFINED, WRONG'; lf.
 		^ self ].
 Stdio stdout print: repoPath; lf.
-LibC runCommand: 'ls -lah ', repoPath.
 
 (IceRepositoryCreator new
   location: repoPath asFileReference;
