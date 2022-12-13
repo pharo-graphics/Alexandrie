@@ -106,12 +106,13 @@ AeFontManagerTest >> testNewIsEmpty [
 AeFontManagerTest >> testScanDefaultDirectories [
 	"May take long as it scans several disk directories, according to the OS platform."
 
-	| aManager |
+	| aManager timeToScan |
 	aManager := AeFontManager new.
-	aManager scanDefaultDirectories.
+	timeToScan := [aManager scanDefaultDirectories] timeToRun.
 	
 	self denyEmpty: aManager familyNames.
-
+	'Time to scan system fonts: ' trace. timeToScan traceCr.
+	'Number of system fonts: ' trace. aManager familyNames size traceCr.
 ]
 
 { #category : #tests }

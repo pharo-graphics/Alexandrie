@@ -3,7 +3,7 @@ I'm a filesystem scanner to detect FreeType font faces.
 
 This includes knowing the default locations for each OS platform.
 
-Extracted from the FileSystem bindings present in Pharo 11 in 2022.
+Extracted from the Freetype bindings present in Pharo 11 in 2022 (FreeTypeFontProvider).
 "
 Class {
 	#name : #AeFontScanner,
@@ -16,17 +16,18 @@ Class {
 	#category : #'Alexandrie-FreeType-Manager'
 }
 
-{ #category : #directories }
+{ #category : #scanning }
 AeFontScanner >> addDefaultDirectories [
 
-	includedDirectories addAll: self platformSpecificDirectories;
-		add: self imageRelativeFontsDirectory;
-	 	add: self vmRelativeFontsDirectory.
+	includedDirectories
+		addAll: self platformSpecificDirectories;
+		add: self imageRelativeDirectory;
+	 	add: self vmRelativeDirectory.
 		
 
 ]
 
-{ #category : #directories }
+{ #category : #scanning }
 AeFontScanner >> addDirectory: aFileReference [
 
 	includedDirectories add: aFileReference
@@ -35,57 +36,37 @@ AeFontScanner >> addDirectory: aFileReference [
 { #category : #directories }
 AeFontScanner >> allDirectories [
 
-	^{ self imageRelativeFontsDirectory.
-	 	self vmRelativeFontsDirectory },
+	^{ self imageRelativeDirectory.
+	 	self vmRelativeDirectory },
 		self platformSpecificDirectories
 ]
 
 { #category : #directories }
-AeFontScanner >> getWindowsFontFolderPath [
-	"Answer the windows font folder path.
-	This is obtained through the Windows API if FFI is present,
-	otherwise it is a guess !"
+AeFontScanner >> guessedWindowsDirectories [
+	"Answer a collection with either an existing font folder, or empty if couldn't guess any.
+	Based on FreeTypeFontProvider>>#guessWindowsFontFolderPath"
 
-	| fun buff |
-	fun := TFExternalFunction
-		       name: 'SHGetFolderPathA'
-		       moduleName: 'shfolder.dll'
-		       parameterTypes: { 
-				       TFBasicType slong.
-				       TFBasicType slong.
-				       TFBasicType slong.
-				       TFBasicType slong.
-				       TFBasicType pointer }
-		       returnType: TFBasicType slong.
+	| possibilities |
+	possibilities := SortedCollection sortUsing: [ :a :b | 
+		                 a entry creationTime >= b entry creationTime ].
 
-	buff := ByteArray new: 1024.
-	
-	[ TFSameThreadRunner uniqueInstance invokeFunction: fun withArguments: { 0. 16r0014. 0. 0. buff } ]
-		on: Error
-		do: [ :e | ^ nil ].
-	
-	^ (buff copyFrom: 1 to: (buff indexOf: 0) - 1) asString
+	'cdefghijklmnopqrstuvwxyz' do: [ :drive | 
+		#( 'windows\fonts' ) do: [ :path | 
+			| d |
+			d := (FileLocator driveNamed: drive asSymbol) resolve: path.
+			d exists ifTrue: [ possibilities add: d ] ] ].
+
+	"Why not just all?"
+	^ possibilities ifNotEmpty: [ ^ { possibilities first } ]
 ]
 
 { #category : #directories }
-AeFontScanner >> getWindowsLocalPaths [
-	"This values should be read from the repository in the key 
-	HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\Fonts
-	However, things happened and we don't have support of the registry in the base image.
-	So this is the best alternative... or not...??  "
-
-	^ {
-		FileLocator home / 'AppData' / 'Local' / 'Microsoft' / 'Windows' / 'Fonts'.
-		FileLocator home / 'AppData' / 'Roaming' / 'Microsoft' / 'Windows' / 'Fonts' }
-]
-
-{ #category : #directories }
-AeFontScanner >> imageRelativeFontsDirectory [
+AeFontScanner >> imageRelativeDirectory [
 
 	^ FileLocator imageDirectory / 'Fonts'
 ]
 
-{ #category : #directories }
+{ #category : #initialization }
 AeFontScanner >> initialize [
 
 	super initialize.
@@ -94,7 +75,7 @@ AeFontScanner >> initialize [
 ]
 
 { #category : #directories }
-AeFontScanner >> macOSXFolderDirectories [
+AeFontScanner >> macosDirectories [
 	"Answer the Mac OS X font folder paths.
 	This needs some FFI code, but for the time being, we guess these and omit the user fonts folder"
 	
@@ -115,9 +96,9 @@ AeFontScanner >> manager: anAeFontManager [
 { #category : #directories }
 AeFontScanner >> platformSpecificDirectories [
 
-	Smalltalk os isWindows ifTrue: [ ^ self winFontDirectories ].
+	Smalltalk os isWindows ifTrue: [ ^ self windowsDirectories ].
 	Smalltalk os isUnix ifTrue: [ ^ self unixFontDirectories ].
-	Smalltalk os isMacOSX ifTrue: [ ^ self macOSXFolderDirectories ].
+	Smalltalk os isMacOSX ifTrue: [ ^ self macosDirectories ].
 	^ #()
 ]
 
@@ -129,14 +110,14 @@ AeFontScanner >> scan [
 		self scanRecursively: each asFileReference ]
 ]
 
-{ #category : #directories }
+{ #category : #'scanning - private' }
 AeFontScanner >> scanFile: aFileReference [ 
 	
 	manager registerFacesOnFile: aFileReference
 
 ]
 
-{ #category : #directories }
+{ #category : #'scanning - private' }
 AeFontScanner >> scanRecursively: aDirectory [
 
 	aDirectory exists ifFalse: [ ^ self ].
@@ -154,7 +135,7 @@ AeFontScanner >> scanRecursively: aDirectory [
 
 ]
 
-{ #category : #directories }
+{ #category : #'scanning - private' }
 AeFontScanner >> shouldIgnoreFile: aFile [
 
 	^ ((aFile basename beginsWith: '.' ) or: [
@@ -170,15 +151,22 @@ AeFontScanner >> unixFontDirectories [
 ]
 
 { #category : #directories }
-AeFontScanner >> vmRelativeFontsDirectory [
+AeFontScanner >> vmRelativeDirectory [
 
 	^ FileLocator vmDirectory / 'Fonts'
 ]
 
 { #category : #directories }
-AeFontScanner >> winFontDirectories [
+AeFontScanner >> windowsAppDataDirectories [
 
-	^ {self getWindowsFontFolderPath.
-		self getWindowsLocalPaths }
+	^ {
+		FileLocator home / 'AppData' / 'Local' / 'Microsoft' / 'Windows' / 'Fonts'.
+		FileLocator home / 'AppData' / 'Roaming' / 'Microsoft' / 'Windows' / 'Fonts' }
+]
+
+{ #category : #directories }
+AeFontScanner >> windowsDirectories [
+
+	^ self guessedWindowsDirectories, self windowsAppDataDirectories
 
 ]

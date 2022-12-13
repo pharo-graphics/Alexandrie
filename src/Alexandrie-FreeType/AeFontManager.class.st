@@ -261,6 +261,7 @@ AeFontManager >> reset [
 
 { #category : #scanning }
 AeFontManager >> scanDefaultDirectories [
+	"Scan system default directories for fonts. This includes guessing platform-specific locations."
 
 	AeFontScanner new
 		addDefaultDirectories;
