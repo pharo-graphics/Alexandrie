@@ -315,6 +315,85 @@ AeCanvasTest >> renderForm [
 ]
 
 { #category : #tests }
+AeCanvasTest >> renderLigatureTextWithHarfbuzz [
+	"Test Harfbuzz converting a 'ff' pair of letters into a single glyph."
+
+	| aString fontSize aeCanvas aFTFace cairoScaledFont cairoGlyphsArray baselineY baselineX |
+	aString := 'Office'.
+	fontSize := 20.
+	aeCanvas := AeCanvas extent: 50 @ 25.
+	aeCanvas clear: Color paleBlue.
+
+	"We do know this typeface defines a glyph for ff"
+	aFTFace := AeFontManager globalInstance
+		detectFamilyName: AeSourceSansPro_Regular familyName
+		slant: AeFontSlant normal
+		weight: AeFontWeight normal
+		stretch: AeFontStretch normal
+		ifNone: [ self fail ].
+
+	"This is the key message send of this test"
+	cairoGlyphsArray := AeHbBuffer
+		defaultCairoGlyphArrayFor: aString
+		face: aFTFace
+		size: fontSize.
+
+	"The output of Harfbuzz has a single glyph for the 'ff' pair"
+	self assert: cairoGlyphsArray size equals: aString size - 1.
+
+	"Draw the word"
+	cairoScaledFont := aeCanvas scaledFontForFace: aFTFace size: fontSize.
+	baselineY := cairoScaledFont extents ascent.
+	aeCanvas
+		textExtentsFor: cairoGlyphsArray
+		scaledFont: cairoScaledFont
+		do: [ :aTextExtents | baselineX := aTextExtents bearingX ].
+	aeCanvas pathTranslate: baselineX @ baselineY.
+	aeCanvas setSourceColor: Color orange.
+	aeCanvas drawText: cairoGlyphsArray font: cairoScaledFont.
+
+	^ aeCanvas
+]
+
+{ #category : #tests }
+AeCanvasTest >> renderLigatureTextWithoutHarfbuzz [
+	"Even if this font defines a ligature glyph for the 'ff' pair of letters, Cairo doesn't take it into account."
+
+	| aString fontSize aeCanvas aFTFace cairoScaledFont cairoGlyphsArray baselineY baselineX |
+	aString := 'Office'.
+	fontSize := 20.
+	aeCanvas := AeCanvas extent: 50 @ 25.
+	aeCanvas clear: Color paleBlue.
+
+	"We do know this typeface defines a glyph for ff"
+	aFTFace := AeFontManager globalInstance
+		detectFamilyName: AeSourceSansPro_Regular familyName
+		slant: AeFontSlant normal
+		weight: AeFontWeight normal
+		stretch: AeFontStretch normal
+		ifNone: [ self fail ].
+	cairoScaledFont := aeCanvas scaledFontForFace: aFTFace size: fontSize.
+
+	"We know that cairo ignores the ff ligature (that'd be provided by Harfbuzz)"
+	cairoGlyphsArray := cairoScaledFont glyphArrayForString: aString.
+
+	"Each character is converted to a glyph"
+	self assert: cairoGlyphsArray size equals: aString size.
+
+	"Draw the word"
+	baselineY := cairoScaledFont extents ascent.
+	aeCanvas
+		textExtentsFor: cairoGlyphsArray
+		scaledFont: cairoScaledFont
+		do: [ :aTextExtents | baselineX := aTextExtents bearingX ].
+	aeCanvas pathTranslate: baselineX @ baselineY.
+	aeCanvas setSourceColor: Color orange.
+	aeCanvas drawText: cairoGlyphsArray font: cairoScaledFont.
+
+	^ aeCanvas
+]
+
+{ #category : #tests }
 AeCanvasTest >> renderOpenFigure [
 
 	| aeCanvas |
@@ -338,65 +417,6 @@ AeCanvasTest >> renderOpenFigure [
 			lineTo: 30@40 ].
 
 	aeCanvas drawFigure.
-
-	^ aeCanvas
-]
-
-{ #category : #tests }
-AeCanvasTest >> renderText [
-
-	| aeCanvas aFTFace cairoScaledFont cairoGlyphsArray baselineY baselineX |
-	aeCanvas := AeCanvas extent: 100 @ 50.
-	aeCanvas clear: Color paleBlue.
-
-	aFTFace := AeFontManager globalInstance defaultFace.
-	cairoScaledFont := aeCanvas scaledFontForFace: aFTFace size: 40.
-
-	baselineY := cairoScaledFont extents ascent.
-
-	cairoGlyphsArray := cairoScaledFont glyphArrayForString: 'Office'.
-
-	aeCanvas
-		textExtentsFor: cairoGlyphsArray
-		scaledFont: cairoScaledFont
-		do: [ :aTextExtents | baselineX := aTextExtents bearingX ].
-
-	aeCanvas restoreContextAfter: [ 
-		aeCanvas pathTranslate: baselineX @ baselineY.
-		aeCanvas setSourceColor: Color orange.
-		aeCanvas drawText: cairoGlyphsArray font: cairoScaledFont ].
-
-	^ aeCanvas
-]
-
-{ #category : #tests }
-AeCanvasTest >> renderTextWithHarfbuzz [
-
-	| aeCanvas aFTFace cairoScaledFont cairoGlyphsArray baselineY baselineX |
-	self skip. "Until PharoVM comes with an updated Harfbuzz library."
-	
-
-
-	
-	aeCanvas := AeCanvas extent: 100 @ 50.
-	aeCanvas clear: Color paleBlue.
-
-	aFTFace := AeFontManager globalInstance defaultFace.
-	cairoScaledFont := aeCanvas scaledFontForFace: aFTFace size: 40.
-
-	baselineY := cairoScaledFont extents ascent.
-
-	cairoGlyphsArray := AeHbBuffer defaultCairoGlyphArrayFor: 'Office' face: aFTFace size: 40.
-
-	aeCanvas
-		textExtentsFor: cairoGlyphsArray
-		scaledFont: cairoScaledFont
-		do: [ :aTextExtents | baselineX := aTextExtents bearingX ].
-
-	aeCanvas restoreContextAfter: [ 
-		aeCanvas pathTranslate: baselineX @ baselineY.
-		aeCanvas setSourceColor: Color orange.
-		aeCanvas drawText: cairoGlyphsArray font: cairoScaledFont ].
 
 	^ aeCanvas
 ]
