@@ -143,7 +143,7 @@ AeHarfbuzzRenderExample class >> example6Emoji [
 	aWideString := (WideString streamContents: [ :stream |
  	#( 16r1F468 16r1F469 16r1F467 16r1F466 )
 		do: [ :each | stream nextPut: (Unicode value: each) ]
-		separatedBy: [ stream nextPut: Unicode zeroWidthSeparator ]]). 
+		separatedBy: [ stream nextPut: Unicode zeroWidthJoiner ]]). 
 
 	(self
 		freetypeFace: aFace
