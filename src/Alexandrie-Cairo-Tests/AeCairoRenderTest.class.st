@@ -7,7 +7,7 @@ Class {
 { #category : #hooks }
 AeCairoRenderTest class >> allFormSelectors [
 
-	^ self class selectors select: [ :each | each beginsWith: 'surfaceWith' ]
+	^ self selectors select: [ :each | each beginsWith: 'surfaceWith' ]
 ]
 
 { #category : #convenience }

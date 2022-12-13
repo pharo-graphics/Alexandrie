@@ -10,7 +10,7 @@ Class {
 { #category : #hooks }
 AeCanvasTest class >> allFormSelectors [
 
-	^ self class selectors select: [ :each | each isUnary and: [each beginsWith: 'render'] ]
+	^ self selectors select: [ :each | each isUnary and: [each beginsWith: 'render'] ]
 ]
 
 { #category : #convenience }
