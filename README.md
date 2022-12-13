@@ -29,7 +29,7 @@ This project includes FFI bindings to Cairo and FreeType that do not depend on t
   - Bindings to this library didn't exist before in Pharo (not that we know!).
 
 
-**Note for Pharo FFI newcomers:**
+**Note for newcomers to Pharo FFI:**
 
 Using this bindings, a developer should be able to follow a C tutorial and easily translate the code to Pharo.
 Tip: To find how a C API function is bound in Pharo, you can copy the function name in the official documentation or the tutorial, paste it on any Pharo text editor, right click and select "Method source with it" in the context menu. If there is a method with that name, then start browsing the class, senders, etc. to learn how to use it. If no method contains it, then you can add it by yourself "by example": find a similar bidning to another FFI call and it is often simple.
@@ -42,7 +42,7 @@ The project counts with Test packages that pixel-compare the actual output of th
 
 ## Install
 
-Load in a Pharo 11 (should work on previous versions of Pharo, too):
+Load in a Pharo 11:
 
 ```smalltalk
 Metacello new
@@ -53,39 +53,17 @@ Metacello new
 
 ## Dependencies
 
-Either to use Harfbuzz, or to use color bitmap fonts such as [Noto Color Emoji](https://github.com/googlefonts/noto-emoji)), something like FreeType >= 2.5 is required. In particular, these versions were tested and do work:
-- Cairo 1.16.0
-- FreeType 2.12.1
-- Harfbuzz 5.3.1
+The dynamic libraries provided by the Pharo VM satisfy the project needs in all major platforms (Mac, Linux and Windows). This is true after [this release of Pharo VM](https://github.com/pharo-project/pharo-vm/releases/tag/v9.0.21). These are the versions:
+- Cairo: 1.17.4
+- FreeType: 2.12.1
+- Harfbuzz: 5.3.1
 
-Find the library versions by printing:
+You can find the library versions by printing each of the following sentences:
 ```
 AeCairoLibrary uniqueInstance versionString.
 AeFTLibrary newInitialized versionString.
 AeHarfbuzzLibrary uniqueInstance versionString.
 ```
-
-The Pharo 11 VM for **Mac** and **Windows** (as of August/2022) comes with Cairo 1.15.4 and FreeType 2.9.1 which don't support rendering this kind of fonts. And NO harfbuzz.
-The VM for **Linux** doesn't bring any of them, so Pharo looks at the shared libraries. In the case of Ubuntu 22.04, the cairo and freetype lib versions were recent enough, but not harfbuzz.
-
-### MacOS
-
-On **Mac**, those libraries could be installed together as dependencies of harfbuzz. It could be done with brew or macports. For example with:
-```
-brew install harfbuzz
-```
-Then, in a terminal:
-```
-cd pharo-vm/Pharo.app/Contents/MacOS/Plugins/
-rm libcairo.* libfreetype.* libpixman-1.* libpng12.*
-cd ../../../../../
-```
-Alexandrie bindings will find the installed libraries.
-
-### Windows
-
-On **Windows**, delete libraries that come with the VM and unzip [these ones](https://github.com/harfbuzz/harfbuzz/releases/download/5.3.1/harfbuzz-win64-5.3.1.zip) from the official harfbuzz repository.
-
 
 ## License
 
