@@ -158,7 +158,9 @@ AePixelMatchTest >> testFormSelector [
 
 	| aPixelComparison |
 	aPixelComparison := self newPixelComparison.
-	self assert: aPixelComparison isMatch description: 'Pixel mismatch: #', formSelector.
+	self
+		assert: aPixelComparison isMatch
+		description: 'Pixel mismatch: #', formSelector.
 	
 "DEBUG PIXEL MISMATCH WITH:
 
