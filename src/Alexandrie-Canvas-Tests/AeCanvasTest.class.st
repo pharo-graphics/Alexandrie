@@ -27,6 +27,16 @@ AeCanvasTest class >> exportAll [
 	super exportAll
 ]
 
+{ #category : #private }
+AeCanvasTest >> emojiZWJString [ 
+
+	^ (WideString streamContents: [ :stream |
+	 	#(16r1F468 16r1F469 16r1F467 16r1F466)
+			do: [ :each | stream nextPut: (Unicode value: each) ]
+			separatedBy: [ stream nextPut: Unicode zeroWidthJoiner ]])
+
+]
+
 { #category : #hooks }
 AeCanvasTest >> expectedFormsDirectory [
 
@@ -300,6 +310,29 @@ AeCanvasTest >> renderCurvedFigure [
 	aeCanvas drawFigure.
 
 
+	^ aeCanvas
+]
+
+{ #category : #tests }
+AeCanvasTest >> renderEmoji [
+
+	| emojiFTFace fontHeight aeCanvas cairoScaledFont cairoGlyphsArray |
+	emojiFTFace := self notoColorEmojiFace.
+	fontHeight := 25.
+	aeCanvas := AeCanvas extent: fontHeight * 1.3 asPoint.
+	aeCanvas clear: Color paleYellow.
+	cairoScaledFont :=
+		aeCanvas
+			scaledFontForFace: emojiFTFace
+			size: fontHeight.
+
+	cairoGlyphsArray := cairoScaledFont glyphArrayForString: (Unicode value: 16r1F468) asString.
+
+	self
+		renderGlyphs: cairoGlyphsArray
+		scaledFont: cairoScaledFont
+		on: aeCanvas.
+		 
 	^ aeCanvas
 ]
 
