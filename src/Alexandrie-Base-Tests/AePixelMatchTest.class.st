@@ -170,11 +170,13 @@ AePixelMatchTest >> testFormSelector [
 		assert: aPixelComparison isMatch
 		description: 'Pixel mismatch: #', formSelector.
 	
-"DEBUG PIXEL MISMATCH WITH:
+"DEBUG?
 
 		aPixelComparison inspect.
 
 		self formMethod browse.
+		
+		self exportAsExpected.
 "
 
 ]
