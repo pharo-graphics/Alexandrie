@@ -37,7 +37,18 @@ AeCairoScaledFont class >> fontFace: aCairoFontFace fontMatrix: aFontMatrix user
 
 { #category : #'private - ffi' }
 AeCairoScaledFont class >> unownedNewFor: aCairoFontFace fontMatrix: aFontMatrix userToDeviceMatrix: aCTM options: theFontOptions [
-
+	"Creates a ´cairo_scaled_font_t´ object from a font face and matrices that describe the size of the font and the environment in which it will be used.
+	
+	Parameters:
+	- font_face: a ´cairo_font_face_t´
+	- font_matrix: font space to user space transformation matrix for the font. In the simplest case of a N point font, this matrix is just a scale by N, but it can also be used to shear the font or stretch it unequally along the two axes. See ´cairo_set_font_matrix()´.
+	- ctm: user to device transformation matrix with which the font will be used.
+	- options: options to use when getting metrics for the font and rendering with it.
+	
+	Return a newly created ´cairo_scaled_font_t´. Destroy with ´cairo_scaled_font_destroy()´.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-create"
+	
 	^ self ffiCall: #(
 		AeCairoScaledFont cairo_scaled_font_create (
 			AeCairoFontFace aCairoFontFace,
