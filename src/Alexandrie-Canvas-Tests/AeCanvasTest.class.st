@@ -481,6 +481,66 @@ AeCanvasTest >> renderOpenFigure [
 	^ aeCanvas
 ]
 
+{ #category : #tests }
+AeCanvasTest >> renderZWJEmojiWithHarfbuzz [
+
+	| emojiFTFace fontHeight aeCanvas cairoScaledFont cairoGlyphsArray |
+	self skip. "Bug"
+	
+	emojiFTFace := self notoColorEmojiFace.
+	fontHeight := 24.
+	aeCanvas := AeCanvas extent: 200 @ (fontHeight * 2).
+	aeCanvas clear: Color white.
+	cairoScaledFont :=
+		aeCanvas
+			scaledFontForFace: emojiFTFace
+			size: fontHeight.
+
+	"This is the key message send of this test"
+	cairoGlyphsArray :=
+		AeHbBuffer
+			defaultCairoGlyphArrayFor: self emojiZWJString
+			face: emojiFTFace
+			size: fontHeight.
+
+	"The output of Harfbuzz is a single glyph"
+	self assert: cairoGlyphsArray size equals: 1.
+
+	self
+		renderGlyphs: cairoGlyphsArray
+		scaledFont: cairoScaledFont
+		on: aeCanvas.
+		 
+	^ aeCanvas
+]
+
+{ #category : #tests }
+AeCanvasTest >> renderZWJEmojiWithoutHarfbuzz [
+
+	| emojiFTFace fontHeight aeCanvas cairoScaledFont cairoGlyphsArray |
+	emojiFTFace := self notoColorEmojiFace.
+	fontHeight := 21.
+	aeCanvas := AeCanvas extent: (fontHeight * 5.5) @ (fontHeight * 1.2).
+	aeCanvas clear: Color white.
+	cairoScaledFont :=
+		aeCanvas
+			scaledFontForFace: emojiFTFace
+			size: fontHeight.
+
+	"We know that cairo ignores the ZWJ sequence (that'd be provided by Harfbuzz)"
+	cairoGlyphsArray := cairoScaledFont glyphArrayForString: self emojiZWJString.
+
+	"Cairo performs a 1:1 mapping of the input string to glyphs"
+	self assert: cairoGlyphsArray size equals: self emojiZWJString size.
+
+	self
+		renderGlyphs: cairoGlyphsArray
+		scaledFont: cairoScaledFont
+		on: aeCanvas.
+
+	^ aeCanvas
+]
+
 { #category : #private }
 AeCanvasTest >> sourceSansProRegularFace [
 
