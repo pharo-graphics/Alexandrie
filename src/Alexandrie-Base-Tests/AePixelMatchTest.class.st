@@ -50,6 +50,14 @@ AePixelMatchTest class >> exportAll [
 
 ]
 
+{ #category : #convenience }
+AePixelMatchTest class >> inspectAll [
+
+	(self allFormSelectors collect: [ :each |
+		(self new formSelector: each) newPixelComparison ]) inspect.
+
+]
+
 { #category : #testing }
 AePixelMatchTest class >> isAbstract [
 		

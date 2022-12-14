@@ -24,6 +24,13 @@ AeCairoRenderTest class >> exportAll [
 	super exportAll
 ]
 
+{ #category : #convenience }
+AeCairoRenderTest class >> inspectAll [
+	<script: 'self inspectAll' >
+
+	super inspectAll
+]
+
 { #category : #private }
 AeCairoRenderTest >> drawTestPaintCheckeredOn: aContext [
 	"Based on the cairo_test_paint_checkered function, defined in cairo-test.c"

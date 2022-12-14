@@ -27,6 +27,13 @@ AeCanvasTest class >> exportAll [
 	super exportAll
 ]
 
+{ #category : #convenience }
+AeCanvasTest class >> inspectAll [
+	<script: 'self inspectAll' >
+
+	super inspectAll
+]
+
 { #category : #private }
 AeCanvasTest >> emojiZWJString [ 
 
