@@ -44,7 +44,6 @@ Class {
 		'figureBlock',
 		'hasJoins',
 		'hasCaps',
-		'scaledFontCache',
 		'dashesCache',
 		'shouldClipAfterDrawingFigure'
 	],
@@ -184,8 +183,6 @@ AeCanvas >> initializeCaches [
 	identityMatrix := AeCairoMatrix newIdentity.
 	textExtents := AeCairoTextExtents new.
 
-	scaledFontCache := Dictionary new.
-
 	dashesCache := LRUCache new
 		maximumWeight: 400;
 		factory: [ :anArray |
@@ -245,20 +242,6 @@ AeCanvas >> metricsFor: aCairoGlyphsArray font: aCairoScaledFont [
 				height: aTextExtents height ].
 
 	^ textMetrics
-]
-
-{ #category : #text }
-AeCanvas >> newScaledFontForFace: aFTFace size: aSize [
-	"Answer a AeCairoScaledFont that corresponds to the provided font and scale"
-
- 	| aCairoFontFace aFontMatrix |
-	aCairoFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
-	aFontMatrix := AeCairoMatrix newScalingByX: aSize y: aSize.
-	
-	^ aCairoFontFace 
-			newScaledFontWithFontMatrix: aFontMatrix
-			userToDeviceMatrix: identityMatrix
-			options: fontOptions
 ]
 
 { #category : #API }
@@ -350,11 +333,16 @@ AeCanvas >> restoreContextIfShouldntClipAfter: aBlock [
 
 { #category : #text }
 AeCanvas >> scaledFontForFace: aFTFace size: pointSize [
-	"Answer a AeCairoScaledFont that corresponds to the provided face and point size."
+	"Answer a `AeCairoScaledFont` that corresponds to the provided face and point size."
 
-	^ scaledFontCache
-		  at: {aFTFace. pointSize}
-		  ifAbsentPut: [ self newScaledFontForFace: aFTFace size: pointSize ]
+ 	| aCairoFontFace aFontMatrix |
+	aCairoFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
+	aFontMatrix := AeCairoMatrix newScalingByX: pointSize y: pointSize.
+	
+	^ aCairoFontFace 
+		newScaledFontWithFontMatrix: aFontMatrix
+		userToDeviceMatrix: identityMatrix
+		options: fontOptions
 ]
 
 { #category : #API }
