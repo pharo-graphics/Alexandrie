@@ -23,13 +23,13 @@ AeCairoFontOptions class >> externallyFree: aHandle [
 { #category : #'instance creation' }
 AeCairoFontOptions class >> new [
 
-	^ self primCreate
+	^ self unownedNew
 		  autoRelease;
 		  yourself
 ]
 
 { #category : #'private - ffi' }
-AeCairoFontOptions class >> primCreate [
+AeCairoFontOptions class >> unownedNew [
 
 	^ self ffiCall: #( AeCairoFontOptions cairo_font_options_create () )
 ]
