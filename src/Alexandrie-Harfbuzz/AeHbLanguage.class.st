@@ -46,3 +46,21 @@ AeHbLanguage class >> fromBCP47Tag: aString [
 	encoded := aString asByteArray.
 	^ self fromBCP47ByteArray: encoded length: encoded size
 ]
+
+{ #category : #initialization }
+AeHbLanguage class >> initialize [
+
+	SessionManager default registerSystemClassNamed: self name
+]
+
+{ #category : #'system startup' }
+AeHbLanguage class >> resetKnownInstances [
+
+	EN := nil.
+]
+
+{ #category : #'system startup' }
+AeHbLanguage class >> startUp: isResuming [
+	
+	isResuming ifTrue: [ self resetKnownInstances ]
+]
