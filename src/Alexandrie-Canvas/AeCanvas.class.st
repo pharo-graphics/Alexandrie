@@ -256,6 +256,14 @@ AeCanvas >> paintGroupWith: aBlock alpha: aNumber [
 	cairoContext paintGroupWith: aBlock alpha: aNumber
 ]
 
+{ #category : #private }
+AeCanvas >> paintWithBackgroundAlpha [
+
+	backgroundAlpha < 1.0
+		ifTrue: [ cairoContext paintWithAlpha: backgroundAlpha ]
+		ifFalse: [ cairoContext paint ]
+]
+
 { #category : #API }
 AeCanvas >> pathScale: aPoint [
 
@@ -455,9 +463,35 @@ AeCanvas >> setFigureWithBackgroundAndNoBorder [
 
 			"Paint background"
 			backgroundSourceBlock value.
-			cairoContext
-				clip;
-				paintWithAlpha: backgroundAlpha ] ]
+			cairoContext clip.
+			self paintWithBackgroundAlpha ] ]
+
+]
+
+{ #category : #private }
+AeCanvas >> setFigureWithBorderCenterAndBackground [
+
+	figureBlock := [
+
+		self preparePath.
+
+		"Need to restore clipping area to draw the border afterwards"
+		self restoreContextAfter: [
+
+	 		"Paint background"
+			backgroundSourceBlock value.
+			cairoContext clipPreserve.
+			self paintWithBackgroundAlpha ].
+
+		"Paint border, and clip if required"
+		self prepareStrokeWithSingleWidth.
+		shouldClipAfterDrawingFigure
+			ifTrue: [
+				cairoContext
+					strokePreserve;
+					clip ]
+			ifFalse: [
+				cairoContext stroke ] ]
 
 ]
 
@@ -482,58 +516,22 @@ AeCanvas >> setFigureWithBorderCenterAndNoBackground [
 ]
 
 { #category : #private }
-AeCanvas >> setFigureWithBorderCenterAndOpaqueBackground [
+AeCanvas >> setFigureWithBorderInsideAndBackground [
 
 	figureBlock := [
 
 		self preparePath.
 
-		"Need to restore clipping area to draw the border afterwards"
-		self restoreContextAfter: [
+		self restoreContextIfShouldntClipAfter: [
 
 			"Paint background"
 			backgroundSourceBlock value.
-			cairoContext
-				clipPreserve;
-				paint ].
-				
-		"Paint border, and clip if required"
-		self prepareStrokeWithSingleWidth.
-		shouldClipAfterDrawingFigure
-			ifTrue: [
-				cairoContext
-					strokePreserve;
-					clip ]
-			ifFalse: [
-				cairoContext stroke ] ] 
+			cairoContext clipPreserve.
+			self paintWithBackgroundAlpha.
 
-]
-
-{ #category : #private }
-AeCanvas >> setFigureWithBorderCenterAndTranslucentBackground [
-
-	figureBlock := [
-
-		self preparePath.
-
-		"Need to restore clipping area to draw the border afterwards"
-		self restoreContextAfter: [
-
-	 		"Paint background"
-			backgroundSourceBlock value.
-			cairoContext
-				clipPreserve;
-				paintWithAlpha: backgroundAlpha ].
-
-		"Paint border, and clip if required"
-		self prepareStrokeWithSingleWidth.
-		shouldClipAfterDrawingFigure
-			ifTrue: [
-				cairoContext
-					strokePreserve;
-					clip ]
-			ifFalse: [
-				cairoContext stroke ] ]
+			"Paint border"
+			self prepareStrokeWithDoubledWidth.
+			cairoContext stroke ] ]
 
 ]
 
@@ -551,48 +549,6 @@ AeCanvas >> setFigureWithBorderInsideAndNoBackground [
 			cairoContext 
 				clipPreserve;
 				stroke ] ]
-
-]
-
-{ #category : #private }
-AeCanvas >> setFigureWithBorderInsideAndOpaqueBackground [
-
-	figureBlock := [
-
-		self preparePath.
-
-		self restoreContextIfShouldntClipAfter: [
-
-			"Paint background"
-			backgroundSourceBlock value.
-			cairoContext
-				clipPreserve;
-				paint.
-
-			"Paint border"
-			self prepareStrokeWithDoubledWidth.
-			cairoContext stroke ] ]
-
-]
-
-{ #category : #private }
-AeCanvas >> setFigureWithBorderInsideAndTranslucentBackground [
-
-	figureBlock := [
-
-		self preparePath.
-
-		self restoreContextIfShouldntClipAfter: [
-
-			"Paint background"
-			backgroundSourceBlock value.
-			cairoContext
-				clipPreserve;
-				paintWithAlpha: backgroundAlpha.
-
-			"Paint border"
-			self prepareStrokeWithDoubledWidth.
-			cairoContext stroke ] ]
 
 ]
 
@@ -761,9 +717,7 @@ AeCanvas >> setOutskirtsCentered [
 
 	hasBackground
 		ifTrue: [
-			backgroundAlpha = 1.0
-				ifTrue: [ self setFigureWithBorderCenterAndOpaqueBackground ]
-				ifFalse: [ self setFigureWithBorderCenterAndTranslucentBackground ] ]
+			self setFigureWithBorderCenterAndBackground ]
 		ifFalse: [
 			self setFigureWithBorderCenterAndNoBackground ]
 
@@ -773,10 +727,7 @@ AeCanvas >> setOutskirtsCentered [
 AeCanvas >> setOutskirtsInside [
 
 	hasBackground
-		ifTrue: [
-			backgroundAlpha = 1.0
-				ifTrue: [ self setFigureWithBorderInsideAndOpaqueBackground ]
-				ifFalse: [ self setFigureWithBorderInsideAndTranslucentBackground ] ]
+		ifTrue: [ self setFigureWithBorderInsideAndBackground ]
 		ifFalse: [ self setFigureWithBorderInsideAndNoBackground ]
 ]
 
