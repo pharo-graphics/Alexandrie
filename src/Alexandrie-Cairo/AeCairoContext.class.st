@@ -631,8 +631,8 @@ AeCairoContext >> rectangle: aRectangle [
 AeCairoContext >> rectangleTo: extentPoint [
 
 	self
-		rectangleX: 0
-		y: 0
+		rectangleX: 0.0
+		y: 0.0
 		width: extentPoint x
 		height:extentPoint y
 ]
