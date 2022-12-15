@@ -81,13 +81,13 @@ AeCanvasTest >> renderArbitraryFigure [
 	aeCanvas setBorderOff.
 
 	aeCanvas
-		setPathKey: self
-		hasJoins: true
-		hasCaps: true
-		block: [ :cairoContext |
+		setPathWith: [ :cairoContext |
 			cairoContext
 				rectangle: (0 asPoint extent: 20 asPoint);
-				circleRadius: 20 ].
+				circleRadius: 20 ]
+		nilOrBorderPathWith: nil
+		hasJoins: true
+		hasCaps: true.
 
 	aeCanvas drawFigure.
 

@@ -45,7 +45,8 @@ Class {
 		'hasJoins',
 		'hasCaps',
 		'dashesCache',
-		'shouldClipAfterDrawingFigure'
+		'shouldClipAfterDrawingFigure',
+		'borderPathBlock'
 	],
 	#category : #'Alexandrie-Canvas-Base'
 }
@@ -102,24 +103,56 @@ AeCanvas >> drawClosedCurvedPathWith: aUnaryBlock [
 	https://www.cairographics.org/manual/cairo-Paths.html)"
 
 	self
-		setPathKey: self
+		setPathWith: aUnaryBlock
+		nilOrBorderPathWith: nil
 		hasJoins: false
 		hasCaps: false
-		block: aUnaryBlock
+
 ]
 
 { #category : #API }
-AeCanvas >> drawClosedPathWith: aUnaryBlock [
+AeCanvas >> drawClosedCurvedPathWith: aUnaryBlock borderPathWith: anotherUnaryBlock [
 	"Establish how to draw the path of the figure.
 	The block closure receives an instance of AeCairoContext to build the geometric
 	path. It is expected to utilize the path drawing API (bindings of
 	https://www.cairographics.org/manual/cairo-Paths.html)"
 
 	self
-		setPathKey: self
+		setPathWith: aUnaryBlock
+		nilOrBorderPathWith: anotherUnaryBlock
+		hasJoins: false
+		hasCaps: false
+
+]
+
+{ #category : #API }
+AeCanvas >> drawClosedPathWith: aUnaryBlock [
+
+	"Establish how to draw the path of the figure.
+	The block closure receives an instance of AeCairoContext to build the geometric
+	path. It is expected to utilize the path drawing API (bindings of
+	https://www.cairographics.org/manual/cairo-Paths.html)"
+
+	self
+		setPathWith: aUnaryBlock
+		nilOrBorderPathWith: nil
 		hasJoins: true
 		hasCaps: false
-		block: aUnaryBlock
+]
+
+{ #category : #API }
+AeCanvas >> drawClosedPathWith: aUnaryBlock borderPathWith: anotherUnaryBlock [
+
+	"Establish how to draw the path of the figure.
+	The block closure receives an instance of AeCairoContext to build the geometric
+	path. It is expected to utilize the path drawing API (bindings of
+	https://www.cairographics.org/manual/cairo-Paths.html)"
+
+	self
+		setPathWith: aUnaryBlock
+		nilOrBorderPathWith: anotherUnaryBlock
+		hasJoins: true
+		hasCaps: false
 ]
 
 { #category : #API }
@@ -143,6 +176,236 @@ AeCanvas >> drawFigureAndPrepareToClip: aBoolean [
 	figureBlock value
 ]
 
+{ #category : #private }
+AeCanvas >> drawFigureWithBackgroundAndNoBorder [
+	
+	self preparePath.
+
+	self restoreContextIfShouldntClipAfter: [
+
+		"Paint background"
+		backgroundSourceBlock value.
+		cairoContext clip.
+		self paintWithBackgroundAlpha ]
+
+]
+
+{ #category : #private }
+AeCanvas >> drawFigureWithBorderCenterAndBackground [
+
+	self preparePath.
+
+	"Need to restore clipping area to draw the border afterwards"
+	self restoreContextAfter: [
+
+ 		"Paint background"
+		backgroundSourceBlock value.
+		cairoContext clipPreserve.
+		self paintWithBackgroundAlpha ].
+
+	"Paint border, and clip if required"
+	self prepareStrokeWithSingleWidth.
+	shouldClipAfterDrawingFigure
+		ifTrue: [
+			cairoContext
+				strokePreserve;
+				clip ]
+		ifFalse: [
+			cairoContext stroke ]
+
+]
+
+{ #category : #private }
+AeCanvas >> drawFigureWithBorderCenterAndNoBackground [
+
+	self preparePath.
+
+	"Paint border, and clip if required"
+	self prepareStrokeWithSingleWidth.
+	shouldClipAfterDrawingFigure
+		ifTrue: [
+			cairoContext
+				strokePreserve;
+				clip ]
+		ifFalse: [
+			cairoContext stroke ]
+
+]
+
+{ #category : #private }
+AeCanvas >> drawFigureWithBorderInsideAndBackground [
+
+	self preparePath.
+
+	self restoreContextIfShouldntClipAfter: [
+
+		"Paint background"
+		backgroundSourceBlock value.
+		cairoContext clipPreserve.
+		self paintWithBackgroundAlpha.
+
+		"Paint border"
+		self prepareStrokeWithDoubledWidth.
+		cairoContext stroke ]
+
+]
+
+{ #category : #private }
+AeCanvas >> drawFigureWithBorderInsideAndNoBackground [
+
+	self preparePath.
+
+	self restoreContextIfShouldntClipAfter: [
+
+		"Paint border"
+		self prepareStrokeWithDoubledWidth.
+		cairoContext 
+			clipPreserve;
+			stroke ]
+
+]
+
+{ #category : #private }
+AeCanvas >> drawFigureWithBorderOutsideAndNoBackground [
+
+	self preparePath.
+
+	self paintGroupWith: [ 
+		
+		"Paint border with double width"
+		self prepareStrokeWithDoubledWidth.
+		cairoContext strokePreserve.
+		
+		"Clear the inner half of the border.
+		Needs to be done inside a group to do not erase the target surface.
+		The changed operator will be restored when the group is poped."
+		cairoContext setOperatorClear.
+		shouldClipAfterDrawingFigure
+			ifTrue: [ cairoContext fillPreserve ]
+			ifFalse: [ cairoContext fill ] ].
+	
+	"Clip if required.
+	Needs to be doen after poping the group (above)."
+	shouldClipAfterDrawingFigure
+		ifTrue: [ cairoContext clip ]
+
+]
+
+{ #category : #private }
+AeCanvas >> drawFigureWithBorderOutsideAndOpaqueBackground [
+
+	self preparePath.
+
+	self restoreContextIfShouldntClipAfter: [ 
+
+		"Paint border"
+		self prepareStrokeWithDoubledWidth.
+		cairoContext strokePreserve.
+
+		"Paint background"
+		backgroundSourceBlock value.
+		cairoContext
+			clip;
+			paint ]
+
+]
+
+{ #category : #private }
+AeCanvas >> drawFigureWithBorderOutsideAndTranslucentBackground [
+
+	self preparePath.
+
+	self paintGroupWith: [
+		
+		"Paint border with double width"
+		self prepareStrokeWithDoubledWidth.
+		cairoContext strokePreserve.
+
+		"Clear the inner half of the border"
+		self restoreContextAfter: [ 
+			cairoContext
+				setOperatorClear;
+				fillPreserve ] ].
+	
+	"Paint background"
+	self restoreContextIfShouldntClipAfter: [
+		backgroundSourceBlock value.
+		cairoContext
+			clip;
+			paintWithAlpha: backgroundAlpha ]
+
+]
+
+{ #category : #private }
+AeCanvas >> drawFigureWithExplicitBorderInsideAndBackground [
+
+	"Paint background"
+	self preparePath.
+	backgroundSourceBlock value.
+	self restoreContextIfShouldntClipAfter: [
+		cairoContext clip.
+		self paintWithBackgroundAlpha ].
+
+	"Paint border. 
+	As it's outskirts inside, then:
+	- no problem with current clip as it fits inside
+	- it needs to be done after (over) the background"
+	self prepareStrokeWithSingleWidth.
+	self prepareBorderPath.
+	cairoContext stroke
+
+]
+
+{ #category : #private }
+AeCanvas >> drawFigureWithExplicitBorderInsideAndNoBackground [
+
+	"Paint border"
+	self prepareStrokeWithSingleWidth.
+	self prepareBorderPath.
+	cairoContext stroke.
+
+	"Clip is done over the full background"
+	shouldClipAfterDrawingFigure ifTrue: [
+		self preparePath.
+		cairoContext clip ]
+
+]
+
+{ #category : #private }
+AeCanvas >> drawFigureWithExplicitBorderOutsideAndBackground [
+
+	"Paint border"
+	self prepareStrokeWithSingleWidth.
+	self prepareBorderPath.
+	cairoContext stroke.
+
+	"Paint background. Do it after border because:
+	- the border is outside then it doesn't overlap with background
+	- if we did it before border, same clip needs to be set twice"
+	self preparePath.
+	backgroundSourceBlock value.
+	self restoreContextIfShouldntClipAfter: [
+		cairoContext clip.
+		self paintWithBackgroundAlpha ]
+
+]
+
+{ #category : #private }
+AeCanvas >> drawFigureWithExplicitBorderOutsideAndNoBackground [
+
+	"Paint border"
+	self prepareStrokeWithSingleWidth.
+	self prepareBorderPath.
+	cairoContext stroke.
+
+	"Clip is done over the background only,
+	so do not consider the outside borded."
+	shouldClipAfterDrawingFigure ifTrue: [
+		self preparePath.
+		cairoContext clip ]
+
+]
+
 { #category : #API }
 AeCanvas >> drawOpenPathWith: aUnaryBlock [
 	"Establish how to draw the path of the figure.
@@ -151,10 +414,26 @@ AeCanvas >> drawOpenPathWith: aUnaryBlock [
 	https://www.cairographics.org/manual/cairo-Paths.html)"
 
 	self
-		setPathKey: self
+		setPathWith: aUnaryBlock
+		nilOrBorderPathWith: nil
 		hasJoins: true
 		hasCaps: true
-		block: aUnaryBlock
+
+]
+
+{ #category : #API }
+AeCanvas >> drawOpenPathWith: aUnaryBlock borderPathWith: anotherUnaryBlock [
+	"Establish how to draw the path of the figure.
+	The block closure receives an instance of AeCairoContext to build the geometric
+	path. It is expected to utilize the path drawing API (bindings of
+	https://www.cairographics.org/manual/cairo-Paths.html)"
+
+	self
+		setPathWith: aUnaryBlock
+		nilOrBorderPathWith: anotherUnaryBlock
+		hasJoins: true
+		hasCaps: true
+
 ]
 
 { #category : #text }
@@ -285,6 +564,12 @@ AeCanvas >> pathTranslate: aPoint [
 ]
 
 { #category : #private }
+AeCanvas >> prepareBorderPath [
+
+	borderPathBlock value: cairoContext
+]
+
+{ #category : #private }
 AeCanvas >> preparePath [
 
 	pathBlock value: cairoContext
@@ -401,9 +686,10 @@ AeCanvas >> setBorderBlock: aBlockClosure [
 { #category : #API }
 AeCanvas >> setBorderOff [
 
-	hasBackground
-		ifTrue: [ self setFigureWithBackgroundAndNoBorder ]
-		ifFalse: [ self setFigureIsNull ]
+	figureBlock := [
+		hasBackground
+			ifTrue: [ self drawFigureWithBackgroundAndNoBorder ]
+			ifFalse: [ "Nothing to do" ] ]
 ]
 
 { #category : #API }
@@ -442,190 +728,6 @@ AeCanvas >> setDashes: dashArray offset: dashOffset [
 		dash: (dashesCache at: dashArray)
 		count: dashArray size
 		offset: dashOffset
-
-]
-
-{ #category : #private }
-AeCanvas >> setFigureIsNull [
-	
-	figureBlock := [ ]
-
-]
-
-{ #category : #private }
-AeCanvas >> setFigureWithBackgroundAndNoBorder [
-	
-	figureBlock := [
-
-		self preparePath.
-
-		self restoreContextIfShouldntClipAfter: [
-
-			"Paint background"
-			backgroundSourceBlock value.
-			cairoContext clip.
-			self paintWithBackgroundAlpha ] ]
-
-]
-
-{ #category : #private }
-AeCanvas >> setFigureWithBorderCenterAndBackground [
-
-	figureBlock := [
-
-		self preparePath.
-
-		"Need to restore clipping area to draw the border afterwards"
-		self restoreContextAfter: [
-
-	 		"Paint background"
-			backgroundSourceBlock value.
-			cairoContext clipPreserve.
-			self paintWithBackgroundAlpha ].
-
-		"Paint border, and clip if required"
-		self prepareStrokeWithSingleWidth.
-		shouldClipAfterDrawingFigure
-			ifTrue: [
-				cairoContext
-					strokePreserve;
-					clip ]
-			ifFalse: [
-				cairoContext stroke ] ]
-
-]
-
-{ #category : #private }
-AeCanvas >> setFigureWithBorderCenterAndNoBackground [
-
-	figureBlock := [
-
-		self preparePath.
-
-		"Paint border, and clip if required"
-		self prepareStrokeWithSingleWidth.
-		shouldClipAfterDrawingFigure
-			ifTrue: [
-				cairoContext
-					strokePreserve;
-					clip ]
-			ifFalse: [
-				cairoContext stroke ]
-		 ]
-
-]
-
-{ #category : #private }
-AeCanvas >> setFigureWithBorderInsideAndBackground [
-
-	figureBlock := [
-
-		self preparePath.
-
-		self restoreContextIfShouldntClipAfter: [
-
-			"Paint background"
-			backgroundSourceBlock value.
-			cairoContext clipPreserve.
-			self paintWithBackgroundAlpha.
-
-			"Paint border"
-			self prepareStrokeWithDoubledWidth.
-			cairoContext stroke ] ]
-
-]
-
-{ #category : #private }
-AeCanvas >> setFigureWithBorderInsideAndNoBackground [
-
-	figureBlock := [
-
-		self preparePath.
-
-		self restoreContextIfShouldntClipAfter: [
-
-			"Paint border"
-			self prepareStrokeWithDoubledWidth.
-			cairoContext 
-				clipPreserve;
-				stroke ] ]
-
-]
-
-{ #category : #private }
-AeCanvas >> setFigureWithBorderOutsideAndNoBackground [
-
-	figureBlock := [
-
-		self preparePath.
-
-		self paintGroupWith: [ 
-			
-			"Paint border with double width"
-			self prepareStrokeWithDoubledWidth.
-			cairoContext strokePreserve.
-			
-			"Clear the inner half of the border.
-			Needs to be done inside a group to do not erase the target surface.
-			The changed operator will be restored when the group is poped."
-			cairoContext setOperatorClear.
-			shouldClipAfterDrawingFigure
-				ifTrue: [ cairoContext fillPreserve ]
-				ifFalse: [ cairoContext fill ] ].
-		
-		"Clip if required.
-		Needs to be doen after poping the group (above)."
-		shouldClipAfterDrawingFigure
-			ifTrue: [ cairoContext clip ] ]
-
-]
-
-{ #category : #private }
-AeCanvas >> setFigureWithBorderOutsideAndOpaqueBackground [
-
-	figureBlock := [
-
-		self preparePath.
-
-		self restoreContextIfShouldntClipAfter: [ 
-
-			"Paint border"
-			self prepareStrokeWithDoubledWidth.
-			cairoContext strokePreserve.
-
-			"Paint background"
-			backgroundSourceBlock value.
-			cairoContext
-				clip;
-				paint ] ]
-
-]
-
-{ #category : #private }
-AeCanvas >> setFigureWithBorderOutsideAndTranslucentBackground [
-
-	figureBlock := [
-
-		self preparePath.
-
-		self paintGroupWith: [
-			
-			"Paint border with double width"
-			self prepareStrokeWithDoubledWidth.
-			cairoContext strokePreserve.
-
-			"Clear the inner half of the border"
-			self restoreContextAfter: [ 
-				cairoContext
-					setOperatorClear;
-					fillPreserve ] ].
-		
-		"Paint background"
-		self restoreContextIfShouldntClipAfter: [
-			backgroundSourceBlock value.
-			cairoContext
-				clip;
-				paintWithAlpha: backgroundAlpha ] ]
 
 ]
 
@@ -715,45 +817,77 @@ AeCanvas >> setLowQualityOptions [
 { #category : #API }
 AeCanvas >> setOutskirtsCentered [
 
-	hasBackground
-		ifTrue: [ self setFigureWithBorderCenterAndBackground ]
-		ifFalse: [ self setFigureWithBorderCenterAndNoBackground ]
+	figureBlock := [
+		hasBackground
+			ifTrue: [ self drawFigureWithBorderCenterAndBackground ]
+			ifFalse: [ self drawFigureWithBorderCenterAndNoBackground ] ]
 ]
 
 { #category : #API }
 AeCanvas >> setOutskirtsInside [
 
-	hasBackground
-		ifTrue: [ self setFigureWithBorderInsideAndBackground ]
-		ifFalse: [ self setFigureWithBorderInsideAndNoBackground ]
+	figureBlock := [
+		hasBackground
+			ifTrue: [ 
+				borderPathBlock
+					ifNil: [
+						"Slow but most generic option"
+						self drawFigureWithBorderInsideAndBackground ]
+					ifNotNil: [ 
+						"Optimized"
+						self drawFigureWithExplicitBorderInsideAndBackground ] ]
+			ifFalse: [
+				borderPathBlock
+					ifNil: [ 
+						"Slow but most generic option"
+						self drawFigureWithBorderInsideAndNoBackground ]
+					ifNotNil: [ 
+						"Optimized"
+						self drawFigureWithExplicitBorderInsideAndNoBackground ]
+				 ] ]
+
 ]
 
 { #category : #API }
 AeCanvas >> setOutskirtsOutside [
 
-	hasBackground
-		ifTrue: [
-			backgroundAlpha < 1.0
-				ifTrue: [ self setFigureWithBorderOutsideAndTranslucentBackground ]
-				ifFalse: [ self setFigureWithBorderOutsideAndOpaqueBackground ] ]
-		ifFalse: [
-			self setFigureWithBorderOutsideAndNoBackground ]
+	figureBlock := [
+		hasBackground
+			ifTrue: [
+				borderPathBlock
+					ifNil: [
+						"Slow but most generic option"
+						backgroundAlpha < 1.0
+							ifTrue: [ self drawFigureWithBorderOutsideAndTranslucentBackground ]
+							ifFalse: [ self drawFigureWithBorderOutsideAndOpaqueBackground ] ]
+					ifNotNil: [ 
+						"Optimized"
+						self drawFigureWithExplicitBorderOutsideAndBackground ] ]
+			ifFalse: [
+				borderPathBlock
+					ifNil: [ 
+						"Slow but most generic option"
+						self drawFigureWithBorderOutsideAndNoBackground ]
+					ifNotNil: [ 
+						"Optimized"
+						self drawFigureWithExplicitBorderOutsideAndNoBackground ]
+				 ] ]
 
 ]
 
 { #category : #API }
-AeCanvas >> setPathKey: anObject hasJoins: hasJoinsBoolean hasCaps: hasCapsBoolean block: aUnaryBlock [
+AeCanvas >> setPathWith: aUnaryBlock nilOrBorderPathWith: anotherUnaryBlock hasJoins: hasJoinsBoolean hasCaps: hasCapsBoolean [ 
 	"Establish how to draw the path and some properties that serve to optimize.
-	
-	The anObject argument might serve as a cache key.
 	
 	The block closure receives an instance of AeCairoContext to build the geometric
 	path. The block must only send messages in the 'API - path' protocol of AeCairoContext.
 	This is, only the bindings of: https://www.cairographics.org/manual/cairo-Paths.html"
 
+	pathBlock := aUnaryBlock.
+	borderPathBlock := anotherUnaryBlock.
 	hasJoins := hasJoinsBoolean.
 	hasCaps := hasCapsBoolean.
-	pathBlock := aUnaryBlock
+
 ]
 
 { #category : #private }
