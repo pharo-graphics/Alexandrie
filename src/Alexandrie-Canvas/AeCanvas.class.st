@@ -716,11 +716,8 @@ AeCanvas >> setLowQualityOptions [
 AeCanvas >> setOutskirtsCentered [
 
 	hasBackground
-		ifTrue: [
-			self setFigureWithBorderCenterAndBackground ]
-		ifFalse: [
-			self setFigureWithBorderCenterAndNoBackground ]
-
+		ifTrue: [ self setFigureWithBorderCenterAndBackground ]
+		ifFalse: [ self setFigureWithBorderCenterAndNoBackground ]
 ]
 
 { #category : #API }
@@ -736,9 +733,9 @@ AeCanvas >> setOutskirtsOutside [
 
 	hasBackground
 		ifTrue: [
-			backgroundAlpha = 1.0
-				ifTrue: [ self setFigureWithBorderOutsideAndOpaqueBackground ]
-				ifFalse: [ self setFigureWithBorderOutsideAndTranslucentBackground ] ]
+			backgroundAlpha < 1.0
+				ifTrue: [ self setFigureWithBorderOutsideAndTranslucentBackground ]
+				ifFalse: [ self setFigureWithBorderOutsideAndOpaqueBackground ] ]
 		ifFalse: [
 			self setFigureWithBorderOutsideAndNoBackground ]
 
