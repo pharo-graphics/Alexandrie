@@ -295,6 +295,19 @@ AeCairoContext >> fillPreserve [
 	self ffiCall: #( void cairo_fill_preserve ( self ) )
 ]
 
+{ #category : #'API - path' }
+AeCairoContext >> getExtentsIntoLeft: x1 top: y1 right: x2 bottom: y2 [
+
+	self ffiCall: #(
+		void
+		cairo_path_extents (
+			self,
+			double *x1,
+			double *y1,
+			double *x2,
+			double *y2 ) )
+]
+
 { #category : #'API - text' }
 AeCairoContext >> getFontExtentsOn: aFontExtents [
 	"Gets the font extents for the currently selected font.
@@ -559,6 +572,25 @@ AeCairoContext >> paintWithAlpha: aNumber [
 		cairo_paint_with_alpha (
 			self,
 			double aNumber ) )
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> pathExtents [
+
+	| leftPointer topPointer rightPointer bottomPointer |
+	leftPointer := FFIFloat64 newBuffer.
+	topPointer := FFIFloat64 newBuffer.
+	rightPointer := FFIFloat64 newBuffer.
+	bottomPointer := FFIFloat64 newBuffer.
+
+	self
+		getExtentsIntoLeft: leftPointer
+		top: topPointer
+		right: rightPointer
+		bottom: bottomPointer.
+
+	^ (leftPointer doubleAt: 1) @ (topPointer doubleAt: 1) corner:
+		  (rightPointer doubleAt: 1) @ (bottomPointer doubleAt: 1)
 ]
 
 { #category : #'API - compositing' }
@@ -924,7 +956,7 @@ AeCairoContext >> showGlyphs: aGlyphsArray size: aNumberOfGlyphs [
 			int aNumberOfGlyphs ) )
 ]
 
-{ #category : #'API - path' }
+{ #category : #'API - source' }
 AeCairoContext >> source [
 	"Answer the current source pattern. This object is owned by cairo. To keep a reference to it, you must call `cairo_pattern_reference()`.
 	
