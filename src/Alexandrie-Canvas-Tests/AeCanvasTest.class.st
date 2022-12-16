@@ -14,13 +14,6 @@ AeCanvasTest class >> allFormSelectors [
 ]
 
 { #category : #convenience }
-AeCanvasTest class >> deleteAllExports [
-	<script: 'self deleteAllExports' >
-
-	super deleteAllExports
-]
-
-{ #category : #convenience }
 AeCanvasTest class >> exportAll [
 	<script: 'self exportAll' >
 
@@ -32,6 +25,13 @@ AeCanvasTest class >> inspectAll [
 	<script: 'self inspectAll' >
 
 	super inspectAll
+]
+
+{ #category : #convenience }
+AeCanvasTest class >> inspectMismatches [
+	<script: 'self inspectMismatches' >
+
+	super inspectMismatches
 ]
 
 { #category : #private }

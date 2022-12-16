@@ -28,24 +28,18 @@ AePixelMatchTest class >> buildSuite [
 	^ suite
 ]
 
-{ #category : #convenience }
-AePixelMatchTest class >> deleteAllExports [
-
-	self new expectedFormsDirectory deleteAllChildren.
-	
-	self inform: 'Delete finished: ', self new expectedFormsDirectory pathString
-
-
-]
-
 { #category : #'building suites' }
 AePixelMatchTest class >> exportAll [
 	"Export each Form to disk, to be used as the expected result in the future test runs."
 
+	| directory |
+	directory := self new expectedFormsDirectory.
+	directory deleteAllChildren.
+
 	self allFormSelectors do: [ :each |
 		(self new formSelector: each) exportAsExpected ].
 	
-	Clipboard clipboardText: self new expectedFormsDirectory pathString.
+	Clipboard clipboardText: directory pathString.
 	self inform: 'Export finished (Path copied to clipboard)'
 
 ]
@@ -56,6 +50,15 @@ AePixelMatchTest class >> inspectAll [
 	(self allFormSelectors collect: [ :each |
 		(self new formSelector: each) newPixelComparison ]) inspect.
 
+]
+
+{ #category : #convenience }
+AePixelMatchTest class >> inspectMismatches [
+
+	(self allFormSelectors
+		 collect: [ :each |
+			 (self new formSelector: each) newPixelComparison ]
+		 thenSelect: [ :each | each isMatch not ]) inspect
 ]
 
 { #category : #testing }

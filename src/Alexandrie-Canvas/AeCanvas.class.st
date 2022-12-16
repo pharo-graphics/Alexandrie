@@ -296,17 +296,18 @@ AeCanvas >> drawFigureWithBorderOutsideAndOpaqueBackground [
 
 	self preparePath.
 
-	self restoreContextIfShouldntClipAfter: [ 
+	"Paint border"
+	self prepareStrokeWithDoubledWidth.
+	cairoContext strokePreserve.
 
-		"Paint border"
-		self prepareStrokeWithDoubledWidth.
-		cairoContext strokePreserve.
-
-		"Paint background"
-		backgroundSourceBlock value.
-		cairoContext
-			clip;
-			paint ]
+	"Paint background. As it is opaque, it overlaps
+	the inner half of the double-sized border, emulating
+	the outside outskirts."
+	backgroundSourceBlock value.
+	
+	shouldClipAfterDrawingFigure
+		ifTrue: [ cairoContext clip; paint ]
+		ifFalse: [ cairoContext fill ]
 
 ]
 
@@ -315,21 +316,22 @@ AeCanvas >> drawFigureWithBorderOutsideAndTranslucentBackground [
 
 	self preparePath.
 
+
 	self paintGroupWith: [
 		
 		"Paint border with double width"
 		self prepareStrokeWithDoubledWidth.
 		cairoContext strokePreserve.
 
-		"Clear the inner half of the border"
-		self restoreContextAfter: [ 
-			cairoContext
-				setOperatorClear;
-				fillPreserve ] ].
+		"Clear the inner half of the double-sized
+		border to emulate outside outskirts."
+		cairoContext
+			setOperatorClear;
+			fillPreserve ].
 	
 	"Paint background"
+	backgroundSourceBlock value.
 	self restoreContextIfShouldntClipAfter: [
-		backgroundSourceBlock value.
 		cairoContext
 			clip;
 			paintWithAlpha: backgroundAlpha ]

@@ -11,13 +11,6 @@ AeCairoRenderTest class >> allFormSelectors [
 ]
 
 { #category : #convenience }
-AeCairoRenderTest class >> deleteAllExports [
-	<script: 'self deleteAllExports' >
-
-	super deleteAllExports
-]
-
-{ #category : #convenience }
 AeCairoRenderTest class >> exportAll [
 	<script: 'self exportAll' >
 
@@ -29,6 +22,13 @@ AeCairoRenderTest class >> inspectAll [
 	<script: 'self inspectAll' >
 
 	super inspectAll
+]
+
+{ #category : #convenience }
+AeCairoRenderTest class >> inspectMismatches [
+	<script: 'self inspectMismatches' >
+
+	super inspectMismatches
 ]
 
 { #category : #private }
