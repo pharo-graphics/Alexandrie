@@ -13,6 +13,9 @@ Class {
 	#instVars : [
 		'surface'
 	],
+	#classVars : [
+		'ThreeHalvesPi'
+	],
 	#category : #'Alexandrie-Cairo-Core'
 }
 
@@ -20,6 +23,12 @@ Class {
 AeCairoContext class >> externallyFree: aHandle [
 	
 	self ffiCall: #( void cairo_destroy ( void * aHandle ) )
+]
+
+{ #category : #initialization }
+AeCairoContext class >> initialize [
+
+	ThreeHalvesPi := 3.0 * Float halfPi.
 ]
 
 { #category : #'instance creation' }
@@ -92,6 +101,7 @@ AeCairoContext >> arcCenterX: centerX centerY: centerY radius: aRadius startAngl
 
 { #category : #'API - path' }
 AeCairoContext >> arcNegativeCenterX: centerX centerY: centerY radius: aRadius startAngle: aStartAngle endAngle: anEndAngle [ 
+
 	self ffiCall: #(
 		void
 		cairo_arc_negative (
@@ -385,7 +395,8 @@ AeCairoContext >> isInStrokeX: x y: y [
 	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-in-stroke"
 
 	^ self ffiCall: #(
-		Boolean cairo_in_stroke (
+		Boolean
+		cairo_in_stroke (
 			self,
 			double x,
 			double y ) )
@@ -412,9 +423,11 @@ AeCairoContext >> lineFrom: aPoint to: anotherPoint [
 { #category : #'API - path settings' }
 AeCairoContext >> lineJoin: aCairoJoinStyle [
 
-	self ffiCall: #( void cairo_set_line_join (
-		self,
-      AeCairoJoinStyle aCairoJoinStyle ) )
+	self ffiCall: #(
+		void
+		cairo_set_line_join (
+			self,
+			AeCairoJoinStyle aCairoJoinStyle ) )
 ]
 
 { #category : #'API - path' }
@@ -500,9 +513,11 @@ AeCairoContext >> matrix: aCairoMatrix [
 { #category : #'API - path settings' }
 AeCairoContext >> miterLimit: aNumber [
 
-	self ffiCall: #( void cairo_set_miter_limit (
-		self,
-      double aNumber ) )
+	self ffiCall: #(
+		void
+		cairo_set_miter_limit (
+			self,
+			double aNumber ) )
 ]
 
 { #category : #'API - path' }
@@ -764,12 +779,12 @@ AeCairoContext >> rotateByRadians: angle [
 
 { #category : #'API - path' }
 AeCairoContext >> roundedRectangle: aRectangle radii: anArrayOfCornerRadii [
-	"anArrayOfCornerRadii must contain four numbers representing corner radii:
+	"Append the path of a rounded rectangle.
+	
+	anArrayOfCornerRadii must contain four numbers representing corner radii:
 	(topLeft, topRight, bottomRight, bottomLeft)"
 
-	"See: https://www.cairographics.org/cookbook/roundedrectangles/"
-
-	| bound tlR blR brR trR t b l r threeHalvesPi |
+	| bound tlR blR brR trR t b l r |
 
 	bound := (aRectangle width min: aRectangle height) / 2.0.
 	tlR := anArrayOfCornerRadii first min: bound.
@@ -782,72 +797,35 @@ AeCairoContext >> roundedRectangle: aRectangle radii: anArrayOfCornerRadii [
 	l := aRectangle left.
 	r := aRectangle right.
 
-	threeHalvesPi := 3.0 * Float halfPi.
-
 	self
-		arcCenterX: t + tlR
-		centerY: l + tlR
-		radius: tlR
-		startAngle: Float pi
-		endAngle: threeHalvesPi.
-
-	self
-		arcCenterX: b - trR
-		centerY: l + trR
-		radius: trR
-		startAngle: threeHalvesPi
-		endAngle: Float twoPi.
-
-	self
-		arcCenterX: b - brR
-		centerY: r - brR
-		radius: brR
-		startAngle: 0.0
-		endAngle: Float halfPi.
-
-	self
-		arcCenterX: t + blR
-		centerY: r - blR
-		radius: blR
-		startAngle: Float halfPi
-		endAngle: Float pi.
-
-	self closePath.
-
+		roundedRectangleLeft: l
+		top: t
+		right: r
+		bottom: b
+		tlRadii: tlR
+		trRadii: trR
+		brRadii: brR
+		blRadii: blR
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> roundedRectangleTo: extentPoint radii: anArrayOfCornerRadii [
-	"anArrayOfCornerRadii must contain four numbers representing corner radii:
-	(topLeft, topRight, bottomRight, bottomLeft)"
+AeCairoContext >> roundedRectangleLeft: l top: t right: r bottom: b tlRadii: tlR trRadii: trR brRadii: brR blRadii: blR [
+	"Append the path of a rounded rectangle.
 
-	"See: https://www.cairographics.org/cookbook/roundedrectangles/"
-
-	| bound tlR blR brR trR b r threeHalvesPi |
-
-	bound := (extentPoint x min: extentPoint y) / 2.0.
-	tlR := anArrayOfCornerRadii first min: bound.
-	trR := anArrayOfCornerRadii second min: bound.
-	brR := anArrayOfCornerRadii third min: bound.
-	blR := anArrayOfCornerRadii fourth min: bound.
-	
-	b := extentPoint y.
-	r := extentPoint x.
-
-	threeHalvesPi := 3.0 * Float halfPi.
+	See: https://www.cairographics.org/cookbook/roundedrectangles/"
 
 	self
-		arcCenterX: tlR
-		centerY: tlR
+		arcCenterX: l + tlR
+		centerY: t + tlR
 		radius: tlR
 		startAngle: Float pi
-		endAngle: threeHalvesPi.
+		endAngle: ThreeHalvesPi.
 
 	self
 		arcCenterX: r - trR
-		centerY: trR
+		centerY: t + trR
 		radius: trR
-		startAngle: threeHalvesPi
+		startAngle: ThreeHalvesPi
 		endAngle: Float twoPi.
 
 	self
@@ -858,14 +836,39 @@ AeCairoContext >> roundedRectangleTo: extentPoint radii: anArrayOfCornerRadii [
 		endAngle: Float halfPi.
 
 	self
-		arcCenterX: blR
+		arcCenterX: l + blR
 		centerY: b - blR
 		radius: blR
 		startAngle: Float halfPi
 		endAngle: Float pi.
 
-	self closePath.
+	self closePath
 
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> roundedRectangleTo: extentPoint radii: anArrayOfCornerRadii [
+	"Append the path of a rounded rectangle.
+	
+	anArrayOfCornerRadii must contain four numbers representing corner radii:
+	(topLeft, topRight, bottomRight, bottomLeft)"
+
+	| bound tlR blR brR trR |
+	bound := (extentPoint x min: extentPoint y) / 2.0.
+	tlR := anArrayOfCornerRadii first min: bound.
+	trR := anArrayOfCornerRadii second min: bound.
+	brR := anArrayOfCornerRadii third min: bound.
+	blR := anArrayOfCornerRadii fourth min: bound.
+
+	self
+		roundedRectangleLeft: 0.0
+		top: 0.0
+		right: extentPoint x
+		bottom: extentPoint y
+		tlRadii: tlR
+		trRadii: trR
+		brRadii: brR
+		blRadii: blR
 ]
 
 { #category : #'API - states' }
@@ -891,7 +894,8 @@ AeCairoContext >> scaleByX: sx y: sy [
 	See: https://www.cairographics.org/manual/cairo-Transformations.html#cairo-scale"
 
 	self ffiCall: #(
-		void cairo_scale (
+		void
+		cairo_scale (
 			self,
 			double sx,
 			double sy ) )
@@ -924,7 +928,7 @@ AeCairoContext >> setOperatorClear [
 	
 	See https://www.cairographics.org/operators/"
 	
-	^ self operator: AeCairoCompositionOp CAIRO_OPERATOR_CLEAR
+	self operator: AeCairoCompositionOp CAIRO_OPERATOR_CLEAR
 ]
 
 { #category : #'API - compositing' }
@@ -933,7 +937,7 @@ AeCairoContext >> setOperatorOver [
 
 	See https://www.cairographics.org/operators/"
 	
-	^ self operator: AeCairoCompositionOp CAIRO_OPERATOR_OVER
+	self operator: AeCairoCompositionOp CAIRO_OPERATOR_OVER
 ]
 
 { #category : #'API - compositing' }
@@ -942,7 +946,7 @@ AeCairoContext >> setOperatorSource [
 
 	See https://www.cairographics.org/operators/"
 	
-	^ self operator: AeCairoCompositionOp CAIRO_OPERATOR_SOURCE
+	self operator: AeCairoCompositionOp CAIRO_OPERATOR_SOURCE
 ]
 
 { #category : #'API - text' }
@@ -1059,9 +1063,11 @@ AeCairoContext >> surface [
 { #category : #'API - path settings' }
 AeCairoContext >> tolerance: aNumber [ 
 
-	self ffiCall: #( void cairo_set_tolerance (
-		self,
-      double aNumber ) )
+	self ffiCall: #(
+		void
+		cairo_set_tolerance (
+			self,
+			double aNumber ) )
 ]
 
 { #category : #'API - matrix' }
@@ -1075,7 +1081,7 @@ AeCairoContext >> transformWith: aCairoMatrix [
 		void
 		cairo_transform (
 			self,
-			AeCairoMatrix *aCairoMatrix) )
+			AeCairoMatrix *aCairoMatrix ) )
 ]
 
 { #category : #'API - matrix' }
