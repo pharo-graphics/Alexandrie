@@ -847,6 +847,31 @@ AeCairoContext >> roundedRectangleLeft: l top: t right: r bottom: b tlRadii: tlR
 ]
 
 { #category : #'API - path' }
+AeCairoContext >> roundedRectangleOrigin: origin extent: extent radii: radiiArray [
+	"Append the path of a rounded rectangle.
+	
+	anArrayOfCornerRadii must contain four numbers representing corner radii:
+	(topLeft, topRight, bottomRight, bottomLeft)"
+
+	| bound tlR blR brR trR |
+	bound := (extent x min: extent y) / 2.0.
+	tlR := radiiArray first min: bound.
+	trR := radiiArray second min: bound.
+	brR := radiiArray third min: bound.
+	blR := radiiArray fourth min: bound.
+
+	self
+		roundedRectangleLeft: origin x
+		top: origin y
+		right: extent x
+		bottom: extent y
+		tlRadii: tlR
+		trRadii: trR
+		brRadii: brR
+		blRadii: blR
+]
+
+{ #category : #'API - path' }
 AeCairoContext >> roundedRectangleTo: extentPoint radii: anArrayOfCornerRadii [
 	"Append the path of a rounded rectangle.
 	
