@@ -6,9 +6,9 @@ I am a canvas to render geometrical figures on a Cairo surface.
 To draw a figure, prepare the canvas using `set*` methods in the API protocol,
 using this order:
 
-1. set up background
-2. set up border and outskirts
-3. set up path
+1. set up path
+2. set up background
+3. set up border and outskirts
 4. send a variant of `drawFigure*`
 
 Note: Background MUST be set BEFORE border.
@@ -42,8 +42,6 @@ Class {
 		'textExtents',
 		'borderBlock',
 		'figureBlock',
-		'hasJoins',
-		'hasCaps',
 		'dashesCache',
 		'shouldClipAfterDrawingFigure',
 		'borderPathBlock'
@@ -77,7 +75,18 @@ AeCanvas >> asForm [
 	^ cairoSurface asForm
 ]
 
-{ #category : #API }
+{ #category : #'API - border' }
+AeCanvas >> borderPathFactory: aUnaryBlock [
+	"Establish how to draw the path.
+	
+	The block closure receives an instance of AeCairoContext to build the geometric
+	path. The block must only send messages in the 'API - path' protocol of AeCairoContext.
+	This is, only the bindings of: https://www.cairographics.org/manual/cairo-Paths.html"
+
+	borderPathBlock := aUnaryBlock
+]
+
+{ #category : #'API - painting' }
 AeCanvas >> clear: aColor [
 	"Clear the surface with a color."
 
@@ -88,88 +97,27 @@ AeCanvas >> clear: aColor [
 		a: aColor alpha
 ]
 
-{ #category : #API }
+{ #category : #'API - painting' }
 AeCanvas >> clearTransparent [
 	"Clear the surface with transparent color."
 
 	cairoContext clearTransparent
 ]
 
-{ #category : #API }
-AeCanvas >> drawClosedCurvedPathWith: aUnaryBlock [
-	"Establish how to draw the path of the figure.
-	The block closure receives an instance of AeCairoContext to build the geometric
-	path. It is expected to utilize the path drawing API (bindings of
-	https://www.cairographics.org/manual/cairo-Paths.html)"
-
-	self
-		setPathWith: aUnaryBlock
-		nilOrBorderPathWith: nil
-		hasJoins: false
-		hasCaps: false
-
-]
-
-{ #category : #API }
-AeCanvas >> drawClosedCurvedPathWith: aUnaryBlock borderPathWith: anotherUnaryBlock [
-	"Establish how to draw the path of the figure.
-	The block closure receives an instance of AeCairoContext to build the geometric
-	path. It is expected to utilize the path drawing API (bindings of
-	https://www.cairographics.org/manual/cairo-Paths.html)"
-
-	self
-		setPathWith: aUnaryBlock
-		nilOrBorderPathWith: anotherUnaryBlock
-		hasJoins: false
-		hasCaps: false
-
-]
-
-{ #category : #API }
-AeCanvas >> drawClosedPathWith: aUnaryBlock [
-
-	"Establish how to draw the path of the figure.
-	The block closure receives an instance of AeCairoContext to build the geometric
-	path. It is expected to utilize the path drawing API (bindings of
-	https://www.cairographics.org/manual/cairo-Paths.html)"
-
-	self
-		setPathWith: aUnaryBlock
-		nilOrBorderPathWith: nil
-		hasJoins: true
-		hasCaps: false
-]
-
-{ #category : #API }
-AeCanvas >> drawClosedPathWith: aUnaryBlock borderPathWith: anotherUnaryBlock [
-
-	"Establish how to draw the path of the figure.
-	The block closure receives an instance of AeCairoContext to build the geometric
-	path. It is expected to utilize the path drawing API (bindings of
-	https://www.cairographics.org/manual/cairo-Paths.html)"
-
-	self
-		setPathWith: aUnaryBlock
-		nilOrBorderPathWith: anotherUnaryBlock
-		hasJoins: true
-		hasCaps: false
-]
-
-{ #category : #API }
+{ #category : #'API - draw' }
 AeCanvas >> drawFigure [
 
-	shouldClipAfterDrawingFigure := false.
-	figureBlock value
+	self drawFigureAndPrepareToClip: false
 ]
 
-{ #category : #API }
+{ #category : #'API - draw' }
 AeCanvas >> drawFigureAndPrepareToClip [
 
 	shouldClipAfterDrawingFigure := true.
 	figureBlock value
 ]
 
-{ #category : #API }
+{ #category : #'API - draw' }
 AeCanvas >> drawFigureAndPrepareToClip: aBoolean [
 
 	shouldClipAfterDrawingFigure := aBoolean.
@@ -408,37 +356,7 @@ AeCanvas >> drawFigureWithExplicitBorderOutsideAndNoBackground [
 
 ]
 
-{ #category : #API }
-AeCanvas >> drawOpenPathWith: aUnaryBlock [
-	"Establish how to draw the path of the figure.
-	The block closure receives an instance of AeCairoContext to build the geometric
-	path. It is expected to utilize the path drawing API (bindings of
-	https://www.cairographics.org/manual/cairo-Paths.html)"
-
-	self
-		setPathWith: aUnaryBlock
-		nilOrBorderPathWith: nil
-		hasJoins: true
-		hasCaps: true
-
-]
-
-{ #category : #API }
-AeCanvas >> drawOpenPathWith: aUnaryBlock borderPathWith: anotherUnaryBlock [
-	"Establish how to draw the path of the figure.
-	The block closure receives an instance of AeCairoContext to build the geometric
-	path. It is expected to utilize the path drawing API (bindings of
-	https://www.cairographics.org/manual/cairo-Paths.html)"
-
-	self
-		setPathWith: aUnaryBlock
-		nilOrBorderPathWith: anotherUnaryBlock
-		hasJoins: true
-		hasCaps: true
-
-]
-
-{ #category : #text }
+{ #category : #'API - text' }
 AeCanvas >> drawText: aeGlyphArray font: aScaledFont [
 
 	cairoContext
@@ -452,7 +370,7 @@ AeCanvas >> extent [
 	^ cairoSurface extent
 ]
 
-{ #category : #rendering }
+{ #category : #'API - state' }
 AeCanvas >> flush [
 
 	cairoSurface flush
@@ -495,13 +413,13 @@ AeCanvas >> initializeWith: aeCairoSurface [
 
 ]
 
-{ #category : #API }
+{ #category : #'API - painting' }
 AeCanvas >> maskGroupWith: aBlockClosure [
 
 	cairoContext maskGroupWith: aBlockClosure
 ]
 
-{ #category : #text }
+{ #category : #'API - text' }
 AeCanvas >> metricsFor: aCairoGlyphsArray font: aCairoScaledFont [
 	"Return a AeCairoTextMetrics font metrics for the given glyphs and font"
 
@@ -525,13 +443,13 @@ AeCanvas >> metricsFor: aCairoGlyphsArray font: aCairoScaledFont [
 	^ textMetrics
 ]
 
-{ #category : #API }
+{ #category : #'API - painting' }
 AeCanvas >> paintGroupWith: aBlock [
 
 	cairoContext paintGroupWith: aBlock
 ]
 
-{ #category : #API }
+{ #category : #'API - painting' }
 AeCanvas >> paintGroupWith: aBlock alpha: aNumber [
 
 	cairoContext paintGroupWith: aBlock alpha: aNumber
@@ -545,20 +463,32 @@ AeCanvas >> paintWithBackgroundAlpha [
 		ifFalse: [ cairoContext paint ]
 ]
 
-{ #category : #API }
+{ #category : #'API - background' }
+AeCanvas >> pathFactory: aUnaryBlock [
+	"Establish how to draw the backgroudn and the border path.
+	
+	The block closure receives an instance of AeCairoContext to build the geometric
+	path. The block must only send messages in the 'API - path' protocol of AeCairoContext.
+	This is, only the bindings of: https://www.cairographics.org/manual/cairo-Paths.html"
+
+	pathBlock := aUnaryBlock.
+	borderPathBlock := nil.
+]
+
+{ #category : #'API - transformations' }
 AeCanvas >> pathScale: aPoint [
 
 	cairoContext scaleBy: aPoint
 ]
 
-{ #category : #API }
+{ #category : #'API - transformations' }
 AeCanvas >> pathTransform: aeCairoMatrix [
 
 	aeCairoMatrix isIdentity ifTrue: [ ^self ].
 	cairoContext transformWith: aeCairoMatrix
 ]
 
-{ #category : #API }
+{ #category : #'API - transformations' }
 AeCanvas >> pathTranslate: aPoint [
 
 	aPoint isZero ifTrue: [ ^self ].
@@ -575,16 +505,6 @@ AeCanvas >> prepareBorderPath [
 AeCanvas >> preparePath [
 
 	pathBlock value: cairoContext
-]
-
-{ #category : #private }
-AeCanvas >> prepareStrokeDoubleWidth: aBoolean [
-
-	borderBlock value.
-
-	aBoolean ifTrue:[ borderWidth := borderWidth * 2.0 ].	
-	cairoContext lineWidth: borderWidth.
-
 ]
 
 { #category : #private }
@@ -611,7 +531,7 @@ AeCanvas >> privateAeCairoContext [
 	^ cairoContext
 ]
 
-{ #category : #API }
+{ #category : #'API - state' }
 AeCanvas >> restoreContextAfter: aBlock [
 
 	cairoContext restoreStateAfter: aBlock
@@ -626,7 +546,7 @@ AeCanvas >> restoreContextIfShouldntClipAfter: aBlock [
 
 ]
 
-{ #category : #text }
+{ #category : #'API - text' }
 AeCanvas >> scaledFontForFace: aFTFace size: pointSize [
 	"Answer a `AeCairoScaledFont` that corresponds to the provided face and point size."
 
@@ -640,14 +560,14 @@ AeCanvas >> scaledFontForFace: aFTFace size: pointSize [
 		options: fontOptions
 ]
 
-{ #category : #API }
+{ #category : #'API - background' }
 AeCanvas >> setBackgroundOff [
 
 	hasBackground := false.
 
 ]
 
-{ #category : #API }
+{ #category : #'API - background' }
 AeCanvas >> setBackgroundWith: aBlock [
 	"Set the block that sets background. The alpha will be 1.0."
 
@@ -656,7 +576,7 @@ AeCanvas >> setBackgroundWith: aBlock [
 	backgroundSourceBlock := aBlock
 ]
 
-{ #category : #API }
+{ #category : #'API - background' }
 AeCanvas >> setBackgroundWith: aBlock alpha: aDouble [
 	"Set the block that sets background with a given alpha.
 
@@ -667,7 +587,7 @@ AeCanvas >> setBackgroundWith: aBlock alpha: aDouble [
 	backgroundSourceBlock := aBlock
 ]
 
-{ #category : #API }
+{ #category : #'API - background' }
 AeCanvas >> setBackgroundWithForm: aForm alpha: aDouble [
 
 	self
@@ -679,13 +599,13 @@ AeCanvas >> setBackgroundWithForm: aForm alpha: aDouble [
 
 ]
 
-{ #category : #API }
+{ #category : #'API - border' }
 AeCanvas >> setBorderBlock: aBlockClosure [
 
 	borderBlock := aBlockClosure
 ]
 
-{ #category : #API }
+{ #category : #'API - border' }
 AeCanvas >> setBorderOff [
 
 	figureBlock := [
@@ -694,33 +614,35 @@ AeCanvas >> setBorderOff [
 			ifFalse: [ "Nothing to do" ] ]
 ]
 
-{ #category : #API }
+{ #category : #'API - border' }
 AeCanvas >> setBorderWidth: aDouble [
 
 	borderWidth := aDouble
 
 ]
 
-{ #category : #API }
+{ #category : #'API - border' }
 AeCanvas >> setCapButt [
+	"Note: it's the default in Cairo.
 
-	"Do nothing as it's the default in Cairo"
-	"https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-cap"
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-cap"
+
+	cairoContext lineCap: AeCairoCapStyle CAIRO_LINE_CAP_BUTT
 ]
 
-{ #category : #API }
+{ #category : #'API - border' }
 AeCanvas >> setCapRound [
 	
 	cairoContext lineCap: AeCairoCapStyle CAIRO_LINE_CAP_ROUND
 ]
 
-{ #category : #API }
+{ #category : #'API - border' }
 AeCanvas >> setCapSquare [
 	
 	cairoContext lineCap: AeCairoCapStyle CAIRO_LINE_CAP_SQUARE
 ]
 
-{ #category : #API }
+{ #category : #'API - border' }
 AeCanvas >> setDashes: dashArray offset: dashOffset [ 
 	"Set the dashes and offset for the figure's stroke. Don't send this message to draw a figure without dashes.
 	
@@ -761,43 +683,29 @@ AeCanvas >> setHighQualityOptions [
 
 ]
 
-{ #category : #API }
+{ #category : #'API - border' }
 AeCanvas >> setJoinBevel [
 
 	cairoContext lineJoin: AeCairoJoinStyle CAIRO_LINE_JOIN_BEVEL
 ]
 
-{ #category : #API }
+{ #category : #'API - border' }
 AeCanvas >> setJoinMiter: limit [
 	
-	"No need to set miter join as it's the default in Cairo"
+	"Hint: there may be NO need to set miter join as it's the default in Cairo"
 	"https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-join"
+	cairoContext lineJoin: AeCairoJoinStyle CAIRO_LINE_JOIN_MITER.
 	
-	"But we might need to set the miter limit if it's not the default"
+	"We might NOT need to set the miter limit if it's 10.0, the default"
 	"https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-miter-limit"
-	limit = 10.0 ifFalse: [ 
-		cairoContext miterLimit: limit ]
+	cairoContext miterLimit: limit
 
 ]
 
-{ #category : #API }
+{ #category : #'API - border' }
 AeCanvas >> setJoinRound [
 
 	cairoContext lineJoin: AeCairoJoinStyle CAIRO_LINE_JOIN_ROUND
-]
-
-{ #category : #API }
-AeCanvas >> setLineCapBlock: aFullBlockClosure [ 
-	"Set the block that sets the line cap, if geometry is open."
-	
-	hasCaps ifTrue: aFullBlockClosure
-]
-
-{ #category : #API }
-AeCanvas >> setLineJoinBlock: aFullBlockClosure [ 
-	"Set the block that will be valued if geometry has joins."
-	
-	hasJoins ifTrue: aFullBlockClosure
 ]
 
 { #category : #initialization }
@@ -816,7 +724,7 @@ AeCanvas >> setLowQualityOptions [
 
 ]
 
-{ #category : #API }
+{ #category : #'API - border' }
 AeCanvas >> setOutskirtsCentered [
 
 	figureBlock := [
@@ -825,7 +733,7 @@ AeCanvas >> setOutskirtsCentered [
 			ifFalse: [ self drawFigureWithBorderCenterAndNoBackground ] ]
 ]
 
-{ #category : #API }
+{ #category : #'API - border' }
 AeCanvas >> setOutskirtsInside [
 
 	figureBlock := [
@@ -850,7 +758,7 @@ AeCanvas >> setOutskirtsInside [
 
 ]
 
-{ #category : #API }
+{ #category : #'API - border' }
 AeCanvas >> setOutskirtsOutside [
 
 	figureBlock := [
@@ -877,32 +785,16 @@ AeCanvas >> setOutskirtsOutside [
 
 ]
 
-{ #category : #API }
-AeCanvas >> setPathWith: aUnaryBlock nilOrBorderPathWith: anotherUnaryBlock hasJoins: hasJoinsBoolean hasCaps: hasCapsBoolean [ 
-	"Establish how to draw the path and some properties that serve to optimize.
-	
-	The block closure receives an instance of AeCairoContext to build the geometric
-	path. The block must only send messages in the 'API - path' protocol of AeCairoContext.
-	This is, only the bindings of: https://www.cairographics.org/manual/cairo-Paths.html"
-
-	pathBlock := aUnaryBlock.
-	borderPathBlock := anotherUnaryBlock.
-	hasJoins := hasJoinsBoolean.
-	hasCaps := hasCapsBoolean.
-
-]
-
-{ #category : #private }
+{ #category : #'API - source' }
 AeCanvas >> setSourceColor: aColor [
-
-	"TODO: The default source pattern is opaque black, (that is, it is equivalent to cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 1.0))."
+	"Note: The default source pattern is opaque black, (that is, it is equivalent to cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 1.0))."
 
 	aColor isTranslucent
 		ifTrue: [ self setSourceTranslucentColor: aColor ]
 		ifFalse: [ self setSourceSolidColor: aColor ]
 ]
 
-{ #category : #API }
+{ #category : #'API - source' }
 AeCanvas >> setSourceLinearPatternStops: aCollection start: startPoint end: endPoint [
 	
 	| aPattern |
@@ -913,7 +805,7 @@ AeCanvas >> setSourceLinearPatternStops: aCollection start: startPoint end: endP
 	cairoContext source: aPattern.
 ]
 
-{ #category : #API }
+{ #category : #'API - source' }
 AeCanvas >> setSourceRadialPatternStops: aCollection center: aPoint radius: aNumber [
 	
 	| aPattern |
@@ -929,7 +821,7 @@ AeCanvas >> setSourceRadialPatternStops: aCollection center: aPoint radius: aNum
 	cairoContext source: aPattern.
 ]
 
-{ #category : #private }
+{ #category : #'API - source' }
 AeCanvas >> setSourceSolidColor: aColor [
 
 	cairoContext
@@ -938,14 +830,14 @@ AeCanvas >> setSourceSolidColor: aColor [
 		b: aColor blue
 ]
 
-{ #category : #private }
+{ #category : #'API - source' }
 AeCanvas >> setSourceTranslucentColor: aColor [
 
 	cairoContext sourceColorRGBA: aColor
 
 ]
 
-{ #category : #text }
+{ #category : #'API - text' }
 AeCanvas >> textExtentsFor: aeGlyphsArray scaledFont: aeScaledFont do: aUnaryBlockClosure [
 	"Evaluate a block closure with an instance of AeCairoTextExtents which holds
 	the metrics of the fiven glyph array and scaled font.

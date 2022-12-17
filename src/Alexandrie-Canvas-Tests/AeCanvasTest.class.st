@@ -76,21 +76,15 @@ AeCanvasTest >> renderArbitraryFigure [
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 50 asPoint.
 
+	aeCanvas pathFactory: [ :cairoContext |
+		cairoContext
+			rectangle: (0 asPoint extent: 20 asPoint);
+			circleRadius: 20 ].
+
 	aeCanvas setBackgroundWith: [
 		aeCanvas setSourceColor: Color blue ].
 	aeCanvas setBorderOff.
-
-	aeCanvas
-		setPathWith: [ :cairoContext |
-			cairoContext
-				rectangle: (0 asPoint extent: 20 asPoint);
-				circleRadius: 20 ]
-		nilOrBorderPathWith: nil
-		hasJoins: true
-		hasCaps: true.
-
 	aeCanvas drawFigure.
-
 
 	^ aeCanvas
 ]
@@ -111,6 +105,9 @@ AeCanvasTest >> renderBackgroundAlpha: backgroundAlpha hasBorder: hasBorder outs
 				pathTranslate: referenceExtent / -10;
 				pathScale: 0.75 asPoint.
 
+			aeCanvas pathFactory: [ :cairoContext |
+				cairoContext circleRadius: referenceExtent x / 2 ].
+
 			aeCanvas
 				setBackgroundWith: [
 					aeCanvas setSourceColor: 
@@ -122,13 +119,13 @@ AeCanvasTest >> renderBackgroundAlpha: backgroundAlpha hasBorder: hasBorder outs
 			hasBorder
 				ifTrue: [ 
 					aeCanvas setBorderBlock: [
-						aeCanvas setSourceColor: Color black.
-						aeCanvas setBorderWidth: referenceExtent x / 10 ].
+						aeCanvas
+							setSourceColor: Color black;
+							"setCapButt; setJoinRound;
+								--> Redundant: both are defaults"
+							setBorderWidth: referenceExtent x / 10 ].
 					aeCanvas perform: outskirtsSelector ]
 				ifFalse: [ aeCanvas setBorderOff ].
-
-			aeCanvas drawClosedCurvedPathWith: [ :cairoContext |
-				cairoContext circleRadius: referenceExtent x / 2 ].
 
 			aeCanvas drawFigureAndPrepareToClip: depth odd.
 				
@@ -261,22 +258,22 @@ AeCanvasTest >> renderClippedFigures [
 
 	"Draw container figure (a rectangle)"
 	aeCanvas pathTranslate: 10 asPoint.
+	aeCanvas pathFactory: [ :cairoContext |
+		cairoContext rectangleTo: 30 asPoint ].
 	aeCanvas setBackgroundWith: [
 		aeCanvas setSourceColor: Color blue ].
 	aeCanvas setBorderOff.
-	aeCanvas drawClosedPathWith: [ :cairoContext |
-		cairoContext rectangleTo: 30 asPoint ].
 
 	"Key message for this test"
 	aeCanvas drawFigureAndPrepareToClip.
 
 	"Draw a child circle that is clipped by the parent rectangle."
 	aeCanvas pathTranslate: 15 asPoint.
+	aeCanvas pathFactory: [ :cairoContext |
+		cairoContext circleRadius: 15 ].
 	aeCanvas setBackgroundWith: [
 		aeCanvas setSourceColor: Color orange ].
 	aeCanvas setBorderOff.
-	aeCanvas drawClosedCurvedPathWith: [ :cairoContext |
-		cairoContext circleRadius: 15 ].
 	aeCanvas drawFigure.
 
 	^ aeCanvas
@@ -288,15 +285,13 @@ AeCanvasTest >> renderClosedFigure [
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 50 asPoint.
 
+	aeCanvas pathFactory: [ :cairoContext |
+		cairoContext rectangle: (10 asPoint extent: 20 asPoint) ].
+
 	aeCanvas setBackgroundWith: [
 		aeCanvas setSourceColor: Color blue ].
 	aeCanvas setBorderOff.
-
-	aeCanvas drawClosedPathWith: [ :cairoContext |
-		cairoContext rectangle: (10 asPoint extent: 20 asPoint) ].
-
 	aeCanvas drawFigure.
-
 
 	^ aeCanvas
 ]
@@ -307,15 +302,13 @@ AeCanvasTest >> renderCurvedFigure [
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 50 asPoint.
 
+	aeCanvas pathFactory: [ :cairoContext |
+		cairoContext circleRadius: 25 ].
+
 	aeCanvas setBackgroundWith: [
 		aeCanvas setSourceColor: Color blue ].
 	aeCanvas setBorderOff.
-
-	aeCanvas drawClosedCurvedPathWith: [ :cairoContext |
-		cairoContext circleRadius: 25 ].
-
 	aeCanvas drawFigure.
-
 
 	^ aeCanvas
 ]
@@ -352,18 +345,16 @@ AeCanvasTest >> renderForm [
 	
 	aForm := Smalltalk ui icons iconNamed: #pharoBig.
 
+	aeCanvas pathScale: (aeCanvas extent / aForm extent) asFloatPoint.
+	aeCanvas pathFactory: [ :cairoContext |
+		"Tip: Use another path to clip the form"
+		cairoContext rectangleTo: aForm extent ].
+
 	aeCanvas
 		setBackgroundWithForm: aForm
 		alpha: 1.0.
 	aeCanvas setBorderOff.
-
-	aeCanvas pathScale: (aeCanvas extent / aForm extent) asFloatPoint.
-	aeCanvas drawClosedPathWith: [ :cairoContext |
-		"Tip: Use another path to clip the form"
-		cairoContext rectangleTo: aForm extent ].
-
 	aeCanvas drawFigure.
-
 
 	^ aeCanvas
 ]
@@ -379,20 +370,19 @@ AeCanvasTest >> renderGlyphs: aCairoGlyphsArray scaledFont: aCairoScaledFont on:
 
 	"Draw baseline"
 	aeCanvas restoreContextAfter: [
-		aeCanvas setBackgroundOff.
-		aeCanvas setOutskirtsCentered.
-
-		aeCanvas setBorderBlock: [
-			aeCanvas setSourceColor: Color gray.
-			aeCanvas setDashes: #(1 1) offset: 0.
-			aeCanvas setBorderWidth: 1 ].
-
-		aeCanvas drawOpenPathWith: [ :cairoContext |
-			cairoContext
-				moveTo: baseline;
-				relativeLineToX: metrics advanceX y: 0 ].
-
-		aeCanvas drawFigure ].
+		aeCanvas
+			pathFactory: [ :cairoContext |
+				cairoContext
+					moveTo: baseline;
+					relativeLineToX: metrics advanceX y: 0 ];
+			setBackgroundOff;
+			setOutskirtsCentered;
+			setBorderBlock: [
+				aeCanvas
+					setSourceColor: Color gray;
+					setDashes: #(1 1) offset: 0;
+					setBorderWidth: 1 ];
+			drawFigure ].
 
 	"Draw the glyphs"
 	aeCanvas
@@ -466,24 +456,28 @@ AeCanvasTest >> renderOpenFigure [
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 50 asPoint.
 
-	"Background and other outskirts than centered are an option but
-	they do not look well on open figures."
-	aeCanvas setBackgroundOff.
-	aeCanvas setOutskirtsCentered.
-
-	aeCanvas setBorderBlock: [
-		aeCanvas setSourceColor: Color red.
-		aeCanvas setDashes: #(4 6) offset: 2.
-		aeCanvas setLineJoinBlock: [ aeCanvas setJoinRound ].
-		aeCanvas setLineCapBlock: [ aeCanvas setCapSquare ].
-		aeCanvas setBorderWidth: 4 ].
-
-	aeCanvas drawOpenPathWith: [ :cairoContext |
+	"Set line path"
+	aeCanvas pathFactory: [ :cairoContext |
 		cairoContext
 			moveTo: 20@10;
 			lineTo: 30@40 ].
 
-	aeCanvas drawFigure.
+	"Background and other outskirts than centered are an option but
+	they do not look well on open figures."
+	aeCanvas
+		setBackgroundOff;
+		setOutskirtsCentered.
+
+	"Finally, customize stroke options and draw the line"
+	aeCanvas
+		setBorderBlock: [
+			aeCanvas
+				setSourceColor: Color red;
+				setDashes: #(4 6) offset: 2;
+				setJoinRound; "A line has no joins, anyway"
+				setCapSquare;
+				setBorderWidth: 4 ];
+		drawFigure.
 
 	^ aeCanvas
 ]
