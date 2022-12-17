@@ -130,6 +130,8 @@ AeCairoImageSurface >> asAlphaChannelGrayscaleImage [
 		
 	aContext := colorSurface newContext.
 	aContext
+		sourceColorRGB: Color white;
+		paint;
 		sourceColorRGB: Color black;
 	 	maskSurface: self x: 0 y: 0.
 
