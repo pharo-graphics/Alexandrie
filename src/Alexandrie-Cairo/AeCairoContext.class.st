@@ -114,6 +114,19 @@ AeCairoContext >> arcNegativeCenterX: centerX centerY: centerY radius: aRadius s
 ]
 
 { #category : #'API - path' }
+AeCairoContext >> beginSubPath [
+	"Begin a new sub-path. Note that the existing path is not affected. After this call there will be no current point.
+
+	In many cases, this call is not needed since new sub-paths are frequently started with `cairo_move_to()`.
+
+	A call to `cairo_new_sub_path()` is particularly useful when beginning a new sub-path with one of the `cairo_arc()` calls. This makes things easier as it is no longer necessary to manually compute the arc's initial coordinates for a call to `cairo_move_to()`.
+
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-new-sub-path"
+
+	self ffiCall: #( void cairo_new_sub_path ( self ) )
+]
+
+{ #category : #'API - path' }
 AeCairoContext >> circleCenterX: x y: y radius: radius [
 
 	self
@@ -746,7 +759,9 @@ AeCairoContext >> resetClip [
 
 { #category : #'API - path' }
 AeCairoContext >> resetPath [
-	"See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-new-path"
+	"Clears the current path. After this call there will be no path and no current point.
+	
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-new-path"
 
 	self ffiCall: #( void cairo_new_path ( self ) )
 ]

@@ -564,3 +564,53 @@ AeCairoRenderTest >> surfaceWithGroupUnaligned [
 		
 	^ aSurface
 ]
+
+{ #category : #tests }
+AeCairoRenderTest >> surfaceWithOutsideClipping [
+	"Clipping Outside A Region 
+	
+	Based on: https://www.cairographics.org/cookbook/outside_clipping/"
+
+	| surfaceSize aSurface aContext size |
+	size := 30.
+	surfaceSize := size @ size.
+	aSurface := self newSurfaceExtent: surfaceSize.
+	aContext := aSurface newContext.
+
+	aContext
+		operator: AeCairoCompositionOp CAIRO_OPERATOR_SOURCE;
+		sourceColorRGB: Color white;
+		paint.
+
+	"Do two drawing passes, once clipped inside the region, then clipped outside.
+	Because of the clipping, the second pass does not overwrite the first."
+	{ false. true } do: [ :isOutside |
+		aContext
+			resetClip;
+			resetPath;
+			arcCenterX: size / 2.0
+				centerY: size / 2.0
+				radius: size / 4.0
+				startAngle: 0
+				endAngle: Float twoPi.
+		isOutside ifTrue: [ 
+			aContext
+				beginSubPath;
+				moveToX: size y: 0;
+				lineToX: 0 y: 0;
+				lineToX: 0 y: size;
+				lineToX: size y: size;
+				closePath ].
+		aContext clip.
+		aContext sourceColorRGB: (isOutside
+			ifTrue: [ Color orange ]
+			ifFalse: [Color green darker ]).
+		aContext
+			rectangleX: 0
+				y: size / 4.0
+				width: size
+				height: size / 2.0;
+			fill ].
+
+	^ aSurface
+]
