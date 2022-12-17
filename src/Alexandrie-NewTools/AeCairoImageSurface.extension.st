@@ -5,6 +5,6 @@ AeCairoImageSurface >> inspectionAsForm: aBuilder [
 	<inspectorPresentationOrder: 1 title: 'Form'>
 	
 	^ aBuilder newMorph
-		morph: self asForm asMorph;
+		morph: (AePollingImageMorph new model: self; yourself);
 		yourself
 ]
