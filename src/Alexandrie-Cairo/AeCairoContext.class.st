@@ -477,16 +477,22 @@ AeCairoContext >> maskGroupWith: aBlockClosure [
 ]
 
 { #category : #'API - clipping' }
-AeCairoContext >> maskSurface: aSurface x: x y: y [
-	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-mask-surface"
+AeCairoContext >> maskSurface: aSurface x: surfaceX y: surfaceY [
+	"A drawing operator that paints the current source using the alpha channel of surface as a mask. (Opaque areas of surface are painted with the source, transparent areas are not painted.)
+	
+	Parameters:
+	- surfaceX X coordinate at which to place the origin of surface
+	- surfaceY: Y coordinate at which to place the origin of surface 
+
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-mask-surface"
 
 	^ self ffiCall: #(
 		void
 		cairo_mask_surface (
 			self,
 			AeCairoSurface aSurface,
-			double x
-			double y ) )
+			double surfaceX,
+			double surfaceY ) )
 ]
 
 { #category : #'API - matrix' }
