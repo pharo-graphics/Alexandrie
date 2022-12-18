@@ -319,6 +319,21 @@ AeCairoContext >> fillPreserve [
 ]
 
 { #category : #'API - path' }
+AeCairoContext >> fillRule: aCairoFillRule [ 
+	"Set the current fill rule within the cairo context. The fill rule is used to determine which regions are inside or outside a complex (potentially self-intersecting) path. The current fill rule affects both `cairo_fill()` and `cairo_clip()`.
+
+	The default fill rule is `CAIRO_FILL_RULE_WINDING`.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-fill-rule"
+
+	self ffiCall: #(
+		void
+		cairo_set_fill_rule (
+			self,
+			AeCairoFillRule aCairoFillRule ) )
+]
+
+{ #category : #'API - path' }
 AeCairoContext >> getExtentsIntoLeft: x1 top: y1 right: x2 bottom: y2 [
 
 	self ffiCall: #(
@@ -1173,4 +1188,22 @@ AeCairoContext >> unownedPopGroupAsSurfacePattern [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-pop-group"
 
 	^ self ffiCall: #( AeCairoSurfacePattern cairo_pop_group ( self ) )
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> useFillRuleEvenOdd [
+	"Select even-odd rule to fill paths.
+	
+	Counts the total number of intersections, without regard to the orientation of the contour. If the total number of intersections is odd, the point will be filled."
+
+	self fillRule: AeCairoFillRule CAIRO_FILL_RULE_EVEN_ODD
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> useFillRuleWinding [
+	"Select winding rule to fill paths.
+	
+	If the path crosses the ray from left-to-right, counts +1. If the path crosses the ray from right to left, counts -1. (Left and right are determined from the perspective of looking along the ray from the starting point.) If the total count is non-zero, the point will be filled."
+
+	self fillRule: AeCairoFillRule CAIRO_FILL_RULE_WINDING
 ]

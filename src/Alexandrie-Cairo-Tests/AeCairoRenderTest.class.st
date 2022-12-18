@@ -566,6 +566,35 @@ AeCairoRenderTest >> surfaceWithGroupUnaligned [
 ]
 
 { #category : #tests }
+AeCairoRenderTest >> surfaceWithInvertedClip [
+	"Clip + InvertedClip should be opaque.
+	
+	Note: the original reference PNG in Cairo has a slight difference with the output of this test. Didn't dig more into this.
+	
+	Based on: inverted-clip.c"
+
+	| surfaceSize aSurface aContext |
+	surfaceSize := 100@100.
+	aSurface := self newSurfaceExtent: surfaceSize.
+	aContext := aSurface newContext.
+
+	aContext
+		useFillRuleEvenOdd;
+		sourceColorRGB: Color green;
+		arcCenterX: 50 centerY: 50 radius: 40 startAngle: 0 endAngle: Float twoPi;
+		clipPreserve;
+		paint.
+
+	aContext
+		rectangleX: 0 y: 0 width: 100 height: 100;
+		resetClip;
+		clip;
+		paint.
+
+	^ aSurface
+]
+
+{ #category : #tests }
 AeCairoRenderTest >> surfaceWithOutsideClipping [
 	"Clipping Outside A Region 
 	
