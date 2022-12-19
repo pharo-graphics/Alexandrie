@@ -118,6 +118,25 @@ AeCairoImageSurface class >> unownedNewWithFormat: aSurfaceFormat width: aWidth 
 ]
 
 { #category : #converting }
+AeCairoImageSurface >> asARGB32ImageSurface [
+
+	| colorSurface aContext |
+	colorSurface := self
+		newSimilarImageFormat: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32
+		width: self width 
+		height: self height.
+	colorSurface status ensureIsSuccess.
+		
+	aContext := colorSurface newContext.
+	aContext
+		sourceSurface: self x: 0 y: 0;
+		paint.
+
+	^ colorSurface
+
+]
+
+{ #category : #converting }
 AeCairoImageSurface >> asAlphaChannelGrayscaleImage [
 	"Answer new image surface with my pixels converted to grayscale."
 
@@ -143,10 +162,19 @@ AeCairoImageSurface >> asAlphaChannelGrayscaleImage [
 AeCairoImageSurface >> asForm [
 	"Answer a Form representation of myself."
 
+	"No way to convert to Form if handle is NULL.
+	It would provoke a segmentation fault if sent from an
+	inspector, for example."
+	self getHandle isNull ifTrue: [
+		^ Form extent: 0@0 depth: 32 ].
+	
 	self format = AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32
 		ifTrue: [ ^ self asFormARGB32 ].
+	self format = AeCairoSurfaceFormat CAIRO_FORMAT_RGB24
+		ifTrue: [ ^ self asARGB32ImageSurface asForm ].
 	self format = AeCairoSurfaceFormat CAIRO_FORMAT_A8
 		ifTrue: [ ^ self asFormA8 ].
+
 	self notYetImplemented
 ]
 
