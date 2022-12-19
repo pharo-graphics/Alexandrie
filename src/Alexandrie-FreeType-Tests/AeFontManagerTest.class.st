@@ -78,8 +78,8 @@ AeFontManagerTest >> testGlobalInstance [
 	AeFontManager resetGlobalInstance.
 	aManager := AeFontManager globalInstance.
 	
-	self assert: (aManager familyNames includes: AeSourceSansProRegular familyName).
-	self assert: aManager defaultFace familyName equals: AeSourceSansProRegular familyName.
+	self assert: (aManager familyNames includes: AeSourceSansPro_Regular familyName).
+	self assert: aManager defaultFace familyName equals: AeSourceSansPro_Regular familyName.
 ]
 
 { #category : #tests }
