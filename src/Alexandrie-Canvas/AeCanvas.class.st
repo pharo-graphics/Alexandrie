@@ -15,8 +15,8 @@ Note: Background MUST be set BEFORE border.
 
 ## Special cases:
 
-1. Outside outskirt + translucent color as background: use alpha value as background alpha.
-2. Cap round: use only with center outskirt.
+1. Outside outskirt + translucent color as background: set the alpha value as background alpha.
+2. Cap round: it doesn't work well with certain geometries + an outskirt other than center.
 
 # Nesting figures
 
@@ -361,7 +361,7 @@ AeCanvas >> drawText: aeGlyphArray font: aScaledFont [
 
 	cairoContext
 		scaledFont: aScaledFont;
-		showGlyphs: aeGlyphArray size: aeGlyphArray size
+		showGlyphs: aeGlyphArray
 ]
 
 { #category : #accessing }
