@@ -41,8 +41,9 @@ BaselineOfAlexandrie >> baseline: spec [
 					with: [ spec requires: #('Alexandrie-Canvas' 'Alexandrie-FreeType-Tests' 'Alexandrie-Cairo-Tests') ];
 
 				package: 'Alexandrie-NewTools'
-					with: [ spec requires: #('Alexandrie-Canvas') ]
-
+					with: [ spec requires: #('Alexandrie-Canvas') ];
+				package: 'Alexandrie-NewTools-Tests'
+					with: [ spec requires: #('Alexandrie-NewTools' 'Alexandrie-Canvas-Tests') ]
 			]
 ]
 
