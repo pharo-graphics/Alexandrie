@@ -26,6 +26,116 @@ AeCairoExamplesRenderTest class >> inspectMismatches [
 ]
 
 { #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedBuffered [
+	"Emulate a Gaussian shadow on a circle using a radial gradient, using an intermediate surface."
+
+	| radius shadowSize aShadowSurface aShadowContext aGradient mainSurface  mainContext shadowOffset extent shadowCenter position shadowColor shadowAlpha |
+	radius := 15.
+	shadowOffset := 2 asPoint.
+	shadowSize := 4.
+	position := shadowSize asPoint.
+	extent := (radius + shadowSize) * 2 asPoint + shadowOffset.
+	shadowCenter := position + radius.
+	shadowColor := Color black.
+	shadowAlpha := 0.5.
+
+	aShadowSurface := AeCairoImageSurface
+		extent: (radius + shadowSize) * 2 asPoint
+		format: AeCairoSurfaceFormat CAIRO_FORMAT_A8.
+	aShadowContext := aShadowSurface newContext.
+	aGradient := (AeCairoRadialGradientPattern
+		innerCenter: shadowCenter
+		innerRadius: radius
+		outerCenter: shadowCenter
+		outerRadius: radius + shadowSize)
+			addStopAt: 0.0 color: Color white;
+			addStopAt: 0.2 color: (Color white alpha: 0.5);
+			addStopAt: 1.0 color: Color transparent;
+			yourself.
+	aShadowContext
+		source: aGradient;
+		paint.
+	aShadowSurface status ensureIsSuccess.
+
+
+	mainSurface := AeCairoImageSurface
+		extent: extent
+		format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+	mainContext := mainSurface newContext.
+
+	"draw background"
+	mainContext
+		sourceColorRGB: Color yellow;
+		paint.
+
+	"draw shadow"
+	mainContext
+		sourceColorRGBA: (shadowColor alpha: shadowAlpha);
+		maskSurface: aShadowSurface
+			x: shadowSize - shadowOffset x
+			y: shadowSize - shadowOffset y.
+
+	"draw circle"
+	mainContext
+		translateBy: position;
+		sourceColorRGBA: Color green;
+		circleRadius: radius;
+		fill.
+
+	^ mainSurface
+
+]
+
+{ #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedDirect [
+	"Emulate a Gaussian shadow on a circle using a radial gradient."
+
+	| radius shadowSize aGradient mainSurface  mainContext shadowOffset shadowCenter shadowColor position extent shadowAlpha |
+	radius := 15.
+	shadowOffset := 2 asPoint.
+	shadowSize := 4.
+	position := shadowSize asPoint.
+	extent := (radius + shadowSize) * 2 asPoint + shadowOffset.
+	shadowCenter := position + radius + shadowOffset.
+	shadowColor := Color black.
+	shadowAlpha := 0.5.
+	
+	mainSurface := AeCairoImageSurface
+		extent: extent
+		format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+	mainContext := mainSurface newContext.
+
+	"draw background"
+	mainContext
+		sourceColorRGB: Color yellow;
+		paint.
+
+	"draw shadow"
+	aGradient := (AeCairoRadialGradientPattern
+		innerCenter: shadowCenter
+		innerRadius: radius
+		outerCenter: shadowCenter
+		outerRadius: radius + shadowSize)
+			addStopAt: 0.0 color: shadowColor;
+			addStopAt: 0.2 color: (shadowColor alpha: 0.5);
+			addStopAt: 1.0 color: Color transparent;
+			yourself.
+	mainContext
+		source: aGradient;
+		paintWithAlpha: shadowAlpha.
+
+	"draw circle"
+	mainContext
+		translateBy: position;
+		sourceColorRGBA: Color green;
+		circleRadius: radius;
+		fill.
+
+	^ mainSurface
+
+]
+
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithText [
 
 	| fontSize string surfaceSize aSurface aContext aFTFace aFontFace aScaledFont aGlyphArray |
