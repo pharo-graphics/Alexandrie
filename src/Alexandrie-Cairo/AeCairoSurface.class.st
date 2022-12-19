@@ -83,6 +83,17 @@ Note that the scale affects drawing to the surface as well as using the surface 
 			double yScale ) )
 ]
 
+{ #category : #initialization }
+AeCairoSurface >> finish [
+	"Finish the surface and drop all references to external resources.
+	
+	When the last call to `cairo_surface_destroy()` decreases the reference count to zero, cairo will call `cairo_surface_finish()` if it hasn't been called already, before freeing the resources associated with the surface.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-finish"
+
+	self ffiCall: #( void cairo_surface_finish ( self ) )
+]
+
 { #category : #'private - ffi' }
 AeCairoSurface >> flush [
 
