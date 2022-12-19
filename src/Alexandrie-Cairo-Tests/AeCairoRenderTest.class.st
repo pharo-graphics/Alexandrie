@@ -10,6 +10,12 @@ AeCairoRenderTest class >> allFormSelectors [
 	^ self selectors select: [ :each | each beginsWith: 'surfaceWith' ]
 ]
 
+{ #category : #testing }
+AeCairoRenderTest class >> isAbstract [
+		
+	^ self == AeCairoRenderTest
+]
+
 { #category : #hooks }
 AeCairoRenderTest >> expectedFormsDirectory [
 
