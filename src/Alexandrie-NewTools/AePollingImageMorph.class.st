@@ -25,13 +25,21 @@ AePollingImageMorph >> initialize [
 { #category : #accessing }
 AePollingImageMorph >> model: anObjectThatRespondsToAsForm [
 	
-	model := anObjectThatRespondsToAsForm
+	model := anObjectThatRespondsToAsForm.
+	self refreshForm.
+]
+
+{ #category : #stepping }
+AePollingImageMorph >> refreshForm [
+	
+	model ifNil: [ ^self ].
+	self form: model asForm
 ]
 
 { #category : #stepping }
 AePollingImageMorph >> step [
-	
-	self form: model asForm
+
+	self refreshForm
 ]
 
 { #category : #stepping }
