@@ -1011,7 +1011,16 @@ AeCairoContext >> setOperatorSource [
 ]
 
 { #category : #'API - text' }
+AeCairoContext >> showGlyphs: aGlyphsArray [
+
+	^ self showGlyphs: aGlyphsArray size: aGlyphsArray size
+]
+
+{ #category : #'API - text' }
 AeCairoContext >> showGlyphs: aGlyphsArray size: aNumberOfGlyphs [
+	"A drawing operator that generates the shape from an array of glyphs, rendered according to the current font face, font size (font matrix), and font options.
+	
+	See: https://www.cairographics.org/manual/cairo-text.html#cairo-show-glyphs"
 
 	self ffiCall: #(
 		void
