@@ -1,5 +1,14 @@
+"
+I implement a Gaussian blur algorithm.
+
+Based on:
+- Explained by Ivan Kuckir in: https://blog.ivank.net/fastest-gaussian-blur.html
+- Implemented in C++: https://github.com/WurmD/LowPass/blob/22c2e6826cc94ad44dd8150da652e34769a8f7e3/LowPassV.cpp
+- Implemented in C#: https://github.com/mdymel/superfastblur/blob/1611c1a8c8a4d08b1f1991aeab7beabce049320a/SuperfastBlur/GaussianBlur.cs
+
+"
 Class {
-	#name : #AeCairoGaussianFilter,
+	#name : #AeCairoA8FastGaussianBlurFilter,
 	#superclass : #Object,
 	#instVars : [
 		'surface',
@@ -7,14 +16,14 @@ Class {
 		'w',
 		'h'
 	],
-	#category : #'Alexandrie-Cairo-Tests'
+	#category : #'Alexandrie-Cairo-Extra'
 }
 
 { #category : #examples }
-AeCairoGaussianFilter class >> example0 [
+AeCairoA8FastGaussianBlurFilter class >> example0 [
 
 	| circleRadius blurRadius margin aSurface aContext f |
-	circleRadius := 100.
+	circleRadius := 200.
 	blurRadius := 10.
 	margin := blurRadius * 2.
 
@@ -27,12 +36,12 @@ AeCairoGaussianFilter class >> example0 [
 	aContext
 		translateByX: margin y: margin;
 		sourceColorRGB: Color black;
-		"circleRadius: circleRadius;"
-		rectangleTo: circleRadius asPoint;
+		circleRadius: circleRadius;
+"		rectangleTo: circleRadius asPoint;"
 		fill.
 	aSurface flush.
 
-	f := AeCairoGaussianFilter new.
+	f := AeCairoA8FastGaussianBlurFilter new.
 
 	[f applyOn: aSurface radius: blurRadius] timeToRun asMilliSeconds traceCr.
 
@@ -40,10 +49,10 @@ AeCairoGaussianFilter class >> example0 [
 ]
 
 { #category : #examples }
-AeCairoGaussianFilter class >> example1 [
+AeCairoA8FastGaussianBlurFilter class >> example1 [
 
 	| circleRadius margin aSurface aContext f surfaces |
-	surfaces := (0 to: 20 "by: 5") collect: [ :blurRadius | 
+	surfaces := (0 to: 20 by: 2) collect: [ :blurRadius | 
 
 		circleRadius := 50.
 		margin := 50.
@@ -62,10 +71,10 @@ AeCairoGaussianFilter class >> example1 [
 			fill.
 		aSurface flush.
 
-		f := AeCairoGaussianFilter new.
+		f := AeCairoA8FastGaussianBlurFilter new.
 
 		
-		[f applyOn: aSurface radius: blurRadius] timeToRun asMilliSeconds.
+		[f applyOn: aSurface radius: blurRadius] timeToRun asMilliSeconds traceCr.
 		aSurface.
 		
 		].
@@ -74,7 +83,7 @@ AeCairoGaussianFilter class >> example1 [
 ]
 
 { #category : #examples }
-AeCairoGaussianFilter class >> example2 [
+AeCairoA8FastGaussianBlurFilter class >> example2 [
 
 	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aFontFace aScaledFont aGlyphArray f mainSurface mainContext |
 	fontSize := 62.
@@ -105,7 +114,7 @@ AeCairoGaussianFilter class >> example2 [
 		scaledFont: aScaledFont;
 		showGlyphs: aGlyphArray.
 
-	f := AeCairoGaussianFilter new.
+	f := AeCairoA8FastGaussianBlurFilter new.
 	[f applyOn: aSurface radius: 4] timeToRun asMilliSeconds traceCr.
 
 
@@ -130,7 +139,7 @@ AeCairoGaussianFilter class >> example2 [
 ]
 
 { #category : #'api - processing' }
-AeCairoGaussianFilter >> applyOn: aSurface radius: aRadius [
+AeCairoA8FastGaussianBlurFilter >> applyOn: aSurface radius: aRadius [
 
 	| buffer1 buffer2 surfaceData |
 	radius := aRadius.
@@ -145,8 +154,8 @@ AeCairoGaussianFilter >> applyOn: aSurface radius: aRadius [
 		fromHandle: surface data getHandle
 		type: FFIUInt8
 		size: surface height * surface stride.
-	buffer1 := ByteArray withAll: surfaceData.    "'542.475 per second'"
-	buffer2 := ByteArray new: buffer1 size.    "'195110.911 per second'"
+	buffer1 := ByteArray withAll: surfaceData. 
+	buffer2 := ByteArray new: buffer1 size.
 
 	self gaussBlurFrom: buffer1 to: buffer2.
 
@@ -155,15 +164,15 @@ AeCairoGaussianFilter >> applyOn: aSurface radius: aRadius [
 ]
 
 { #category : #'api - processing' }
-AeCairoGaussianFilter >> asUint8Rounded: aNumber [
+AeCairoA8FastGaussianBlurFilter >> asUint8Rounded: aNumber [
 
-	aNumber > 254.0 ifTrue: [ ^ 255 ].
-	aNumber < 1.0 ifTrue: [ ^ 0 ].
+	aNumber > 254.5 ifTrue: [ ^ 255 ].
+	aNumber < 0.5 ifTrue: [ ^ 0 ].
 	^ aNumber rounded
 ]
 
 { #category : #'api - processing' }
-AeCairoGaussianFilter >> boxBlurFrom: scl to: tcl s: s [
+AeCairoA8FastGaussianBlurFilter >> boxBlurFrom: scl to: tcl s: s [
 "
 function boxBlur_4 (scl, tcl, w, h, r) {
     for(var i=0; i<scl.length; i++) tcl[i] = scl[i];
@@ -171,8 +180,7 @@ function boxBlur_4 (scl, tcl, w, h, r) {
     boxBlurT_4(scl, tcl, w, h, r);
 }"
 
-	1 to: scl size do: [ :index |
-		tcl at: index put: (scl at: index) ].
+	LibC memCopy: scl to: tcl size: scl size.
 	
 	self
 		boxBlurHFrom: tcl to: scl s: s;
@@ -180,7 +188,7 @@ function boxBlur_4 (scl, tcl, w, h, r) {
 ]
 
 { #category : #'api - processing' }
-AeCairoGaussianFilter >> boxBlurHFrom: scl to: tcl s: r [
+AeCairoA8FastGaussianBlurFilter >> boxBlurHFrom: scl to: tcl s: r [
 "function boxBlurH_4 (scl, tcl, w, h, r) {
     var iarr = 1 / (r+r+1);
     for(var i=0; i<h; i++) {
@@ -194,29 +202,29 @@ AeCairoGaussianFilter >> boxBlurHFrom: scl to: tcl s: r [
 	| iarr |
 	iarr := 1.0 / (r+r+1).
 	
-	0 to: h-1 do: [ :i |
+	0 to: h -1 do: [ :i |
 		| ti li ri fv lv val |
 		ti := i*w. 	li := ti. 	ri := ti+r.
 		
 		fv := scl zeroIndexAt: ti. 		lv := scl zeroIndexAt: (ti+w-1).
 		val := (r+1)*fv.
 
-		0 to: r-1 do: [ :j |
+		0 to: r -1 do: [ :j |
 			val := val + (scl zeroIndexAt: ti+j) ].
 		0 to: r do: [ :j |
-			val := val + (scl zeroIndexAt: ri) - fv. 				ri := ri+1.
+			val := val + (scl zeroIndexAt: ri) - fv. 						ri := ri+1.
 			tcl zeroIndexAt: ti put: (self asUint8Rounded: val*iarr). 	ti := ti+1 ].
 		r+1 to: w-r -1 do: [ :j |
 			val := val + (scl zeroIndexAt: ri) - (scl zeroIndexAt: li). 	ri := ri+1. 		li := li+1.
-			tcl zeroIndexAt: ti put: (self asUint8Rounded: val*iarr).				ti := ti+1 ].
+			tcl zeroIndexAt: ti put: (self asUint8Rounded: val*iarr).		ti := ti+1 ].
 		w-r to: w-1 do: [ :j |
-			val := val + lv - (scl zeroIndexAt: li). 				li := li+1.
+			val := val + lv - (scl zeroIndexAt: li). 						li := li+1.
 			tcl zeroIndexAt: ti put: (self asUint8Rounded: val*iarr). 	ti := ti+1 ]
 		]
 ]
 
 { #category : #'api - processing' }
-AeCairoGaussianFilter >> boxBlurTFrom: scl to: tcl s: r [
+AeCairoA8FastGaussianBlurFilter >> boxBlurTFrom: scl to: tcl s: r [
 "function boxBlurT_4 (scl, tcl, w, h, r) {
     var iarr = 1 / (r+r+1);
     for(var i=0; i<w; i++) {
@@ -230,7 +238,7 @@ AeCairoGaussianFilter >> boxBlurTFrom: scl to: tcl s: r [
 	| iarr |
 	iarr := 1.0 / (r+r+1).
 	
-	0 to: w-1 do: [ :i |
+	0 to: w -1 do: [ :i |
 		| ti li ri fv lv val |
 		ti := i. 		li := ti. 	ri := ti+(r*w).
 		
@@ -241,18 +249,18 @@ AeCairoGaussianFilter >> boxBlurTFrom: scl to: tcl s: r [
 			val := val + (scl zeroIndexAt: ti+(j*w)) ].
 		0 to: r do: [ :j |
 			val := val + (scl zeroIndexAt: ri) - fv.
-			tcl zeroIndexAt: ti put: (self asUint8Rounded: val*iarr). 				ri := ri + w. 	ti := ti + w. ].
+			tcl zeroIndexAt: ti put: (self asUint8Rounded: val*iarr). 			ri := ri + w. 	ti := ti + w. ].
 		r+1 to: h-r -1 do: [ :j |
 			val := val + (scl zeroIndexAt: ri) - (scl zeroIndexAt: li).
-			tcl zeroIndexAt: ti put: (self asUint8Rounded: val*iarr). 				li := li + w. 	ri := ri + w. 	ti := ti + w. ].
+			tcl zeroIndexAt: ti put: (self asUint8Rounded: val*iarr). 			li := li + w. 	ri := ri + w. 	ti := ti + w. ].
 		h-r to: h -1 do: [ :j |
 			val := val + lv - (scl zeroIndexAt: li).
-			tcl zeroIndexAt: ti put: (self asUint8Rounded: val*iarr). 				li := li + w. 	ti := ti + w. ]
+			tcl zeroIndexAt: ti put: (self asUint8Rounded: val*iarr). 			li := li + w. 	ti := ti + w. ]
 		]
 ]
 
 { #category : #'api - processing' }
-AeCairoGaussianFilter >> boxesForGaussSigma: sigma n: n [
+AeCairoA8FastGaussianBlurFilter >> boxesForGaussSigma: sigma n: n [
 	"Parameters: standard deviation, number of boxes"
 
 "function boxesForGauss(sigma, n)  // standard deviation, number of boxes
@@ -286,7 +294,7 @@ AeCairoGaussianFilter >> boxesForGaussSigma: sigma n: n [
 ]
 
 { #category : #'api - processing' }
-AeCairoGaussianFilter >> gaussBlurFrom: scl to: tcl [
+AeCairoA8FastGaussianBlurFilter >> gaussBlurFrom: scl to: tcl [
 
 "function gaussBlur_4 (scl, tcl, w, h, r) {
     var bxs = boxesForGauss(r, 3);
@@ -295,11 +303,11 @@ AeCairoGaussianFilter >> gaussBlurFrom: scl to: tcl [
     boxBlur_4 (scl, tcl, w, h, (bxs[2]-1)/2);
 }"
 
-	| bxs |
-	bxs := self boxesForGaussSigma: radius n: 3.
+	| boxes |
+	boxes := self boxesForGaussSigma: radius n: 3.
 	
-	self boxBlurFrom: scl to: tcl s: (bxs first  - 1) / 2.
-	self boxBlurFrom: tcl to: scl s: (bxs second - 1) / 2.
-	self boxBlurFrom: scl to: tcl s: (bxs third  - 1) / 2.
+	self boxBlurFrom: scl to: tcl s: (boxes first  - 1) / 2.
+	self boxBlurFrom: tcl to: scl s: (boxes second - 1) / 2.
+	self boxBlurFrom: scl to: tcl s: (boxes third  - 1) / 2.
 
 ]
