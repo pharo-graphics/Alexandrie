@@ -14,7 +14,7 @@ Class {
 AeCairoGaussianFilter class >> example0 [
 
 	| circleRadius blurRadius margin aSurface aContext f |
-	circleRadius := 20.
+	circleRadius := 100.
 	blurRadius := 10.
 	margin := blurRadius * 2.
 
@@ -34,9 +34,9 @@ AeCairoGaussianFilter class >> example0 [
 
 	f := AeCairoGaussianFilter new.
 
-	[f applyOn: aSurface radius: blurRadius] timeToRun traceCr.
+	[f applyOn: aSurface radius: blurRadius] timeToRun asMilliSeconds traceCr.
 
-	aSurface
+	aSurface inspect.
 ]
 
 { #category : #examples }
@@ -76,23 +76,19 @@ AeCairoGaussianFilter class >> example1 [
 { #category : #examples }
 AeCairoGaussianFilter class >> example2 [
 
-	| fontSize string surfaceSize aSurface aContext aFTFace aFontFace aScaledFont aGlyphArray f mainSurface mainContext |
-	fontSize := 32.
+	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aFontFace aScaledFont aGlyphArray f mainSurface mainContext |
+	fontSize := 62.
 	"Get Lorem Ipsum without last cr character"
 	string := (String loremIpsum: 28) allButLast.
-	surfaceSize := 400 @ (fontSize*2).
+	surfaceSize := 800 @ (fontSize*1.5).
 	aSurface := AeCairoImageSurface
 		  extent: surfaceSize
 		  format: AeCairoSurfaceFormat CAIRO_FORMAT_A8.
 	aContext := aSurface newContext.
 
 	"Set up aScaleFont"
-	aFTFace := AeFontManager globalInstance
-		detectFamilyName: AeSourceSansPro_Regular familyName
-		slant: AeFontSlant normal
-		weight: AeFontWeight normal
-		stretch: AeFontStretch normal
-		ifNone: [ self error ].
+	aFTLibrary := AeFTLibrary newInitialized.
+	aFTFace := AeSourceSansPro_Bold firstFaceUsing: aFTLibrary.
 	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
 	aScaledFont := aFontFace 
 		newScaledFontWithFontMatrix: (AeCairoMatrix newScalingBy: fontSize asPoint)
@@ -119,18 +115,14 @@ AeCairoGaussianFilter class >> example2 [
 	mainContext := mainSurface newContext.
 
 	mainContext
-		sourceColorRGB: Color paleGreen;
+		sourceColorRGB: Color white;
 		paint;
 
-"		sourceSurface: aSurface x: 5 y: 5;
-		paint;
-"
-
-		sourceColorRGB: Color purple;
-		maskSurface: aSurface x: 0 y: 0;
+		sourceColorRGB: Color red darker;
+		maskSurface: aSurface x: 5 y: 5;
 
 		translateByX: 5 y: fontSize;
-		sourceColorRGB: Color white;
+		sourceColorRGB: Color blue muchDarker;
 		scaledFont: aScaledFont;
 		showGlyphs: aGlyphArray.
 
@@ -140,7 +132,7 @@ AeCairoGaussianFilter class >> example2 [
 { #category : #'api - processing' }
 AeCairoGaussianFilter >> applyOn: aSurface radius: aRadius [
 
-	| inputData tmpData |
+	| buffer1 buffer2 surfaceData |
 	radius := aRadius.
 	surface := aSurface.
 	w := surface width.
@@ -149,26 +141,25 @@ AeCairoGaussianFilter >> applyOn: aSurface radius: aRadius [
 	(radius closeTo: 0) ifTrue: [ ^self ].
 	self assert: [ radius <= w or: [ radius <= h ] ].
 
-	inputData := FFIExternalArray
+	surfaceData := FFIExternalArray
 		fromHandle: surface data getHandle
 		type: FFIUInt8
 		size: surface height * surface stride.
+	buffer1 := ByteArray withAll: surfaceData.    "'542.475 per second'"
+	buffer2 := ByteArray new: buffer1 size.    "'195110.911 per second'"
 
-"	tmpData := FFIExternalArray externalNewType: FFIUInt8 size: inputData size."
-	tmpData := ByteArray new: inputData size.
+	self gaussBlurFrom: buffer1 to: buffer2.
 
-	self gaussBlurFrom: inputData to: tmpData.
-
+	LibC memCopy: buffer1 to: surfaceData size: buffer1 size.
 	surface markDirty.
 ]
 
 { #category : #'api - processing' }
-AeCairoGaussianFilter >> asUint8: aNumber [
+AeCairoGaussianFilter >> asUint8Rounded: aNumber [
 
-	aNumber > 255 ifTrue: [ ^ 255 ].
-	aNumber < 0 ifTrue: [ ^ 0 ].
-	^ aNumber rounded.
-
+	aNumber > 254.0 ifTrue: [ ^ 255 ].
+	aNumber < 1.0 ifTrue: [ ^ 0 ].
+	^ aNumber rounded
 ]
 
 { #category : #'api - processing' }
@@ -199,40 +190,28 @@ AeCairoGaussianFilter >> boxBlurHFrom: scl to: tcl s: r [
         for(var j=0  ; j<=r ; j++) { val += scl[ri++] - fv       ;   tcl[ti++] = Math.round(val*iarr); }
         for(var j=r+1; j<w-r; j++) { val += scl[ri++] - scl[li++];   tcl[ti++] = Math.round(val*iarr); }
         for(var j=w-r; j<w  ; j++) { val += lv        - scl[li++];   tcl[ti++] = Math.round(val*iarr); }
-    }
-}"
+    } }"
 	| iarr |
 	iarr := 1.0 / (r+r+1).
 	
-	1 to: h-1 do: [ :i |
-"	1 to: h do: [ :i |"
+	0 to: h-1 do: [ :i |
 		| ti li ri fv lv val |
-		ti := i*w.
-		li := ti.
-		ri := ti+r.
+		ti := i*w. 	li := ti. 	ri := ti+r.
 		
-		fv := scl at: ti.
-		lv := scl at: (ti+w-1).
+		fv := scl zeroIndexAt: ti. 		lv := scl zeroIndexAt: (ti+w-1).
 		val := (r+1)*fv.
 
-		1 to: r do: [ :j |
-			val := val + (scl at: ti+j) ].
-		1 to: r+1 do: [ :j |
-			val := val + (scl at: ri) - fv.
-			ri := ri+1.
-			tcl at: ti put: (self asUint8: val*iarr).
-			ti := ti+1 ].
-		r+2 to: w-r do: [ :j |
-			val := val + (scl at: ri) - (scl at: li).
-			ri := ri+1.
-			li := li+1.
-			tcl at: ti put: (self asUint8: val*iarr).
-			ti := ti+1 ].
-		w-r+1 to: w do: [ :j |
-			val := val + lv - (scl at: li).
-			li := li+1.
-			tcl at: ti put: (self asUint8: val*iarr).
-			ti := ti+1 ]
+		0 to: r-1 do: [ :j |
+			val := val + (scl zeroIndexAt: ti+j) ].
+		0 to: r do: [ :j |
+			val := val + (scl zeroIndexAt: ri) - fv. 				ri := ri+1.
+			tcl zeroIndexAt: ti put: (self asUint8Rounded: val*iarr). 	ti := ti+1 ].
+		r+1 to: w-r -1 do: [ :j |
+			val := val + (scl zeroIndexAt: ri) - (scl zeroIndexAt: li). 	ri := ri+1. 		li := li+1.
+			tcl zeroIndexAt: ti put: (self asUint8Rounded: val*iarr).				ti := ti+1 ].
+		w-r to: w-1 do: [ :j |
+			val := val + lv - (scl zeroIndexAt: li). 				li := li+1.
+			tcl zeroIndexAt: ti put: (self asUint8Rounded: val*iarr). 	ti := ti+1 ]
 		]
 ]
 
@@ -247,39 +226,28 @@ AeCairoGaussianFilter >> boxBlurTFrom: scl to: tcl s: r [
         for(var j=0  ; j<=r ; j++) { val += scl[ri] - fv     ;  tcl[ti] = Math.round(val*iarr);  ri+=w; ti+=w; }
         for(var j=r+1; j<h-r; j++) { val += scl[ri] - scl[li];  tcl[ti] = Math.round(val*iarr);  li+=w; ri+=w; ti+=w; }
         for(var j=h-r; j<h  ; j++) { val += lv      - scl[li];  tcl[ti] = Math.round(val*iarr);  li+=w; ti+=w; }
-    }
-}"
+    } }"
 	| iarr |
-	iarr := 1 / (r+r+1).
+	iarr := 1.0 / (r+r+1).
 	
-	1 to: w do: [ :i |
+	0 to: w-1 do: [ :i |
 		| ti li ri fv lv val |
-		ti := i.
-		li := ti.
-		ri := ti+(r*w).
+		ti := i. 		li := ti. 	ri := ti+(r*w).
 		
-		fv := scl at: ti.
-		lv := scl at: ti+(w*(h-1)).
+		fv := scl zeroIndexAt: ti. 		lv := scl zeroIndexAt: ti+(w*(h-1)).
 		val := (r+1)*fv.
 
-		1 to: r do: [ :j |
-			val := val + (scl at: ti+(j*w)) ].
-		1 to: r+1 do: [ :j |
-			val := val + (scl at: ri) - fv.
-			tcl at: ti put: (self asUint8: val*iarr).
-			ri := ri + w.
-			ti := ti + w. ].
-		r+2 to: h-r do: [ :j |
-			val := val + (scl at: ri) - (scl at: li).
-			tcl at: ti put: (self asUint8: val*iarr).
-			li := li + w.
-			ri := ri + w.
-			ti := ti + w. ].
-		h-r+1 to: h do: [ :j |
-			val := val + lv - (scl at: li).
-			tcl at: ti put: (self asUint8: val*iarr).
-			li := li+w.
-			ti := ti + w. ]
+		0 to: r -1 do: [ :j |
+			val := val + (scl zeroIndexAt: ti+(j*w)) ].
+		0 to: r do: [ :j |
+			val := val + (scl zeroIndexAt: ri) - fv.
+			tcl zeroIndexAt: ti put: (self asUint8Rounded: val*iarr). 				ri := ri + w. 	ti := ti + w. ].
+		r+1 to: h-r -1 do: [ :j |
+			val := val + (scl zeroIndexAt: ri) - (scl zeroIndexAt: li).
+			tcl zeroIndexAt: ti put: (self asUint8Rounded: val*iarr). 				li := li + w. 	ri := ri + w. 	ti := ti + w. ].
+		h-r to: h -1 do: [ :j |
+			val := val + lv - (scl zeroIndexAt: li).
+			tcl zeroIndexAt: ti put: (self asUint8Rounded: val*iarr). 				li := li + w. 	ti := ti + w. ]
 		]
 ]
 
