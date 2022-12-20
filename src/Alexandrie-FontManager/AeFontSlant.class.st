@@ -14,7 +14,7 @@ Class {
 		'Normal',
 		'Oblique'
 	],
-	#category : #'Alexandrie-FreeType-Manager'
+	#category : #'Alexandrie-FontManager'
 }
 
 { #category : #'class initialization' }

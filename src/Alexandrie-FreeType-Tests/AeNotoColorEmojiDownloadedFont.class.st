@@ -6,7 +6,7 @@ Thee the `baseUrl`.
 Class {
 	#name : #AeNotoColorEmojiDownloadedFont,
 	#superclass : #AeDownloadedFont,
-	#category : #'Alexandrie-FreeType-Tests'
+	#category : #'Alexandrie-FreeType-Tests-Downloaded'
 }
 
 { #category : #accessing }

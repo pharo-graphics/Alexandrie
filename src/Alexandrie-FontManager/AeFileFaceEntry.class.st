@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'location'
 	],
-	#category : #'Alexandrie-FreeType-Manager'
+	#category : #'Alexandrie-FontManager'
 }
 
 { #category : #accessing }

@@ -16,7 +16,7 @@ Class {
 		'stretch',
 		'wasStyleNameParsed'
 	],
-	#category : #'Alexandrie-FreeType-Manager'
+	#category : #'Alexandrie-FontManager'
 }
 
 { #category : #accessing }

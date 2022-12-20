@@ -1,7 +1,7 @@
 Class {
 	#name : #AeCascadiaCodeDownloadedFont,
 	#superclass : #AeDownloadedFont,
-	#category : #'Alexandrie-FreeType-Tests'
+	#category : #'Alexandrie-FreeType-Tests-Downloaded'
 }
 
 { #category : #accessing }

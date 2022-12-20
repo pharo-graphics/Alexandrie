@@ -138,7 +138,7 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedDirect [
 { #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithText [
 
-	| fontSize string surfaceSize aSurface aContext aFTFace aFontFace aScaledFont aGlyphArray |
+	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aFontFace aScaledFont aGlyphArray |
 	fontSize := 12.
 	"Get Lorem Ipsum without last cr character"
 	string := (String loremIpsum: 28) allButLast.
@@ -149,12 +149,8 @@ AeCairoExamplesRenderTest >> surfaceWithText [
 	aContext := aSurface newContext.
 
 	"Set up aScaleFont"
-	aFTFace := AeFontManager globalInstance
-		detectFamilyName: AeSourceSansPro_Regular familyName
-		slant: AeFontSlant normal
-		weight: AeFontWeight normal
-		stretch: AeFontStretch normal
-		ifNone: [ self error ].
+	aFTLibrary := AeFTLibrary newInitialized.
+	aFTFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
 	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
 	aScaledFont := aFontFace 
 		newScaledFontWithFontMatrix: (AeCairoMatrix newScalingBy: fontSize asPoint)
@@ -184,7 +180,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 	- Convert the group to a pattern, to customize its filter and matrix
 	- Finally, paint the pattern on the surface"
 
-	| zoom fontSize surfaceSize string aSurface aContext  aFTFace aScaledFont aGlyphArray aFontOptions aFontFace aPattern |
+	| zoom fontSize surfaceSize string aSurface aContext aFTLibrary aFTFace aScaledFont aGlyphArray aFontOptions aFontFace aPattern |
 	fontSize := 17.
 	zoom := 2.
 	string := 'aeiou'.
@@ -195,12 +191,8 @@ AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 	aContext := aSurface newContext.
 
 	"Set up aScaleFont"
-	aFTFace := AeFontManager globalInstance
-		detectFamilyName: AeSourceSansPro_Regular familyName
-		slant: AeFontSlant normal
-		weight: AeFontWeight normal
-		stretch: AeFontStretch normal
-		ifNone: [ self error ].
+	aFTLibrary := AeFTLibrary newInitialized.
+	aFTFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
 	aFontOptions := AeCairoFontOptions new
 		antialias: AeCairoAntialias CAIRO_ANTIALIAS_NONE;
 		hintStyle: AeCairoHintStyle CAIRO_HINT_STYLE_FULL;

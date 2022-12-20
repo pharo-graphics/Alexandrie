@@ -30,6 +30,11 @@ BaselineOfAlexandrie >> baseline: spec [
 				package: 'Alexandrie-FreeType-Tests'
 					with: [ spec requires: #('Alexandrie-FreeType' 'Alexandrie-Base-Tests') ];
 
+				package: 'Alexandrie-FontManager'
+					with: [ spec requires: #('Alexandrie-FreeType') ];
+				package: 'Alexandrie-FontManager-Tests'
+					with: [ spec requires: #('Alexandrie-FontManager' 'Alexandrie-FreeType-Tests') ];
+
 				package: 'Alexandrie-Harfbuzz'
 					with: [ spec requires: #('Alexandrie-FreeType') ];
 				package: 'Alexandrie-Harfbuzz-Tests'

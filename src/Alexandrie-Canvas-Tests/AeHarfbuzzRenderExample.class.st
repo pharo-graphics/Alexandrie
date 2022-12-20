@@ -27,13 +27,9 @@ AeHarfbuzzRenderExample class >> arrowsString [
 { #category : #examples }
 AeHarfbuzzRenderExample class >> example1SourceSansPro [
 
-	| aFace |
-	aFace := AeFontManager globalInstance
-		detectFamilyName: AeSourceSansPro_Regular familyName
-		slant: AeFontSlant normal
-		weight: AeFontWeight normal
-		stretch: AeFontStretch normal
-		ifNone: [ NotFound signal ].
+	| aFTLibrary aFace |
+	aFTLibrary := AeFTLibrary newInitialized.
+	aFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
 
 	(self
 		freetypeFace: aFace
@@ -45,80 +41,26 @@ AeHarfbuzzRenderExample class >> example1SourceSansPro [
 { #category : #examples }
 AeHarfbuzzRenderExample class >> example2InriaSerif [
 
-	| aFace |
-	AeFontManager globalInstance scanDirectory: AeFilesystemResources fontsDirectory.
-
-	aFace := AeFontManager globalInstance
-		detectFamilyName: 'Inria Serif'
-		slant: AeFontSlant normal
-		weight: AeFontWeight normal
-		stretch: AeFontStretch normal
-		ifNone: [ NotFound signal ].
+	| aFTLibrary aFace |
+	aFTLibrary := AeFTLibrary newInitialized.
+	aFace := aFTLibrary newFaceFromFile: AeFilesystemResources inriaSerifRegularTTF index: 0.
 
 	(self
 		freetypeFace: aFace
 		string: self ffString
 		fontHeight: self ffFontSize)
-		newForm inspect
-]
-
-{ #category : #examples }
-AeHarfbuzzRenderExample class >> example3Futura [
-	"This fontface comes with Apple MacBook."
-
-	| aFace |
-	 AeFontManager globalInstance scanDefaultDirectories.
-	
-	aFace := AeFontManager globalInstance
-		detectFamilyName: 'Futura'
-		slant: AeFontSlant normal
-		weight: AeFontWeight medium
-		stretch: AeFontStretch normal
-		ifNone: [ NotFound signal ].
-
-	(self
-		freetypeFace: aFace
-		string: self ffString
-		fontHeight: self ffFontSize)
-		newForm inspect
-]
-
-{ #category : #examples }
-AeHarfbuzzRenderExample class >> example4FiraCode [
-
-	| aFace |
-	"
-	1. Download from: https://github.com/tonsky/FiraCode
-	2. Evaluate: AeFontManager globalInstance scanDefaultDirectories
-	"
-	AeFontManager globalInstance scanDefaultDirectories.
-	
-	aFace := AeFontManager globalInstance
-		detectFamilyName: 'Fira Code'
-		slant: AeFontSlant normal
-		weight: AeFontWeight normal
-		stretch: AeFontStretch normal
-		ifNone: [ NotFound signal ].
-
-	(self
-		freetypeFace: aFace
-		string: self arrowsString
-		fontHeight: self arrowsFontSize)
 		newForm inspect
 ]
 
 { #category : #examples }
 AeHarfbuzzRenderExample class >> example5CascadiaCode [
 
-	| aFace |
-	AeFontManager globalInstance scanDirectory: AeFilesystemResources fontsDirectory.
-
-	aFace := AeFontManager globalInstance
-		detectFamilyName: AeCascadiaCodeDownloadedFont new familyName
-		slant: AeFontSlant normal
-		weight: AeFontWeight normal
-		stretch: AeFontStretch normal
-		ifNone: [ NotFound signal ].
+	| aFTLibrary aFace |
+	aFTLibrary := AeFTLibrary newInitialized.
+	aFace := AeCascadiaCodeDownloadedFont new 
+		downloadDirectory: AeFilesystemResources downloadedFontsDirectory;
+		ensureDownloaded;
+		firstFaceUsing: aFTLibrary.
 
 	(self
 		freetypeFace: aFace
@@ -130,15 +72,12 @@ AeHarfbuzzRenderExample class >> example5CascadiaCode [
 { #category : #examples }
 AeHarfbuzzRenderExample class >> example6Emoji [
 
-	| aFace aWideString |
-	AeFontManager globalInstance scanDirectory: AeFilesystemResources fontsDirectory.
-
-	aFace := AeFontManager globalInstance
-		detectFamilyName: AeNotoColorEmojiDownloadedFont new familyName
-		slant: AeFontSlant normal
-		weight: AeFontWeight normal
-		stretch: AeFontStretch normal
-		ifNone: [ NotFound signal ].
+	| aFace aWideString aFTLibrary |
+	aFTLibrary := AeFTLibrary newInitialized.
+	aFace := AeNotoColorEmojiDownloadedFont new 
+		downloadDirectory: AeFilesystemResources downloadedFontsDirectory;
+		ensureDownloaded;
+		firstFaceUsing: aFTLibrary.
 
 	aWideString := (WideString streamContents: [ :stream |
  	#( 16r1F468 16r1F469 16r1F467 16r1F466 )

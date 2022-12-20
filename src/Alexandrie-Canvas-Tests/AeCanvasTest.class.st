@@ -4,6 +4,11 @@ An AeCanvasTest is a test class for testing the behavior of AeCanvas
 Class {
 	#name : #AeCanvasTest,
 	#superclass : #AePixelMatchTest,
+	#instVars : [
+		'emojiFTFace',
+		'freetypeLibrary',
+		'sansFace'
+	],
 	#category : #'Alexandrie-Canvas-Tests-Base'
 }
 
@@ -54,20 +59,6 @@ AeCanvasTest >> expectedFormsDirectory [
 AeCanvasTest >> formBehavior [
 
 	^ self
-]
-
-{ #category : #private }
-AeCanvasTest >> notoColorEmojiFace [
-
-	"Ensure font is available"
-	AeFontManager globalInstance scanDirectory: AeFilesystemResources fontsDirectory.
-
-	^ AeFontManager globalInstance
-		detectFamilyName: AeNotoColorEmojiDownloadedFont new familyName
-		slant: AeFontSlant normal
-		weight: AeFontWeight normal
-		stretch: AeFontStretch normal
-		ifNone: [ self error ].
 ]
 
 { #category : #tests }
@@ -316,8 +307,7 @@ AeCanvasTest >> renderCurvedFigure [
 { #category : #tests }
 AeCanvasTest >> renderEmoji [
 
-	| emojiFTFace fontHeight aeCanvas cairoScaledFont cairoGlyphsArray |
-	emojiFTFace := self notoColorEmojiFace.
+	| fontHeight aeCanvas cairoScaledFont cairoGlyphsArray |
 	fontHeight := 25.
 	aeCanvas := AeCanvas extent: fontHeight * 1.3 asPoint.
 	aeCanvas clear: Color paleYellow.
@@ -397,19 +387,18 @@ AeCanvasTest >> renderGlyphs: aCairoGlyphsArray scaledFont: aCairoScaledFont on:
 AeCanvasTest >> renderLigatureTextWithHarfbuzz [
 	"Test Harfbuzz converting a 'ff' pair of letters into a single glyph."
 
-	| aString fontSize aeCanvas aFTFace cairoScaledFont cairoGlyphsArray |
+	| aString fontSize aeCanvas cairoScaledFont cairoGlyphsArray |
 	aString := 'Office'.
 	fontSize := 19.
 	aeCanvas := AeCanvas extent: 50 @ 25.
 	aeCanvas clear: Color paleBlue.
 	"We do know this typeface defines a glyph for ff"
-	aFTFace := self sourceSansProRegularFace.
-	cairoScaledFont := aeCanvas scaledFontForFace: aFTFace size: fontSize.
+	cairoScaledFont := aeCanvas scaledFontForFace: sansFace size: fontSize.
 
 	"This is the key message send of this test"
 	cairoGlyphsArray := AeHbBuffer
 		defaultCairoGlyphArrayFor: aString
-		face: aFTFace
+		face: sansFace
 		size: fontSize.
 
 	"The output of Harfbuzz has a single glyph for the 'ff' pair"
@@ -427,14 +416,13 @@ AeCanvasTest >> renderLigatureTextWithHarfbuzz [
 AeCanvasTest >> renderLigatureTextWithoutHarfbuzz [
 	"Even if this font defines a ligature glyph for the 'ff' pair of letters, Cairo doesn't take it into account."
 
-	| aString fontSize aeCanvas aFTFace cairoScaledFont cairoGlyphsArray |
+	| aString fontSize aeCanvas cairoScaledFont cairoGlyphsArray |
 	aString := 'Office'.
 	fontSize := 19.
 	aeCanvas := AeCanvas extent: 50 @ 25.
 	aeCanvas clear: Color paleBlue.
 	"We do know this typeface defines a glyph for ff"
-	aFTFace := self sourceSansProRegularFace.
-	cairoScaledFont := aeCanvas scaledFontForFace: aFTFace size: fontSize.
+	cairoScaledFont := aeCanvas scaledFontForFace: sansFace size: fontSize.
 
 	"We know that cairo ignores the ff ligature (that'd be provided by Harfbuzz)"
 	cairoGlyphsArray := cairoScaledFont glyphArrayForString: aString.
@@ -485,10 +473,9 @@ AeCanvasTest >> renderOpenFigure [
 { #category : #tests }
 AeCanvasTest >> renderZWJEmojiWithHarfbuzz [
 
-	| emojiFTFace fontHeight aeCanvas cairoScaledFont cairoGlyphsArray |
+	| fontHeight aeCanvas cairoScaledFont cairoGlyphsArray |
 	self skip. "Bug"
 	
-	emojiFTFace := self notoColorEmojiFace.
 	fontHeight := 24.
 	aeCanvas := AeCanvas extent: 200 @ (fontHeight * 2).
 	aeCanvas clear: Color white.
@@ -518,8 +505,7 @@ AeCanvasTest >> renderZWJEmojiWithHarfbuzz [
 { #category : #tests }
 AeCanvasTest >> renderZWJEmojiWithoutHarfbuzz [
 
-	| emojiFTFace fontHeight aeCanvas cairoScaledFont cairoGlyphsArray |
-	emojiFTFace := self notoColorEmojiFace.
+	| fontHeight aeCanvas cairoScaledFont cairoGlyphsArray |
 	fontHeight := 21.
 	aeCanvas := AeCanvas extent: (fontHeight * 5.5) @ (fontHeight * 1.2).
 	aeCanvas clear: Color white.
@@ -542,13 +528,17 @@ AeCanvasTest >> renderZWJEmojiWithoutHarfbuzz [
 	^ aeCanvas
 ]
 
-{ #category : #private }
-AeCanvasTest >> sourceSansProRegularFace [
+{ #category : #running }
+AeCanvasTest >> setUp [
+	super setUp.
+	
+	freetypeLibrary := AeFTLibrary newInitialized.
+	
+	sansFace := AeSourceSansPro_Regular firstFaceUsing: freetypeLibrary.
+		
+	emojiFTFace := AeNotoColorEmojiDownloadedFont new 
+		downloadDirectory: AeFilesystemResources downloadedFontsDirectory;
+		ensureDownloaded;
+		firstFaceUsing: freetypeLibrary.
 
-	^ AeFontManager globalInstance
-		detectFamilyName: AeSourceSansPro_Regular familyName
-		slant: AeFontSlant normal
-		weight: AeFontWeight normal
-		stretch: AeFontStretch normal
-		ifNone: [ self error ]
 ]

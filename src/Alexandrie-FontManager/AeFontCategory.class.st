@@ -12,7 +12,7 @@ Class {
 		'name',
 		'value'
 	],
-	#category : #'Alexandrie-FreeType-Manager'
+	#category : #'Alexandrie-FontManager'
 }
 
 { #category : #'instance creation' }

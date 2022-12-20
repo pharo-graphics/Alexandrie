@@ -4,7 +4,7 @@ An AeFontManagerTest is a test class for testing the behavior of AeFontManager
 Class {
 	#name : #AeFontManagerTest,
 	#superclass : #TestCase,
-	#category : #'Alexandrie-FreeType-Tests'
+	#category : #'Alexandrie-FontManager-Tests'
 }
 
 { #category : #tests }

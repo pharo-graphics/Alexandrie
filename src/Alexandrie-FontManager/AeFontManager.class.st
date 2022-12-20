@@ -17,7 +17,7 @@ Class {
 	#classInstVars : [
 		'globalInstance'
 	],
-	#category : #'Alexandrie-FreeType-Manager'
+	#category : #'Alexandrie-FontManager'
 }
 
 { #category : #accessing }
@@ -284,6 +284,5 @@ AeFontManager >> scanDirectory: aFileReference [
 AeFontManager >> scanEmbeddedFonts [
 
 	AeEmbeddedFontFile allSubclassesDo: [ :each | 
-		each isDeprecated ifFalse: [ 
-			self registerFacesOnMemory: each fontContentsData ] ]
+		self registerFacesOnMemory: each fontContentsData ]
 ]

@@ -1,7 +1,7 @@
 Class {
 	#name : #Ae26Dot6FractionalPointTest,
 	#superclass : #TestCase,
-	#category : #'Alexandrie-FreeType-Tests'
+	#category : #'Alexandrie-FreeType-Tests-FFI'
 }
 
 { #category : #tests }

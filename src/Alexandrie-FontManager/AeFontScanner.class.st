@@ -13,7 +13,7 @@ Class {
 		'alreadyScanned',
 		'includedDirectories'
 	],
-	#category : #'Alexandrie-FreeType-Manager'
+	#category : #'Alexandrie-FontManager'
 }
 
 { #category : #scanning }

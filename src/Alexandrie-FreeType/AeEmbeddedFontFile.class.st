@@ -1,6 +1,8 @@
 "
 I represent a FreeType font file whose bytes are embedded in the Pharo code
 
+Note that a each font file may contain multiple faces.
+
 See hook method in class-side.
 
 Tip for subclasses: Place the corresponding font license on the class comment.
@@ -12,13 +14,30 @@ Class {
 }
 
 { #category : #accessing }
+AeEmbeddedFontFile class >> allFacesUsing: aFTLibrary [
+
+	^ Array streamContents: [ :stream |
+		aFTLibrary
+			unownedNewFacesFromBytes: self fontContentsData
+			withIndexDo: [ :eachFace :index |
+				eachFace autoRelease.
+				stream nextPut: eachFace ] ]
+]
+
+{ #category : #accessing }
+AeEmbeddedFontFile class >> firstFaceUsing: aFTLibrary [
+
+	^ aFTLibrary newFaceFromBytes: self fontContentsData index: 0
+]
+
+{ #category : #accessing }
 AeEmbeddedFontFile class >> fontContentsData [
 	"Answer a ByteArray with the binary contents of the original font file."
 
 	^ self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : #importing }
 AeEmbeddedFontFile class >> fromFileReference: aFileReference [
 
 	"
@@ -42,4 +61,13 @@ AeEmbeddedFontFile class >> fromFileReference: aFileReference [
 			              nextPut: Character space.
 		              contents storeOn: str ].
 	self class compile: sourceCode classified: #accessing
+]
+
+{ #category : #accessing }
+AeEmbeddedFontFile class >> numberOfFaces [
+	"Answer the number of faces in the fontContentsData.
+	This is redundant as the user can retrieve this information from the `#fontContentsData`.
+	The way to do it is: create a face with index zero, and query such instance `AeFTFace>>#numberOfFaces`."
+
+	^ 1
 ]

@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'bytes'
 	],
-	#category : #'Alexandrie-FreeType-Manager'
+	#category : #'Alexandrie-FontManager'
 }
 
 { #category : #accessing }
