@@ -7,7 +7,7 @@ ArrayedCollection >> zeroIndexAt: aZeroBasedIndex [
 ]
 
 { #category : #'*Alexandrie-Cairo' }
-ArrayedCollection >> zeroIndexAt: aZeroBasedIndex put: aValue [
-	
-	^ self at: aZeroBasedIndex + 1 put: aValue
+ArrayedCollection >> zeroIndexAt: aZeroBasedIndex putUint8: aValue [
+
+	^ self at: aZeroBasedIndex + 1 put: aValue floor
 ]
