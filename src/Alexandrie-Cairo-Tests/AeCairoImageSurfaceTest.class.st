@@ -8,46 +8,6 @@ Class {
 }
 
 { #category : #tests }
-AeCairoImageSurfaceTest >> testCreateForDataExtentFormat [
-
-	| extent format stride data |
-	extent := 200 @ 150.
-	format := AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
-	stride := AeCairoImageSurface strideForWidth: extent x format: format.
-
-	data := FFIExternalArray externalNewType: FFIUInt8 size: stride * extent y.
-
-	surface := AeCairoImageSurface 
-		newForData: data
-		extent: extent
-		stride: stride
-		format: format.
-
-	self assert: surface extent equals: extent
-]
-
-{ #category : #tests }
-AeCairoImageSurfaceTest >> testCreateSimilarFormatWidthHeight [
-
-	| aSimilarSurface |
-	surface := AeCairoImageSurface
-		           extent: 100 @ 50
-		           format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
-
-	aSimilarSurface := surface
-		                   newSimilarImageFormat:
-		                   AeCairoSurfaceFormat CAIRO_FORMAT_A8
-		                   width: 16
-		                   height: 20.
-
-	self
-		assert: aSimilarSurface format
-		equals: AeCairoSurfaceFormat CAIRO_FORMAT_A8.
-	self assert: aSimilarSurface extent equals: 16 @ 20.
-	self assert: aSimilarSurface status isSuccess.
-]
-
-{ #category : #tests }
 AeCairoImageSurfaceTest >> testExtent [
 
 	surface := AeCairoImageSurface extent: 100 @ 50.
@@ -81,6 +41,86 @@ AeCairoImageSurfaceTest >> testHeight [
 	surface := AeCairoImageSurface extent: 100 @ 50.
 
 	self assert: surface height equals: 50
+]
+
+{ #category : #tests }
+AeCairoImageSurfaceTest >> testNewForByteArray [
+
+	| extent format stride byteArray |
+	extent := 200 @ 150.
+	format := AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+	stride := AeCairoImageSurface strideForWidth: extent x format: format.
+
+	byteArray := ByteArray new: stride * extent y.
+
+	surface := AeCairoImageSurface 
+		newForData: byteArray asExternalPointer
+		extent: extent
+		stride: stride
+		format: format.
+
+	self
+		shouldnt: [[
+			surface newContext
+				sourceColorRGB: Color blue;
+				circleRadius: extent min / 2;
+				fill.
+			surface flush ] ensure: [
+				"The buffer must be destroyed after the surface."
+				surface externallyFree ]]
+		raise: Error
+
+]
+
+{ #category : #tests }
+AeCairoImageSurfaceTest >> testNewForFFIExternalArray [
+
+	| extent format stride buffer |
+	extent := 200 @ 150.
+	format := AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+	stride := AeCairoImageSurface strideForWidth: extent x format: format.
+
+	buffer := FFIExternalArray externalNewType: FFIUInt8 size: stride * extent y.
+
+	surface := AeCairoImageSurface 
+		newForData: buffer
+		extent: extent
+		stride: stride
+		format: format.
+
+	self
+		shouldnt: [[
+			surface newContext
+				sourceColorRGB: Color blue;
+				circleRadius: extent min / 2;
+				fill.
+			surface flush ] ensure: [
+				"The buffer must be destroyed after the surface."
+				surface externallyFree.
+				buffer free ]]
+		raise: Error
+
+]
+
+{ #category : #tests }
+AeCairoImageSurfaceTest >> testNewSimilarImageFormatWidthHeight [
+
+	| aSimilarSurface |
+	surface := AeCairoImageSurface
+		           extent: 100 @ 50
+		           format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+
+	aSimilarSurface := surface
+		                   newSimilarImageFormat:
+		                   AeCairoSurfaceFormat CAIRO_FORMAT_A8
+		                   width: 16
+		                   height: 20.
+
+	self
+		assert: aSimilarSurface format
+		equals: AeCairoSurfaceFormat CAIRO_FORMAT_A8.
+	self assert: aSimilarSurface extent equals: 16 @ 20.
+	self assert: aSimilarSurface status isSuccess.
 ]
 
 { #category : #tests }
