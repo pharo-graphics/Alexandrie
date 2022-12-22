@@ -14,88 +14,69 @@ Class {
 		'surface',
 		'radius',
 		'w',
-		'h'
+		'h',
+		'sigma',
+		'surfaceBuffer',
+		'buffer1',
+		'buffer2'
+	],
+	#classVars : [
+		'GaussianScaleFactor'
 	],
 	#category : #'Alexandrie-Cairo-Extra'
 }
 
 { #category : #examples }
-AeCairoA8FastGaussianBlurFilter class >> example0 [
+AeCairoA8FastGaussianBlurFilter class >> example1sequence [
 
-	| circleRadius blurRadius margin aSurface aContext f |
-	circleRadius := 200.
-	blurRadius := 10.
-	margin := blurRadius * 2.
+	| circleRadius shadowGap aSurface aContext f surfaces maxBlurRadius surfaceExtent |
+	"ok only when both circleRadius and maxBlurRadius are pair"
+	"=> related to extent"
+	circleRadius := 45.
+	maxBlurRadius := 40.
+	shadowGap := maxBlurRadius * 3.
+	surfaceExtent := (circleRadius*2 + shadowGap) asPoint.
+	surfaceExtent traceCr.
 
-	aSurface := AeCairoImageSurface
-		extent: (circleRadius+margin) asPoint
-		format: AeCairoSurfaceFormat CAIRO_FORMAT_A8.
-	aContext := aSurface newContext.
+	surfaces := (2 to: maxBlurRadius by: 5)
+		collect: [ :blurRadius | 
+			aSurface := AeCairoImageSurface
+				extent: surfaceExtent
+				format: AeCairoSurfaceFormat CAIRO_FORMAT_A8.
+			aContext := aSurface newContext.
 
-	"draw circle"
-	aContext
-		translateByX: margin y: margin;
-		sourceColorRGB: Color black;
-		circleRadius: circleRadius;
-"		rectangleTo: circleRadius asPoint;"
-		fill.
-	aSurface flush.
+			aContext
+				sourceColorRGB: Color black;
+				translateBy: (shadowGap/2) asPoint;
+				circleRadius: circleRadius;
+				fill.
+			aSurface flush.
 
-	f := AeCairoA8FastGaussianBlurFilter new.
+			[ AeCairoA8FastGaussianBlurFilter new
+					applyOn: aSurface
+					radius: blurRadius ]
+							timeToRun asMilliSeconds traceCr.
 
-	[f applyOn: aSurface radius: blurRadius] timeToRun asMilliSeconds traceCr.
-
-	aSurface inspect.
-]
-
-{ #category : #examples }
-AeCairoA8FastGaussianBlurFilter class >> example1 [
-
-	| circleRadius margin aSurface aContext f surfaces |
-	surfaces := (0 to: 20 by: 2) collect: [ :blurRadius | 
-
-		circleRadius := 50.
-		margin := 50.
-
-		aSurface := AeCairoImageSurface
-			extent: (circleRadius+margin) * 2 asPoint
-			format: AeCairoSurfaceFormat CAIRO_FORMAT_A8.
-		aContext := aSurface newContext.
-
-		"draw circle"
-		aContext
-			translateByX: margin y: margin;
-			sourceColorRGB: Color black;
-	"		circleRadius: circleRadius;"
-			rectangleTo: circleRadius asPoint;
-			fill.
-		aSurface flush.
-
-		f := AeCairoA8FastGaussianBlurFilter new.
-
+			aSurface ].
 		
-		[f applyOn: aSurface radius: blurRadius] timeToRun asMilliSeconds traceCr.
-		aSurface.
-		
-		].
-	
 	surfaces inspect.
 ]
 
 { #category : #examples }
-AeCairoA8FastGaussianBlurFilter class >> example2 [
+AeCairoA8FastGaussianBlurFilter class >> example2text [
 
-	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aFontFace aScaledFont aGlyphArray f mainSurface mainContext |
+	| fontSize string surfaceSize shadowSurface aContext aFTLibrary aFTFace aFontFace aScaledFont aGlyphArray mainSurface mainContext shadowRadius shadowOffset |
+
+	shadowRadius := 6.
+	shadowOffset := 3@5.
+
 	fontSize := 62.
-	"Get Lorem Ipsum without last cr character"
 	string := (String loremIpsum: 28) allButLast.
 	surfaceSize := 800 @ (fontSize*1.5).
-	aSurface := AeCairoImageSurface
+	shadowSurface := AeCairoImageSurface
 		  extent: surfaceSize
 		  format: AeCairoSurfaceFormat CAIRO_FORMAT_A8.
-	aContext := aSurface newContext.
-
-	"Set up aScaleFont"
+	aContext := shadowSurface newContext.
 	aFTLibrary := AeFTLibrary newInitialized.
 	aFTFace := AeSourceSansPro_Bold firstFaceUsing: aFTLibrary.
 	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
@@ -103,19 +84,16 @@ AeCairoA8FastGaussianBlurFilter class >> example2 [
 		newScaledFontWithFontMatrix: (AeCairoMatrix newScalingBy: fontSize asPoint)
 		userToDeviceMatrix: AeCairoMatrix newIdentity
 		options: AeCairoFontOptions new.
-
-	"Create text glyphs to draw"	
 	aGlyphArray := aScaledFont glyphArrayForString: string.
-
-	"Draw glyphs"
 	aContext
 		translateByX: 5 y: fontSize;
 		sourceColorRGB: Color black;
 		scaledFont: aScaledFont;
 		showGlyphs: aGlyphArray.
+	[ AeCairoA8FastGaussianBlurFilter new
+			applyOn: shadowSurface
+			radius: shadowRadius ] timeToRun asMilliSeconds traceCr.
 
-	f := AeCairoA8FastGaussianBlurFilter new.
-	[f applyOn: aSurface radius: 4] timeToRun asMilliSeconds traceCr.
 
 
 	mainSurface := AeCairoImageSurface
@@ -128,7 +106,9 @@ AeCairoA8FastGaussianBlurFilter class >> example2 [
 		paint;
 
 		sourceColorRGB: Color red darker;
-		maskSurface: aSurface x: 5 y: 5;
+		maskSurface: shadowSurface
+			x: shadowOffset x
+			y: shadowOffset y;
 
 		translateByX: 5 y: fontSize;
 		sourceColorRGB: Color blue muchDarker;
@@ -138,39 +118,101 @@ AeCairoA8FastGaussianBlurFilter class >> example2 [
 	mainSurface inspect
 ]
 
-{ #category : #'api - processing' }
-AeCairoA8FastGaussianBlurFilter >> applyOn: aSurface radius: aRadius [
+{ #category : #examples }
+AeCairoA8FastGaussianBlurFilter class >> example3rectangleLine [
 
-	| buffer1 buffer2 surfaceData |
-	radius := aRadius.
-	surface := aSurface.
-	w := surface width.
-	h := surface height.
+	| rectangleWidth blurRadius shadowGap aSurface surfaceExtent |
+	"Both par or impar is ok? not always
+	9,5=ok    
+	8,5=wrong
+	5,5=ok
+	4,5=w
+	4,3=w desde 1ero
+	3,5=w
+	3,4=w
+	3,3=ok
+	3,2=w desde 2do (mitad)
+	2,2=ok
+	1,2=w pero desde la mitad
+	si cambio alto de surface => no cambia
+	si cambio ancho => si cambia
+	"
+	rectangleWidth := 8.
+	blurRadius := 5.
+	shadowGap := blurRadius * 3.
+	surfaceExtent := (rectangleWidth + shadowGap) asPoint..
+	surfaceExtent traceCr.
 
-	(radius closeTo: 0) ifTrue: [ ^self ].
-	self assert: [ radius <= w or: [ radius <= h ] ].
+	aSurface := AeCairoImageSurface
+		extent: surfaceExtent
+		format: AeCairoSurfaceFormat CAIRO_FORMAT_A8.
+	aSurface newContext
+		sourceColorRGB: Color black;
+		rectangle: ((shadowGap/2) asPoint extent: rectangleWidth asPoint);
+		fill.
+	aSurface flush.
 
-	surfaceData := FFIExternalArray
-		fromHandle: surface data getHandle
-		type: FFIUInt8
-		size: surface height * surface stride.
-	buffer1 := ByteArray withAll: surfaceData. 
-	buffer2 := ByteArray new: buffer1 size.
+	AeCairoA8FastGaussianBlurFilter new
+			applyOn: aSurface
+			radius: blurRadius.
 
-	self gaussBlurFrom: buffer1 to: buffer2.
+	aSurface inspect.
+]
 
-	LibC memCopy: buffer1 to: surfaceData size: buffer1 size.
-	surface markDirty.
+{ #category : #examples }
+AeCairoA8FastGaussianBlurFilter class >> example4circle [
+
+	| circleRadius blurRadius shadowGap aSurface aContext |
+	circleRadius := 502.
+	blurRadius := 10.
+	shadowGap := blurRadius * 3.
+
+	aSurface := AeCairoImageSurface
+		extent: (circleRadius*2 + shadowGap) asPoint
+		format: AeCairoSurfaceFormat CAIRO_FORMAT_A8.
+	aContext := aSurface newContext.
+
+	aContext
+		sourceColorRGB: Color black;
+		translateBy: (shadowGap/2) asPoint;
+		circleRadius: circleRadius;
+		fill.
+	aSurface flush.
+
+	[ AeCairoA8FastGaussianBlurFilter new
+		applyOn: aSurface
+		radius: blurRadius ] timeToRun asMilliSeconds traceCr.
+
+	aSurface inspect
+]
+
+{ #category : #initialization }
+AeCairoA8FastGaussianBlurFilter class >> initialize [
+
+	"See: https://www.w3.org/TR/SVG11/filters.html#feGaussianBlurElement"
+	GaussianScaleFactor := (3 * (Float twoPi sqrt) / 4) * 1.5
 ]
 
 { #category : #'api - processing' }
-AeCairoA8FastGaussianBlurFilter >> boxBlurFrom: scl to: tcl s: s [
+AeCairoA8FastGaussianBlurFilter >> applyOn: aSurface radius: aRadius [
 
-	LibC memCopy: scl to: tcl size: scl size.
-	
+	(aRadius closeTo: 0) ifTrue: [ ^self ].
+
+	surface := aSurface.
+	w := surface stride.
+	h := surface height.
+	sigma := aRadius / GaussianScaleFactor.
+
+	self filterThreeTimes.
+
+]
+
+{ #category : #'api - processing' }
+AeCairoA8FastGaussianBlurFilter >> boxBlur: scl tmp: tcl s: s [
+
 	self
-		boxBlurHFrom: tcl to: scl s: s;
-		boxBlurTFrom: scl to: tcl s: s.
+		boxBlurHFrom: scl to: tcl s: s;
+		boxBlurTFrom: tcl to: scl s: s.
 ]
 
 { #category : #'api - processing' }
@@ -183,26 +225,26 @@ AeCairoA8FastGaussianBlurFilter >> boxBlurHFrom: scl to: tcl s: r [
 		| ti li ri fv lv val |
 		ti := i*w. li := ti. ri := ti+r.
 		
-		fv := scl zeroIndexAt: ti.
-		lv := scl zeroIndexAt: (ti+w-1).
+		fv := scl zeroBasedAt: ti.
+		lv := scl zeroBasedAt: ti+w-1.
 		val := (r+1)*fv.
 
 		0 to: r -1 do: [ :j |
-			val := val + (scl zeroIndexAt: ti+j) ].
+			val := val + (scl zeroBasedAt: ti+j) ].
 		0 to: r do: [ :j |
-			val := val + (scl zeroIndexAt: ri) - fv.
+			val := val + (scl zeroBasedAt: ri) - fv.
 			ri := ri+1.
-			tcl zeroIndexAt: ti putUint8: val*iarr.
+			tcl zeroBasedAt: ti putUint8: val*iarr.
 			ti := ti+1 ].
 		r+1 to: w-r -1 do: [ :j |
-			val := val + (scl zeroIndexAt: ri) - (scl zeroIndexAt: li).
+			val := val + (scl zeroBasedAt: ri) - (scl zeroBasedAt: li).
 			ri := ri+1. li := li+1.
-			tcl zeroIndexAt: ti putUint8: val*iarr.
+			tcl zeroBasedAt: ti putUint8: val*iarr.
 			ti := ti+1 ].
 		w-r to: w -1 do: [ :j |
-			val := val + lv - (scl zeroIndexAt: li).
+			val := val + lv - (scl zeroBasedAt: li).
 			li := li+1.
-			tcl zeroIndexAt: ti putUint8: val*iarr.
+			tcl zeroBasedAt: ti putUint8: val*iarr.
 			ti := ti+1 ]
 		]
 ]
@@ -216,56 +258,58 @@ AeCairoA8FastGaussianBlurFilter >> boxBlurTFrom: scl to: tcl s: r [
 	0 to: w -1 do: [ :i |
 		| ti li ri fv lv val |
 		ti := i. li := ti. ri := ti+(r*w).
-		
-		fv := scl zeroIndexAt: ti.
-		lv := scl zeroIndexAt: ti+(w*(h-1)).
+
+		fv := scl zeroBasedAt: ti.
+		lv := scl zeroBasedAt: ti+(w*(h-1)).
 		val := (r+1)*fv.
 
 		0 to: r -1 do: [ :j |
-			val := val + (scl zeroIndexAt: ti+(j*w)) ].
+			val := val + (scl zeroBasedAt: ti+(j*w)) ].
 		0 to: r do: [ :j |
-			val := val + (scl zeroIndexAt: ri) - fv.
-			tcl zeroIndexAt: ti putUint8: val*iarr.
+			val := val + (scl zeroBasedAt: ri) - fv.
+			tcl zeroBasedAt: ti putUint8: val*iarr.
 			ri := ri + w. ti := ti + w. ].
 		r+1 to: h-r -1 do: [ :j |
-			val := val + (scl zeroIndexAt: ri) - (scl zeroIndexAt: li).
-			tcl zeroIndexAt: ti putUint8: val*iarr.
+			val := val + (scl zeroBasedAt: ri) - (scl zeroBasedAt: li).
+			tcl zeroBasedAt: ti putUint8: val*iarr.
 			li := li + w. ri := ri + w. ti := ti + w. ].
 		h-r to: h -1 do: [ :j |
-			val := val + lv - (scl zeroIndexAt: li).
-			tcl zeroIndexAt: ti putUint8: val*iarr.
-			li := li + w. ti := ti + w. ]
-		]
+			val := val + lv - (scl zeroBasedAt: li).
+			tcl zeroBasedAt: ti putUint8: val*iarr.
+			li := li + w. ti := ti + w. ].
+		].
+	
+
 ]
 
 { #category : #'api - processing' }
-AeCairoA8FastGaussianBlurFilter >> boxesForGaussSigma: sigma n: n [
-	"Parameters: standard deviation, number of boxes"
+AeCairoA8FastGaussianBlurFilter >> filterThreeTimes [
 
-	| wIdeal wl wu mIdeal m |
-	wIdeal := ((12*sigma*sigma/n)+1) sqrt.
-	wl := wIdeal floor.
-	wl even ifTrue: [ wl := wl-1 ].
-	wu := wl+2.
-	
-	mIdeal := ((12*sigma*sigma) - (n*wl*wl) - (4*n*wl) - (3*n)) / ((-4*wl) - 4).
-	m := mIdeal rounded.
-	
-	^ Generator on: [ :generator |
-		0 to: n-1 do: [ :index |
-			generator yield: ((index < m)
-				ifTrue: [ wl ]
-				ifFalse: [ wu ]) ] ]
-]
+	| solver stream |
+	surfaceBuffer := FFIExternalArray
+		fromHandle: surface data getHandle
+		type: FFIUInt8
+		size: surface height * surface stride.
+	buffer1 := ByteArray withAll: surfaceBuffer. 
+	buffer2 := ByteArray new: surfaceBuffer size.
 
-{ #category : #'api - processing' }
-AeCairoA8FastGaussianBlurFilter >> gaussBlurFrom: scl to: tcl [
+	solver := AeIntegralImageSolver new
+		calculateForSigma: sigma n: 3;
+		yourself.
+	stream := solver boxRadiiStream.
 
-	| boxGenerator |
-	boxGenerator := self boxesForGaussSigma: radius n: 3.
+	self
+		boxBlur: buffer1
+			tmp: buffer2
+			s: stream next;
+		boxBlur: buffer1
+			tmp: buffer2
+			s: stream next;
+		boxBlur: buffer1
+			tmp: buffer2
+			s: stream next.
 
-	self boxBlurFrom: scl to: tcl s: (boxGenerator next - 1) / 2.
-	self boxBlurFrom: tcl to: scl s: (boxGenerator next - 1) / 2.
-	self boxBlurFrom: scl to: tcl s: (boxGenerator next - 1) / 2.
+	LibC memCopy: buffer1 to: surfaceBuffer size: surfaceBuffer size.
+	surface markDirty.
 
 ]
