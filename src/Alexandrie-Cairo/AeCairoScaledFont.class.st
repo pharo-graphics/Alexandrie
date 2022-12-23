@@ -148,7 +148,7 @@ AeCairoScaledFont >> glyphArrayForString: aString [
 { #category : #API }
 AeCairoScaledFont >> glyphArrayForUtf8Array: aUtf8EncodedByteArray [
 
-	| aGlyphsArrayPtr aGlyphsNumPtr aStatus aGlyphsArray aGlyphsNum |
+	| aGlyphsArrayPtr aGlyphsNumPtr aStatus arraySize aGlyphsArray |
 	aGlyphsArrayPtr := ExternalAddress new.
 	aGlyphsNumPtr := FFIInt32 newBuffer.
 
@@ -161,11 +161,13 @@ AeCairoScaledFont >> glyphArrayForUtf8Array: aUtf8EncodedByteArray [
 		y: 0.0.
 	aStatus ensureIsSuccess.
 	
-	aGlyphsNum := aGlyphsNumPtr signedLongAt: 1.
-	aGlyphsArray := aGlyphsNum isZero
-		ifTrue: [ AeCairoGlyphArray externalNewEmpty ]
-		ifFalse: [ AeCairoGlyphArray fromHandle: aGlyphsArrayPtr size: aGlyphsNum ].
-	
+	"Cairo returns NULL pointer when no glyphs, so needs special treatment."
+	arraySize := aGlyphsNumPtr signedLongAt: 1.
+	aGlyphsArray := arraySize isZero
+		ifTrue: [ AeCairoGlyphArray unboundedNewOf: 0 ]
+		ifFalse: [ AeCairoGlyphArray fromHandle: aGlyphsArrayPtr size: arraySize ].
+
+	"In both cases we must to take care of freeing the array."
 	aGlyphsArray autoRelease.
 	
 	^ aGlyphsArray
