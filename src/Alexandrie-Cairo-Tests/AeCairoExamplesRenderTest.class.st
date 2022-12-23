@@ -138,7 +138,7 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedDirect [
 { #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithText [
 
-	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aFontFace aScaledFont aGlyphArray |
+	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aFontFace aScaledFont |
 	fontSize := 12.
 	"Get Lorem Ipsum without last cr character"
 	string := (String loremIpsum: 28) allButLast.
@@ -157,9 +157,6 @@ AeCairoExamplesRenderTest >> surfaceWithText [
 		userToDeviceMatrix: AeCairoMatrix newIdentity
 		options: AeCairoFontOptions new.
 
-	"Create text glyphs to draw"	
-	aGlyphArray := aScaledFont glyphArrayForString: string.
-
 	"Draw glyphs"
 	aContext
 		sourceColorRGB: Color paleGreen;
@@ -167,7 +164,8 @@ AeCairoExamplesRenderTest >> surfaceWithText [
 		translateByX: 5 y: fontSize;
 		sourceColorRGB: Color blue;
 		scaledFont: aScaledFont;
-		showGlyphs: aGlyphArray.
+		showGlyphs: (aScaledFont glyphArrayForString: ''); "Draws nothing"
+		showGlyphs: (aScaledFont glyphArrayForString: string).
 
 	^ aSurface
 ]

@@ -198,6 +198,9 @@ AeCairoScaledFont >> status [
 
 { #category : #'private - ffi' }
 AeCairoScaledFont >> textToGlyphs: aBuffer length: aLength glyphs: theGlyphs num: aGlyphsCount x: aX y: aY [
+	"Convert UTF-8 text to an array of glyphs. Return `CAIRO_STATUS_SUCCESS` upon success, or an error status if the input values are wrong or if conversion failed. If the input values are correct but the conversion failed, the error status is also set on `scaled_font`.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-text-to-glyphs"
 
 	^ self ffiCall: #(
 		AeCairoStatus
