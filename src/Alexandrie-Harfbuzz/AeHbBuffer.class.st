@@ -234,22 +234,6 @@ AeHbBuffer >> length [
 		)
 ]
 
-{ #category : #'shaping text' }
-AeHbBuffer >> primShapeWithFont: font features: features numFeatures: num_features [
-	"Shapes buffer using font turning its Unicode characters content to positioned glyphs. If features is not NULL, it will be used to control the features applied during shaping. If two features have the same tag but overlapping ranges the value of the feature with the higher index takes precedence.
-	
-	See: https://harfbuzz.github.io/harfbuzz-hb-shape.html#hb-shape"
-
-	^ self ffiCall: #(
-		void
-		hb_shape (
-			hb_font_t font,
-			self,
-			"hb_feature_t" void *features,
-			uint num_features)
-		)
-]
-
 { #category : #'accessing - output' }
 AeHbBuffer >> reset [
 	"Resets the buffer to its initial status, as if it was just newly created with `hb_buffer_create()`.
@@ -278,7 +262,23 @@ AeHbBuffer >> script: script [
 AeHbBuffer >> shapeWithFont: font [
 
 	^ self
-		  primShapeWithFont: font
+		  shapeWithFont: font
 		  features: ExternalAddress null
-		  numFeatures: 0
+		  numberOfFeatures: 0
+]
+
+{ #category : #'shaping text' }
+AeHbBuffer >> shapeWithFont: font features: features numberOfFeatures: num_features [
+	"Shapes buffer using font turning its Unicode characters content to positioned glyphs. If features is not NULL, it will be used to control the features applied during shaping. If two features have the same tag but overlapping ranges the value of the feature with the higher index takes precedence.
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-shape.html#hb-shape"
+
+	^ self ffiCall: #(
+		void
+		hb_shape (
+			hb_font_t font,
+			self,
+			"hb_feature_t" void *features,
+			uint num_features)
+		)
 ]
