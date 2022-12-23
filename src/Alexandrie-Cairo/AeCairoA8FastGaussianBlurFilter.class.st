@@ -218,10 +218,11 @@ AeCairoA8FastGaussianBlurFilter >> boxBlur: scl tmp: tcl s: s [
 { #category : #'api - processing' }
 AeCairoA8FastGaussianBlurFilter >> boxBlurHFrom: scl to: tcl s: r [
 
-	| iarr |
-	iarr := 1.0 / (r+r+1).
+	| diam iarr |
+	diam := r+r+1.
+	iarr := 1.0 / diam.
 	
-	0 to: h -1 do: [ :i |
+	0 to: h-1 do: [ :i |
 		| ti li ri fv lv val |
 		ti := i*w. li := ti. ri := ti+r.
 		
@@ -229,19 +230,19 @@ AeCairoA8FastGaussianBlurFilter >> boxBlurHFrom: scl to: tcl s: r [
 		lv := scl zeroBasedAt: ti+w-1.
 		val := (r+1)*fv.
 
-		0 to: r -1 do: [ :j |
+		0 to: r-1 do: [ :j |
 			val := val + (scl zeroBasedAt: ti+j) ].
-		0 to: r do: [ :j |
+		r+1 timesRepeat: [
 			val := val + (scl zeroBasedAt: ri) - fv.
 			ri := ri+1.
 			tcl zeroBasedAt: ti putUint8: val*iarr.
 			ti := ti+1 ].
-		r+1 to: w-r -1 do: [ :j |
+		w-diam timesRepeat: [
 			val := val + (scl zeroBasedAt: ri) - (scl zeroBasedAt: li).
 			ri := ri+1. li := li+1.
 			tcl zeroBasedAt: ti putUint8: val*iarr.
 			ti := ti+1 ].
-		w-r to: w -1 do: [ :j |
+		r timesRepeat: [
 			val := val + lv - (scl zeroBasedAt: li).
 			li := li+1.
 			tcl zeroBasedAt: ti putUint8: val*iarr.
@@ -252,10 +253,11 @@ AeCairoA8FastGaussianBlurFilter >> boxBlurHFrom: scl to: tcl s: r [
 { #category : #'api - processing' }
 AeCairoA8FastGaussianBlurFilter >> boxBlurTFrom: scl to: tcl s: r [
 
-	| iarr |
-	iarr := 1.0 / (r+r+1).
+	| diam iarr |
+	diam := r+r+1.
+	iarr := 1.0 / diam.
 	
-	0 to: w -1 do: [ :i |
+	0 to: w-1 do: [ :i |
 		| ti li ri fv lv val |
 		ti := i. li := ti. ri := ti+(r*w).
 
@@ -263,17 +265,17 @@ AeCairoA8FastGaussianBlurFilter >> boxBlurTFrom: scl to: tcl s: r [
 		lv := scl zeroBasedAt: ti+(w*(h-1)).
 		val := (r+1)*fv.
 
-		0 to: r -1 do: [ :j |
+		0 to: r-1 do: [ :j |
 			val := val + (scl zeroBasedAt: ti+(j*w)) ].
-		0 to: r do: [ :j |
+		r+1 timesRepeat: [
 			val := val + (scl zeroBasedAt: ri) - fv.
 			tcl zeroBasedAt: ti putUint8: val*iarr.
 			ri := ri + w. ti := ti + w. ].
-		r+1 to: h-r -1 do: [ :j |
+		h-diam timesRepeat: [
 			val := val + (scl zeroBasedAt: ri) - (scl zeroBasedAt: li).
 			tcl zeroBasedAt: ti putUint8: val*iarr.
 			li := li + w. ri := ri + w. ti := ti + w. ].
-		h-r to: h -1 do: [ :j |
+		r timesRepeat: [
 			val := val + lv - (scl zeroBasedAt: li).
 			tcl zeroBasedAt: ti putUint8: val*iarr.
 			li := li + w. ti := ti + w. ].
