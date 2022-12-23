@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #tests }
-AeCairoContextTest >> testisPathExtents [
+AeCairoContextTest >> testPathExtents [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
 	context := surface newContext.
