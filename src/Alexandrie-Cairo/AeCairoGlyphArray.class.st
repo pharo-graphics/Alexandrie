@@ -9,18 +9,6 @@ Class {
 	#category : #'Alexandrie-Cairo-Text'
 }
 
-{ #category : #'instance creation' }
-AeCairoGlyphArray class >> externalNew: aSize [
-
-	^ self externalNewType: AeCairoGlyph size: aSize
-]
-
-{ #category : #'instance creation' }
-AeCairoGlyphArray class >> externalNewEmpty [
-
-	^ self externalNewType: AeCairoGlyph size: 0
-]
-
 { #category : #finalization }
 AeCairoGlyphArray class >> externallyFree: aHandle [
 	
@@ -28,12 +16,28 @@ AeCairoGlyphArray class >> externallyFree: aHandle [
 ]
 
 { #category : #'instance creation' }
-AeCairoGlyphArray class >> fromHandle: aGlyphsArrayPtr size: aGlyphsNum [
+AeCairoGlyphArray class >> fromHandle: aHandle size: aNumber [
 
 	^ self
-		  fromHandle: aGlyphsArrayPtr
+		  fromHandle: aHandle
 		  type: AeCairoGlyph
-		  size: aGlyphsNum
+		  size: aNumber
+]
+
+{ #category : #'instance creation' }
+AeCairoGlyphArray class >> newOf: aSize [
+	"Answer a new instance of the specified size, with autoRelease."
+
+	^ (self unboundedNewOf: aSize)
+		  autoRelease;
+		  yourself
+]
+
+{ #category : #'instance creation' }
+AeCairoGlyphArray class >> unboundedNewOf: aSize [
+	"Answer a new instance of the specified size. Sender is responsible of freeing handle."
+
+	^ self externalNewType: AeCairoGlyph size: aSize
 ]
 
 { #category : #'external resource management' }

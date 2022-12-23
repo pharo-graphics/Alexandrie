@@ -11,7 +11,7 @@ AeHbBuffer >> cairoGlyphArrayForFace: freetypeFace size: fontSize [
 	self shapeWithFont: hbFont.
 
 	length := self length.
-	length = 0 ifTrue: [ ^ AeCairoGlyphArray externalNewEmpty ].
+	length = 0 ifTrue: [ ^ AeCairoGlyphArray newOf: 0 ].
 
 	infos := FFIExternalArray
 		  fromHandle: (self getGlyphInfosOn: ExternalAddress null)
@@ -22,7 +22,7 @@ AeHbBuffer >> cairoGlyphArrayForFace: freetypeFace size: fontSize [
 		  type: AeHbGlyphPosition
 		  size: length.
 
-	cairoGlyphsArray := AeCairoGlyphArray externalNew: length.
+	cairoGlyphsArray := AeCairoGlyphArray newOf: length.
 	currentX := 0.
 	currentY := 0.
 	cairoGlyphsArray doWithIndex: [ :each :index | 
