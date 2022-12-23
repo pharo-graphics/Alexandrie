@@ -386,9 +386,13 @@ AeCanvas >> initializeCaches [
 		maximumWeight: 400;
 		factory: [ :anArray |
 			| buf |
-			buf := ByteArray new: 8 * anArray size.
+			buf :=
+				FFIExternalArray
+					externalNewType: FFIFloat64
+					size: anArray size.
+			buf autoRelease.
 			anArray withIndexDo: [ :len :i |
-				buf doubleAt: (i-1) * 8 + 1 put: len asFloat ].
+				buf at: i put: len ].
 			buf ];
 		yourself.
 
@@ -650,7 +654,6 @@ AeCanvas >> setDashes: dashArray offset: dashOffset [
 
 	cairoContext
 		dash: (dashesCache at: dashArray)
-		count: dashArray size
 		offset: dashOffset
 
 ]

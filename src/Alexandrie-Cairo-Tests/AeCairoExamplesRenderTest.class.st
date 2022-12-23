@@ -26,6 +26,58 @@ AeCairoExamplesRenderTest class >> inspectMismatches [
 ]
 
 { #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
+	"Cairo allows drawing strokes with dotted borders (either with circular dots, or squared dots).
+	The trick is setting dash segments of length 0.0, followed by a non-zero segment.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash
+	"
+
+	| radius lineWidth gapBetweenDots extent aSurface dashByteArray numberOfDots perimeterOfCircle aContext |
+	radius := 10.
+	lineWidth := 5.
+	numberOfDots := 7.
+	perimeterOfCircle := Float twoPi * radius.
+	gapBetweenDots := perimeterOfCircle / numberOfDots.
+
+	extent := (radius*2 + lineWidth) asPoint.
+	
+	aSurface := AeCairoImageSurface
+		extent: extent
+		format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+
+	"set up dotted dashes"
+	dashByteArray :=
+		(FFIExternalArray externalNewType: FFIFloat64 size: 2)
+			autoRelease;
+			at: 1 put: 0.0; "for dots"
+			at: 2 put: gapBetweenDots;
+			yourself.
+
+	aContext := aSurface newContext.
+	
+	aContext
+		"draw background"
+		sourceColorRGB: Color yellow;
+		paint;
+		"draw circle"
+		translateBy: (lineWidth/2.0) asPoint;
+		sourceColorRGB: Color black;
+		lineWidth: lineWidth;
+		lineCap: AeCairoCapStyle CAIRO_LINE_CAP_ROUND;
+		dash: dashByteArray offset: 3;
+		circleRadius: radius;
+		stroke.
+
+	self
+		assert: aContext dashes
+		equals: dashByteArray.
+
+	^ aSurface
+
+]
+
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedBuffered [
 	"Emulate a Gaussian shadow on a circle using a radial gradient, using an intermediate surface."
 
