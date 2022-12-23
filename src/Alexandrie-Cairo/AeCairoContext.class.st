@@ -65,7 +65,7 @@ AeCairoContext >> annulusSectorCenter: aPoint from: radiansStart to: radiansStop
 
 ]
 
-{ #category : #'API - path settings' }
+{ #category : #'API - painting settings' }
 AeCairoContext >> antialias: aCairoAntialias [
 
 	self ffiCall: #(
@@ -491,7 +491,7 @@ AeCairoContext >> isInStrokeX: x y: y [
 			double y ) )
 ]
 
-{ #category : #'API - path settings' }
+{ #category : #'API - painting settings' }
 AeCairoContext >> lineCap: aCairoCapStyle [
 
 	self ffiCall: #(
@@ -509,7 +509,7 @@ AeCairoContext >> lineFrom: aPoint to: anotherPoint [
 		lineTo: anotherPoint
 ]
 
-{ #category : #'API - path settings' }
+{ #category : #'API - painting settings' }
 AeCairoContext >> lineJoin: aCairoJoinStyle [
 
 	self ffiCall: #(
@@ -536,7 +536,7 @@ AeCairoContext >> lineToX: aX y: aY [
 			double aY ) )
 ]
 
-{ #category : #'API - path settings' }
+{ #category : #'API - painting settings' }
 AeCairoContext >> lineWidth: aNumber [
 
 	self ffiCall: #(
@@ -605,7 +605,7 @@ AeCairoContext >> matrix: aCairoMatrix [
 			AeCairoMatrix *aCairoMatrix ) )
 ]
 
-{ #category : #'API - path settings' }
+{ #category : #'API - painting settings' }
 AeCairoContext >> miterLimit: aNumber [
 
 	self ffiCall: #(
@@ -1191,7 +1191,7 @@ AeCairoContext >> surface [
 	^ surface
 ]
 
-{ #category : #'API - path settings' }
+{ #category : #'API - painting settings' }
 AeCairoContext >> tolerance: aNumber [ 
 
 	self ffiCall: #(
