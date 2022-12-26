@@ -1,3 +1,6 @@
+"
+I'm an external array specialized for Cairo FFI bindings.
+"
 Class {
 	#name : #AeCairoExternalArray,
 	#superclass : #FFIExternalArray,

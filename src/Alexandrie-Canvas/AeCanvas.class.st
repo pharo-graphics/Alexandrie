@@ -384,16 +384,7 @@ AeCanvas >> initializeCaches [
 
 	dashesCache := LRUCache new
 		maximumWeight: 400;
-		factory: [ :anArray |
-			| buf |
-			buf :=
-				FFIExternalArray
-					externalNewType: FFIFloat64
-					size: anArray size.
-			buf autoRelease.
-			anArray withIndexDo: [ :len :i |
-				buf at: i put: len ].
-			buf ];
+		factory: [ :anArray | AeCairoDoubleArray newFrom: anArray ];
 		yourself.
 
 	formToCairoSurfaceCache := LRUCache new

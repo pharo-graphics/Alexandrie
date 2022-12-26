@@ -1,3 +1,6 @@
+"
+I'm an array of `FFIFloat64` (double).
+"
 Class {
 	#name : #AeCairoDoubleArray,
 	#superclass : #AeCairoExternalArray,
