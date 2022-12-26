@@ -47,20 +47,15 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 		format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
 
 	"set up dotted dashes"
-	dashByteArray :=
-		(FFIExternalArray externalNewType: FFIFloat64 size: 2)
-			autoRelease;
-			at: 1 put: 0.0; "for dots"
-			at: 2 put: gapBetweenDots;
-			yourself.
+	dashByteArray := AeCairoDoubleArray
+		newFrom: { 0.0. gapBetweenDots }.
 
 	aContext := aSurface newContext.
-	
 	aContext
-		"draw background"
+		" draw background "
 		sourceColorRGB: Color yellow;
 		paint;
-		"draw circle"
+		" draw circle "
 		translateBy: (lineWidth/2.0) asPoint;
 		sourceColorRGB: Color black;
 		lineWidth: lineWidth;
@@ -69,9 +64,7 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 		circleRadius: radius;
 		stroke.
 
-	self
-		assert: aContext dashes
-		equals: dashByteArray.
+	self assert: aContext dashes equals: dashByteArray.
 
 	^ aSurface
 

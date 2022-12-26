@@ -326,8 +326,7 @@ AeCairoContext >> dashes [
 	count := self dashCount.
 	count = 0 ifTrue: [ ^ Array empty ].
 
-	aDashArray :=
-		FFIExternalArray externalNewType: FFIFloat64 size: count.
+	aDashArray := AeCairoDoubleArray newOf: count.
 
 	self
 		getDashesOn: aDashArray getHandle
