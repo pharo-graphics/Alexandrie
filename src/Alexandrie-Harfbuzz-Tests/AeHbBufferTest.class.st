@@ -8,16 +8,6 @@ Class {
 }
 
 { #category : #tests }
-AeHbBufferTest >> inriaSerifHbFont [
-
-	| blob face |
-	blob := AeHbBlob newLocatedAt: AeFilesystemResources inriaSerifRegularTTF.
-	face := AeHbFace newForBlob: blob index: 0. 
-	^ AeHbFont newForHbFace: face
-
-]
-
-{ #category : #tests }
 AeHbBufferTest >> testClearContents [
 
 	| buffer |
@@ -73,7 +63,7 @@ AeHbBufferTest >> testReset [
 AeHbBufferTest >> testSimpleExample [
 	"Adaptation of https://harfbuzz.github.io/a-simple-shaping-example.html"
 
-	| buffer font infos positions |
+	| buffer font infos positions blob face |
 	"1. Create a buffer and put your text in it."
 	buffer := AeHbBuffer new.
 	buffer addUtf8String: 'flor'.
@@ -84,7 +74,9 @@ AeHbBufferTest >> testSimpleExample [
 	buffer language: AeHbLanguage en.
 
 	"3. Create a face and a font from a font file."
-	font := self inriaSerifHbFont.
+	blob := AeHbBlob newLocatedAt: AeFilesystemResources inriaSerifRegularTTF.
+	face := AeHbFace newForBlob: blob index: 0. 
+	font := AeHbFont newForHbFace: face.
 
 	"4. Shape!"
 	buffer shapeWithFont: font.
