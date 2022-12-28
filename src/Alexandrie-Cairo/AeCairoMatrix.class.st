@@ -90,6 +90,13 @@ AeCairoMatrix class >> newX: x y: y sx: sx sy: sy shx: shx shy: shy [
 		  yourself
 ]
 
+{ #category : #'instance creation' }
+AeCairoMatrix class >> unboundedNew [
+	"Answer a new instance. Sender is responsible of freeing handle."
+
+	^ self externalNew
+]
+
 { #category : #'private - ffi' }
 AeCairoMatrix >> beIdentity [
 	"Mutate myself to be an identity transformation.

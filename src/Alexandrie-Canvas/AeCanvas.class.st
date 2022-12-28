@@ -843,6 +843,6 @@ AeCanvas >> textExtentsFor: aeGlyphsArray scaledFont: aeScaledFont do: aUnaryBlo
 		scaledFont: aeScaledFont;
 		getGlyphExtentsOf: aeGlyphsArray
 			size: aeGlyphsArray size
-			on: textExtents.
+			into: textExtents.
 	aUnaryBlockClosure value: textExtents
 ]

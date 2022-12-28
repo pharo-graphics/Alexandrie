@@ -250,13 +250,38 @@ AeCairoContext >> cubicCurveFrom: startPoint controlPoint1: cp1 controlPoint2: c
 			y: endPoint y
 ]
 
-{ #category : #'API - path' }
+{ #category : #'API - query' }
 AeCairoContext >> currentPath [
 	"Return a copy of the current path."
 
 	^ self unownedCurrentPath
 		  autoRelease;
 		  yourself
+]
+
+{ #category : #'API - query' }
+AeCairoContext >> currentPointInDeviceSpace [
+
+	| xPointer yPointer |
+	xPointer := FFIFloat64 newBuffer.
+	yPointer := FFIFloat64 newBuffer.
+
+	self getCurrentPointIntoX: xPointer y: yPointer.
+	self getUserToDeviceIntoX: xPointer y: yPointer.
+
+	^ (xPointer doubleAt: 1) @ (yPointer doubleAt: 1)
+]
+
+{ #category : #'API - query' }
+AeCairoContext >> currentPointInUserSpace [
+
+	| xPointer yPointer |
+	xPointer := FFIFloat64 newBuffer.
+	yPointer := FFIFloat64 newBuffer.
+
+	self getCurrentPointIntoX: xPointer y: yPointer.
+
+	^ (xPointer doubleAt: 1) @ (yPointer doubleAt: 1)
 ]
 
 { #category : #'API - path' }
@@ -329,7 +354,7 @@ AeCairoContext >> dashes [
 	aDashArray := AeCairoDoubleArray newOf: count.
 
 	self
-		getDashesOn: aDashArray getHandle
+		getDashesInto: aDashArray getHandle
 		offset: ExternalAddress null.
 	
 	^ aDashArray
@@ -381,8 +406,24 @@ AeCairoContext >> fillRule: aCairoFillRule [
 			AeCairoFillRule aCairoFillRule ) )
 ]
 
+{ #category : #'API - query' }
+AeCairoContext >> getCurrentPointIntoX: xPointer y: yPointer [
+	"Gets the current point of the current path, which is conceptually the final point reached by the path so far.
+
+	The current point is returned in the user-space coordinate system. If there is no defined current point or if cr is in an error status, x and y will both be set to 0.0. It is possible to check this in advance with `cairo_has_current_point()`.
+
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-get-current-point"
+
+	self ffiCall: #(
+		void
+		cairo_get_current_point (
+			self,
+			double *xPointer,
+			double *yPointer ) )
+]
+
 { #category : #'API - painting settings' }
-AeCairoContext >> getDashesOn: pointerToArrayOfDoubles offset: pointerToOffset [
+AeCairoContext >> getDashesInto: pointerToArrayOfDoubles offset: pointerToOffset [
 	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-dash"
 
 	self ffiCall: #(
@@ -393,8 +434,11 @@ AeCairoContext >> getDashesOn: pointerToArrayOfDoubles offset: pointerToOffset [
 			"double" void * pointerToOffset ) )
 ]
 
-{ #category : #'API - path' }
+{ #category : #'API - query' }
 AeCairoContext >> getExtentsIntoLeft: x1 top: y1 right: x2 bottom: y2 [
+	"Computes a bounding box in user-space coordinates covering the points on the current path. If the current path is empty, returns an empty rectangle. Stroke parameters, fill rule, surface dimensions and clipping are not taken into account.
+	
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-path-extents"
 
 	self ffiCall: #(
 		void
@@ -407,7 +451,7 @@ AeCairoContext >> getExtentsIntoLeft: x1 top: y1 right: x2 bottom: y2 [
 ]
 
 { #category : #'API - text' }
-AeCairoContext >> getFontExtentsOn: aFontExtents [
+AeCairoContext >> getFontExtentsInto: aFontExtents [
 	"Gets the font extents for the currently selected font.
 	
 	See: https://www.cairographics.org/manual/cairo-text.html#cairo-font-extents"
@@ -420,7 +464,7 @@ AeCairoContext >> getFontExtentsOn: aFontExtents [
 ]
 
 { #category : #'API - text' }
-AeCairoContext >> getGlyphExtentsOf: theGlyphs size: aGlyphsNum on: aTextMetrics [
+AeCairoContext >> getGlyphExtentsOf: theGlyphs size: aGlyphsNum into: aTextMetrics [
 	"Gets the extents for an array of glyphs. The extents describe a user-space rectangle that encloses the 'inked' portion of the glyphs, (as they would be drawn by `cairo_show_glyphs()`). Additionally, the `x_advance` and `y_advance` values indicate the amount by which the current point would be advanced by `cairo_show_glyphs()`.
 	
 	See: https://www.cairographics.org/manual/cairo-text.html#cairo-glyph-extents"
@@ -435,7 +479,7 @@ AeCairoContext >> getGlyphExtentsOf: theGlyphs size: aGlyphsNum on: aTextMetrics
 ]
 
 { #category : #'API - matrix' }
-AeCairoContext >> getMatrixOn: aCairoMatrix [
+AeCairoContext >> getMatrixInto: aCairoMatrix [
 	"Stores the current transformation matrix (CTM) into to argument.
 	
 	See: https://www.cairographics.org/manual/cairo-Transformations.html#cairo-get-matrix"
@@ -445,6 +489,29 @@ AeCairoContext >> getMatrixOn: aCairoMatrix [
 		cairo_get_matrix (
 			self,
 			AeCairoMatrix *aCairoMatrix ) )
+]
+
+{ #category : #'API - query' }
+AeCairoContext >> getUserToDeviceIntoX: xPointer y: yPointer [
+	"Transform a coordinate from user space to device space by multiplying the given point by the current transformation matrix (CTM).
+
+	See: https://www.cairographics.org/manual/cairo-Transformations.html#cairo-user-to-device"
+
+	self ffiCall: #(
+		void
+		cairo_user_to_device (
+			self,
+			double *xPointer,
+			double *yPointer ) )
+]
+
+{ #category : #'API - query' }
+AeCairoContext >> hasCurrentPoint [
+	"Returns whether a current point is defined on the current path.
+	
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-has-current-point"
+
+	^ self ffiCall: #( Boolean cairo_has_current_point ( self ) )
 ]
 
 { #category : #initialization }
@@ -587,8 +654,8 @@ AeCairoContext >> maskSurface: aSurface x: surfaceX y: surfaceY [
 AeCairoContext >> matrix [
 
 	| aCairoMatrix |
-	aCairoMatrix := AeCairoMatrix externalNew.
-	self getMatrixOn: aCairoMatrix.
+	aCairoMatrix := AeCairoMatrix unboundedNew.
+	self getMatrixInto: aCairoMatrix.
 	^ aCairoMatrix
 		  autoRelease;
 		  yourself
@@ -683,8 +750,31 @@ AeCairoContext >> paintWithAlpha: aNumber [
 			double aNumber ) )
 ]
 
-{ #category : #'API - path' }
-AeCairoContext >> pathExtents [
+{ #category : #'API - query' }
+AeCairoContext >> pathExtentsInDeviceSpace [
+
+	| leftPointer topPointer rightPointer bottomPointer |
+	leftPointer := FFIFloat64 newBuffer.
+	topPointer := FFIFloat64 newBuffer.
+	rightPointer := FFIFloat64 newBuffer.
+	bottomPointer := FFIFloat64 newBuffer.
+
+	self
+		getExtentsIntoLeft: leftPointer
+			top: topPointer
+			right: rightPointer
+			bottom: bottomPointer;
+		getUserToDeviceIntoX: leftPointer
+			y: topPointer;
+		getUserToDeviceIntoX: rightPointer
+			y: bottomPointer.
+
+	^ (leftPointer doubleAt: 1) @ (topPointer doubleAt: 1) corner:
+		  (rightPointer doubleAt: 1) @ (bottomPointer doubleAt: 1)
+]
+
+{ #category : #'API - query' }
+AeCairoContext >> pathExtentsInUserSpace [
 
 	| leftPointer topPointer rightPointer bottomPointer |
 	leftPointer := FFIFloat64 newBuffer.
@@ -1214,6 +1304,21 @@ AeCairoContext >> transformWith: aCairoMatrix [
 			AeCairoMatrix *aCairoMatrix ) )
 ]
 
+{ #category : #'API - query' }
+AeCairoContext >> transformedFromUserToDevice: aPoint [
+
+	| xPointer yPointer |
+	xPointer := FFIFloat64 newBuffer.
+	yPointer := FFIFloat64 newBuffer.
+
+	xPointer doubleAt: 1 put: aPoint x.
+	yPointer doubleAt: 1 put: aPoint y.
+
+	self getUserToDeviceIntoX: xPointer y: yPointer.
+
+	^ (xPointer doubleAt: 1) @ (xPointer doubleAt: 1)
+]
+
 { #category : #'API - matrix' }
 AeCairoContext >> translateBy: aPoint [
 
@@ -1237,7 +1342,7 @@ AeCairoContext >> translateByX: tx y: ty [
 			double ty ) )
 ]
 
-{ #category : #'API - path' }
+{ #category : #'API - query' }
 AeCairoContext >> unownedCurrentPath [
 	"Return a copy of the current path.
 	
