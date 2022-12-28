@@ -97,7 +97,7 @@ AeCairoMatrix class >> unboundedNew [
 	^ self externalNew
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - initialize' }
 AeCairoMatrix >> beIdentity [
 	"Mutate myself to be an identity transformation.
 	
@@ -106,7 +106,7 @@ AeCairoMatrix >> beIdentity [
 	self ffiCall: #( void cairo_matrix_init_identity ( self ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - initialize' }
 AeCairoMatrix >> beRotationByRadians: angle [
 	"Mutate myself to be a transformation that rotates.
 
@@ -121,7 +121,14 @@ AeCairoMatrix >> beRotationByRadians: angle [
 			double angle ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - initialize' }
+AeCairoMatrix >> beScaleBy: aPoint [
+	"Mutate myself to be a transformation that scales by aPoint"
+	
+	self beScaleByX: aPoint x y: aPoint y
+]
+
+{ #category : #'API - initialize' }
 AeCairoMatrix >> beScaleByX: sx y: sy [
 	"Mutate myself to be a transformation that scales by sx and sy in the X and Y dimensions, respectively.
 	
@@ -135,7 +142,14 @@ AeCairoMatrix >> beScaleByX: sx y: sy [
 			double sy ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - initialize' }
+AeCairoMatrix >> beTranslationBy: aPoint [
+	"Mutate myself to be a transformation that translates by aPoint"
+
+	self beTranslationByX: aPoint x y: aPoint y
+]
+
+{ #category : #'API - initialize' }
 AeCairoMatrix >> beTranslationByX: tx y: ty [
 	"Mutate myself to be a transformation that translates by tx and ty in the X and Y dimensions, respectively.
 	
@@ -149,7 +163,7 @@ AeCairoMatrix >> beTranslationByX: tx y: ty [
 			double ty ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - initialize' }
 AeCairoMatrix >> beX: x0 y: y0 sx: xx sy: yy shx: xy shy: yx [
 	"Mutate myself to be the affine transformation given by xx, yx, xy, yy, x0, and y0.
 	The transformation is given by:
@@ -171,7 +185,7 @@ AeCairoMatrix >> beX: x0 y: y0 sx: xx sy: yy shx: xy shy: yx [
 			double y0 ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - initialize' }
 AeCairoMatrix >> invert [
 
 	^ self ffiCall: #( AeCairoStatus cairo_matrix_invert ( self ) )
@@ -207,7 +221,7 @@ AeCairoMatrix >> printOn: aStream [
 
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - transformations' }
 AeCairoMatrix >> rotateByRadians: angle [
 
 	self ffiCall: #(
@@ -217,13 +231,13 @@ AeCairoMatrix >> rotateByRadians: angle [
 			double angle ) )
 ]
 
-{ #category : #transformations }
+{ #category : #'API - transformations' }
 AeCairoMatrix >> scaleBy: aPoint [
 
 	self scaleByX: aPoint x y: aPoint y
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - transformations' }
 AeCairoMatrix >> scaleByX: x y: y [
 
 	self ffiCall: #(
@@ -282,13 +296,13 @@ AeCairoMatrix >> sy: anObject [
 	handle doubleAt: OFFSET_SY put: anObject
 ]
 
-{ #category : #transformations }
+{ #category : #'API - transformations' }
 AeCairoMatrix >> translateBy: aPoint [
 
 	self translateByX: aPoint x y: aPoint y
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - transformations' }
 AeCairoMatrix >> translateByX: px y: py [
 
 	self ffiCall: #(
@@ -300,7 +314,7 @@ AeCairoMatrix >> translateByX: px y: py [
 
 ]
 
-{ #category : #transformations }
+{ #category : #'API - query' }
 AeCairoMatrix >> value: aPoint [
 	"Answer aPoint transformed by self."
 
@@ -314,7 +328,7 @@ AeCairoMatrix >> value: aPoint [
 	^ (x doubleAt: 1) @ (y doubleAt: 1)
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'API - query' }
 AeCairoMatrix >> valueOnX: xPointer onY: yPointer [
 	
 	^ self ffiCall: #(
