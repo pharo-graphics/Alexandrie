@@ -52,6 +52,30 @@ AeCairoPattern >> filter: filter [
 			AeCairoSamplingFilter filter ) )
 ]
 
+{ #category : #'API - matrix' }
+AeCairoPattern >> getMatrixInto: aCairoMatrix [
+	"Stores the pattern's transformation matrix into to argument.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-get-matrix"
+
+	self ffiCall: #(
+		void
+		cairo_pattern_get_matrix (
+			self,
+			AeCairoMatrix *aCairoMatrix ) )
+]
+
+{ #category : #accessing }
+AeCairoPattern >> matrix [
+
+	| aCairoMatrix |
+	aCairoMatrix := AeCairoMatrix unboundedNew.
+	self getMatrixInto: aCairoMatrix.
+	^ aCairoMatrix
+		  autoRelease;
+		  yourself
+]
+
 { #category : #API }
 AeCairoPattern >> matrix: matrix [
 	"Sets the pattern's transformation matrix to matrix . This matrix is a transformation from user space to pattern space.
