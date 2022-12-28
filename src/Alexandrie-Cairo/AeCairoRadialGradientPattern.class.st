@@ -23,6 +23,18 @@ AeCairoRadialGradientPattern class >> innerCenter: anInnerCenter innerRadius: an
 		  yourself
 ]
 
+{ #category : #'instance creation' }
+AeCairoRadialGradientPattern class >> innerCenter: anInnerCenter innerRadius: anInnerRadius outerCenter: anOuterCenter outerRadius: anOuterRadius addStopsFrom: offsetColorAssociations [
+
+	^ (self
+		   innerCenter: anInnerCenter
+		   innerRadius: anInnerRadius
+		   outerCenter: anOuterCenter
+		   outerRadius: anOuterRadius)
+		  addStopsFrom: offsetColorAssociations;
+		  yourself
+]
+
 { #category : #'private - ffi' }
 AeCairoRadialGradientPattern class >> unownedNewWithInnerX: anInnerX innerY: anInnerY innerRadius: anInnerRadius outerX: anOuterX outerY: anOuterY outerRadius: anOuterRadius [
 	"See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-radial"

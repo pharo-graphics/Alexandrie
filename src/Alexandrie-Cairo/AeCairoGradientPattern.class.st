@@ -64,3 +64,10 @@ AeCairoGradientPattern >> addStopAt: anOffset r: aRed g: aGreen b: aBlue a: anAl
 			double aBlue,
 			double anAlpha ) )
 ]
+
+{ #category : #accessing }
+AeCairoGradientPattern >> addStopsFrom: offsetColorAssociations [
+
+	offsetColorAssociations do: [ :each | 
+		self addStopAt: each key color: each value ]
+]
