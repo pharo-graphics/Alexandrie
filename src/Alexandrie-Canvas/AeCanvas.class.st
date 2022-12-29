@@ -371,6 +371,12 @@ AeCanvas >> extent [
 ]
 
 { #category : #'API - state' }
+AeCanvas >> finish [
+
+	cairoSurface finish
+]
+
+{ #category : #'API - state' }
 AeCanvas >> flush [
 
 	cairoSurface flush
