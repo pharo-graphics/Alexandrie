@@ -672,15 +672,6 @@ AeCanvas >> setHighQualityOptions [
 		subpixelOrder: AeCairoSubpixelOrder CAIRO_SUBPIXEL_ORDER_DEFAULT;
 		yourself
 
-"As Sparta-Cairo would be:
-	fontOptions := AeCairoFontOptions new
-		antialias: AeCairoAntialias CAIRO_ANTIALIAS_SUBPIXEL;
-		hintMetrics: AeCairoHintMetrics CAIRO_HINT_METRICS_ON;
-		hintStyle: AeCairoHintStyle CAIRO_HINT_STYLE_MEDIUM;
-		subpixelOrder: AeCairoSubpixelOrder CAIRO_SUBPIXEL_ORDER_RGB;
-		yourself
-"
-
 ]
 
 { #category : #'API - border' }
