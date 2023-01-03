@@ -59,18 +59,18 @@ AeCairoRecordingSurface >> getInkBoundsIntoX: x0 y: y0 width: width height: heig
 { #category : #query }
 AeCairoRecordingSurface >> inkBounds [
 
-	| leftPointer topPointer rightPointer bottomPointer |
-	leftPointer := FFIFloat64 newBuffer.
-	topPointer := FFIFloat64 newBuffer.
-	rightPointer := FFIFloat64 newBuffer.
-	bottomPointer := FFIFloat64 newBuffer.
+	| xPointer yPointer widthPointer heightPointer |
+	xPointer := FFIFloat64 newBuffer.
+	yPointer := FFIFloat64 newBuffer.
+	widthPointer := FFIFloat64 newBuffer.
+	heightPointer := FFIFloat64 newBuffer.
 
 	self
-		getInkBoundsIntoX: leftPointer
-		y: topPointer
-		width: rightPointer
-		height: bottomPointer.
+		getInkBoundsIntoX: xPointer
+		y: yPointer
+		width: widthPointer
+		height: heightPointer.
 
-	^ (leftPointer doubleAt: 1) @ (topPointer doubleAt: 1) extent:
-		  (rightPointer doubleAt: 1) @ (bottomPointer doubleAt: 1)
+	^ (xPointer doubleAt: 1) @ (yPointer doubleAt: 1) extent:
+		  (widthPointer doubleAt: 1) @ (heightPointer doubleAt: 1)
 ]
