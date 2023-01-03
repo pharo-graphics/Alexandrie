@@ -50,6 +50,16 @@ AeCairoSurface class >> unownedNewSimilarTo: aSurface contentType: aContentType 
 			int aHeight ) )
 ]
 
+{ #category : #API }
+AeCairoSurface >> device [
+	"Return the device for surface, or NULL if the surface does not have an associated device.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-device"
+
+	^ self ffiCall: #( AeCairoDevice cairo_surface_get_device ( self ) )
+
+]
+
 { #category : #'private - ffi' }
 AeCairoSurface >> deviceScale [
 
@@ -110,6 +120,15 @@ AeCairoSurface >> getDeviceScaleOnX: xPointer onY: yPointer [
 			double * xPointer,
 			double * yPointer ) )
 
+]
+
+{ #category : #API }
+AeCairoSurface >> hasDevice [
+	"Answer whether I have an associated device.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-device"
+
+	^ self device getHandle isNull not
 ]
 
 { #category : #'private - ffi' }

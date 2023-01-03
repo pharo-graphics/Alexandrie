@@ -36,6 +36,14 @@ AeCairoImageSurfaceTest >> testFromForm [
 ]
 
 { #category : #tests }
+AeCairoImageSurfaceTest >> testHasDevice [
+
+	surface := AeCairoImageSurface extent: 1 @ 1.
+
+	self deny: surface hasDevice
+]
+
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testHeight [
 
 	surface := AeCairoImageSurface extent: 100 @ 50.
