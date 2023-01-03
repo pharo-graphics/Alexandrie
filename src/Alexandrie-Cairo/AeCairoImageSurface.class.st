@@ -72,7 +72,7 @@ AeCairoImageSurface class >> newForData: aData extent: aPoint stride: stride for
 		  yourself
 ]
 
-{ #category : #'private - fii' }
+{ #category : #query }
 AeCairoImageSurface class >> strideForWidth: aWidth format: aSurfaceFormat [
 
 	^ self ffiCall: #(
@@ -82,7 +82,7 @@ AeCairoImageSurface class >> strideForWidth: aWidth format: aSurfaceFormat [
 			int aWidth ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'instance creation' }
 AeCairoImageSurface class >> unownedNewForData: aData width: width height: height stride: stride format: aSurfaceFormat [
 	"Creates an image surface for the provided pixel data. The output buffer must be kept around until the cairo_surface_t is destroyed or cairo_surface_finish() is called on the surface. The initial contents of data will be used as the initial image contents; you must explicitly clear the buffer, using, for example, cairo_rectangle() and cairo_fill() if you want it cleared.
 
@@ -106,7 +106,7 @@ AeCairoImageSurface class >> unownedNewForData: aData width: width height: heigh
 			int stride ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'instance creation' }
 AeCairoImageSurface class >> unownedNewWithFormat: aSurfaceFormat width: aWidth height: aHeight [
 
 	^ self ffiCall: #(
