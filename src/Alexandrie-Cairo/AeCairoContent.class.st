@@ -40,6 +40,24 @@ AeCairoContent class >> CAIRO_CONTENT_COLOR_ALPHA [
 	^ CAIRO_CONTENT_COLOR_ALPHA
 ]
 
+{ #category : #'accessing enum' }
+AeCairoContent class >> alphaOnly [
+
+	^ CAIRO_CONTENT_ALPHA
+]
+
+{ #category : #'accessing enum' }
+AeCairoContent class >> colorAndAlpha [
+
+	^ CAIRO_CONTENT_COLOR_ALPHA
+]
+
+{ #category : #'accessing enum' }
+AeCairoContent class >> colorOnly [
+
+	^ CAIRO_CONTENT_COLOR
+]
+
 { #category : #'enum declaration' }
 AeCairoContent class >> enumDecl [
 	"
