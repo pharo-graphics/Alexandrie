@@ -55,10 +55,16 @@ AePixelMatchTest class >> inspectAll [
 { #category : #convenience }
 AePixelMatchTest class >> inspectMismatches [
 
-	(self allFormSelectors
+	| mismatches |
+	mismatches := self allFormSelectors
 		 collect: [ :each |
 			 (self new formSelector: each) newPixelComparison ]
-		 thenSelect: [ :each | each isMatch not ]) inspect
+		 thenSelect: [ :each | each isMatch not ].
+	
+	mismatches
+		ifEmpty: [ self inform: 'No mismatches found' ]
+		ifNotEmpty: [ mismatches inspect ]
+
 ]
 
 { #category : #testing }
