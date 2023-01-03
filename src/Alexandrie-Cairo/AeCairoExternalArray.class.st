@@ -6,7 +6,7 @@ Class {
 	#superclass : #FFIExternalArray,
 	#traits : 'AeTExternalFree',
 	#classTraits : 'AeTExternalFree classTrait',
-	#category : #'Alexandrie-Cairo-Core'
+	#category : #'Alexandrie-Cairo-Structures'
 }
 
 { #category : #'instance creation' }

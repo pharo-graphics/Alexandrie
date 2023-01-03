@@ -18,7 +18,7 @@ Class {
 		'OFFSET_X',
 		'OFFSET_Y'
 	],
-	#category : #'Alexandrie-Cairo-Core'
+	#category : #'Alexandrie-Cairo-Structures'
 }
 
 { #category : #'field definition' }

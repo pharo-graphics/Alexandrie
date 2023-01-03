@@ -4,7 +4,7 @@ I'm an array of `FFIFloat64` (double).
 Class {
 	#name : #AeCairoDoubleArray,
 	#superclass : #AeCairoExternalArray,
-	#category : #'Alexandrie-Cairo-Core'
+	#category : #'Alexandrie-Cairo-Structures'
 }
 
 { #category : #finalization }
