@@ -1242,7 +1242,16 @@ AeCairoContext >> sourceColorRGBA: aColor [
 
 { #category : #'API - source' }
 AeCairoContext >> sourceSurface: aCairoSurface x: aX y: aY [
-	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-source-surface"
+	"This is a convenience function for creating a pattern from surface and setting it as the source.
+
+	The x and y parameters give the user-space coordinate at which the surface origin should appear. 
+	(The surface origin is its upper-left corner before any transformation has been applied.) 
+	The x and y parameters are negated and then set as translation values in the pattern matrix.
+
+	Other than the initial translation pattern matrix, as described above, all other pattern attributes, such as its extend mode,
+	are set to the default values.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-source-surface"
 
 	self ffiCall: #(
 		void
