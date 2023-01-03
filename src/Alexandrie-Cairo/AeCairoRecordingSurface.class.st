@@ -13,7 +13,7 @@ Class {
 	#category : #'Alexandrie-Cairo-Surfaces'
 }
 
-{ #category : #'private - ffi' }
+{ #category : #'instance creation' }
 AeCairoRecordingSurface class >> newContentType: aContentType bounds: aCairoRectangle [
 
 	^ (self unownedNewContentType: aContentType bounds: aCairoRectangle)
@@ -21,7 +21,7 @@ AeCairoRecordingSurface class >> newContentType: aContentType bounds: aCairoRect
 		  yourself
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'instance creation' }
 AeCairoRecordingSurface class >> unownedNewContentType: aContentType bounds: aCairoRectangle [
 	"Create a recording-surface which can be used to record all drawing operations at the highest level (that is, the level of paint, mask, stroke, fill and show_text_glyphs). 
 	
@@ -34,8 +34,43 @@ AeCairoRecordingSurface class >> unownedNewContentType: aContentType bounds: aCa
 	See: https://www.cairographics.org/manual/cairo-Recording-Surfaces.html#cairo-recording-surface-create"
 
 	^ self ffiCall: #(
-		AeCairoImageSurface
+		AeCairoRecordingSurface
 		cairo_recording_surface_create (
 			AeCairoContent	aContentType,
 			AeCairoRectangle * aCairoRectangle ) )
+]
+
+{ #category : #query }
+AeCairoRecordingSurface >> getInkBoundsIntoX: x0 y: y0 width: width height: height [
+	"Measures the extents of the operations stored within the recording-surface. This is useful to compute the required size of an image surface (or equivalent) into which to replay the full sequence of drawing operations.
+	
+	See: https://cairographics.org/manual/cairo-Recording-Surfaces.html#cairo-recording-surface-ink-extents"
+
+	^ self ffiCall: #(
+		void
+		cairo_recording_surface_ink_extents (
+			self,
+			double *x0,
+			double *y0,
+			double *width,
+			double *height ) )
+]
+
+{ #category : #query }
+AeCairoRecordingSurface >> inkBounds [
+
+	| leftPointer topPointer rightPointer bottomPointer |
+	leftPointer := FFIFloat64 newBuffer.
+	topPointer := FFIFloat64 newBuffer.
+	rightPointer := FFIFloat64 newBuffer.
+	bottomPointer := FFIFloat64 newBuffer.
+
+	self
+		getInkBoundsIntoX: leftPointer
+		y: topPointer
+		width: rightPointer
+		height: bottomPointer.
+
+	^ (leftPointer doubleAt: 1) @ (topPointer doubleAt: 1) extent:
+		  (rightPointer doubleAt: 1) @ (bottomPointer doubleAt: 1)
 ]

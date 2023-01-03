@@ -42,6 +42,12 @@ AeCairoRectangle class >> origin: originPoint extent: extentPoint [
 		yourself
 ]
 
+{ #category : #converting }
+AeCairoRectangle >> asRectangle [
+	
+	^ Rectangle origin: self x @ self y extent: self width @ self height
+]
+
 { #category : #'accessing - structure variables' }
 AeCairoRectangle >> height [
 	"This method was automatically generated"
