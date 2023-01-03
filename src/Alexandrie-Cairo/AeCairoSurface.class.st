@@ -60,7 +60,7 @@ AeCairoSurface >> device [
 
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoSurface >> deviceScale [
 
 	| xPointer yPointer |
@@ -71,13 +71,13 @@ AeCairoSurface >> deviceScale [
 
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoSurface >> deviceScale: aPoint [
 
 	self deviceScaleX: aPoint x y: aPoint y
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoSurface >> deviceScaleX: xScale y: yScale [
 	"Sets a scale that is multiplied to the device coordinates determined by the CTM when drawing to surface. One common use for this is to render to very high resolution display devices at a scale factor, so that code that assumes 1 pixel will be a certain size will still work. Setting a transformation via cairo_translate() isn't sufficient to do this, since functions like cairo_device_to_user() will expose the hidden scale.
 
@@ -93,7 +93,7 @@ Note that the scale affects drawing to the surface as well as using the surface 
 			double yScale ) )
 ]
 
-{ #category : #initialization }
+{ #category : #API }
 AeCairoSurface >> finish [
 	"Finish the surface and drop all references to external resources.
 	
@@ -104,13 +104,13 @@ AeCairoSurface >> finish [
 	self ffiCall: #( void cairo_surface_finish ( self ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoSurface >> flush [
 
 	self ffiCall: #( void cairo_surface_flush ( self ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoSurface >> getDeviceScaleOnX: xPointer onY: yPointer [
 
 	self ffiCall: #(
@@ -131,7 +131,7 @@ AeCairoSurface >> hasDevice [
 	^ self device getHandle isNull not
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoSurface >> markDirty [
 	
 	self ffiCall: #( void cairo_surface_mark_dirty ( self ) )
@@ -143,7 +143,7 @@ AeCairoSurface >> newContext [
 	^ AeCairoContext newFor: self
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoSurface >> status [
 
 	^ self ffiCall: #( AeCairoStatus cairo_surface_status ( self ) )
