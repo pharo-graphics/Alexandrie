@@ -240,14 +240,8 @@ AeCairoContext >> closePath [
 AeCairoContext >> cubicCurveFrom: startPoint controlPoint1: cp1 controlPoint2: cp2 to: endPoint [
 
 	self
-		moveToX: startPoint x
-			y: startPoint y;
-		curveViaX: cp1 x
-			y: cp1 y
-			viaX: cp2 x
-			y: cp2 y
-			toX: endPoint x
-			y: endPoint y
+		moveTo: startPoint;
+		curveVia: cp1 via: cp2 to: endPoint
 ]
 
 { #category : #'API - query' }
@@ -282,6 +276,15 @@ AeCairoContext >> currentPointInUserSpace [
 	self getCurrentPointIntoX: xPointer y: yPointer.
 
 	^ (xPointer doubleAt: 1) @ (yPointer doubleAt: 1)
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> curveVia: point1 via: point2 to: point3 [
+
+	self
+		curveViaX: point1 x y: point1 y
+		viaX: point2 x y: point2 y
+		toX: point3 x y: point3 y
 ]
 
 { #category : #'API - path' }
@@ -838,14 +841,8 @@ AeCairoContext >> quadraticCurveFrom: startPoint controlPoint: qp1 to: endPoint 
 	cp2 := (qp1 - endPoint)   * 0.6666666666666666 + endPoint.
 
 	self
-		moveToX: startPoint x
-			y: startPoint y;
-		curveViaX: cp1 x
-			y: cp1 y
-			viaX: cp2 x
-			y: cp2 y
-			toX: endPoint x
-			y: endPoint y
+		moveTo: startPoint;
+		curveVia: cp1 via: cp2 to: endPoint
 ]
 
 { #category : #'API - path' }
