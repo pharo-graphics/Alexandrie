@@ -26,6 +26,45 @@ AeCairoExamplesRenderTest class >> inspectMismatches [
 ]
 
 { #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithDeviceScale [
+
+	| aSurface aSquare scalePoint surfaceWidth surfaceHeight |
+	aSquare := 5 @ 5 extent: 10 @ 10.
+	scalePoint := 3 @ 1.2.
+	surfaceWidth := (aSquare right * scalePoint x) + 1.
+	surfaceHeight := (aSquare bottom * scalePoint y) + 1.
+	
+	aSurface := AeCairoImageSurface
+		extent: surfaceWidth @ surfaceHeight
+		format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+
+	aSurface deviceScale: scalePoint.
+
+	aSurface newContext
+		" clear background "
+		sourceColorRGB: Color yellow;
+		paint;
+
+		" mark 0@0 "
+		sourceColorRGB: Color black;
+		rectangleTo: 1 asPoint;
+		fill;
+
+		" draw square (that won't look as a square due
+		to device scale)"
+		sourceColorRGB: Color blue;
+		rectangle: aSquare;
+		fill.
+
+	self
+		assert: aSurface deviceScale
+		equals: scalePoint.
+
+	^ aSurface
+
+]
+
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 	"Cairo allows drawing strokes with dotted borders (either with circular dots, or squared dots).
 	The trick is setting dash segments of length 0.0, followed by a non-zero segment.

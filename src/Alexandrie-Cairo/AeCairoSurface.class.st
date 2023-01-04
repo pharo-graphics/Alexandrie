@@ -79,9 +79,11 @@ AeCairoSurface >> deviceScale: aPoint [
 
 { #category : #API }
 AeCairoSurface >> deviceScaleX: xScale y: yScale [
-	"Sets a scale that is multiplied to the device coordinates determined by the CTM when drawing to surface. One common use for this is to render to very high resolution display devices at a scale factor, so that code that assumes 1 pixel will be a certain size will still work. Setting a transformation via cairo_translate() isn't sufficient to do this, since functions like cairo_device_to_user() will expose the hidden scale.
+	"Sets a scale that is multiplied to the device coordinates determined by the CTM when drawing to this surface. 
+	One common use for this is to render to very high resolution display devices at a scale factor, so that code that assumes 1 pixel will be a certain size will still work. 
+	Setting a transformation via `cairo_scale()` isn't sufficient to do this, since functions like `cairo_device_to_user()` will expose the hidden scale.
 
-Note that the scale affects drawing to the surface as well as using the surface in a source pattern.
+	Note that the scale affects drawing to the surface as well as using the surface in a source pattern.
 
 	See: https://www.cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-set-device-scale"
 
@@ -112,6 +114,9 @@ AeCairoSurface >> flush [
 
 { #category : #API }
 AeCairoSurface >> getDeviceScaleOnX: xPointer onY: yPointer [
+	"Return the previous device scale set by `cairo_surface_set_device_scale()`.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-device-scale"
 
 	self ffiCall: #(
 		void
