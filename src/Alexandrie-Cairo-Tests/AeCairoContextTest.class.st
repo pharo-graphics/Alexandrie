@@ -9,6 +9,51 @@ Class {
 }
 
 { #category : #tests }
+AeCairoContextTest >> testClipExtents [
+
+	surface := AeCairoImageSurface extent: 100 @ 100.
+	context := surface newContext.
+	
+	self
+		assert: context clipExtentsInUserSpace
+		equals: (Rectangle origin: 0 @ 0 extent: 100 @ 100).
+	self
+		assert: context clipExtentsInDeviceSpace
+		equals: (Rectangle origin: 0 @ 0 extent: 100 @ 100).
+	
+	context scaleByX: 0.5 y: 2.
+	
+	self
+		assert: context clipExtentsInUserSpace
+		equals: (Rectangle origin: 0 @ 0 corner: 200 @ 50).
+	self
+		assert: context clipExtentsInDeviceSpace
+		equals: (Rectangle origin: 0 @ 0 corner: 100 @ 100).
+
+	context
+		moveTo: 5 @ 10;
+		lineTo: 90 @ 50;
+		clip.
+
+	self
+		assert: context clipExtentsInUserSpace
+		equals: (Rectangle origin: 4 @ 10 corner: 90 @ 50).
+	self
+		assert: context clipExtentsInDeviceSpace
+		equals: (Rectangle origin: 2 @ 20 corner: 45 @ 100).
+
+	context resetClip.
+	
+	self
+		assert: context clipExtentsInUserSpace
+		equals: (Rectangle origin: 0 @ 0 extent: 200 @ 50).
+	self
+		assert: context clipExtentsInDeviceSpace
+		equals: (Rectangle origin: 0 @ 0 corner: 100 @ 100).
+
+]
+
+{ #category : #tests }
 AeCairoContextTest >> testCurrentPoint [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.

@@ -198,6 +198,48 @@ AeCairoContext >> clip [
 	self ffiCall: #( void cairo_clip ( self ) )
 ]
 
+{ #category : #'API - query' }
+AeCairoContext >> clipExtentsInDeviceSpace [
+
+	| leftPointer topPointer rightPointer bottomPointer |
+	leftPointer := FFIFloat64 newBuffer.
+	topPointer := FFIFloat64 newBuffer.
+	rightPointer := FFIFloat64 newBuffer.
+	bottomPointer := FFIFloat64 newBuffer.
+
+	self
+		getClipExtentsIntoLeft: leftPointer
+			top: topPointer
+			right: rightPointer
+			bottom: bottomPointer;
+		getUserToDeviceIntoX: leftPointer
+			y: topPointer;
+		getUserToDeviceIntoX: rightPointer
+			y: bottomPointer.
+
+	^ (leftPointer doubleAt: 1) @ (topPointer doubleAt: 1) corner:
+		  (rightPointer doubleAt: 1) @ (bottomPointer doubleAt: 1)
+]
+
+{ #category : #'API - query' }
+AeCairoContext >> clipExtentsInUserSpace [
+
+	| leftPointer topPointer rightPointer bottomPointer |
+	leftPointer := FFIFloat64 newBuffer.
+	topPointer := FFIFloat64 newBuffer.
+	rightPointer := FFIFloat64 newBuffer.
+	bottomPointer := FFIFloat64 newBuffer.
+
+	self
+		getClipExtentsIntoLeft: leftPointer
+		top: topPointer
+		right: rightPointer
+		bottom: bottomPointer.
+
+	^ (leftPointer doubleAt: 1) @ (topPointer doubleAt: 1) corner:
+		  (rightPointer doubleAt: 1) @ (bottomPointer doubleAt: 1)
+]
+
 { #category : #'API - clipping' }
 AeCairoContext >> clipPreserve [
 
@@ -407,6 +449,22 @@ AeCairoContext >> fillRule: aCairoFillRule [
 		cairo_set_fill_rule (
 			self,
 			AeCairoFillRule aCairoFillRule ) )
+]
+
+{ #category : #'API - query' }
+AeCairoContext >> getClipExtentsIntoLeft: x1 top: y1 right: x2 bottom: y2 [
+	"Computes a bounding box in user coordinates covering the area inside the current clip.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-clip-extents"
+
+	self ffiCall: #(
+		void
+		cairo_clip_extents (
+			self,
+			double *x1,
+			double *y1,
+			double *x2,
+			double *y2 ) )
 ]
 
 { #category : #'API - query' }
