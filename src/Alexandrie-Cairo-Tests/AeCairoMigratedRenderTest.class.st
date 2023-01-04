@@ -602,6 +602,47 @@ AeCairoMigratedRenderTest >> surfaceWithInvertedClip [
 ]
 
 { #category : #tests }
+AeCairoMigratedRenderTest >> surfaceWithMeshPatternOverlap [
+	"Paint a mesh pattern with a simple fold.
+	
+	Based on: mesh-pattern-overlap.c"
+
+	| surfaceSize aSurface aContext size pad aMesh |
+	size := 100.
+	pad := 15.
+	surfaceSize := (pad + size + pad) asPoint.
+	aSurface := self newSurfaceExtent: surfaceSize.
+	aContext := aSurface newContext.
+
+	self drawTestPaintCheckeredOn: aContext.
+	aContext translateByX: pad y: pad.
+	
+	aMesh := AeCairoMeshPattern newEmpty.
+	aMesh beginPatch.
+	
+	aMesh
+		moveToX: 0 y: 0;
+		curveViaX:  30 y: -30 viaX: 60 y:  30 toX: 100 y: 0;
+		curveViaX: 130 y: 140 viaX: 60 y: -40 toX: 100 y: 100;
+		curveViaX:  60 y:  70 viaX: 30 y: 130 toX:   0 y: 100;
+		curveViaX: -30 y: -40 viaX: 30 y: 140 toX:   0 y: 0.
+
+	aMesh
+		cornerAt: 0 putColorRGB: Color red;
+		cornerAt: 1 putColorRGB: Color green;
+		cornerAt: 2 putColorRGB: Color blue;
+		cornerAt: 3 putColorRGB: Color yellow.
+		
+	aMesh endPatch.
+
+	aContext
+		source: aMesh;
+		paint.
+
+	^ aSurface
+]
+
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithOutsideClipping [
 	"Clipping outside a region.
 	
