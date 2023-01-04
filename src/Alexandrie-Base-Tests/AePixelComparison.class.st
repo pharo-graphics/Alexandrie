@@ -98,7 +98,11 @@ AePixelComparison >> expectedForm: aForm [
 { #category : #testing }
 AePixelComparison >> isMatch [
 
-	^ 0 = (expectedForm pixelCompare: (0@0 corner: expectedForm extent) with: actualForm at: 0@0).
+	^ actualForm extent = expectedForm extent and: [ 
+		  0 = (expectedForm
+			   pixelCompare: (0 @ 0 corner: expectedForm extent)
+			   with: actualForm
+			   at: 0 @ 0) ]
 ]
 
 { #category : #accessing }
