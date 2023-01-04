@@ -90,6 +90,15 @@ AeCairoMeshPattern >> cornerAt: index putR: r g: g b: b a: a [
 ]
 
 { #category : #path }
+AeCairoMeshPattern >> curveVia: point1 via: point2 to: point3 [
+
+	self
+		curveViaX: point1 x y: point1 y
+		viaX: point2 x y: point2 y
+		toX: point3 x y: point3 y
+]
+
+{ #category : #path }
 AeCairoMeshPattern >> curveViaX: x1 y: y1 viaX: x2 y: y2 toX: x3 y: y3 [
 	"See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-curve-to"	
 

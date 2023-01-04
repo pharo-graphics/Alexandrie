@@ -602,6 +602,79 @@ AeCairoMigratedRenderTest >> surfaceWithInvertedClip [
 ]
 
 { #category : #tests }
+AeCairoMigratedRenderTest >> surfaceWithMeshPatternConical [
+	"Paint a conical pattern using a mesh pattern.
+	
+	Based on: mesh-pattern-conical.c"
+
+	| size pad surfaceSize radius center aSurface aContext aMesh |
+	size := 100.
+	pad := 2.
+	surfaceSize := (pad + size + pad) asPoint.
+	radius := size / 2.
+	center := radius asPoint.
+	
+	aSurface := self newSurfaceExtent: surfaceSize.
+	aContext := aSurface newContext.
+
+	aContext
+		sourceColorRGB: Color white;
+		paint;
+		translateByX: pad y: pad.
+	
+	aMesh := AeCairoMeshPattern newEmpty.
+
+	{{ 0.0         -> Color red.
+		Float pi/4  -> Color yellow }.
+	{  Float pi/4  -> Color green.
+		Float pi/2   -> Color cyan }.
+	{  Float pi/2   -> Color blue.
+		3*Float pi/4 -> Color magenta }.
+	{  3*Float pi/4 -> Color red.
+		Float pi     -> Color yellow }.
+	{  -1*Float pi  -> Color yellow.
+		-3*Float pi/4 -> Color green }.
+	{  -3*Float pi/4 -> Color green.
+		-1*Float pi/2 -> Color cyan }.
+	{  -1*Float pi/2 -> Color cyan.
+		-1*Float pi/4 -> Color blue }.
+	{  -1*Float pi/4 -> Color blue.
+		 0.0          -> Color red }
+	} do: [ :each |
+		| angleA angleB colorA colorB h rA rB |
+		angleA := each first key.
+		colorA := each first value.
+		angleB := each second key.
+		colorB := each second value.
+		
+		h := 4/3 * ((angleB - angleA) / 4) tan.
+
+		rA := Point r: radius theta: angleA.
+		rB := Point r: radius theta: angleB.
+		
+		aMesh
+			beginPatch;
+			moveTo: center;
+			lineTo: center + rA;
+			curveViaX: (center x + rA x - (h * rA y))
+					  y: (center y + rA y + (h * rA x))
+				  viaX: (center x + rB x + (h * rB y))
+					  y: (center y + rB y - (h * rB x))
+				   toX: center x + rB x
+					  y: center y + rB y;
+			cornerAt: 0 putColorRGB: Color white;
+			cornerAt: 1 putColorRGB: colorA;
+			cornerAt: 2 putColorRGB: colorB;
+			endPatch ].
+	 
+	aContext
+		source: aMesh;
+		paint.
+
+	^ aSurface
+]
+
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithMeshPatternOverlap [
 	"Paint a mesh pattern with a simple fold.
 	
