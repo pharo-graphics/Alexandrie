@@ -26,6 +26,44 @@ AeCairoExamplesRenderTest class >> inspectMismatches [
 ]
 
 { #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithDeviceOffset [
+
+	| aSurface aSquare offsetPoint surfaceWidth surfaceHeight |
+	aSquare := 5 @ 5 extent: 10 @ 10.
+	offsetPoint := 20 @ 10.
+	surfaceWidth := (aSquare right + offsetPoint x) + 1.
+	surfaceHeight := (aSquare bottom + offsetPoint y) + 1.
+	
+	aSurface := AeCairoImageSurface
+		extent: surfaceWidth @ surfaceHeight
+		format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+
+	aSurface deviceOffset: offsetPoint.
+
+	aSurface newContext
+		" clear background "
+		sourceColorRGB: Color yellow;
+		paint;
+
+		" mark 0@0 "
+		sourceColorRGB: Color black;
+		rectangleTo: 1 asPoint;
+		fill;
+
+		" draw a square "
+		sourceColorRGB: Color blue;
+		rectangle: aSquare;
+		fill.
+
+	self
+		assert: aSurface deviceOffset
+		equals: offsetPoint.
+
+	^ aSurface
+
+]
+
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithDeviceScale [
 
 	| aSurface aSquare scalePoint surfaceWidth surfaceHeight |
