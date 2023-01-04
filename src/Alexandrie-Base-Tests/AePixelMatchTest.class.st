@@ -88,7 +88,7 @@ AePixelMatchTest >> expectedForm [
 	aFileReference := self fileReferenceToExpectedPNG.
 	
 	^ aFileReference exists
-		ifFalse: [ Form extent: 1 asPoint depth: 32 ]
+		ifFalse: [ Form extent: 0 asPoint depth: 32 ]
 		ifTrue: [ Form fromFileNamed: aFileReference ]
 ]
 
