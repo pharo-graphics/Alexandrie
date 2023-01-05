@@ -40,6 +40,12 @@ AeCairoCapStyle class >> CAIRO_LINE_CAP_SQUARE [
 	^ CAIRO_LINE_CAP_SQUARE
 ]
 
+{ #category : #'accessing enum' }
+AeCairoCapStyle class >> butt [
+
+	^ CAIRO_LINE_CAP_BUTT
+]
+
 { #category : #'enum declaration' }
 AeCairoCapStyle class >> enumDecl [
 	"
@@ -51,6 +57,18 @@ AeCairoCapStyle class >> enumDecl [
 		CAIRO_LINE_CAP_ROUND 1
 		CAIRO_LINE_CAP_SQUARE 2
 	)
+]
+
+{ #category : #'accessing enum' }
+AeCairoCapStyle class >> round [
+
+	^ CAIRO_LINE_CAP_ROUND
+]
+
+{ #category : #'accessing enum' }
+AeCairoCapStyle class >> square [
+
+	^ CAIRO_LINE_CAP_SQUARE
 ]
 
 { #category : #hook }

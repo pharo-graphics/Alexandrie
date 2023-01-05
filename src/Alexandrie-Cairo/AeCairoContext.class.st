@@ -1506,3 +1506,39 @@ AeCairoContext >> useFillRuleWinding [
 
 	self fillRule: AeCairoFillRule CAIRO_FILL_RULE_WINDING
 ]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> useLineCapButt [
+
+	self lineCap: AeCairoCapStyle butt
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> useLineCapRound [
+
+	self lineCap: AeCairoCapStyle round
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> useLineCapSquare [
+
+	self lineCap: AeCairoCapStyle square
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> useLineJoinBevel [
+
+	self lineJoin: AeCairoJoinStyle bevel
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> useLineJoinMiter [
+
+	self lineJoin: AeCairoJoinStyle miter
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> useLineJoinRound [
+
+	self lineJoin: AeCairoJoinStyle round
+]

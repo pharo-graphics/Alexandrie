@@ -42,6 +42,12 @@ AeCairoJoinStyle class >> CAIRO_LINE_JOIN_ROUND [
 	^ CAIRO_LINE_JOIN_ROUND
 ]
 
+{ #category : #'accessing enum' }
+AeCairoJoinStyle class >> bevel [
+
+	^ CAIRO_LINE_JOIN_BEVEL
+]
+
 { #category : #'enum declaration' }
 AeCairoJoinStyle class >> enumDecl [
 	"
@@ -53,6 +59,18 @@ AeCairoJoinStyle class >> enumDecl [
 		CAIRO_LINE_JOIN_ROUND 1
 		CAIRO_LINE_JOIN_BEVEL 2
 	)
+]
+
+{ #category : #'accessing enum' }
+AeCairoJoinStyle class >> miter [
+
+	^ CAIRO_LINE_JOIN_MITER
+]
+
+{ #category : #'accessing enum' }
+AeCairoJoinStyle class >> round [
+
+	^ CAIRO_LINE_JOIN_ROUND
 ]
 
 { #category : #hook }
