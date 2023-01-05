@@ -448,6 +448,17 @@ AeCairoContext >> fillPreserve [
 ]
 
 { #category : #'API - path' }
+AeCairoContext >> fillRule [
+	"Answer the current fill rule.
+
+	The default fill rule is `CAIRO_FILL_RULE_WINDING`.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-fill-rule"
+
+	self ffiCall: #( AeCairoFillRule cairo_get_fill_rule ( self ) )
+]
+
+{ #category : #'API - path' }
 AeCairoContext >> fillRule: aCairoFillRule [ 
 	"Set the current fill rule within the cairo context. The fill rule is used to determine which regions are inside or outside a complex (potentially self-intersecting) path. The current fill rule affects both `cairo_fill()` and `cairo_clip()`.
 

@@ -46,8 +46,20 @@ AeCairoFillRule class >> enumDecl [
 	)
 ]
 
+{ #category : #'accessing enum' }
+AeCairoFillRule class >> evenOdd [
+
+	^ CAIRO_FILL_RULE_EVEN_ODD
+]
+
 { #category : #hook }
 AeCairoFillRule class >> underlinedNamePrefix [
 	
 	^ 'CAIRO_FILL_'
+]
+
+{ #category : #'accessing enum' }
+AeCairoFillRule class >> winding [
+
+	^ CAIRO_FILL_RULE_WINDING
 ]

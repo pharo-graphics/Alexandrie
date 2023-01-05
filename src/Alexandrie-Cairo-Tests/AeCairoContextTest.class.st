@@ -102,6 +102,24 @@ AeCairoContextTest >> testCurrentTarget [
 ]
 
 { #category : #tests }
+AeCairoContextTest >> testFillRule [
+
+	surface := AeCairoImageSurface extent: 100 @ 100.
+	context := surface newContext.
+	
+	self
+		assert: context fillRule
+		equals: AeCairoFillRule winding.
+
+	context fillRule: AeCairoFillRule evenOdd.
+
+	self
+		assert: context fillRule
+		equals: AeCairoFillRule evenOdd.
+
+]
+
+{ #category : #tests }
 AeCairoContextTest >> testOperator [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
