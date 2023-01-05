@@ -790,6 +790,13 @@ AeCairoContext >> moveToX: aX y: aY [
 ]
 
 { #category : #'API - compositing' }
+AeCairoContext >> operator [
+	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-operator"
+
+	^ self ffiCall: #( AeCairoCompositionOp cairo_get_operator ( self ) )
+]
+
+{ #category : #'API - compositing' }
 AeCairoContext >> operator: aCairoOperator [
 
 	self ffiCall: #(

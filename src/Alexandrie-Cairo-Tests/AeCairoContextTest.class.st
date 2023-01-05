@@ -102,6 +102,24 @@ AeCairoContextTest >> testCurrentTarget [
 ]
 
 { #category : #tests }
+AeCairoContextTest >> testOperator [
+
+	surface := AeCairoImageSurface extent: 100 @ 100.
+	context := surface newContext.
+	
+	self
+		assert: context operator
+		equals: AeCairoCompositionOp CAIRO_OPERATOR_OVER.
+
+	context setOperatorClear.
+
+	self
+		assert: context operator
+		equals: AeCairoCompositionOp CAIRO_OPERATOR_CLEAR.
+
+]
+
+{ #category : #tests }
 AeCairoContextTest >> testPathExtents [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
