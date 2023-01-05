@@ -148,6 +148,31 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 ]
 
 { #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithEmulatedRadialGradient [
+
+	| aSurface context aPattern |
+	aSurface := AeCairoImageSurface extent: 20 @ 20.
+	context := aSurface newContext.
+	
+	context
+		pushGroupWithContent: AeCairoContent alphaOnly;
+		sourceColorRGBA: (Color black alpha: 0.25).
+	(2 to: 10 by: 2) do: [ :radius |
+		context
+			circleCenterX: 10 y: 10 radius: radius;
+			fill ].
+	aPattern := context popGroupAsSurfacePattern.
+	
+	context
+		sourceColorRGB: Color white;
+		paint;
+		sourceColorRGB: Color blue;
+		mask: aPattern.
+
+	^ aSurface
+]
+
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedBuffered [
 	"Emulate a Gaussian shadow on a circle using a radial gradient, using an intermediate surface."
 

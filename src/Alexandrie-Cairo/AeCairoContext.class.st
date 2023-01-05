@@ -924,6 +924,21 @@ AeCairoContext >> pushGroup [
 	self ffiCall: #( void cairo_push_group ( self ) )
 ]
 
+{ #category : #'API - compositing' }
+AeCairoContext >> pushGroupWithContent: content [
+	"Temporarily redirects drawing to an intermediate surface known as a group. The redirection lasts until the group is completed by a call to `cairo_pop_group()` or `cairo_pop_group_to_source()`. These calls provide the result of any drawing to the group as a pattern, (either as an explicit object, or set as the source pattern).
+
+	The group will have a content type of content . The ability to control this content type is the only distinction between this function and cairo_push_group() which you should see for a more detailed description of group rendering.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-push-group-with-content"
+
+	self ffiCall: #(
+		void
+		cairo_push_group_with_content (
+			self,
+			AeCairoContent content ) )
+]
+
 { #category : #'API - path' }
 AeCairoContext >> quadraticCurveFrom: startPoint controlPoint: qp1 to: endPoint [
 	"Quadratic bezier curve.
