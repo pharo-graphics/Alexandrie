@@ -84,6 +84,24 @@ AeCairoContextTest >> testCurrentPoint [
 ]
 
 { #category : #tests }
+AeCairoContextTest >> testCurrentTarget [
+
+	surface := AeCairoImageSurface extent: 100 @ 100.
+	context := surface newContext.
+	
+	self
+		assert: context currentTarget getHandle
+		equals: surface getHandle.
+
+	context pushGroup.
+	
+	self
+		deny: context currentTarget getHandle
+		equals: surface getHandle.
+
+]
+
+{ #category : #tests }
 AeCairoContextTest >> testPathExtents [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
