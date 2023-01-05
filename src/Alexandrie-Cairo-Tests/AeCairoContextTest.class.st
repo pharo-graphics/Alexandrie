@@ -120,3 +120,42 @@ AeCairoContextTest >> testPathExtents [
 		equals: (Rectangle origin: -1 @ -2 extent: 0 asPoint).
 
 ]
+
+{ #category : #tests }
+AeCairoContextTest >> testStrokeExtents [
+
+	surface := AeCairoImageSurface extent: 100 @ 100.
+	context := surface newContext.
+	
+	self
+		assert: context strokeExtentsInUserSpace
+		equals: (Rectangle origin: 0 asPoint extent: 0 asPoint).
+	self
+		assert: context strokeExtentsInDeviceSpace
+		equals: (Rectangle origin: 0 asPoint extent: 0 asPoint).
+	
+	context
+		translateBy: -1 @ -2;
+		scaleByX: 0.5 y: 2;
+		moveTo: 5 @ 10;
+		lineTo: 90 @ 50;
+		lineWidth: 10;
+		strokePreserve.
+
+	self
+		assert: context strokeExtentsInUserSpace 
+		equals: ((2.8671875@5.4765625) corner: (92.1328125@54.5234375)).
+	self
+		assert: context strokeExtentsInDeviceSpace
+		equals: ((0.43359375@8.953125) corner: (45.06640625@107.046875)).
+
+	context stroke.
+	
+	self
+		assert: context strokeExtentsInUserSpace
+		equals: (Rectangle origin: 0 asPoint extent: 0 asPoint).
+	self
+		assert: context strokeExtentsInDeviceSpace
+		equals: (Rectangle origin: -1 @ -2 extent: 0 asPoint).
+
+]

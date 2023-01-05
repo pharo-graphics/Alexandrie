@@ -553,6 +553,25 @@ AeCairoContext >> getMatrixInto: aCairoMatrix [
 ]
 
 { #category : #'API - query' }
+AeCairoContext >> getStrokeExtentsIntoLeft: x1 top: y1 right: x2 bottom: y2 [
+	"Computes a bounding box in user coordinates covering the area that would be affected, (the 'inked' area), by a `cairo_stroke()` operation given the current path and stroke parameters. 
+	If the current path is empty, returns an empty rectangle ((0,0), (0,0)). Surface dimensions and clipping are not taken into account.
+
+	Note that if the line width is set to exactly zero, then `cairo_stroke_extents()` will return an empty rectangle.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-stroke-extents"
+
+	self ffiCall: #(
+		void
+		cairo_stroke_extents (
+			self,
+			double *x1,
+			double *y1,
+			double *x2,
+			double *y2 ) )
+]
+
+{ #category : #'API - query' }
 AeCairoContext >> getUserToDeviceIntoX: xPointer y: yPointer [
 	"Transform a coordinate from user space to device space by multiplying the given point by the current transformation matrix (CTM).
 
@@ -1330,6 +1349,48 @@ AeCairoContext >> status [
 AeCairoContext >> stroke [
 
 	self ffiCall: #( void cairo_stroke ( self ) )
+]
+
+{ #category : #'API - query' }
+AeCairoContext >> strokeExtentsInDeviceSpace [
+
+	| leftPointer topPointer rightPointer bottomPointer |
+	leftPointer := FFIFloat64 newBuffer.
+	topPointer := FFIFloat64 newBuffer.
+	rightPointer := FFIFloat64 newBuffer.
+	bottomPointer := FFIFloat64 newBuffer.
+
+	self
+		getStrokeExtentsIntoLeft: leftPointer
+			top: topPointer
+			right: rightPointer
+			bottom: bottomPointer;
+		getUserToDeviceIntoX: leftPointer
+			y: topPointer;
+		getUserToDeviceIntoX: rightPointer
+			y: bottomPointer.
+
+	^ (leftPointer doubleAt: 1) @ (topPointer doubleAt: 1) corner:
+		  (rightPointer doubleAt: 1) @ (bottomPointer doubleAt: 1)
+]
+
+{ #category : #'API - query' }
+AeCairoContext >> strokeExtentsInUserSpace [
+
+	| leftPointer topPointer rightPointer bottomPointer |
+	leftPointer := FFIFloat64 newBuffer.
+	topPointer := FFIFloat64 newBuffer.
+	rightPointer := FFIFloat64 newBuffer.
+	bottomPointer := FFIFloat64 newBuffer.
+
+	self
+		getStrokeExtentsIntoLeft: leftPointer
+		top: topPointer
+		right: rightPointer
+		bottom: bottomPointer.
+
+	^ (leftPointer doubleAt: 1) @ (topPointer doubleAt: 1) corner:
+		  (rightPointer doubleAt: 1) @ (bottomPointer doubleAt: 1)
 ]
 
 { #category : #'API - painting' }
