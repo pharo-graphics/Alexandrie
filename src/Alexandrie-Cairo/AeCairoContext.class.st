@@ -320,6 +320,17 @@ AeCairoContext >> currentPointInUserSpace [
 	^ (xPointer doubleAt: 1) @ (yPointer doubleAt: 1)
 ]
 
+{ #category : #'API - query' }
+AeCairoContext >> currentTarget [
+	"Gets the current destination surface for the context. This is either the original target surface as passed to `cairo_create()` or the target surface for the current group as started by the most recent call to `cairo_push_group()` or `cairo_push_group_with_content()`.
+	
+	Return the target surface. This object is owned by cairo.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-group-target"
+
+	self ffiCall: #( AeCairoSurface cairo_get_group_target ( self ) )
+]
+
 { #category : #'API - path' }
 AeCairoContext >> curveVia: point1 via: point2 to: point3 [
 
