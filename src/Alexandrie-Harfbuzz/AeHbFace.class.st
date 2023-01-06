@@ -33,9 +33,17 @@ AeHbFace class >> newForBlob: blob index: index [
 ]
 
 { #category : #'instance creation' }
-AeHbFace class >> newForCachedFTFace: ft_face [
+AeHbFace class >> newForFTFaceCached: ft_face [
 
-	^ (self unownedNewForCachedFTFace: ft_face)
+	^ (self unownedNewForFTFaceCached: ft_face)
+		  autoRelease;
+		  yourself
+]
+
+{ #category : #'instance creation' }
+AeHbFace class >> newForFTFaceReferenced: ft_face [
+
+	^ (self unownedNewForFTFaceReferenced: ft_face)
 		  autoRelease;
 		  yourself
 ]
@@ -57,7 +65,7 @@ The face index is used for blobs of file formats such as TTC and and DFont that 
 ]
 
 { #category : #'instance creation' }
-AeHbFace class >> unownedNewForCachedFTFace: ft_face [
+AeHbFace class >> unownedNewForFTFaceCached: ft_face [
 	"Creates an `hb_face_t` face object from the specified `FT_Face`.
 
 	This variant of the function caches the newly created `hb_face_t` face object, using the generic pointer of `ft_face`. Subsequent function calls that are passed the same `ft_face` parameter will have the same `hb_face_t` returned to them, and that `hb_face_t` will be correctly reference counted.
@@ -69,5 +77,19 @@ AeHbFace class >> unownedNewForCachedFTFace: ft_face [
 	^ self ffiCall: #(
 		hb_face_t
 		hb_ft_face_create_cached (AeFTFace * ft_face)
+	)
+]
+
+{ #category : #'instance creation' }
+AeHbFace class >> unownedNewForFTFaceReferenced: ft_face [
+	"Creates an `hb_face_t` face object from the specified `FT_Face`.
+
+	This is the preferred variant of the `hb_ft_font_create`* function family, because it calls `FT_Reference_Face()` on ft_face , ensuring that ft_face remains alive as long as the resulting `hb_font_t` font object remains alive.
+
+	See: https://harfbuzz.github.io/harfbuzz-hb-ft.html#hb-ft-font-create-referenced"
+
+	^ self ffiCall: #(
+		hb_face_t
+		hb_ft_face_create_referenced (AeFTFace * ft_face)
 	)
 ]
