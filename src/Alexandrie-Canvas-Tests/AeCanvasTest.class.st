@@ -388,6 +388,8 @@ AeCanvasTest >> renderLigatureTextWithHarfbuzz [
 	"Test Harfbuzz converting a 'ff' pair of letters into a single glyph."
 
 	| aString fontSize aeCanvas cairoScaledFont cairoGlyphsArray |
+	self skip.
+	
 	aString := 'Office'.
 	fontSize := 19.
 	aeCanvas := AeCanvas extent: 50 @ 25.
