@@ -62,6 +62,24 @@ AeCairoSurfaceFormat class >> CAIRO_FORMAT_RGB30 [
 	^ CAIRO_FORMAT_RGB30
 ]
 
+{ #category : #'accessing enum' }
+AeCairoSurfaceFormat class >> a1 [
+
+	^ CAIRO_FORMAT_A1
+]
+
+{ #category : #'accessing enum' }
+AeCairoSurfaceFormat class >> a8 [
+
+	^ CAIRO_FORMAT_A8
+]
+
+{ #category : #'accessing enum' }
+AeCairoSurfaceFormat class >> argb32 [
+
+	^ CAIRO_FORMAT_ARGB32
+]
+
 { #category : #'enum declaration' }
 AeCairoSurfaceFormat class >> enumDecl [
 	"
@@ -77,6 +95,12 @@ AeCairoSurfaceFormat class >> enumDecl [
 		CAIRO_FORMAT_RGB16_565 4
 		CAIRO_FORMAT_RGB30	5
 	)
+]
+
+{ #category : #'accessing enum' }
+AeCairoSurfaceFormat class >> rgb24 [
+
+	^ CAIRO_FORMAT_RGB24
 ]
 
 { #category : #hook }
