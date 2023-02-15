@@ -14,7 +14,7 @@ AeCairoImageSurface class >> extent: aPoint [
 
 	^ self
 		  extent: aPoint
-		  format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32
+		  format: AeCairoSurfaceFormat argb32
 ]
 
 { #category : #'instance creation' }
@@ -36,7 +36,7 @@ AeCairoImageSurface class >> fromForm: aForm [
 
 	aSurface := self
 		extent: aForm extent
-		format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+		format: AeCairoSurfaceFormat argb32.
 	
 	"Convert form bits with premultiplied alpha"
 	newBits := form bits collect: [ :pixel |
@@ -122,7 +122,7 @@ AeCairoImageSurface >> asARGB32ImageSurface [
 
 	| colorSurface aContext |
 	colorSurface := self
-		newSimilarImageFormat: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32
+		newSimilarImageFormat: AeCairoSurfaceFormat argb32
 		width: self width 
 		height: self height.
 	colorSurface status ensureIsSuccess.
@@ -142,7 +142,7 @@ AeCairoImageSurface >> asAlphaChannelGrayscaleImage [
 
 	| colorSurface aContext |
 	colorSurface := self
-		newSimilarImageFormat: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32
+		newSimilarImageFormat: AeCairoSurfaceFormat argb32
 		width: self width 
 		height: self height.
 	colorSurface status ensureIsSuccess.
@@ -168,11 +168,11 @@ AeCairoImageSurface >> asForm [
 	self getHandle isNull ifTrue: [
 		^ Form extent: 0@0 depth: 32 ].
 	
-	self format = AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32
+	self format = AeCairoSurfaceFormat argb32
 		ifTrue: [ ^ self asFormARGB32 ].
-	self format = AeCairoSurfaceFormat CAIRO_FORMAT_RGB24
+	self format = AeCairoSurfaceFormat rgb24
 		ifTrue: [ ^ self asARGB32ImageSurface asForm ].
-	self format = AeCairoSurfaceFormat CAIRO_FORMAT_A8
+	self format = AeCairoSurfaceFormat a8
 		ifTrue: [ ^ self asFormA8 ].
 
 	self notYetImplemented

@@ -14,7 +14,7 @@ AeCairoStatusTest >> testSuccess [
 	aSurface :=
 		AeCairoImageSurface
 			extent: 1@1
-			format: AeCairoSurfaceFormat CAIRO_FORMAT_A8.
+			format: AeCairoSurfaceFormat a8.
 	
 	self
 		shouldnt: [ aSurface status ensureIsSuccess ]
@@ -32,7 +32,7 @@ AeCairoStatusTest >> testUnsuccessfulCreation [
 	anInvalidSurface :=
 		AeCairoImageSurface
 			extent: (1@1) negated
-			format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+			format: AeCairoSurfaceFormat argb32.
 	expectedStatusDescription := 'invalid value (typically too big) for the size of the input (surface, pattern, etc.)'.
 	
 	self

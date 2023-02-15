@@ -63,7 +63,7 @@ AeCairoMigratedRenderTest >> newCheckSurfaceExtent: aPoint [
 	| aSurface aContext |
 	aSurface := AeCairoImageSurface
 		extent: aPoint
-		format: AeCairoSurfaceFormat CAIRO_FORMAT_RGB24.
+		format: AeCairoSurfaceFormat rgb24.
 	
 	aContext := aSurface newContext.
 	
@@ -93,7 +93,7 @@ AeCairoMigratedRenderTest >> newSurfaceExtent: aPoint [
 
 	^ AeCairoImageSurface
 		  extent: aPoint
-		  format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32
+		  format: AeCairoSurfaceFormat argb32
 ]
 
 { #category : #tests }

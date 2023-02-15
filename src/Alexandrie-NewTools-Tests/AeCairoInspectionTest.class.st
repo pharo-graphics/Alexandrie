@@ -51,21 +51,21 @@ AeCairoInspectionTest >> testInspectContext [
 AeCairoInspectionTest >> testInspectImageSurfaceA8 [
 
 	self assertCanInspectImageSurfaceWithFormat:
-		AeCairoSurfaceFormat CAIRO_FORMAT_A8
+		AeCairoSurfaceFormat a8
 ]
 
 { #category : #tests }
 AeCairoInspectionTest >> testInspectImageSurfaceARGB32 [
 
 	self assertCanInspectImageSurfaceWithFormat:
-		AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32
+		AeCairoSurfaceFormat argb32
 ]
 
 { #category : #tests }
 AeCairoInspectionTest >> testInspectImageSurfaceRGB24 [
 
 	self assertCanInspectImageSurfaceWithFormat:
-		AeCairoSurfaceFormat CAIRO_FORMAT_RGB24
+		AeCairoSurfaceFormat rgb24
 ]
 
 { #category : #tests }
@@ -76,7 +76,7 @@ AeCairoInspectionTest >> testInspectImageSurfaceSomeNotYetImplemented [
 	anExtent := 200@100.
 	aSurface := AeCairoImageSurface
 		  extent: anExtent
-		  format: AeCairoSurfaceFormat CAIRO_FORMAT_A1.
+		  format: AeCairoSurfaceFormat a1.
 
 	self
 		should: [ aSurface inspectionAsForm: SpPresenter new ]

@@ -38,7 +38,7 @@ AeCairoA8FastGaussianBlurFilter class >> example1MultipleRadius [
 		collect: [ :blurRadius | 
 			aSurface := AeCairoImageSurface
 				extent: surfaceExtent
-				format: AeCairoSurfaceFormat CAIRO_FORMAT_A8.
+				format: AeCairoSurfaceFormat a8.
 			aSurface newContext
 				sourceColorRGB: Color black;
 				translateBy: (shadowGap/2) asPoint;
@@ -68,7 +68,7 @@ AeCairoA8FastGaussianBlurFilter class >> example2MultiplePasses [
 	surfaces := (0 to: 6) collect: [ :eachN | 
 		aSurface := AeCairoImageSurface
 			extent: surfaceExtent
-			format: AeCairoSurfaceFormat CAIRO_FORMAT_A8.
+			format: AeCairoSurfaceFormat a8.
 		aSurface newContext
 			sourceColorRGB: Color black;
 			lineWidth: blurRadius * 2;
@@ -101,7 +101,7 @@ AeCairoA8FastGaussianBlurFilter class >> example3Text [
 	surfaceSize := 920 @ (fontSize * 1.4).
 	shadowSurface := AeCairoImageSurface
 		  extent: surfaceSize
-		  format: AeCairoSurfaceFormat CAIRO_FORMAT_A8.
+		  format: AeCairoSurfaceFormat a8.
 	aFTLibrary := AeFTLibrary newInitialized.
 	aFTFace := AeSourceSansPro_Bold firstFaceUsing: aFTLibrary.
 	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
@@ -123,8 +123,8 @@ AeCairoA8FastGaussianBlurFilter class >> example3Text [
 
 	mainSurface := AeCairoImageSurface
 		  extent: surfaceSize
-		  format: AeCairoSurfaceFormat CAIRO_FORMAT_RGB24.
-	mainSurface inspect.
+		  format: AeCairoSurfaceFormat argb32.
+
 "	mainSurface := AeCairoPDFSurface
 		  extent: surfaceSize
 		  fileName: Time microsecondClockValue asString, '.pdf'."
@@ -144,6 +144,7 @@ AeCairoA8FastGaussianBlurFilter class >> example3Text [
 		showGlyphs: aGlyphArray.
 
 "	mainSurface finish."
+	mainSurface inspect
 ]
 
 { #category : #examples }
@@ -156,7 +157,7 @@ AeCairoA8FastGaussianBlurFilter class >> example4RectangleStroke [
 
 	aSurface := AeCairoImageSurface
 		extent: (rectangleWidth + shadowGap) asPoint
-		format: AeCairoSurfaceFormat CAIRO_FORMAT_A8.
+		format: AeCairoSurfaceFormat a8.
 	aSurface newContext
 		sourceColorRGB: Color black;
 		rectangle: ((shadowGap/2) asPoint extent: rectangleWidth asPoint);
@@ -180,12 +181,12 @@ AeCairoA8FastGaussianBlurFilter class >> example5DottedCircle [
 
 	aSurface := AeCairoImageSurface
 		extent: (circleRadius*2 + shadowGap) asPoint
-		format: AeCairoSurfaceFormat CAIRO_FORMAT_A8.
+		format: AeCairoSurfaceFormat a8.
 	aSurface newContext
 		sourceColorRGB: Color black;
 		translateBy: (shadowGap/2) asPoint;
 		lineWidth: 10;
-		lineCap: AeCairoCapStyle CAIRO_LINE_CAP_SQUARE;
+		lineCap: AeCairoCapStyle square;
 		dash: (AeCairoDoubleArray newFrom: #(0 20)) offset: 0;
 		circleRadius: circleRadius;
 		stroke.

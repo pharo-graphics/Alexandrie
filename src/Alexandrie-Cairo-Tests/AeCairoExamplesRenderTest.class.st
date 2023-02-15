@@ -36,7 +36,7 @@ AeCairoExamplesRenderTest >> surfaceWithDeviceOffset [
 	
 	aSurface := AeCairoImageSurface
 		extent: surfaceWidth @ surfaceHeight
-		format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+		format: AeCairoSurfaceFormat argb32.
 
 	aSurface deviceOffset: offsetPoint.
 
@@ -74,7 +74,7 @@ AeCairoExamplesRenderTest >> surfaceWithDeviceScale [
 	
 	aSurface := AeCairoImageSurface
 		extent: surfaceWidth @ surfaceHeight
-		format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+		format: AeCairoSurfaceFormat argb32.
 
 	aSurface deviceScale: scalePoint.
 
@@ -121,7 +121,7 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 	
 	aSurface := AeCairoImageSurface
 		extent: extent
-		format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+		format: AeCairoSurfaceFormat argb32.
 
 	"set up dotted dashes"
 	dashByteArray := AeCairoDoubleArray
@@ -188,7 +188,7 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedBuffered [
 
 	aShadowSurface := AeCairoImageSurface
 		extent: (radius + shadowSize) * 2 asPoint
-		format: AeCairoSurfaceFormat CAIRO_FORMAT_A8.
+		format: AeCairoSurfaceFormat a8.
 	aShadowContext := aShadowSurface newContext.
 	aGradient := (AeCairoRadialGradientPattern
 		innerCenter: shadowCenter
@@ -249,7 +249,7 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedDirect [
 	
 	mainSurface := AeCairoImageSurface
 		extent: extent
-		format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+		format: AeCairoSurfaceFormat argb32.
 	mainContext := mainSurface newContext.
 
 	"draw background"
@@ -292,7 +292,7 @@ AeCairoExamplesRenderTest >> surfaceWithText [
 	surfaceSize := 150 @ (fontSize*1.3).
 	aSurface := AeCairoImageSurface
 		  extent: surfaceSize
-		  format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+		  format: AeCairoSurfaceFormat argb32.
 	aContext := aSurface newContext.
 
 	"Set up aScaleFont"
@@ -332,7 +332,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 	surfaceSize := (40 @ (fontSize*1.3)) * zoom.
 	aSurface := AeCairoImageSurface
 		  extent: surfaceSize
-		  format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+		  format: AeCairoSurfaceFormat argb32.
 	aContext := aSurface newContext.
 
 	"Set up aScaleFont"

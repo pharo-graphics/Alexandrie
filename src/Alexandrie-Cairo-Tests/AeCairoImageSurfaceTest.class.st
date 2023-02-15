@@ -20,7 +20,7 @@ AeCairoImageSurfaceTest >> testExtentFormat [
 
 	surface := AeCairoImageSurface
 		           extent: 100 @ 50
-		           format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+		           format: AeCairoSurfaceFormat argb32.
 
 	self assert: surface extent equals: 100 @ 50
 ]
@@ -56,7 +56,7 @@ AeCairoImageSurfaceTest >> testNewForByteArray [
 
 	| extent format stride byteArray |
 	extent := 200 @ 150.
-	format := AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+	format := AeCairoSurfaceFormat argb32.
 	stride := AeCairoImageSurface strideForWidth: extent x format: format.
 
 	byteArray := ByteArray new: stride * extent y.
@@ -85,7 +85,7 @@ AeCairoImageSurfaceTest >> testNewForFFIExternalArray [
 
 	| extent format stride buffer |
 	extent := 200 @ 150.
-	format := AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+	format := AeCairoSurfaceFormat argb32.
 	stride := AeCairoImageSurface strideForWidth: extent x format: format.
 
 	buffer := FFIExternalArray externalNewType: FFIUInt8 size: stride * extent y.
@@ -116,17 +116,17 @@ AeCairoImageSurfaceTest >> testNewSimilarImageFormatWidthHeight [
 	| aSimilarSurface |
 	surface := AeCairoImageSurface
 		           extent: 100 @ 50
-		           format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+		           format: AeCairoSurfaceFormat argb32.
 
 	aSimilarSurface := surface
 		                   newSimilarImageFormat:
-		                   AeCairoSurfaceFormat CAIRO_FORMAT_A8
+		                   AeCairoSurfaceFormat a8
 		                   width: 16
 		                   height: 20.
 
 	self
 		assert: aSimilarSurface format
-		equals: AeCairoSurfaceFormat CAIRO_FORMAT_A8.
+		equals: AeCairoSurfaceFormat a8.
 	self assert: aSimilarSurface extent equals: 16 @ 20.
 	self assert: aSimilarSurface status isSuccess.
 ]
@@ -137,13 +137,13 @@ AeCairoImageSurfaceTest >> testStrideForWidthFormat [
 	self
 		assert: (AeCairoImageSurface
 				 strideForWidth: 150
-				 format: AeCairoSurfaceFormat CAIRO_FORMAT_A8)
+				 format: AeCairoSurfaceFormat a8)
 		equals: 152.
 
 	self
 		assert: (AeCairoImageSurface
 				 strideForWidth: 150
-				 format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32)
+				 format: AeCairoSurfaceFormat argb32)
 		equals: 150 * 4.
 
 ]

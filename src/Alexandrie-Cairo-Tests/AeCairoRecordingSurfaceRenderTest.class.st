@@ -46,7 +46,7 @@ AeCairoRecordingSurfaceRenderTest >> surfaceWithBounds [
 	"Replay the recorded surface on a target surface"
 	targetSurface := AeCairoImageSurface
 		extent: 50 asPoint
-		format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+		format: AeCairoSurfaceFormat argb32.
 
 	targetSurface newContext
 		sourceColorRGB: Color blue;
@@ -90,7 +90,7 @@ AeCairoRecordingSurfaceRenderTest >> surfaceWithNoBounds [
 	"Replay the recorded surface on a target surface"
 	targetSurface := AeCairoImageSurface
 		extent: 50 asPoint
-		format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+		format: AeCairoSurfaceFormat argb32.
 
 	targetSurface newContext
 		sourceColorRGB: Color blue;
