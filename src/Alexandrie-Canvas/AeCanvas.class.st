@@ -628,19 +628,19 @@ AeCanvas >> setCapButt [
 
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-cap"
 
-	cairoContext lineCap: AeCairoCapStyle CAIRO_LINE_CAP_BUTT
+	cairoContext lineCap: AeCairoCapStyle butt
 ]
 
 { #category : #'API - border' }
 AeCanvas >> setCapRound [
 	
-	cairoContext lineCap: AeCairoCapStyle CAIRO_LINE_CAP_ROUND
+	cairoContext lineCap: AeCairoCapStyle round
 ]
 
 { #category : #'API - border' }
 AeCanvas >> setCapSquare [
 	
-	cairoContext lineCap: AeCairoCapStyle CAIRO_LINE_CAP_SQUARE
+	cairoContext lineCap: AeCairoCapStyle square
 ]
 
 { #category : #'API - border' }
@@ -677,7 +677,7 @@ AeCanvas >> setHighQualityOptions [
 { #category : #'API - border' }
 AeCanvas >> setJoinBevel [
 
-	cairoContext lineJoin: AeCairoJoinStyle CAIRO_LINE_JOIN_BEVEL
+	cairoContext lineJoin: AeCairoJoinStyle bevel
 ]
 
 { #category : #'API - border' }
@@ -685,7 +685,7 @@ AeCanvas >> setJoinMiter: limit [
 	
 	"Hint: there may be NO need to set miter join as it's the default in Cairo"
 	"https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-join"
-	cairoContext lineJoin: AeCairoJoinStyle CAIRO_LINE_JOIN_MITER.
+	cairoContext lineJoin: AeCairoJoinStyle miter.
 	
 	"We might NOT need to set the miter limit if it's 10.0, the default"
 	"https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-miter-limit"
@@ -696,7 +696,7 @@ AeCanvas >> setJoinMiter: limit [
 { #category : #'API - border' }
 AeCanvas >> setJoinRound [
 
-	cairoContext lineJoin: AeCairoJoinStyle CAIRO_LINE_JOIN_ROUND
+	cairoContext lineJoin: AeCairoJoinStyle round
 ]
 
 { #category : #initialization }

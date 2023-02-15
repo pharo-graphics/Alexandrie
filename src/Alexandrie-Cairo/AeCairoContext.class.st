@@ -1539,7 +1539,7 @@ AeCairoContext >> useFillRuleEvenOdd [
 	
 	Counts the total number of intersections, without regard to the orientation of the contour. If the total number of intersections is odd, the point will be filled."
 
-	self fillRule: AeCairoFillRule CAIRO_FILL_RULE_EVEN_ODD
+	self fillRule: AeCairoFillRule evenOdd
 ]
 
 { #category : #'API - path' }
@@ -1548,7 +1548,7 @@ AeCairoContext >> useFillRuleWinding [
 	
 	If the path crosses the ray from left-to-right, counts +1. If the path crosses the ray from right to left, counts -1. (Left and right are determined from the perspective of looking along the ray from the starting point.) If the total count is non-zero, the point will be filled."
 
-	self fillRule: AeCairoFillRule CAIRO_FILL_RULE_WINDING
+	self fillRule: AeCairoFillRule winding
 ]
 
 { #category : #'API - painting settings' }

@@ -136,7 +136,7 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 		translateBy: (lineWidth/2.0) asPoint;
 		sourceColorRGB: Color black;
 		lineWidth: lineWidth;
-		lineCap: AeCairoCapStyle CAIRO_LINE_CAP_ROUND;
+		lineCap: AeCairoCapStyle round;
 		dash: dashByteArray offset: 3;
 		circleRadius: radius;
 		stroke.
