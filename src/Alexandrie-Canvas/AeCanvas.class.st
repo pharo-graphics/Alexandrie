@@ -264,7 +264,6 @@ AeCanvas >> drawFigureWithBorderOutsideAndTranslucentBackground [
 
 	self preparePath.
 
-
 	self paintGroupWith: [
 		
 		"Paint border with double width"
@@ -354,6 +353,14 @@ AeCanvas >> drawFigureWithExplicitBorderOutsideAndNoBackground [
 		self preparePath.
 		cairoContext clip ]
 
+]
+
+{ #category : #private }
+AeCanvas >> drawNothingButMayClip [
+
+	shouldClipAfterDrawingFigure ifTrue: [
+		self preparePath.
+		cairoContext clip ]
 ]
 
 { #category : #'API - text' }
@@ -612,7 +619,8 @@ AeCanvas >> setBorderOff [
 	figureBlock := [
 		hasBackground
 			ifTrue: [ self drawFigureWithBackgroundAndNoBorder ]
-			ifFalse: [ "Nothing to do" ] ]
+			ifFalse: [ self drawNothingButMayClip ] ]
+
 ]
 
 { #category : #'API - border' }
