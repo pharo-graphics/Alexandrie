@@ -173,6 +173,41 @@ AeCairoExamplesRenderTest >> surfaceWithEmulatedRadialGradient [
 ]
 
 { #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithRoundedRectangle [
+
+	| extent aSurface aContext aRectangle |
+	extent := 100 @ 50.
+	aRectangle := 10 @ 10 corner: (extent x - 10) @ (extent y - 10).
+
+	aSurface := AeCairoImageSurface
+		extent: extent
+		format: AeCairoSurfaceFormat argb32.
+
+	aContext := aSurface newContext.
+	
+	aContext
+		sourceColorRGB: Color orange;
+		paint.
+	
+	aContext
+		roundedRectangleLeft: aRectangle left
+		top: aRectangle top
+		right: aRectangle right
+		bottom: aRectangle bottom
+		tl: aRectangle height / 2
+		tr: aRectangle height
+		br: 0
+		bl: aRectangle height / 2.
+
+	aContext
+		lineWidth: 10;
+		sourceColorRGBA: (Color blue alpha: 0.5);
+		stroke.
+
+	^ aSurface
+]
+
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedBuffered [
 	"Emulate a Gaussian shadow on a circle using a radial gradient, using an intermediate surface."
 

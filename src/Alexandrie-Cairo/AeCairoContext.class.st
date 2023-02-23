@@ -1082,122 +1082,78 @@ AeCairoContext >> rotateByRadians: angle [
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> roundedRectangle: aRectangle radii: anArrayOfCornerRadii [
+AeCairoContext >> roundedRectangleLeft: l top: t right: r bottom: b tl: tlR tr: trR br: brR bl: blR [
 	"Append the path of a rounded rectangle.
-	
-	anArrayOfCornerRadii must contain four numbers representing corner radii:
-	(topLeft, topRight, bottomRight, bottomLeft)"
 
-	| bound tlR blR brR trR t b l r |
-
-	bound := (aRectangle width min: aRectangle height) / 2.0.
-	tlR := anArrayOfCornerRadii first min: bound.
-	trR := anArrayOfCornerRadii second min: bound.
-	brR := anArrayOfCornerRadii third min: bound.
-	blR := anArrayOfCornerRadii fourth min: bound.
-	
-	t := aRectangle top.
-	b := aRectangle bottom.
-	l := aRectangle left.
-	r := aRectangle right.
-
-	self
-		roundedRectangleLeft: l
-		top: t
-		right: r
-		bottom: b
-		tlRadii: tlR
-		trRadii: trR
-		brRadii: brR
-		blRadii: blR
-]
-
-{ #category : #'API - path' }
-AeCairoContext >> roundedRectangleLeft: l top: t right: r bottom: b tlRadii: tlR trRadii: trR brRadii: brR blRadii: blR [
-	"Append the path of a rounded rectangle.
+	Assumes that radii are consistent with extent, i.e.:
+	* tlR + trR <= r - l  (top side doesn't exceed width)
+	* blR + brR <= r - l  (bottom side doesn't exceed width)
+	* trR + brR <= b - t  (right side doesn't exceed height)
+	* tlR + blR <= b - t  (left side doesn't exceed height)
 
 	See: https://www.cairographics.org/cookbook/roundedrectangles/"
 
-	self
-		arcCenterX: l + tlR
-		centerY: t + tlR
-		radius: tlR
-		startAngle: Float pi
-		endAngle: ThreeHalvesPi.
+	tlR isZero
+		ifFalse: [
+			self
+				arcCenterX: l + tlR
+				centerY: t + tlR
+				radius: tlR
+				startAngle: Float pi
+				endAngle: ThreeHalvesPi ]
+		ifTrue: [
+			self lineToX: l y: t ].
 
-	self
-		arcCenterX: r - trR
-		centerY: t + trR
-		radius: trR
-		startAngle: ThreeHalvesPi
-		endAngle: Float twoPi.
+	trR isZero
+		ifFalse: [
+			self
+				arcCenterX: r - trR
+				centerY: t + trR
+				radius: trR
+				startAngle: ThreeHalvesPi
+				endAngle: Float twoPi ]
+		ifTrue: [
+			self lineToX: r y: t ].
 
-	self
-		arcCenterX: r - brR
-		centerY: b - brR
-		radius: brR
-		startAngle: 0.0
-		endAngle: Float halfPi.
+	brR isZero
+		ifFalse: [
+			self
+				arcCenterX: r - brR
+				centerY: b - brR
+				radius: brR
+				startAngle: 0.0
+				endAngle: Float halfPi ]
+		ifTrue: [
+			self lineToX: r y: b ].
 
-	self
-		arcCenterX: l + blR
-		centerY: b - blR
-		radius: blR
-		startAngle: Float halfPi
-		endAngle: Float pi.
+	blR isZero
+		ifFalse: [
+			self
+				arcCenterX: l + blR
+				centerY: b - blR
+				radius: blR
+				startAngle: Float halfPi
+				endAngle: Float pi ]
+		ifTrue: [
+			self lineToX: l y: b ].
 
 	self closePath
 
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> roundedRectangleOrigin: origin extent: extent radii: radiiArray [
-	"Append the path of a rounded rectangle.
-	
-	anArrayOfCornerRadii must contain four numbers representing corner radii:
-	(topLeft, topRight, bottomRight, bottomLeft)"
-
-	| bound tlR blR brR trR |
-	bound := (extent x min: extent y) / 2.0.
-	tlR := radiiArray first min: bound.
-	trR := radiiArray second min: bound.
-	brR := radiiArray third min: bound.
-	blR := radiiArray fourth min: bound.
-
-	self
-		roundedRectangleLeft: origin x
-		top: origin y
-		right: extent x
-		bottom: extent y
-		tlRadii: tlR
-		trRadii: trR
-		brRadii: brR
-		blRadii: blR
-]
-
-{ #category : #'API - path' }
-AeCairoContext >> roundedRectangleTo: extentPoint radii: anArrayOfCornerRadii [
-	"Append the path of a rounded rectangle.
-	
-	anArrayOfCornerRadii must contain four numbers representing corner radii:
-	(topLeft, topRight, bottomRight, bottomLeft)"
-
-	| bound tlR blR brR trR |
-	bound := (extentPoint x min: extentPoint y) / 2.0.
-	tlR := anArrayOfCornerRadii first min: bound.
-	trR := anArrayOfCornerRadii second min: bound.
-	brR := anArrayOfCornerRadii third min: bound.
-	blR := anArrayOfCornerRadii fourth min: bound.
+AeCairoContext >> roundedRectangleTo: extentPoint radius: aRadius [
+	"Append the path of a rounded rectangle, where all corners have same radius."
 
 	self
 		roundedRectangleLeft: 0.0
 		top: 0.0
 		right: extentPoint x
 		bottom: extentPoint y
-		tlRadii: tlR
-		trRadii: trR
-		brRadii: brR
-		blRadii: blR
+		tl: aRadius
+		tr: aRadius
+		br: aRadius
+		bl: aRadius
 ]
 
 { #category : #'API - states' }
