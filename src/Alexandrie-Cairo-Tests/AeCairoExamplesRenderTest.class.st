@@ -318,6 +318,42 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedDirect [
 ]
 
 { #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithSphere [
+	"Emulate a sphere with a radial gradient, using an inner center different than the outer center."
+
+	| radius center extent aSurface aContext aGradient |
+	radius := 10.
+	center := radius asPoint.
+	extent := (radius*2) asPoint.
+
+	aSurface := AeCairoImageSurface
+		extent: extent
+		format: AeCairoSurfaceFormat argb32.
+	aContext := aSurface newContext.
+
+	"paint background"
+	aContext
+		sourceColorRGB: Color blue muchDarker;
+		paint.
+
+	"draw sphere"
+	aGradient := (AeCairoRadialGradientPattern
+		innerCenter: radius / 5 @ radius
+		innerRadius: radius / 5
+		outerCenter: center
+		outerRadius: radius * 2)
+			addStopAt: 0.0 color: Color yellow;
+			addStopAt: 1.0 color: Color red;
+			yourself.
+	aContext
+		source: aGradient;
+		circleRadius: radius; 
+		fill.
+
+	^ aSurface
+]
+
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithText [
 
 	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aFontFace aScaledFont |
