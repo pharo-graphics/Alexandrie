@@ -12,9 +12,7 @@ Ae26Dot6FractionalPointTest >> testOnFloat [
 		equals: 79011. 
 	self
 		assert: 79011 from26Dot6FractionalPoint
-		closeTo: 1234.56
-		precision: 0.001
-
+		equals: 1234.546875
 ]
 
 { #category : #tests }
