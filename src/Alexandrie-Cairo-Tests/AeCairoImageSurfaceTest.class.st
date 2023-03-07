@@ -132,6 +132,14 @@ AeCairoImageSurfaceTest >> testNewSimilarImageFormatWidthHeight [
 ]
 
 { #category : #tests }
+AeCairoImageSurfaceTest >> testReadNonASCIIFilenamePNG [
+
+	surface := AeCairoImageSurface newFromPngFileAt: AeFilesystemResources testsDirectory / 'import' / 'utf8-logō.png'.
+
+	self assert: surface extent equals: 100 @ 34
+]
+
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testStrideForWidthFormat [
 
 	self
@@ -154,4 +162,20 @@ AeCairoImageSurfaceTest >> testWidth [
 	surface := AeCairoImageSurface extent: 100 @ 50.
 
 	self assert: surface width equals: 100
+]
+
+{ #category : #tests }
+AeCairoImageSurfaceTest >> testWriteNonASCIIFilenamePNG [
+
+	| aPNGFileReference |
+	surface := AeCairoImageSurface extent: 2 @ 3.
+
+	aPNGFileReference := 'test_write_ū.png' asFileReference.
+	aPNGFileReference ensureDelete.
+	self deny: aPNGFileReference exists.
+
+	surface writeToPngAtFileReference: aPNGFileReference.
+
+	self assert: aPNGFileReference exists.
+	self assert: aPNGFileReference size > 0.
 ]

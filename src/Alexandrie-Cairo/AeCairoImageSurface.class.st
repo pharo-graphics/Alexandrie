@@ -72,6 +72,17 @@ AeCairoImageSurface class >> newForData: aData extent: aPoint stride: stride for
 		  yourself
 ]
 
+{ #category : #'instance creation' }
+AeCairoImageSurface class >> newFromPngFileAt: aFileReference [
+
+	| encodedPath newInstance |
+	encodedPath := aFileReference pathString utf8Encoded.
+	newInstance := self unownedNewFromPngFileAt: encodedPath.
+	newInstance status ensureIsSuccess.
+	newInstance autoRelease.
+	^ newInstance. 
+]
+
 { #category : #query }
 AeCairoImageSurface class >> strideForWidth: aWidth format: aSurfaceFormat [
 
@@ -104,6 +115,18 @@ AeCairoImageSurface class >> unownedNewForData: aData width: width height: heigh
 			int width,
 			int height,
 			int stride ) )
+]
+
+{ #category : #'instance creation' }
+AeCairoImageSurface class >> unownedNewFromPngFileAt: pathUTF8Encoded [
+	"Return a new `cairo_surface_t` initialized with the contents of the PNG file, or a nil surface if any error occurred. A nil surface can be checked for with `cairo_surface_status()`.
+
+	See: https://www.cairographics.org/manual/cairo-PNG-Support.html#cairo-image-surface-create-from-png"
+
+	^ self ffiCall: #(
+		AeCairoImageSurface
+		cairo_image_surface_create_from_png (
+			const char *pathUTF8Encoded ) )
 ]
 
 { #category : #'instance creation' }
@@ -283,4 +306,27 @@ AeCairoImageSurface >> unownedSimilarImageFormat: aFormat width: aWidth height: 
 AeCairoImageSurface >> width [
 
 	^ self ffiCall: #( int cairo_image_surface_get_width ( self ) )
+]
+
+{ #category : #API }
+AeCairoImageSurface >> writeToPngAtFileReference: aFileReference [
+
+	| status |
+	status := self writeToPngAtUtf8EncodedPath: aFileReference pathString utf8Encoded.
+	status ensureIsSuccess.
+	^ status
+]
+
+{ #category : #API }
+AeCairoImageSurface >> writeToPngAtUtf8EncodedPath: filename [
+	"Write the contents of surface to a new file filename as a PNG image.
+	Returns CAIRO_STATUS_SUCCESS if the PNG file was written successfully.
+
+	See: https://www.cairographics.org/manual/cairo-PNG-Support.html#cairo-surface-write-to-png"
+
+	^ self ffiCall: #(
+		AeCairoStatus
+		cairo_surface_write_to_png (
+			self,
+			const char *filename ) )
 ]
