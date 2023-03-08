@@ -76,11 +76,11 @@ AeCairoImageSurface class >> newForData: aData extent: aPoint stride: stride for
 AeCairoImageSurface class >> newFromPngFileAt: aFileReference [
 
 	| encodedPath newInstance |
-	encodedPath := aFileReference pathString utf8Encoded.
+	encodedPath := aFileReference pathString nullTerminatedEncodeWith: #utf8.
 	newInstance := self unownedNewFromPngFileAt: encodedPath.
 	newInstance status ensureIsSuccess.
 	newInstance autoRelease.
-	^ newInstance. 
+	^ newInstance
 ]
 
 { #category : #query }
@@ -311,8 +311,9 @@ AeCairoImageSurface >> width [
 { #category : #API }
 AeCairoImageSurface >> writeToPngAtFileReference: aFileReference [
 
-	| status |
-	status := self writeToPngAtUtf8EncodedPath: aFileReference pathString utf8Encoded.
+	| path status |
+	path := aFileReference pathString nullTerminatedEncodeWith: #utf8.
+	status := self writeToPngAtUtf8EncodedPath: path.
 	status ensureIsSuccess.
 	^ status
 ]
