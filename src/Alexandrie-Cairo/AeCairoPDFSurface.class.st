@@ -13,7 +13,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-AeCairoPDFSurface class >> unboundedNewExportingTo: filename width: width height: height [
+AeCairoPDFSurface class >> unownedNewExportingTo: filename width: width height: height [
 	"Return a newly created PDF surface of the specified size in points to be written to filename.
 	
 	Parameters:

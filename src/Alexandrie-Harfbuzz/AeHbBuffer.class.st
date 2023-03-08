@@ -43,14 +43,14 @@ AeHbBuffer class >> externallyFree: aHandle [
 { #category : #'instance creation' }
 AeHbBuffer class >> new [
 
-	^ self unboundedNew
+	^ self unownedNew
 		autoRelease;
 		yourself
 
 ]
 
 { #category : #'instance creation' }
-AeHbBuffer class >> unboundedNew [
+AeHbBuffer class >> unownedNew [
 
 	^ self ffiCall: #(
 		hb_buffer_t *

@@ -27,7 +27,7 @@ Class {
 AeCairoExportSurface class >> extent: aPoint fileName: fileName [
 
 	^ (self
-		   unboundedNewExportingTo: fileName
+		   unownedNewExportingTo: fileName
 		   width: aPoint x
 		   height: aPoint y)
 		  autoRelease;
@@ -35,7 +35,7 @@ AeCairoExportSurface class >> extent: aPoint fileName: fileName [
 ]
 
 { #category : #'instance creation' }
-AeCairoExportSurface class >> unboundedNewExportingTo: fileName width: width height: height [
+AeCairoExportSurface class >> unownedNewExportingTo: fileName width: width height: height [
 
 	^ self subclassResponsibility
 ]

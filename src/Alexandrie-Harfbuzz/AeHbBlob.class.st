@@ -43,7 +43,7 @@ AeHbBlob class >> newLocatedAt: aFileReference [
 	| pathString blob |
 	pathString := aFileReference pathString "utf8Encoded".
 
-	blob := self unboundedNewLocatedAtOrFail: pathString.
+	blob := self unownedNewLocatedAtOrFail: pathString.
 
 	blob getHandle isNull ifTrue: [
 		self error: 'Failed to open file: ', aFileReference pathString ].
@@ -54,7 +54,7 @@ AeHbBlob class >> newLocatedAt: aFileReference [
 ]
 
 { #category : #'instance creation' }
-AeHbBlob class >> unboundedNewLocatedAt: aPathString [
+AeHbBlob class >> unownedNewLocatedAt: aPathString [
 	"Creates a new blob containing the data from the specified binary font file.
 	Returns: An hb_blob_t pointer with the content of the file, or hb_blob_get_empty() if failed.
 
@@ -67,7 +67,7 @@ AeHbBlob class >> unboundedNewLocatedAt: aPathString [
 ]
 
 { #category : #'instance creation' }
-AeHbBlob class >> unboundedNewLocatedAtOrFail: file_name [
+AeHbBlob class >> unownedNewLocatedAtOrFail: file_name [
 	"Creates a new blob containing the data from the specified binary font file.
 	Returns: An hb_blob_t pointer with the content of the file, or NULL if failed.
 

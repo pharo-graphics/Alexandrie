@@ -756,7 +756,7 @@ AeCairoContext >> maskSurface: aSurface x: surfaceX y: surfaceY [
 AeCairoContext >> matrix [
 
 	| aCairoMatrix |
-	aCairoMatrix := AeCairoMatrix unboundedNew.
+	aCairoMatrix := AeCairoMatrix unownedNew.
 	self getMatrixInto: aCairoMatrix.
 	^ aCairoMatrix
 		  autoRelease;

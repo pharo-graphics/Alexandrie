@@ -34,7 +34,7 @@ AeCairoExternalArray class >> newFrom: anArrayedCollection [
 AeCairoExternalArray class >> newOf: aSize [
 	"Answer a new instance of the specified size, with autoRelease."
 
-	^ (self unboundedNewOf: aSize)
+	^ (self unownedNewOf: aSize)
 		  autoRelease;
 		  yourself
 ]
@@ -46,7 +46,7 @@ AeCairoExternalArray class >> type [
 ]
 
 { #category : #'instance creation' }
-AeCairoExternalArray class >> unboundedNewOf: aSize [
+AeCairoExternalArray class >> unownedNewOf: aSize [
 	"Answer a new instance of the specified size. Sender is responsible of freeing handle."
 
 	^ self externalNewType: self type size: aSize

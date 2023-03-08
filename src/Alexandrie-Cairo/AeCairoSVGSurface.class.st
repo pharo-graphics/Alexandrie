@@ -13,7 +13,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-AeCairoSVGSurface class >> unboundedNewExportingTo: filename width: width height: height [
+AeCairoSVGSurface class >> unownedNewExportingTo: filename width: width height: height [
 	"Return a newly created SVG surface of the specified size in points to be written to filename.
 
 	Parameters:

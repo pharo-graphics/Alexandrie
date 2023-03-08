@@ -164,7 +164,7 @@ AeCairoScaledFont >> glyphArrayForUtf8Array: aUtf8EncodedByteArray [
 	"Cairo returns NULL pointer when no glyphs, so needs special treatment."
 	arraySize := aGlyphsNumPtr signedLongAt: 1.
 	aGlyphsArray := arraySize isZero
-		ifTrue: [ AeCairoGlyphArray unboundedNewOf: 0 ]
+		ifTrue: [ AeCairoGlyphArray unownedNewOf: 0 ]
 		ifFalse: [ AeCairoGlyphArray fromHandle: aGlyphsArrayPtr size: arraySize ].
 
 	"In both cases we must to take care of freeing the array."

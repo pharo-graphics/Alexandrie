@@ -91,7 +91,7 @@ AeCairoMatrix class >> newX: x y: y sx: sx sy: sy shx: shx shy: shy [
 ]
 
 { #category : #'instance creation' }
-AeCairoMatrix class >> unboundedNew [
+AeCairoMatrix class >> unownedNew [
 	"Answer a new instance. Sender is responsible of freeing handle."
 
 	^ self externalNew
