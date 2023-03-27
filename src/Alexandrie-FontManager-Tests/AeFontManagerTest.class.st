@@ -107,6 +107,8 @@ AeFontManagerTest >> testScanDefaultDirectories [
 	"May take long as it scans several disk directories, according to the OS platform."
 
 	| aManager timeToScan |
+	self timeLimit: 30 seconds.
+
 	aManager := AeFontManager new.
 	timeToScan := [aManager scanDefaultDirectories] timeToRun.
 	
