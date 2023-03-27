@@ -24,7 +24,6 @@ AeFreeTypeLibrary >> unix64LibraryName [
 { #category : #'accessing - platform' }
 AeFreeTypeLibrary >> win32LibraryName [
 
-	^ FFIWindowsLibraryFinder findAnyLibrary: 
-		#('freetype.dll' 'libfreetype.dll' 'libfreetype-6.dll') 
+	^ FFIWindowsLibraryFinder findLibrary: 'libfreetype-6.dll'
 
 ]
