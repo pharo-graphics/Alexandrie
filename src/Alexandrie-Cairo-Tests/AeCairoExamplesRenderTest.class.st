@@ -354,6 +354,39 @@ AeCairoExamplesRenderTest >> surfaceWithSphere [
 ]
 
 { #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithStretchedIcon [
+
+	| aSurface aContext iconForm iconSurface iconPattern horizontalScale verticalScale |
+	iconForm := Smalltalk ui icons iconNamed: #classIcon.
+	self assert: iconForm extent = (16@16).
+	horizontalScale := 0.5.
+	verticalScale := 4.0.
+
+	iconSurface := AeCairoImageSurface fromForm: iconForm.
+	iconPattern := AeCairoSurfacePattern surface: iconSurface.
+	"See Cairo API doc: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-set-matrix"
+	iconPattern matrix: (AeCairoMatrix newScalingByX: 1 / horizontalScale y: 1 / verticalScale).
+
+	"Create a surface"
+	aSurface := AeCairoImageSurface
+		extent: (iconForm width * horizontalScale) asInteger @ (iconForm height * verticalScale) asInteger
+		format: AeCairoSurfaceFormat rgb24.
+	aContext := aSurface newContext.
+	
+	"Paint background"
+	aContext
+		sourceColorRGB: Color orange;
+		paint.
+
+	"Draw a the icon"
+	aContext
+		source: iconPattern;
+		paint.
+
+	^ aSurface
+]
+
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithText [
 
 	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aFontFace aScaledFont |
