@@ -7,6 +7,12 @@ Class {
 	#category : #'Alexandrie-Base'
 }
 
+{ #category : #accessing }
+AeEnumeration class >> allValues [
+
+	^ self classPool values sorted: [ :a :b | a item < b item ]
+]
+
 { #category : #initialization }
 AeEnumeration class >> initialize [
 
@@ -16,10 +22,13 @@ AeEnumeration class >> initialize [
 { #category : #accessing }
 AeEnumeration class >> underlineToCamelCaseDictionary [
 	"
-	Examples:
-		AeCairoContent underlineToCamelCaseDictionary.
-		AeCairoCompositionOp underlineToCamelCaseDictionary.
-		self allSubclasses collect: [ :each | each underlineToCamelCaseDictionary ].
+	Example of use:
+		| aClass |
+		aClass := AeCairoPatternType.
+		aClass underlineToCamelCaseDictionary keysAndValuesDo: [ :k :v |
+		aClass class compile: ('{2}
+
+	^ {1}' format: { k. v }) classified: 'accessing enum' ]
 	"
 
 	| result |
