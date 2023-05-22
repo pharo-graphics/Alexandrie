@@ -1315,6 +1315,17 @@ AeCairoContext >> sourceColorRGBA: aColor [
 ]
 
 { #category : #'API - source' }
+AeCairoContext >> sourceConverted [
+	"Answer the current source pattern, adopting the precise class according to it's `cairo_pattern_type_t`."
+
+	| result preciseClass |
+	result := self source.
+	preciseClass := result type correspondingClass.
+	preciseClass adoptInstance: result.
+	^ result
+]
+
+{ #category : #'API - source' }
 AeCairoContext >> sourceSurface: aCairoSurface x: aX y: aY [
 	"This is a convenience function for creating a pattern from surface and setting it as the source.
 

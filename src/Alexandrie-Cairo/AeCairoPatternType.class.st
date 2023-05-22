@@ -140,3 +140,9 @@ AeCairoPatternType class >> underlinedNamePrefix [
 	
 	^ 'CAIRO_PATTERN_TYPE_'
 ]
+
+{ #category : #'as yet unclassified' }
+AeCairoPatternType >> correspondingClass [
+
+	^ ClassByValue at: self
+]
