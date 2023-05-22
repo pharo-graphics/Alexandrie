@@ -11,15 +11,60 @@ Class {
 AeCairoColorPattern class >> newFrom: aColor [
 
 	^ aColor isTranslucent
-		  ifTrue: [ 
-			  AeCairoTranslucentColorPattern
+		  ifTrue: [
+			  self
 				  r: aColor red
 				  g: aColor green
 				  b: aColor blue
 				  alpha: aColor alpha ]
-		  ifFalse: [ 
-		  		AeCairoOpaqueColorPattern
-					r: aColor red
-					g: aColor green
-					b: aColor blue ]
+		  ifFalse: [
+			  self
+				  r: aColor red
+				  g: aColor green
+				  b: aColor blue ]
+]
+
+{ #category : #'instance creation' }
+AeCairoColorPattern class >> r: red g: green b: blue [
+
+	^ (self unownedNewR: red g: green b: blue)
+		  autoRelease;
+		  yourself
+]
+
+{ #category : #'instance creation' }
+AeCairoColorPattern class >> r: red g: green b: blue alpha: alpha [
+
+	^ (self
+		   unownedNewR: red
+		   g: green
+		   b: blue
+		   alpha: alpha)
+		  autoRelease;
+		  yourself
+]
+
+{ #category : #'private - ffi' }
+AeCairoColorPattern class >> unownedNewR: red g: green b: blue [
+	"See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-rgb"
+
+	^ self ffiCall: #(
+		AeCairoColorPattern
+		cairo_pattern_create_rgb (
+			double red,
+			double green,
+			double blue ) )
+]
+
+{ #category : #'private - ffi' }
+AeCairoColorPattern class >> unownedNewR: red g: green b: blue alpha: alpha [
+	"See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-rgba"
+
+	^ self ffiCall: #(
+		AeCairoColorPattern
+		cairo_pattern_create_rgba (
+			double red,
+			double green,
+			double blue,
+			double alpha ) )
 ]
