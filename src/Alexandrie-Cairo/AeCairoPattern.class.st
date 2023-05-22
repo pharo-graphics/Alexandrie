@@ -101,3 +101,10 @@ AeCairoPattern >> status [
 
 	^ self ffiCall: #( AeCairoStatus cairo_pattern_status ( self ) )
 ]
+
+{ #category : #API }
+AeCairoPattern >> type [
+	"See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-get-type"
+
+	^ self ffiCall: #( AeCairoPatternType cairo_pattern_get_type ( self ) )
+]
