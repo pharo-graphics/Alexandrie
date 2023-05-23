@@ -23,8 +23,10 @@ Class {
 		'CAIRO_PATTERN_TYPE_RADIAL',
 		'CAIRO_PATTERN_TYPE_RASTER_SOURCE',
 		'CAIRO_PATTERN_TYPE_SOLID',
-		'CAIRO_PATTERN_TYPE_SURFACE',
-		'ClassByValue'
+		'CAIRO_PATTERN_TYPE_SURFACE'
+	],
+	#classInstVars : [
+		'classByValue'
 	],
 	#category : #'Alexandrie-Cairo-Enumerations'
 }
@@ -66,6 +68,13 @@ AeCairoPatternType class >> CAIRO_PATTERN_TYPE_SURFACE [
 ]
 
 { #category : #'enum declaration' }
+AeCairoPatternType class >> classByValue [
+
+	classByValue ifNil: [ self initializeClassByValue ].
+	^ classByValue
+]
+
+{ #category : #'enum declaration' }
 AeCairoPatternType class >> enumDecl [
 	"
 	self rebuildEnumAccessors
@@ -82,9 +91,9 @@ AeCairoPatternType class >> enumDecl [
 ]
 
 { #category : #'enum declaration' }
-AeCairoPatternType class >> initialize [
+AeCairoPatternType class >> initializeClassByValue [
 
-	ClassByValue := Dictionary new
+	classByValue := Dictionary new
 		at: CAIRO_PATTERN_TYPE_SOLID put: AeCairoColorPattern;
 		at: CAIRO_PATTERN_TYPE_SURFACE put: AeCairoSurfacePattern;
 		at: CAIRO_PATTERN_TYPE_LINEAR put: AeCairoLinearGradientPattern;
@@ -141,8 +150,9 @@ AeCairoPatternType class >> underlinedNamePrefix [
 	^ 'CAIRO_PATTERN_TYPE_'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AeCairoPatternType >> correspondingClass [
+	"Answer the member of BlCairoPattern hierarchy that most precisely represents this type."
 
-	^ ClassByValue at: self
+	^ self class classByValue at: self
 ]
