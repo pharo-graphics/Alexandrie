@@ -26,6 +26,35 @@ AeCairoExamplesRenderTest class >> inspectMismatches [
 ]
 
 { #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithColoredIcons [
+
+	| inputForm inputSurface outputColors outputSurface outputContext |
+	inputForm := self iconNamed: #windowClose.
+	inputSurface := AeCairoImageSurface fromForm: inputForm.
+
+	outputColors := Color wheel: 7.
+
+	"Create a surface and associated context"
+	outputSurface := AeCairoImageSurface
+	    extent: (inputSurface width * outputColors size) @ inputSurface height
+	    format: AeCairoSurfaceFormat argb32.
+	outputContext := outputSurface newContext.
+
+	"Paint the inputSurface with each color"
+	outputColors
+	    do: [ :eachColor |
+	        outputContext
+	            sourceColorRGBA: eachColor;
+	            maskSurface: inputSurface x: 0 y: 0 ]
+	    separatedBy: [
+	        outputContext
+	            translateByX: inputSurface width
+	            y: 0 ].
+
+	^ outputSurface
+]
+
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithDeviceOffset [
 
 	| aSurface aSquare offsetPoint surfaceWidth surfaceHeight |
