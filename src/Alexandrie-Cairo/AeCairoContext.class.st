@@ -714,9 +714,12 @@ AeCairoContext >> lineWidth: aNumber [
 			double aNumber ) )
 ]
 
-{ #category : #'API - clipping' }
+{ #category : #'API - painting' }
 AeCairoContext >> mask: pattern [
-	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-mask"
+	"A drawing operator that paints the current source using the alpha channel of pattern as a mask.
+	(Opaque areas of pattern are painted with the source, transparent areas are not painted.)
+
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-mask"
 
 	^ self ffiCall: #(
 		void
@@ -727,13 +730,14 @@ AeCairoContext >> mask: pattern [
 
 { #category : #'API - painting' }
 AeCairoContext >> maskGroupWith: aBlockClosure [
+	"Mask a surface that will be created in a group with the specified block closure."
 
 	self pushGroup.
 	aBlockClosure value.
 	self mask: self popGroupAsSurfacePattern
 ]
 
-{ #category : #'API - clipping' }
+{ #category : #'API - painting' }
 AeCairoContext >> maskSurface: aSurface x: surfaceX y: surfaceY [
 	"A drawing operator that paints the current source using the alpha channel of surface as a mask. (Opaque areas of surface are painted with the source, transparent areas are not painted.)
 	
