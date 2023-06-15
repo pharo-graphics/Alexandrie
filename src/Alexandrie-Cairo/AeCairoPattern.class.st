@@ -40,6 +40,15 @@ The default extend mode is CAIRO_EXTEND_NONE for surface patterns and CAIRO_EXTE
 ]
 
 { #category : #API }
+AeCairoPattern >> filter [
+	"Gets the current filter on this pattern.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-get-filter"
+
+	self ffiCall: #( AeCairoSamplingFilter cairo_pattern_get_filter ( self ) )
+]
+
+{ #category : #API }
 AeCairoPattern >> filter: filter [
 	"Sets the filter to be used for resizing when using this pattern.
 	
