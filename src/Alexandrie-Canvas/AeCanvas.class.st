@@ -516,6 +516,13 @@ AeCanvas >> preparePath [
 ]
 
 { #category : #private }
+AeCanvas >> preparePathAndClip [
+
+	self preparePath.
+	cairoContext clip.
+]
+
+{ #category : #private }
 AeCanvas >> prepareStrokeWithDoubledWidth [
 
 	borderBlock value.
