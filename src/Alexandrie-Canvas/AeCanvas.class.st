@@ -533,10 +533,16 @@ AeCanvas >> prepareStrokeWithSingleWidth [
 
 ]
 
-{ #category : #private }
+{ #category : #accessing }
 AeCanvas >> privateAeCairoContext [
 
 	^ cairoContext
+]
+
+{ #category : #accessing }
+AeCanvas >> privateAeCairoSurface [
+
+	^ cairoSurface
 ]
 
 { #category : #'API - state' }
