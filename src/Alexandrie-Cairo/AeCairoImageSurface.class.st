@@ -262,6 +262,9 @@ AeCairoImageSurface >> format [
 
 { #category : #'private - ffi' }
 AeCairoImageSurface >> height [
+	"Answer the pixel height of this image surface.
+	
+	See: https://www.cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-get-height"
 
 	^ self ffiCall: #( int cairo_image_surface_get_height ( self ) )
 ]
@@ -304,6 +307,9 @@ AeCairoImageSurface >> unownedSimilarImageFormat: aFormat width: aWidth height: 
 
 { #category : #'private - ffi' }
 AeCairoImageSurface >> width [
+	"Answer the pixel width of this image surface.
+	
+	See: https://www.cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-get-width"
 
 	^ self ffiCall: #( int cairo_image_surface_get_width ( self ) )
 ]
