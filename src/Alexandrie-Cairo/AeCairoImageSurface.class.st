@@ -143,41 +143,43 @@ AeCairoImageSurface class >> unownedNewWithFormat: aSurfaceFormat width: aWidth 
 { #category : #converting }
 AeCairoImageSurface >> asARGB32ImageSurface [
 
-	| colorSurface aContext |
-	colorSurface := self
+	| aSurface |
+	aSurface := self
 		newSimilarImageFormat: AeCairoSurfaceFormat argb32
 		width: self width 
 		height: self height.
-	colorSurface status ensureIsSuccess.
-		
-	aContext := colorSurface newContext.
-	aContext
-		sourceSurface: self x: 0 y: 0;
+	aSurface status ensureIsSuccess.
+	aSurface deviceScale: self deviceScale.
+
+	aSurface newContext
+		sourceSurface: self
+			x: 0.0
+			y: 0.0;
 		paint.
 
-	^ colorSurface
-
+	^ aSurface
 ]
 
 { #category : #converting }
 AeCairoImageSurface >> asAlphaChannelGrayscaleImage [
 	"Answer new image surface with my pixels converted to grayscale."
 
-	| colorSurface aContext |
-	colorSurface := self
+	| aSurface aContext |
+	aSurface := self
 		newSimilarImageFormat: AeCairoSurfaceFormat argb32
-		width: self width 
+		width: self width
 		height: self height.
-	colorSurface status ensureIsSuccess.
-		
-	aContext := colorSurface newContext.
-	aContext
-		sourceColorRGB: Color white;
-		paint;
-		sourceColorRGB: Color black;
-	 	maskSurface: self x: 0 y: 0.
+	aSurface status ensureIsSuccess.
+	aSurface deviceScale: self deviceScale.
 
-	^ colorSurface
+	aContext := aSurface newContext.
+	aContext
+		sourceColorR: 1.0 g: 1.0 b: 1.0;
+		paint;
+		sourceColorR: 0.0 g: 0.0 b: 0.0;
+	 	maskSurface: self x: 0.0 y: 0.0.
+
+	^ aSurface
 
 ]
 
