@@ -383,6 +383,38 @@ AeCairoExamplesRenderTest >> surfaceWithSphere [
 ]
 
 { #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithStraightEdgesCurve [
+	"Edges of the curve are straight.
+	Reference: https://github.com/memononen/nanovg/issues/650"
+
+	| lineWidth startPoint extent aSurface aContext |
+	lineWidth := 32.
+	startPoint := ((lineWidth/2) + 10) @ 10.
+	extent := 120 @ 100.
+
+	aSurface := AeCairoImageSurface
+		extent: extent
+		format: AeCairoSurfaceFormat argb32.
+	aContext := aSurface newContext.
+
+	"paint background"
+	aContext
+		sourceColorRGB: Color black;
+		paint.
+
+	aContext
+		sourceColorRGB: Color white;
+		lineWidth: lineWidth;
+		cubicCurveFrom: startPoint
+			controlPoint1: startPoint + (0 @ 35.4)
+			controlPoint2: startPoint + (39.4 @ 64)
+			to: startPoint + (88 @ 64);
+		stroke.
+
+	^ aSurface
+]
+
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithStretchedIcon [
 
 	| aSurface aContext iconForm iconSurface iconPattern horizontalScale verticalScale |
