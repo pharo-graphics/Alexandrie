@@ -19,6 +19,7 @@ AeCairoSurfacePattern class >> surface: aCairoSurface [
 
 { #category : #'private - ffi' }
 AeCairoSurfacePattern class >> unownedNewFor: aCairoSurface [
+	"See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-for-surface"
 
 	^ self ffiCall: #(
 		AeCairoSurfacePattern

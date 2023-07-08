@@ -31,6 +31,7 @@ AeCairoLinearGradientPattern class >> from: aFromPoint to: aToPoint addStopsFrom
 
 { #category : #'private - ffi' }
 AeCairoLinearGradientPattern class >> unownedNewFromX: fromX fromY: fromY toX: toX toY: toY [
+	"See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-linear"
 
 	^ self ffiCall: #(
 		AeCairoLinearGradientPattern
