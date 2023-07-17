@@ -4,6 +4,23 @@ Class {
 	#category : #'Alexandrie-Cairo-Tests'
 }
 
+{ #category : #hooks }
+AeCairoConvertTest class >> allFormSelectors [
+
+	^ super allFormSelectors, (self selectors select: [ :each | each beginsWith: 'formWith' ])
+]
+
+{ #category : #tests }
+AeCairoConvertTest >> formWithZeroWidth [
+
+	| aSurface |
+	aSurface := AeCairoImageSurface
+		extent: 0@50
+		format: AeCairoSurfaceFormat argb32.
+
+	^ aSurface asFormARGB32
+]
+
 { #category : #tests }
 AeCairoConvertTest >> surfaceWithDeviceScaleAsARGB32ImageSurface [
 

@@ -224,13 +224,20 @@ AeCairoImageSurface >> asFormARGB32 [
 		self format = AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32
 	"
 
-	| theData |
+	| uint32Size theData |
 	self flush.
+	
+	uint32Size := self height * self stride.
+	
+	uint32Size = 0 ifTrue: [ 
+		^ Form
+			extent: self extent
+			depth: 32 ].
 	
 	theData := FFIExternalArray
 		fromHandle: self data getHandle
 		type: FFIUInt32
-		size: self height * self stride / 4.
+		size: uint32Size / 4.
 
 	^ Form
 		extent: self extent
