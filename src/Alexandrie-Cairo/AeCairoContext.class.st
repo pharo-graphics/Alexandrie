@@ -593,6 +593,17 @@ AeCairoContext >> getStrokeExtentsIntoLeft: x1 top: y1 right: x2 bottom: y2 [
 			double *y2 ) )
 ]
 
+{ #category : #'API - text' }
+AeCairoContext >> getTextExtents: utf8String into: extentsObj [
+"cairo_text_extents ()
+
+void                cairo_text_extents                  (cairo_t *cr,
+                                                         const char *utf8,
+                                                         cairo_text_extents_t *extents);
+"
+	^ self ffiCall: #( void cairo_text_extents (self, char *utf8String, AeCairoTextExtents *extentsObj) )
+]
+
 { #category : #'API - query' }
 AeCairoContext >> getUserToDeviceIntoX: xPointer y: yPointer [
 	"Transform a coordinate from user space to device space by multiplying the given point by the current transformation matrix (CTM).
@@ -1063,10 +1074,10 @@ AeCairoContext >> restoreState [
 ]
 
 { #category : #'API - states' }
-AeCairoContext >> restoreStateAfter: aBlockClosure [ 
+AeCairoContext >> restoreStateAfter: aBlock [ 
 	
 	self saveState.
-	aBlockClosure value.
+	aBlock value.
 	self restoreState.
 ]
 
@@ -1256,6 +1267,13 @@ AeCairoContext >> showGlyphs: aGlyphsArray size: aNumberOfGlyphs [
 			self,
 			void * aGlyphsArray,
 			int aNumberOfGlyphs ) )
+]
+
+{ #category : #'API - text' }
+AeCairoContext >> showText: anUTF8String [
+	"A drawing operator that generates the shape from a string of UTF-8 characters, rendered according to the current font_face, font_size (font_matrix), and font_options. "
+	
+	^ self ffiCall: #(void cairo_show_text (self, char * anUTF8String ))
 ]
 
 { #category : #'API - source' }
