@@ -284,6 +284,9 @@ AeCairoImageSurface >> newSimilarImageFormat: aFormat width: aWidth height: aHei
 
 { #category : #'private - ffi' }
 AeCairoImageSurface >> stride [
+	"Answer the stride of the image surface in bytes.
+	
+	See: https://www.cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-get-stride"
 
 	^ self ffiCall: #( int cairo_image_surface_get_stride ( self ) )
 ]
