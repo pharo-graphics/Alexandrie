@@ -8,6 +8,18 @@ Class {
 }
 
 { #category : #tests }
+AeCairoImageSurfaceTest >> testConvertZeroWidthAsFormARGB32 [
+
+	| aSurface aForm |
+	aSurface := AeCairoImageSurface
+		extent: 0@50
+		format: AeCairoSurfaceFormat argb32.
+
+	aForm := aSurface asFormARGB32.
+	self assert: aForm extent equals: aSurface extent.
+]
+
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testExtent [
 
 	surface := AeCairoImageSurface extent: 100 @ 50.
