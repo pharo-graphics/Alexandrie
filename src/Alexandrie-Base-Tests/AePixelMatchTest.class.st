@@ -58,6 +58,23 @@ AePixelMatchTest class >> exportAll [
 ]
 
 { #category : #convenience }
+AePixelMatchTest class >> fuelOutMismatchesTo: aFileReference [
+
+	self allMismatches
+		ifEmpty: [
+			Stdio stdout << 'No mismatches found'; lf ]
+		ifNotEmpty: [ :mismatches |
+			| path |
+			path := aFileReference pathString.
+			mismatches serializeToFileNamed: path.
+			Stdio stdout
+				<< 'Serialized ';
+				<< mismatches size;
+				<< ' mismatches to: ';
+				<< path; lf ]
+]
+
+{ #category : #convenience }
 AePixelMatchTest class >> inspectAll [
 
 	self allPixelComparisons inspect
