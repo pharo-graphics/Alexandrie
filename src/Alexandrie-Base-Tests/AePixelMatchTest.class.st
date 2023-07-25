@@ -13,6 +13,19 @@ AePixelMatchTest class >> allFormSelectors [
 	^ self subclassResponsibility
 ]
 
+{ #category : #convenience }
+AePixelMatchTest class >> allMismatches [
+
+	^ self allPixelComparisons reject: [ :each | each isMatch ]
+]
+
+{ #category : #convenience }
+AePixelMatchTest class >> allPixelComparisons [
+
+	^ self allFormSelectors collect: [ :each |
+		(self new formSelector: each) newPixelComparison ]
+]
+
 { #category : #'building suites' }
 AePixelMatchTest class >> buildSuite [
 
@@ -28,7 +41,7 @@ AePixelMatchTest class >> buildSuite [
 	^ suite
 ]
 
-{ #category : #'building suites' }
+{ #category : #convenience }
 AePixelMatchTest class >> exportAll [
 	"Export each Form to disk, to be used as the expected result in the future test runs."
 
@@ -47,24 +60,15 @@ AePixelMatchTest class >> exportAll [
 { #category : #convenience }
 AePixelMatchTest class >> inspectAll [
 
-	(self allFormSelectors collect: [ :each |
-		(self new formSelector: each) newPixelComparison ]) inspect.
-
+	self allPixelComparisons inspect
 ]
 
 { #category : #convenience }
 AePixelMatchTest class >> inspectMismatches [
 
-	| mismatches |
-	mismatches := self allFormSelectors
-		 collect: [ :each |
-			 (self new formSelector: each) newPixelComparison ]
-		 thenSelect: [ :each | each isMatch not ].
-	
-	mismatches
+	self allMismatches
 		ifEmpty: [ self inform: 'No mismatches found' ]
-		ifNotEmpty: [ mismatches inspect ]
-
+		ifNotEmpty: [ :mismatches | mismatches inspect ]
 ]
 
 { #category : #testing }

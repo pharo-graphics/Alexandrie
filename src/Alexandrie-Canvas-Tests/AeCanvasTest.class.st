@@ -27,16 +27,12 @@ AeCanvasTest class >> exportAll [
 
 { #category : #convenience }
 AeCanvasTest class >> inspectAll [
-	<script: 'self inspectAll' >
-
-	super inspectAll
+	<script: 'super inspectAll'>
 ]
 
 { #category : #convenience }
 AeCanvasTest class >> inspectMismatches [
-	<script: 'self inspectMismatches' >
-
-	super inspectMismatches
+	<script: 'super inspectMismatches' >
 ]
 
 { #category : #private }

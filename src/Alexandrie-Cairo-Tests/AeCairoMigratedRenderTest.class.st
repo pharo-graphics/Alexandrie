@@ -25,16 +25,13 @@ AeCairoMigratedRenderTest class >> exportAll [
 
 { #category : #convenience }
 AeCairoMigratedRenderTest class >> inspectAll [
-	<script: 'self inspectAll' >
+	<script: 'super inspectAll'>
 
-	super inspectAll
 ]
 
 { #category : #convenience }
 AeCairoMigratedRenderTest class >> inspectMismatches [
-	<script: 'self inspectMismatches' >
-
-	super inspectMismatches
+	<script: 'super inspectMismatches' >
 ]
 
 { #category : #private }

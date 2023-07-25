@@ -12,8 +12,7 @@ AeCairoRecordingSurfaceRenderTest class >> exportAll [
 
 { #category : #convenience }
 AeCairoRecordingSurfaceRenderTest class >> inspectAll [
-	<script: 'super inspectAll' >
-
+	<script: 'super inspectAll'>
 ]
 
 { #category : #convenience }
