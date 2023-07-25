@@ -157,6 +157,17 @@ AePixelMatchTest >> formSelector: aSymbol [
 	formSelector := aSymbol
 ]
 
+{ #category : #tests }
+AePixelMatchTest >> fuelOutMismatch: aPixelComparison [
+
+	aPixelComparison
+		serializeToFileNamed: ('pixel_mismatch_{1}_{2}_{3}.fuel'
+		format: {
+			Time primMillisecondClock printStringHex.
+			self className.
+			formSelector })
+]
+
 { #category : #private }
 AePixelMatchTest >> instanceVariablesToKeep [
 
@@ -196,6 +207,10 @@ AePixelMatchTest >> testFormSelector [
 
 	| aPixelComparison |
 	aPixelComparison := self newPixelComparison.
+	
+	aPixelComparison isMatch ifFalse: [
+		self fuelOutMismatch: aPixelComparison ].
+	
 	self
 		assert: aPixelComparison isMatch
 		description: 'Pixel mismatch: #', formSelector.
