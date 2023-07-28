@@ -120,6 +120,43 @@ AePixelComparison >> label: aString [
 ]
 
 { #category : #'accessing diff' }
+AePixelComparison >> mismatchingAverage [
+	"Answer a positive number that indicates the average mismatching level."
+
+	| sum numberOfPixels |
+	sum := 0.0.
+	numberOfPixels := 0.
+	self mismatchingPixelsDo: [ :_ :actual :expected |
+		numberOfPixels := numberOfPixels + 1.
+		sum := sum + (#(red green blue alpha) sum: [ :eachAccessor |
+			((expected perform: eachAccessor) -
+				(actual perform: eachAccessor)) abs ]) ].
+	^ sum / numberOfPixels
+]
+
+{ #category : #'accessing diff' }
+AePixelComparison >> mismatchingPixelRatio [
+
+	^ self numberOfMismatchingPixels /
+		(self intersectionWidth * self intersectionHeight)
+]
+
+{ #category : #'accessing diff' }
+AePixelComparison >> mismatchingPixels [
+	"Answer {zeroIndexedPoint. actualColor. expectedColor } for each mismatching pixel (in the intersecting area)."
+
+	^ Array streamContents: [ :stream |
+		  self mismatchingPixelsDo: [
+			  :zeroIndexedPoint
+			  :actualColor
+			  :expectedColor |
+					stream nextPut: {
+						zeroIndexedPoint.
+						actualColor.
+						expectedColor } ] ]
+]
+
+{ #category : #'accessing diff' }
 AePixelComparison >> mismatchingPixelsDo: aBlock [
 	"For each mismatching pixel (in the intersecting area), evaluate a block with the following arguments:
 		* 0-indexed points Note: forms are 0-indexed
@@ -136,9 +173,19 @@ AePixelComparison >> mismatchingPixelsDo: aBlock [
 
 			actualColor = expectedColor ifFalse: [
 				aBlock
-					value: currentPoint
-					value: actualColor
-					value: expectedColor ] ] ]
+					cull: currentPoint
+					cull: actualColor
+					cull: expectedColor ] ] ]
+]
+
+{ #category : #'accessing diff' }
+AePixelComparison >> numberOfMismatchingPixels [
+
+	| count |
+	count := 0.
+	self mismatchingPixelsDo: [
+		count := count + 1 ].
+	^ count
 ]
 
 { #category : #printing }
