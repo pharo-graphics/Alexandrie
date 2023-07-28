@@ -47,21 +47,11 @@ AePixelComparison >> actualVsExpectedMergedDiffForm [
 	actualDiffForm := Form extent: actualForm extent depth: actualForm depth.
 	expectedDiffForm := Form extent: expectedForm extent depth: expectedForm depth.
 	
-	1 to: (actualForm width min: expectedForm width) do: [ :x |
-		1 to: (actualForm height min: expectedForm height) do: [ :y |
-
-			| currentPoint actualColor expectedColor |
-			currentPoint := x@y - (1@1). "Weird: forms are 0-indexed"
-			actualColor := actualForm colorAt: currentPoint.
-			expectedColor := expectedForm colorAt: currentPoint.
-			actualColor = expectedColor ifFalse: [
-				actualDiffForm colorAt: currentPoint put: actualColor.
-				expectedDiffForm colorAt: currentPoint put: expectedColor ]
-
-			] ].
+	self mismatchingPixelsDo: [ :currentPoint :actualColor :expectedColor |
+		actualDiffForm colorAt: currentPoint put: actualColor.
+		expectedDiffForm colorAt: currentPoint put: expectedColor ].
 	
 	^ self concatenatedForm: actualDiffForm and: expectedDiffForm
-
 ]
 
 { #category : #'accessing diff' }
@@ -95,6 +85,18 @@ AePixelComparison >> expectedForm: aForm [
 	expectedForm := aForm
 ]
 
+{ #category : #'accessing diff' }
+AePixelComparison >> intersectionHeight [
+
+	^ actualForm height min: expectedForm height
+]
+
+{ #category : #'accessing diff' }
+AePixelComparison >> intersectionWidth [
+
+	^ actualForm width min: expectedForm width
+]
+
 { #category : #testing }
 AePixelComparison >> isMatch [
 
@@ -115,6 +117,28 @@ AePixelComparison >> label [
 AePixelComparison >> label: aString [ 
 	
 	label := aString
+]
+
+{ #category : #'accessing diff' }
+AePixelComparison >> mismatchingPixelsDo: aBlock [
+	"For each mismatching pixel (in the intersecting area), evaluate a block with the following arguments:
+		* 0-indexed points Note: forms are 0-indexed
+		* the actual color
+		* the expected color" 
+	
+	0 to: self intersectionWidth - 1 do: [ :x |
+		0 to: self intersectionHeight - 1 do: [ :y |
+
+			| currentPoint actualColor expectedColor |
+			currentPoint := x@y. 
+			actualColor := actualForm colorAt: currentPoint.
+			expectedColor := expectedForm colorAt: currentPoint.
+
+			actualColor = expectedColor ifFalse: [
+				aBlock
+					value: currentPoint
+					value: actualColor
+					value: expectedColor ] ] ]
 ]
 
 { #category : #printing }
