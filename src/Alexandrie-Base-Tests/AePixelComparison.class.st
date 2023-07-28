@@ -100,11 +100,13 @@ AePixelComparison >> intersectionWidth [
 { #category : #testing }
 AePixelComparison >> isMatch [
 
-	^ actualForm extent = expectedForm extent and: [ 
-		  0 = (expectedForm
-			   pixelCompare: (0 @ 0 corner: expectedForm extent)
-			   with: actualForm
-			   at: 0 @ 0) ]
+	actualForm extent = expectedForm extent
+		ifFalse: [ ^ false ].
+	
+	self numberOfMismatchingPixels > 0
+		ifTrue: [ ^ false ].
+	
+	^ true
 ]
 
 { #category : #accessing }
@@ -196,7 +198,9 @@ AePixelComparison >> printOn: aStream [
 		nextPut: $(;
 		nextPutAll: label;
 		space;
-		nextPutAll: (self isMatch ifTrue: [ 'match' ] ifFalse: [ 'MISMATCH' ]);
+		nextPutAll: (self isMatch
+			ifTrue: [ 'match' ]
+			ifFalse: [ 'mismatch: {1}%'
+				format: { (self mismatchingPixelRatio * 100) asInteger } ]);
 		nextPut: $)
-
 ]
