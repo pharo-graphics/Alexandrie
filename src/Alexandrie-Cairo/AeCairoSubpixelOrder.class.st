@@ -56,6 +56,18 @@ AeCairoSubpixelOrder class >> CAIRO_SUBPIXEL_ORDER_VRGB [
 	^ CAIRO_SUBPIXEL_ORDER_VRGB
 ]
 
+{ #category : #'accessing enum' }
+AeCairoSubpixelOrder class >> bgr [
+
+	^ CAIRO_SUBPIXEL_ORDER_BGR
+]
+
+{ #category : #'accessing enum' }
+AeCairoSubpixelOrder class >> default [
+
+	^ CAIRO_SUBPIXEL_ORDER_DEFAULT
+]
+
 { #category : #'enum declaration' }
 AeCairoSubpixelOrder class >> enumDecl [
 	"
@@ -71,8 +83,26 @@ AeCairoSubpixelOrder class >> enumDecl [
 	)
 ]
 
+{ #category : #'accessing enum' }
+AeCairoSubpixelOrder class >> rgb [
+
+	^ CAIRO_SUBPIXEL_ORDER_RGB
+]
+
 { #category : #hook }
 AeCairoSubpixelOrder class >> underlinedNamePrefix [
 	
 	^ 'CAIRO_SUBPIXEL_'
+]
+
+{ #category : #'accessing enum' }
+AeCairoSubpixelOrder class >> vbgr [
+
+	^ CAIRO_SUBPIXEL_ORDER_VBGR
+]
+
+{ #category : #'accessing enum' }
+AeCairoSubpixelOrder class >> vrgb [
+
+	^ CAIRO_SUBPIXEL_ORDER_VRGB
 ]

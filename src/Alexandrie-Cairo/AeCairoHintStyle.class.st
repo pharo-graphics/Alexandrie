@@ -56,6 +56,12 @@ AeCairoHintStyle class >> CAIRO_HINT_STYLE_SLIGHT [
 	^ CAIRO_HINT_STYLE_SLIGHT
 ]
 
+{ #category : #'accessing enum' }
+AeCairoHintStyle class >> default [
+
+	^ CAIRO_HINT_STYLE_DEFAULT
+]
+
 { #category : #'enum declaration' }
 AeCairoHintStyle class >> enumDecl [
 	"
@@ -69,6 +75,30 @@ AeCairoHintStyle class >> enumDecl [
 		CAIRO_HINT_STYLE_MEDIUM 3
 		CAIRO_HINT_STYLE_FULL 4
 	)
+]
+
+{ #category : #'accessing enum' }
+AeCairoHintStyle class >> full [
+
+	^ CAIRO_HINT_STYLE_FULL
+]
+
+{ #category : #'accessing enum' }
+AeCairoHintStyle class >> medium [
+
+	^ CAIRO_HINT_STYLE_MEDIUM
+]
+
+{ #category : #'accessing enum' }
+AeCairoHintStyle class >> none [
+
+	^ CAIRO_HINT_STYLE_NONE
+]
+
+{ #category : #'accessing enum' }
+AeCairoHintStyle class >> slight [
+
+	^ CAIRO_HINT_STYLE_SLIGHT
 ]
 
 { #category : #hook }

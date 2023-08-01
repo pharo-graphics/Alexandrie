@@ -40,6 +40,12 @@ AeCairoHintMetrics class >> CAIRO_HINT_METRICS_ON [
 	^ CAIRO_HINT_METRICS_ON
 ]
 
+{ #category : #'accessing enum' }
+AeCairoHintMetrics class >> default [
+
+	^ CAIRO_HINT_METRICS_DEFAULT
+]
+
 { #category : #'enum declaration' }
 AeCairoHintMetrics class >> enumDecl [
 	"
@@ -51,6 +57,18 @@ AeCairoHintMetrics class >> enumDecl [
 		CAIRO_HINT_METRICS_OFF 1
 		CAIRO_HINT_METRICS_ON 2
 	)
+]
+
+{ #category : #'accessing enum' }
+AeCairoHintMetrics class >> off [
+
+	^ CAIRO_HINT_METRICS_OFF
+]
+
+{ #category : #'accessing enum' }
+AeCairoHintMetrics class >> on [
+
+	^ CAIRO_HINT_METRICS_ON
 ]
 
 { #category : #hook }

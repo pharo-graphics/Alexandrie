@@ -66,6 +66,30 @@ AeCairoExtendMode class >> enumDecl [
 	)
 ]
 
+{ #category : #'accessing enum' }
+AeCairoExtendMode class >> none [
+
+	^ CAIRO_EXTEND_NONE
+]
+
+{ #category : #'accessing enum' }
+AeCairoExtendMode class >> pad [
+
+	^ CAIRO_EXTEND_PAD
+]
+
+{ #category : #'accessing enum' }
+AeCairoExtendMode class >> reflect [
+
+	^ CAIRO_EXTEND_REFLECT
+]
+
+{ #category : #'accessing enum' }
+AeCairoExtendMode class >> repeat [
+
+	^ CAIRO_EXTEND_REPEAT
+]
+
 { #category : #hook }
 AeCairoExtendMode class >> underlinedNamePrefix [
 	

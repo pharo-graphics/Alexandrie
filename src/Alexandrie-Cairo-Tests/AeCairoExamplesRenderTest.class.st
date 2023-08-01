@@ -500,8 +500,8 @@ AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 	aFTLibrary := AeFTLibrary newInitialized.
 	aFTFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
 	aFontOptions := AeCairoFontOptions new
-		antialias: AeCairoAntialias CAIRO_ANTIALIAS_NONE;
-		hintStyle: AeCairoHintStyle CAIRO_HINT_STYLE_FULL;
+		antialias: AeCairoAntialias none;
+		hintStyle: AeCairoHintStyle full;
 		yourself.
 	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
 	aScaledFont := aFontFace 
@@ -521,7 +521,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 			showGlyphs: aGlyphArray;
 		popGroupAsSurfacePattern.
 	aPattern
-		filter: AeCairoSamplingFilter CAIRO_FILTER_NEAREST;
+		filter: AeCairoSamplingFilter nearest;
 		matrix: (AeCairoMatrix newScalingBy: (1.0/zoom) asPoint).
 
 	aContext

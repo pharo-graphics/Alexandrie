@@ -680,7 +680,7 @@ AeCanvas >> setDashes: dashArray offset: dashOffset [
 AeCanvas >> setHighQualityOptions [
 
 	| antialiasOption |
-	antialiasOption := AeCairoAntialias CAIRO_ANTIALIAS_FAST.
+	antialiasOption := AeCairoAntialias fast.
 
 	cairoContext
 		tolerance: 0.2;
@@ -688,9 +688,9 @@ AeCanvas >> setHighQualityOptions [
 
 	fontOptions := AeCairoFontOptions new
 		antialias: antialiasOption;
-		hintMetrics: AeCairoHintMetrics CAIRO_HINT_METRICS_ON;
-		hintStyle: AeCairoHintStyle CAIRO_HINT_STYLE_SLIGHT;
-		subpixelOrder: AeCairoSubpixelOrder CAIRO_SUBPIXEL_ORDER_DEFAULT;
+		hintMetrics: AeCairoHintMetrics on;
+		hintStyle: AeCairoHintStyle slight;
+		subpixelOrder: AeCairoSubpixelOrder default;
 		yourself
 
 ]
@@ -725,13 +725,13 @@ AeCanvas >> setLowQualityOptions [
 
 	cairoContext
 		tolerance: 0.5;
-		antialias: AeCairoAntialias CAIRO_ANTIALIAS_NONE.
+		antialias: AeCairoAntialias none.
 
 	fontOptions := AeCairoFontOptions new
-		antialias: AeCairoAntialias CAIRO_ANTIALIAS_FAST;
-		hintMetrics: AeCairoHintMetrics CAIRO_HINT_METRICS_OFF;
-		hintStyle: AeCairoHintStyle CAIRO_HINT_STYLE_NONE;
-		subpixelOrder: AeCairoSubpixelOrder CAIRO_SUBPIXEL_ORDER_DEFAULT;
+		antialias: AeCairoAntialias fast;
+		hintMetrics: AeCairoHintMetrics off;
+		hintStyle: AeCairoHintStyle none;
+		subpixelOrder: AeCairoSubpixelOrder default;
 		yourself
 
 ]

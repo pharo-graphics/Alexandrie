@@ -46,8 +46,8 @@ AeCairoMigratedRenderTest >> drawTestPaintCheckeredOn: aContext [
 		aContext sourceSurface: checkSurface x: 0 y: 0.
 		
 		aContext source
-			filter: AeCairoSamplingFilter CAIRO_FILTER_NEAREST;
-			extend: AeCairoExtendMode CAIRO_EXTEND_REPEAT.
+			filter: AeCairoSamplingFilter nearest;
+			extend: AeCairoExtendMode repeat.
 		aContext paint
 		
 		]

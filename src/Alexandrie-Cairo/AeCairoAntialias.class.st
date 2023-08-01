@@ -72,6 +72,18 @@ AeCairoAntialias class >> CAIRO_ANTIALIAS_SUBPIXEL [
 	^ CAIRO_ANTIALIAS_SUBPIXEL
 ]
 
+{ #category : #'accessing enum' }
+AeCairoAntialias class >> best [
+
+	^ CAIRO_ANTIALIAS_BEST
+]
+
+{ #category : #'accessing enum' }
+AeCairoAntialias class >> default [
+
+	^ CAIRO_ANTIALIAS_DEFAULT
+]
+
 { #category : #'enum declaration' }
 AeCairoAntialias class >> enumDecl [
 	"
@@ -91,6 +103,36 @@ AeCairoAntialias class >> enumDecl [
 		CAIRO_ANTIALIAS_GOOD 5
 		CAIRO_ANTIALIAS_BEST 6
 	)
+]
+
+{ #category : #'accessing enum' }
+AeCairoAntialias class >> fast [
+
+	^ CAIRO_ANTIALIAS_FAST
+]
+
+{ #category : #'accessing enum' }
+AeCairoAntialias class >> good [
+
+	^ CAIRO_ANTIALIAS_GOOD
+]
+
+{ #category : #'accessing enum' }
+AeCairoAntialias class >> gray [
+
+	^ CAIRO_ANTIALIAS_GRAY
+]
+
+{ #category : #'accessing enum' }
+AeCairoAntialias class >> none [
+
+	^ CAIRO_ANTIALIAS_NONE
+]
+
+{ #category : #'accessing enum' }
+AeCairoAntialias class >> subpixel [
+
+	^ CAIRO_ANTIALIAS_SUBPIXEL
 ]
 
 { #category : #hook }
