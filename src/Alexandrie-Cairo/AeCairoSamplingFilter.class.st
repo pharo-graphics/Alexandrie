@@ -55,6 +55,18 @@ AeCairoSamplingFilter class >> CAIRO_FILTER_NEAREST [
 	^ CAIRO_FILTER_NEAREST
 ]
 
+{ #category : #'accessing enum' }
+AeCairoSamplingFilter class >> best [
+
+	^ CAIRO_FILTER_BEST
+]
+
+{ #category : #'accessing enum' }
+AeCairoSamplingFilter class >> bilinear [
+
+	^ CAIRO_FILTER_BILINEAR
+]
+
 { #category : #'enum declaration' }
 AeCairoSamplingFilter class >> enumDecl [
 	"
@@ -69,6 +81,30 @@ AeCairoSamplingFilter class >> enumDecl [
 		CAIRO_FILTER_BILINEAR 4
 		CAIRO_FILTER_GAUSSIAN 5
 	)
+]
+
+{ #category : #'accessing enum' }
+AeCairoSamplingFilter class >> fast [
+
+	^ CAIRO_FILTER_FAST
+]
+
+{ #category : #'accessing enum' }
+AeCairoSamplingFilter class >> gaussian [
+
+	^ CAIRO_FILTER_GAUSSIAN
+]
+
+{ #category : #'accessing enum' }
+AeCairoSamplingFilter class >> good [
+
+	^ CAIRO_FILTER_GOOD
+]
+
+{ #category : #'accessing enum' }
+AeCairoSamplingFilter class >> nearest [
+
+	^ CAIRO_FILTER_NEAREST
 ]
 
 { #category : #hook }
