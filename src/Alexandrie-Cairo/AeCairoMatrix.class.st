@@ -97,6 +97,22 @@ AeCairoMatrix class >> unownedNew [
 	^ self externalNew
 ]
 
+{ #category : #comparing }
+AeCairoMatrix >> = anObject [
+	"Answer whether the receiver and anObject represent the same object."
+
+	self == anObject ifTrue: [ ^ true ].
+	self class = anObject class ifFalse: [ ^ false ].
+	self getHandle = anObject getHandle ifTrue: [ ^ true ].
+
+	^ self sx = anObject sx
+		and: [ self shy = anObject shy
+			and: [ self shx = anObject shx
+				and: [ self sy = anObject sy
+					and: [ self x = anObject x
+						and: [ self y = anObject y ] ] ] ] ]
+]
+
 { #category : #'API - initialize' }
 AeCairoMatrix >> beIdentity [
 	"Mutate myself to be an identity transformation.
@@ -183,6 +199,17 @@ AeCairoMatrix >> beX: x0 y: y0 sx: xx sy: yy shx: xy shy: yx [
 			double yy,
 			double x0,
 			double y0 ) )
+]
+
+{ #category : #comparing }
+AeCairoMatrix >> hash [
+
+	^ ((((self sx hash
+		bitXor: self shy hash)
+			bitXor: self shx hash)
+				bitXor: self sy hash)
+					bitXor: self x hash)
+						bitXor: self y hash
 ]
 
 { #category : #'API - initialize' }
