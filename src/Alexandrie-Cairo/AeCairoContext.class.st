@@ -278,6 +278,17 @@ AeCairoContext >> closePath [
 	self ffiCall: #( void cairo_close_path ( self ) )
 ]
 
+{ #category : #'API - pages' }
+AeCairoContext >> copyPage [
+	"Emits the current page for backends that support multiple pages, but doesn't clear it, so, the contents of the current page will be retained for the next page too.
+	
+	Use `AeCairoContext>>#showPage` if you want to get an empty page after the emission.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-copy-page"
+
+	self ffiCall: #( void cairo_copy_page ( self ) )
+]
+
 { #category : #'API - path' }
 AeCairoContext >> cubicCurveFrom: startPoint controlPoint1: cp1 controlPoint2: cp2 to: endPoint [
 
@@ -1307,6 +1318,17 @@ AeCairoContext >> showGlyphs: aGlyphsArray size: aNumberOfGlyphs [
 			self,
 			void * aGlyphsArray,
 			int aNumberOfGlyphs ) )
+]
+
+{ #category : #'API - pages' }
+AeCairoContext >> showPage [
+	"Emits and clears the current page for backends that support multiple pages.
+
+	Use `AeCairoContext>>#copyPage` if you don't want to clear the page.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-show-page"
+
+	self ffiCall: #( void cairo_show_page ( self ) )
 ]
 
 { #category : #'API - text' }

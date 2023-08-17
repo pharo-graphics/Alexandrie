@@ -50,6 +50,15 @@ AeCairoSurface class >> unownedNewSimilarTo: aSurface contentType: aContentType 
 			int aHeight ) )
 ]
 
+{ #category : #'API - pages' }
+AeCairoSurface >> copyPage [
+	"Emits the current page for backends that support multiple pages, but doesn't clear it, so that the contents of the current page will be retained for the next page.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-copy-page"
+
+	self ffiCall: #( void cairo_surface_copy_page (self) )
+]
+
 { #category : #API }
 AeCairoSurface >> device [
 	"Return the device for surface, or NULL if the surface does not have an associated device.
@@ -194,6 +203,15 @@ AeCairoSurface >> markDirty [
 AeCairoSurface >> newContext [
 
 	^ AeCairoContext newFor: self
+]
+
+{ #category : #'API - pages' }
+AeCairoSurface >> showPage [
+	"Emits and clears the current page for backends that support multiple pages. 
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-show-page"
+
+	self ffiCall: #( void cairo_surface_show_page ( self ) )
 ]
 
 { #category : #API }
