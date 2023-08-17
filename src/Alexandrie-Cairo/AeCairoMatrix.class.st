@@ -34,6 +34,22 @@ AeCairoMatrix class >> fieldsDesc [
 ]
 
 { #category : #'instance creation' }
+AeCairoMatrix class >> multiply: a by: b into: result [
+	"Multiplies the affine transformations in `a` and `b` together and stores the result in `result`. The effect of the resulting transformation is to first apply the transformation in `a` to the coordinates and then apply the transformation in `b` to the coordinates.
+
+	It is allowable for `result` to be identical to either `a` or `b`.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-matrix-t.html#cairo-matrix-multiply"
+
+	^ self ffiCall: #(
+		void
+		cairo_matrix_multiply (
+			AeCairoMatrix * result,
+			AeCairoMatrix * a,
+			AeCairoMatrix * b ) )
+]
+
+{ #category : #'instance creation' }
 AeCairoMatrix class >> newIdentity [
 
 	^ self new
@@ -120,6 +136,12 @@ AeCairoMatrix >> beIdentity [
 	See: https://www.cairographics.org/manual/cairo-cairo-matrix-t.html#cairo-matrix-init-identity"
 
 	self ffiCall: #( void cairo_matrix_init_identity ( self ) )
+]
+
+{ #category : #'API - initialize' }
+AeCairoMatrix >> beMultiplicationOf: a by: b [
+
+	self class multiply: a by: b into: self
 ]
 
 { #category : #'API - initialize' }
@@ -235,6 +257,18 @@ AeCairoMatrix >> isIdentity [
 	^ self x = 0.0 and: [ self y = 0.0 and: [ 
 		self sx = 1.0 and: [ self sy = 1.0 and: [
 			self shx = 0.0 and: [ self shy = 0.0 ] ] ] ] ]
+]
+
+{ #category : #'API - transformations' }
+AeCairoMatrix >> postMultiply: aMatrix [
+
+	self beMultiplicationOf: self by: aMatrix
+]
+
+{ #category : #'API - transformations' }
+AeCairoMatrix >> preMultiply: aMatrix [
+
+	self beMultiplicationOf: aMatrix by: self
 ]
 
 { #category : #printing }

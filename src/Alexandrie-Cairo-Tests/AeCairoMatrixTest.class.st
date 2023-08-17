@@ -11,6 +11,35 @@ Class {
 }
 
 { #category : #tests }
+AeCairoMatrixTest >> testBeMultiplicationOfBy [
+
+	| x y |
+	x := AeCairoMatrix newScalingByX: 2 y: 3.
+	y := AeCairoMatrix newX: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
+	matrix := AeCairoMatrix new.
+
+	matrix beMultiplicationOf: x by: y.
+	self
+		assert: matrix
+		closeTo: (AeCairoMatrix newX: 0.1 y: 0.2 sx: 0.6 sy: 1.2 shx: 1.5 shy: 1.2).
+
+	matrix beMultiplicationOf: matrix by: y.
+	self
+		assert: matrix
+		closeTo: (AeCairoMatrix newX: 0.23 y: 0.34 sx: 0.78 sy: 1.38 shx: 1.05 shy: 0.84).
+
+	matrix beMultiplicationOf: x by: matrix.
+	self
+		assert: matrix
+		closeTo: (AeCairoMatrix newX: 0.23 y: 0.34 sx: 1.56 sy: 4.14 shx: 3.15 shy: 1.68).
+
+	matrix beMultiplicationOf: y by: x.
+	self
+		assert: matrix
+		closeTo: (AeCairoMatrix newX: 0.2 y: 0.6 sx: 0.6 sy: 1.2 shx: 1.0 shy: 1.8)
+]
+
+{ #category : #tests }
 AeCairoMatrixTest >> testCreation [ 
 
 	matrix := AeCairoMatrix newX: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
@@ -84,6 +113,32 @@ AeCairoMatrixTest >> testNewTranslationBy [
 	self assert: matrix shx equals: 0.0.
 	self assert: matrix shy equals: 0.0.
 
+]
+
+{ #category : #tests }
+AeCairoMatrixTest >> testPostMultiply [
+
+	| y |
+	y := AeCairoMatrix newX: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
+	matrix := AeCairoMatrix newRotationByRadians: 1.
+
+	matrix postMultiply: y.
+	self
+		assert: matrix
+		closeTo: (AeCairoMatrix newX: 0.1000 y: 0.2000 sx: 0.5828 sy: -0.2888 shx: 0.0177 shy: 0.6608)
+]
+
+{ #category : #tests }
+AeCairoMatrixTest >> testPreMultiply [
+
+	| y |
+	y := AeCairoMatrix newX: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
+	matrix := AeCairoMatrix newRotationByRadians: 1.
+
+	matrix preMultiply: y.
+	self
+		assert: matrix
+		closeTo: (AeCairoMatrix newX: -0.1143 y: 0.1922 sx: -0.3428 sy: 0.6369 shx: -0.0664 shy: 0.5766)
 ]
 
 { #category : #test }
