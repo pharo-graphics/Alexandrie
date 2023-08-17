@@ -59,7 +59,7 @@ AeCairoSurface >> copyPage [
 	self ffiCall: #( void cairo_surface_copy_page (self) )
 ]
 
-{ #category : #API }
+{ #category : #'API - device' }
 AeCairoSurface >> device [
 	"Return the device for surface, or NULL if the surface does not have an associated device.
 
@@ -69,7 +69,7 @@ AeCairoSurface >> device [
 
 ]
 
-{ #category : #API }
+{ #category : #'API - device' }
 AeCairoSurface >> deviceOffset [
 
 	| xPointer yPointer |
@@ -80,13 +80,13 @@ AeCairoSurface >> deviceOffset [
 
 ]
 
-{ #category : #API }
+{ #category : #'API - device' }
 AeCairoSurface >> deviceOffset: aPoint [
 
 	self deviceOffsetX: aPoint x y: aPoint y
 ]
 
-{ #category : #API }
+{ #category : #'API - device' }
 AeCairoSurface >> deviceOffsetX: xOffset y: yOffset [
 	"Sets an offset that is added to the device coordinates determined by the CTM when drawing to this surface.
 	One use case for this function is when we want to create a `cairo_surface_t` that redirects drawing for a portion of an onscreen surface to an offscreen surface in a way that is completely invisible to the user of the cairo API.
@@ -104,7 +104,7 @@ AeCairoSurface >> deviceOffsetX: xOffset y: yOffset [
 			double yOffset ) )
 ]
 
-{ #category : #API }
+{ #category : #'API - device' }
 AeCairoSurface >> deviceScale [
 
 	| xPointer yPointer |
@@ -115,13 +115,13 @@ AeCairoSurface >> deviceScale [
 
 ]
 
-{ #category : #API }
+{ #category : #'API - device' }
 AeCairoSurface >> deviceScale: aPoint [
 
 	self deviceScaleX: aPoint x y: aPoint y
 ]
 
-{ #category : #API }
+{ #category : #'API - device' }
 AeCairoSurface >> deviceScaleX: xScale y: yScale [
 	"Sets a scale that is multiplied to the device coordinates determined by the CTM when drawing to this surface. 
 	One common use for this is to render to very high resolution display devices at a scale factor, so that code that assumes 1 pixel will be a certain size will still work. 
@@ -152,13 +152,20 @@ AeCairoSurface >> finish [
 
 { #category : #API }
 AeCairoSurface >> flush [
+	"Do any pending drawing for the surface and also restore any temporary modifications cairo has made to the surface's state.
+	This function must be called before switching from drawing on the surface with cairo to drawing on it directly with native APIs, or accessing its memory outside of Cairo.
+	If the surface doesn't support direct access, then this function does nothing.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-flush"
 
 	self ffiCall: #( void cairo_surface_flush ( self ) )
 ]
 
-{ #category : #API }
+{ #category : #'API - device' }
 AeCairoSurface >> getDeviceOffsetOnX: xOffsetPointer onY: yOffsetPointer [
-	"See: https://www.cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-device-offset"
+	"Retrieve the device offset set by `cairo_surface_set_device_offset()`.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-device-offset"
 
 	self ffiCall: #(
 		void
@@ -169,9 +176,9 @@ AeCairoSurface >> getDeviceOffsetOnX: xOffsetPointer onY: yOffsetPointer [
 
 ]
 
-{ #category : #API }
+{ #category : #'API - device' }
 AeCairoSurface >> getDeviceScaleOnX: xPointer onY: yPointer [
-	"Return the previous device scale set by `cairo_surface_set_device_scale()`.
+	"Retrieve the device scale set by `cairo_surface_set_device_scale()`.
 	
 	See: https://www.cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-device-scale"
 
@@ -184,7 +191,7 @@ AeCairoSurface >> getDeviceScaleOnX: xPointer onY: yPointer [
 
 ]
 
-{ #category : #API }
+{ #category : #'API - device' }
 AeCairoSurface >> hasDevice [
 	"Answer whether I have an associated device.
 
@@ -199,7 +206,7 @@ AeCairoSurface >> markDirty [
 	self ffiCall: #( void cairo_surface_mark_dirty ( self ) )
 ]
 
-{ #category : #API }
+{ #category : #'instance creation' }
 AeCairoSurface >> newContext [
 
 	^ AeCairoContext newFor: self
@@ -216,6 +223,9 @@ AeCairoSurface >> showPage [
 
 { #category : #API }
 AeCairoSurface >> status [
+	"Answer the status of the error previously occurred for this surface, or success.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-status"
 
 	^ self ffiCall: #( AeCairoStatus cairo_surface_status ( self ) )
 ]
