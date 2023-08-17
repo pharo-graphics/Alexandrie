@@ -473,6 +473,37 @@ AeCairoContext >> fillRule: aCairoFillRule [
 			AeCairoFillRule aCairoFillRule ) )
 ]
 
+{ #category : #'API - text' }
+AeCairoContext >> fontMatrix: aMatrix [
+	"Sets the current font matrix to `aMatrix`. 
+	The font matrix gives a transformation from the design space of the font (in this space, the em-square is 1 unit by 1 unit) to user space.
+	Normally, a simple scale is used (see `cairo_set_font_size()`), but a more complex font matrix can be used to shear the font or stretch it unequally along the two axes.
+	
+	See: https://www.cairographics.org/manual/cairo-text.html#cairo-set-font-matrix"
+
+	self ffiCall: #(
+		void
+		cairo_set_font_matrix (
+			self,
+			AeCairoMatrix * aMatrix ) )
+]
+
+{ #category : #'API - text' }
+AeCairoContext >> fontSize: aSize [
+	"Sets the current font matrix to a scale by a factor of `aSize`, replacing any font matrix previously set with `cairo_set_font_size()` or `cairo_set_font_matrix()`.
+	This results in a font size of size user space units. (More precisely, this matrix will result in the font's em-square being a size by size square in user space.)
+
+	If text is drawn without a call to `cairo_set_font_size()`, (nor `cairo_set_font_matrix()` nor `cairo_set_scaled_font()`), the default font size is 10.0.
+
+	See: https://www.cairographics.org/manual/cairo-text.html#cairo-set-font-size"
+
+	self ffiCall: #(
+		void
+		cairo_set_font_size (
+			self,
+			double aSize ) )
+]
+
 { #category : #'API - query' }
 AeCairoContext >> getClipExtentsIntoLeft: x1 top: y1 right: x2 bottom: y2 [
 	"Computes a bounding box in user coordinates covering the area inside the current clip.
@@ -1199,6 +1230,15 @@ AeCairoContext >> scaleByX: sx y: sy [
 			self,
 			double sx,
 			double sy ) )
+]
+
+{ #category : #'API - text' }
+AeCairoContext >> scaledFont [
+	"Returns the current scaled font.
+	
+	See: https://www.cairographics.org/manual/cairo-text.html#cairo-get-scaled-font"
+
+	^ self ffiCall: #( AeCairoScaledFont cairo_get_scaled_font ( self ) )
 ]
 
 { #category : #'API - text' }
