@@ -12,7 +12,8 @@ Class {
 	#traits : 'AeTCairoLibrary + AeTExternalFree',
 	#classTraits : 'AeTCairoLibrary classTrait + AeTExternalFree classTrait',
 	#instVars : [
-		'extents'
+		'extents',
+		'fontFace'
 	],
 	#category : #'Alexandrie-Cairo-Text'
 }
@@ -84,7 +85,7 @@ AeCairoScaledFont >> fontMatrix [
 	^ aCairoMatrix
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoScaledFont >> getCurrentTransformationMatrixInto: aeCairoMatrix [
 
 	self ffiCall: #(
@@ -94,7 +95,7 @@ AeCairoScaledFont >> getCurrentTransformationMatrixInto: aeCairoMatrix [
 			AeCairoMatrix *aeCairoMatrix ))
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoScaledFont >> getExtentsInto: aFontExtents [
 
 	self ffiCall: #(
@@ -106,20 +107,7 @@ AeCairoScaledFont >> getExtentsInto: aFontExtents [
 
 ]
 
-{ #category : #'private - ffi' }
-AeCairoScaledFont >> getExtentsInto: aTextExtents text: utf8 [
-
-	self ffiCall: #(
-		void
-		cairo_scaled_font_text_extents (
-			self,
-			const char *utf8,
-			AeCairoTextExtents* aTextExtents
-		))
-
-]
-
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoScaledFont >> getFontMatrixInto: aeCairoMatrix [
 
 	self ffiCall: #(
@@ -129,7 +117,7 @@ AeCairoScaledFont >> getFontMatrixInto: aeCairoMatrix [
 			AeCairoMatrix *aeCairoMatrix ))
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoScaledFont >> getScaleMatrixInto: aeCairoMatrix [
 
 	self ffiCall: #(
@@ -173,7 +161,7 @@ AeCairoScaledFont >> glyphArrayForUtf8Array: aUtf8EncodedByteArray [
 	^ aGlyphsArray
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoScaledFont >> lock [
 	"See: https://www.cairographics.org/manual/cairo-FreeType-Fonts.html#cairo-ft-scaled-font-lock-face"
 	
@@ -190,13 +178,13 @@ AeCairoScaledFont >> scaleMatrix [
 	^ aCairoMatrix
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoScaledFont >> status [
 
 	^ self ffiCall: #(AeCairoStatus cairo_scaled_font_status ( self ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoScaledFont >> textToGlyphs: aBuffer length: aLength glyphs: theGlyphs num: aGlyphsCount x: aX y: aY [
 	"Convert UTF-8 text to an array of glyphs. Return `CAIRO_STATUS_SUCCESS` upon success, or an error status if the input values are wrong or if conversion failed. If the input values are correct but the conversion failed, the error status is also set on `scaled_font`.
 	
@@ -217,7 +205,7 @@ AeCairoScaledFont >> textToGlyphs: aBuffer length: aLength glyphs: theGlyphs num
 			nil))
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoScaledFont >> unlock [
 	"See: https://www.cairographics.org/manual/cairo-FreeType-Fonts.html#cairo-ft-scaled-font-unlock-face"
 	
