@@ -475,6 +475,9 @@ AeCairoExamplesRenderTest >> surfaceWithText [
 		showGlyphs: (aScaledFont glyphArrayForString: ''); "Draws nothing"
 		showGlyphs: (aScaledFont glyphArrayForString: string).
 
+	self flag: #todo. "They are freed in wrong order when GC does it"
+	{ aScaledFont. aFontFace. aFTFace. aFTLibrary } do: #externallyFree.
+
 	^ aSurface
 ]
 
@@ -572,6 +575,9 @@ AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 		paint;
 		source: aPattern;
 		paint.
+
+	self flag: #todo. "They are freed in wrong order when GC does it"
+	{ aScaledFont. aFontFace. aFTFace. aFTLibrary } do: #externallyFree.
 
 	^ aSurface
 ]
