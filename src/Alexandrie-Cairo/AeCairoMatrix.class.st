@@ -202,6 +202,17 @@ AeCairoMatrix >> beX: x0 y: y0 sx: xx sy: yy shx: xy shy: yx [
 ]
 
 { #category : #comparing }
+AeCairoMatrix >> closeTo: anotherMatrix precision: num [
+
+	^ (self sx closeTo: anotherMatrix sx precision: num)
+		and: [ (self shy closeTo: anotherMatrix shy precision: num)
+			and: [ (self shx closeTo: anotherMatrix shx precision: num)
+				and: [ (self sy closeTo: anotherMatrix sy precision: num)
+					and: [ (self x closeTo: anotherMatrix x precision: num)
+						and: [ self y closeTo: anotherMatrix y precision: num ] ] ] ] ]
+]
+
+{ #category : #comparing }
 AeCairoMatrix >> hash [
 
 	^ ((((self sx hash
@@ -239,8 +250,8 @@ AeCairoMatrix >> printOn: aStream [
 			do: [ :eachRow |
 				eachRow
 					do: [ :eachValue |
-						aStream nextPutAll: 
-							(eachValue printShowingDecimalPlaces: 1) ] 
+						aStream nextPutAll:
+							(eachValue printShowingDecimalPlaces: 4) ] 
 					separatedBy: [ aStream space ] ]
 			separatedBy: [ aStream nextPutAll: ' | ' ].
 
@@ -297,6 +308,20 @@ AeCairoMatrix >> shy [
 AeCairoMatrix >> shy: anObject [
 	"This method was automatically generated"
 	handle doubleAt: OFFSET_SHY put: anObject
+]
+
+{ #category : #printing }
+AeCairoMatrix >> storeOn: aStream [
+
+	self flag: #newX:y:sx:sy:shx:shy:. "I build a string that sends this selector"
+
+	aStream
+		nextPut: $(;
+		nextPutAll: self className;
+		nextPutAll: (' newX: {1} y: {2} sx: {3} sy: {4} shx: {5} shy: {6})'
+			format: ({ self x. self y. self sx. self sy. self shx. self shy }
+				collect: [ :each |
+					each printShowingDecimalPlaces: 4 ]))
 ]
 
 { #category : #'accessing - structure variables' }
