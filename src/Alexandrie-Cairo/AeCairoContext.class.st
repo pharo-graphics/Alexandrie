@@ -75,6 +75,28 @@ AeCairoContext >> antialias: aCairoAntialias [
 			AeCairoAntialias aCairoAntialias ) )
 ]
 
+{ #category : #'API - text' }
+AeCairoContext >> appendGlyphsPath: aeCairoGlyphArray [ 
+	"Adds closed paths for the glyphs to the current path."
+
+	self appendGlyphsPath: aeCairoGlyphArray length: aeCairoGlyphArray size
+]
+
+{ #category : #'API - text' }
+AeCairoContext >> appendGlyphsPath: aGlyphsArray length: aNumberOfGlyphs [
+	"Adds closed paths for the glyphs to the current path.
+	The generated path if filled, achieves an effect similar to that of `cairo_show_glyphs()`.
+	
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-glyph-path"
+			
+	self ffiCall: #(
+		void
+		cairo_glyph_path (
+			self,
+			void * aGlyphsArray,
+			int aNumberOfGlyphs ) )
+]
+
 { #category : #'API - path' }
 AeCairoContext >> appendPath: aCairoPath [
 

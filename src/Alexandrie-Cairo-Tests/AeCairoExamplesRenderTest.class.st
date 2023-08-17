@@ -479,6 +479,49 @@ AeCairoExamplesRenderTest >> surfaceWithText [
 ]
 
 { #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
+
+	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aFontFace aScaledFont |
+
+	fontSize := 25.
+	string := 'Hola'.
+	surfaceSize := 60 @ 30.
+	aSurface := AeCairoImageSurface
+		  extent: surfaceSize
+		  format: AeCairoSurfaceFormat argb32.
+	aContext := aSurface newContext.
+
+	"Set up aScaleFont"
+	aFTLibrary := AeFTLibrary newInitialized.
+	aFTFace := AeSourceSansPro_Bold firstFaceUsing: aFTLibrary.
+	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
+	aScaledFont := aFontFace 
+		newScaledFontWithFontMatrix: (AeCairoMatrix newScalingBy: fontSize asPoint)
+		userToDeviceMatrix: AeCairoMatrix newIdentity
+		options: AeCairoFontOptions new.
+
+	"Add glyphs to path"
+	aContext
+		sourceColorRGB: Color paleGreen;
+		paint;
+		translateByX: 4 y: fontSize;
+		scaledFont: aScaledFont;
+		appendGlyphsPath: (aScaledFont glyphArrayForString: string).
+
+	"Draw dashed stroke (border)"
+	aContext
+		sourceColorRGB: Color blue;
+		dash: (AeCairoDoubleArray newFrom: { 7. 1 }) offset: 3;
+		lineWidth: 1.5;
+		stroke.
+
+	self flag: #todo. "They are freed in wrong order when GC does it"
+	{ aScaledFont. aFontFace. aFTFace. aFTLibrary } do: #externallyFree.
+
+	^ aSurface
+]
+
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 	"The trick is: 
 	- Create special font options with full hinting and without anti-aliasing
