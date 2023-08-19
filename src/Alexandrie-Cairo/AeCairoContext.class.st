@@ -507,6 +507,24 @@ AeCairoContext >> fillRule: aCairoFillRule [
 ]
 
 { #category : #'API - text' }
+AeCairoContext >> fontFace [
+	"Gets the current font face (owned by cairo).
+	
+	See: https://www.cairographics.org/manual/cairo-text.html#cairo-get-font-face"
+
+	^ self ffiCall: #( #AeCairoFontFace cairo_get_font_face ( self ) )
+]
+
+{ #category : #'API - text' }
+AeCairoContext >> fontFace: aFontFace [
+	"Replaces the current font face. The replaced font face will be destroyed if there are no other references to it.
+	
+	See: https://www.cairographics.org/manual/cairo-text.html#cairo-set-font-face"
+
+	^ self ffiCall: #( #AeCairoFontFace cairo_get_font_face ( self ) )
+]
+
+{ #category : #'API - text' }
 AeCairoContext >> fontMatrix: aMatrix [
 	"Sets the current font matrix to `aMatrix`. 
 	The font matrix gives a transformation from the design space of the font (in this space, the em-square is 1 unit by 1 unit) to user space.

@@ -2,6 +2,12 @@
 I am a Cairo FFI binding for `cairo_scaled_font_t`.
 A `cairo_scaled_font_t` represents a realization of a font face at a particular size and transformation and a certain set of font options.
 
+A scaled font is created with:
+- fontFace: a `AeCairoFontFace` which represents a particular font at a particular weight, slant.
+- fontMatrix: font space to user space transformation matrix for the font. In the simplest case of a N point font, this matrix is just a scale by N, but it can also be used to shear the font or stretch it unequally along the two axes.
+- userToDeviceMatrix: a transformation matrix with which the font will be used.
+- options: a `AeCairoFontOptions` to use when getting metrics for the font and rendering with it.
+
 I have a collaborator: the font extents, which is cached in an instance variable.
 
 See: https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html
@@ -70,9 +76,19 @@ AeCairoScaledFont >> currentTransformationMatrix [
 { #category : #API }
 AeCairoScaledFont >> extents [
 
+	self
+		deprecated: 'Renamed to a more explicit selector'
+		transformWith: '`@receiver extents' -> '`@receiver fontExtents'.
+
+	^ self fontExtents
+]
+
+{ #category : #API }
+AeCairoScaledFont >> fontExtents [
+
 	^ extents ifNil: [
 		extents := AeCairoFontExtents new.
-		self getExtentsInto: extents.
+		self getFontExtentsInto: extents.
 		extents ]
 ]
 
