@@ -29,5 +29,5 @@ AeTExternalFree >> externallyFree [
 { #category : #finalization }
 AeTExternalFree >> resourceData [
 
-	self getHandle
+	^ self getHandle
 ]
