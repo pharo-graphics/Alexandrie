@@ -23,7 +23,11 @@ AePixelMatchTest class >> allMismatches [
 AePixelMatchTest class >> allPixelComparisons [
 
 	^ self allFormSelectors collect: [ :each |
-		(self new formSelector: each) newPixelComparison ]
+		| aTest |
+		aTest := self new formSelector: each; yourself.
+		aTest setUp.
+		[ aTest newPixelComparison ]
+			ensure: [ aTest tearDown ] ]
 ]
 
 { #category : #'building suites' }
