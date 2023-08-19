@@ -2,13 +2,13 @@ Class {
 	#name : #AeCairoFreetypeTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'surface',
-		'context',
 		'aScaledFont',
 		'aFontFace',
 		'aFTFace',
 		'aFTLibrary',
-		'aFontMatrix'
+		'aFontMatrix',
+		'cairoSurface',
+		'cairoContext'
 	],
 	#category : #'Alexandrie-Cairo-Tests'
 }
@@ -17,8 +17,8 @@ Class {
 AeCairoFreetypeTest >> setUp [
 	super setUp.
 
-	surface := AeCairoImageSurface extent: 100 @ 20.
-	context := surface newContext.
+	cairoSurface := AeCairoImageSurface extent: 100 @ 20.
+	cairoContext := cairoSurface newContext.
 		
 	aFTLibrary := AeFTLibrary newInitialized.
 	aFTFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
@@ -43,10 +43,10 @@ AeCairoFreetypeTest >> tearDown [
 AeCairoFreetypeTest >> testFontMatrix [
 
 	| retrievedScaledFont |
-	context scaledFont: aScaledFont.
+	cairoContext scaledFont: aScaledFont.
 	
 	"Retrieved font matches initial parameters"
-	retrievedScaledFont := context scaledFont.	
+	retrievedScaledFont := cairoContext scaledFont.	
 	self assert: retrievedScaledFont status isSuccess.
 	self
 		assert: retrievedScaledFont fontMatrix
@@ -57,10 +57,10 @@ AeCairoFreetypeTest >> testFontMatrix [
 AeCairoFreetypeTest >> testScaleMatrix [
 
 	| retrievedScaledFont |
-	context scaledFont: aScaledFont.
+	cairoContext scaledFont: aScaledFont.
 	
 	"Retrieved font matches initial parameters"
-	retrievedScaledFont := context scaledFont.	
+	retrievedScaledFont := cairoContext scaledFont.	
 	self assert: retrievedScaledFont status isSuccess.
 	self
 		assert: retrievedScaledFont scaleMatrix
@@ -71,12 +71,12 @@ AeCairoFreetypeTest >> testScaleMatrix [
 AeCairoFreetypeTest >> testSetFontMatrix [
 
 	| retrievedScaledFont |
-	context scaledFont: aScaledFont.
+	cairoContext scaledFont: aScaledFont.
 	
 	"Change with a custom matrix"
 	aFontMatrix := AeCairoMatrix newRotationByRadians: 1.
-	context fontMatrix: aFontMatrix.
-	retrievedScaledFont := context scaledFont.	
+	cairoContext fontMatrix: aFontMatrix.
+	retrievedScaledFont := cairoContext scaledFont.	
 	
 	self
 		assert: retrievedScaledFont fontMatrix
@@ -91,11 +91,11 @@ AeCairoFreetypeTest >> testSetFontMatrix [
 AeCairoFreetypeTest >> testSetFontSize [
 
 	| retrievedScaledFont |
-	context scaledFont: aScaledFont.
+	cairoContext scaledFont: aScaledFont.
 	
 	"Change font size"
-	context fontSize: 23.
-	retrievedScaledFont := context scaledFont.	
+	cairoContext fontSize: 23.
+	retrievedScaledFont := cairoContext scaledFont.	
 	aFontMatrix := AeCairoMatrix newScalingByX: 23 y: 23.
 	
 	self

@@ -1,6 +1,6 @@
 "
 I am a Cairo FFI binding for `cairo_font_face_t`.
-A `cairo_font_face_t` represents a particular font at a particular weight, slant, and other characteristic but no size, transformation, or size.
+A `cairo_font_face_t` represents a particular font at a particular weight, slant, and other characteristic but not size or transformation.
 
 See: https://www.cairographics.org/manual/cairo-cairo-font-face-t.html
 "

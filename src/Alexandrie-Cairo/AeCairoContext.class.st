@@ -611,7 +611,7 @@ AeCairoContext >> getFontExtentsInto: aFontExtents [
 ]
 
 { #category : #'API - text' }
-AeCairoContext >> getGlyphExtentsOf: theGlyphs size: aGlyphsNum into: aTextMetrics [
+AeCairoContext >> getGlyphExtentsOf: aGlyphArray size: numberOfGlyphs into: aTextMetrics [
 	"Gets the extents for an array of glyphs. The extents describe a user-space rectangle that encloses the 'inked' portion of the glyphs, (as they would be drawn by `cairo_show_glyphs()`). Additionally, the `x_advance` and `y_advance` values indicate the amount by which the current point would be advanced by `cairo_show_glyphs()`.
 	
 	See: https://www.cairographics.org/manual/cairo-text.html#cairo-glyph-extents"
@@ -620,9 +620,9 @@ AeCairoContext >> getGlyphExtentsOf: theGlyphs size: aGlyphsNum into: aTextMetri
 		void
 		cairo_glyph_extents (
 			self,
-			AeCairoGlyphArray theGlyphs,
-			int aGlyphsNum,
-			AeCairoTextExtents* aTextMetrics ) )
+			AeCairoGlyphArray aGlyphArray,
+			int numberOfGlyphs,
+			AeCairoTextExtents *aTextMetrics ) )
 ]
 
 { #category : #'API - matrix' }
@@ -1366,7 +1366,7 @@ AeCairoContext >> showPage [
 	self ffiCall: #( void cairo_show_page ( self ) )
 ]
 
-{ #category : #'API - text' }
+{ #category : #'API - text toy' }
 AeCairoContext >> showText: anUTF8String [
 	"A drawing operator that generates the shape from a string of UTF-8 characters, rendered according to the current font_face, font_size (font_matrix), and font_options. "
 	
