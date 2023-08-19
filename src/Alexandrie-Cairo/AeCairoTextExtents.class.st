@@ -94,6 +94,19 @@ AeCairoTextExtents >> height: anObject [
 	handle doubleAt: OFFSET_HEIGHT put: anObject
 ]
 
+{ #category : #printing }
+AeCairoTextExtents >> printOn: aStream [
+
+	super printOn: aStream.
+	aStream nextPut: $(.
+
+	#((width height) (bearingX bearingY) (advanceX advanceY))
+		do: [ :each | aStream print:
+			(self perform: each first) @ (self perform: each second) ].
+
+	aStream nextPut: $)
+]
+
 { #category : #'accessing structure variables' }
 AeCairoTextExtents >> width [
 	"This method was automatically generated"

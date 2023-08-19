@@ -91,3 +91,16 @@ AeCairoFontExtents >> maxAdvanceY: anObject [
 	"This method was automatically generated"
 	handle doubleAt: OFFSET_MAXADVANCEY put: anObject
 ]
+
+{ #category : #printing }
+AeCairoFontExtents >> printOn: aStream [
+
+	super printOn: aStream.
+	aStream nextPut: $(.
+
+	#(height ascent descent maxAdvanceX maxAdvanceY)
+		do: [ :each | aStream print: (self perform: each) ]
+		separatedBy: [ aStream space ].
+
+	aStream nextPut: $)
+]
