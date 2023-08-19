@@ -24,7 +24,7 @@ Class {
 		'advanceX',
 		'advanceY'
 	],
-	#category : #'Alexandrie-Cairo-Text'
+	#category : #'Alexandrie-Canvas-Base'
 }
 
 { #category : #accessing }
