@@ -105,3 +105,13 @@ AeCairoFreetypeTest >> testSetFontSize [
 		assert: retrievedScaledFont scaleMatrix
 		equals: aFontMatrix
 ]
+
+{ #category : #tests }
+AeCairoFreetypeTest >> testUserToDeviceMatrix [
+
+	| retrievedScaledFont |
+	cairoContext scaledFont: aScaledFont.
+	
+	retrievedScaledFont := cairoContext scaledFont.
+	self assert: retrievedScaledFont userToDeviceMatrix isIdentity
+]

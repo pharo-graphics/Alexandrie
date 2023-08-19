@@ -144,6 +144,17 @@ AeCairoScaledFont >> getScaleMatrixInto: aeCairoMatrix [
 ]
 
 { #category : #API }
+AeCairoScaledFont >> getUserToDeviceMatrixInto: aeCairoMatrix [
+	"See: https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-get-ctm"
+
+	self ffiCall: #(
+		void
+		cairo_scaled_font_get_ctm (
+			self,
+			AeCairoMatrix *aeCairoMatrix ))
+]
+
+{ #category : #API }
 AeCairoScaledFont >> glyphArrayForString: aString [ 
 	
 	^ self glyphArrayForUtf8Array: aString utf8Encoded
@@ -227,4 +238,15 @@ AeCairoScaledFont >> unlock [
 	
 	self ffiCall: #(
 		void cairo_ft_scaled_font_unlock_face (self) )
+]
+
+{ #category : #API }
+AeCairoScaledFont >> userToDeviceMatrix [
+	"Answer the CTM with which I was created. 
+	Note that the translation offsets are ignored."
+
+	| aCairoMatrix |
+	aCairoMatrix := AeCairoMatrix externalNew autoRelease; yourself.
+	self getUserToDeviceMatrixInto: aCairoMatrix.
+	^ aCairoMatrix
 ]
