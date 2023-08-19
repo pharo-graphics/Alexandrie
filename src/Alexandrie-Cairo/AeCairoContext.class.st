@@ -1287,6 +1287,19 @@ AeCairoContext >> scaledFont: aScaledFont [
 			AeCairoScaledFont aScaledFont ) )
 ]
 
+{ #category : #'API - text toy' }
+AeCairoContext >> selectFont: aFontFamily slant: aFontSlant weight: aFontWeight [
+
+	^ self ffiCall: #(
+		void
+		cairo_select_font_face (
+			self,
+			"char" void * aFontFamily,
+			AeCairoFontSlant aFontSlant,
+			AeCairoFontWeight aFontWeight
+		) )
+]
+
 { #category : #'API - matrix' }
 AeCairoContext >> setIdentityMatrix [
 
