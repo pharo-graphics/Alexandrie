@@ -677,13 +677,27 @@ AeCairoContext >> getStrokeExtentsIntoLeft: x1 top: y1 right: x2 bottom: y2 [
 
 { #category : #'API - text' }
 AeCairoContext >> getTextExtents: utf8String into: extentsObj [
-"cairo_text_extents ()
 
-void                cairo_text_extents                  (cairo_t *cr,
-                                                         const char *utf8,
-                                                         cairo_text_extents_t *extents);
-"
-	^ self ffiCall: #( void cairo_text_extents (self, char *utf8String, AeCairoTextExtents *extentsObj) )
+	self
+		deprecated: 'Renamed selector'
+		transformWith:
+			'`@rcv getTextExtents: `@arg1 into: `@arg2' ->
+			'`@rcv getTextExtentsOf: `@arg1 into: `@arg2'.
+
+	self getTextExtentsOf: utf8String into: extentsObj
+
+]
+
+{ #category : #'API - text' }
+AeCairoContext >> getTextExtentsOf: utf8String into: aTextExtents [
+	"See: https://www.cairographics.org/manual/cairo-text.html#cairo-text-extents"
+
+	self ffiCall: #(
+		void
+		cairo_text_extents (
+			self,
+			char *utf8String,
+			AeCairoTextExtents *aTextExtents ) )
 ]
 
 { #category : #'API - query' }
@@ -698,6 +712,19 @@ AeCairoContext >> getUserToDeviceIntoX: xPointer y: yPointer [
 			self,
 			double *xPointer,
 			double *yPointer ) )
+]
+
+{ #category : #'API - text' }
+AeCairoContext >> glyphExtentsOf: aGlyphArray [
+	"Gets the extents for an array of glyphs. The extents describe a user-space rectangle that encloses the 'inked' portion of the glyphs."
+
+	| textExtents |
+	textExtents := AeCairoTextExtents new.
+	self
+		getGlyphExtentsOf: aGlyphArray
+		size: aGlyphArray size
+		into: textExtents.
+	^ textExtents
 ]
 
 { #category : #'API - query' }
