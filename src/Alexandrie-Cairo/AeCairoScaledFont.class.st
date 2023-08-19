@@ -88,7 +88,7 @@ AeCairoScaledFont >> fontExtents [
 
 	^ extents ifNil: [
 		extents := AeCairoFontExtents new.
-		self getFontExtentsInto: extents.
+		self getExtentsInto: extents.
 		extents ]
 ]
 
