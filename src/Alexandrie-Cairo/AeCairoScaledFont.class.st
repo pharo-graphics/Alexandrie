@@ -26,7 +26,8 @@ Class {
 
 { #category : #finalization }
 AeCairoScaledFont class >> externallyFree: aHandle [
-	
+	"See: https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-destroy"
+
 	self ffiCall: #( void cairo_scaled_font_destroy ( void * aHandle ) )
 ]
 
