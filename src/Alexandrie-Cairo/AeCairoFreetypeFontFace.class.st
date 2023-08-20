@@ -6,6 +6,9 @@ See: https://www.cairographics.org/manual/cairo-FreeType-Fonts.html
 Class {
 	#name : #AeCairoFreetypeFontFace,
 	#superclass : #AeCairoFontFace,
+	#instVars : [
+		'freetypeFace'
+	],
 	#category : #'Alexandrie-Cairo-Text'
 }
 
@@ -15,9 +18,7 @@ AeCairoFreetypeFontFace class >> newForFace: aFTFace [
 
 	| aCairoFontFace |
 	aCairoFontFace := self unownedNewFor: aFTFace.
-
-	aCairoFontFace status isSuccess ifFalse: [
-		self error: aCairoFontFace status asString ].
+	aCairoFontFace status ensureIsSuccess.
 
 	^ aCairoFontFace
 		autoRelease;
