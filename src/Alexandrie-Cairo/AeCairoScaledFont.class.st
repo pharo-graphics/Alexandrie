@@ -144,6 +144,39 @@ AeCairoScaledFont >> getFontMatrixInto: aeCairoMatrix [
 ]
 
 { #category : #API }
+AeCairoScaledFont >> getGlyphExtentsOf: aGlyphArray into: aTextExtents [
+	"Gets the extents for an array of glyphs. 
+
+	The extents describe a user-space rectangle that encloses the ""inked"" portion of the glyphs, (as they would be drawn by `cairo_show_glyphs()` if the cairo graphics state were set to the same font_face, font_matrix, ctm, and font_options as scaled_font)."
+
+	self
+		getGlyphExtentsOf: aGlyphArray
+		length: aGlyphArray size
+		into: aTextExtents
+]
+
+{ #category : #API }
+AeCairoScaledFont >> getGlyphExtentsOf: aGlyphArray length: num into: aTextExtents [
+	"Gets the extents for an array of glyphs. 
+
+	The extents describe a user-space rectangle that encloses the ""inked"" portion of the glyphs, (as they would be drawn by `cairo_show_glyphs()` if the cairo graphics state were set to the same font_face, font_matrix, ctm, and font_options as scaled_font).
+	Additionally, the x_advance and y_advance values indicate the amount by which the current point would be advanced by `cairo_show_glyphs()`.
+
+	Note that whitespace glyphs do not contribute to the size of the rectangle.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-glyph-extents"
+
+	self ffiCall: #(
+		void
+		cairo_scaled_font_glyph_extents (
+			self,
+			void *aGlyphArray,
+			int num,
+			AeCairoTextExtents *aTextExtents
+		))
+]
+
+{ #category : #API }
 AeCairoScaledFont >> getScaleMatrixInto: aeCairoMatrix [
 
 	self ffiCall: #(
@@ -151,6 +184,31 @@ AeCairoScaledFont >> getScaleMatrixInto: aeCairoMatrix [
 		cairo_scaled_font_get_scale_matrix (
 			self,
 			AeCairoMatrix *aeCairoMatrix ))
+]
+
+{ #category : #API }
+AeCairoScaledFont >> getTextExtentsOf: utf8 into: aTextExtents [
+	"Gets the extents for a string of text.
+	
+	utf8 is a NULL-terminated string of text, encoded in UTF-8.
+
+	The extents describe a user-space rectangle that encloses the ""inked"" portion of the text drawn at the origin (0,0) (as it would be drawn by `cairo_show_text()` if the cairo graphics state were set to the same font_face, font_matrix, ctm, and font_options as scaled_font).
+	Additionally, the x_advance and y_advance values indicate the amount by which the current point would be advanced by `cairo_show_text()`.
+
+	Note that whitespace characters do not directly contribute to the size of the rectangle.
+	They do contribute indirectly by changing the position of non-whitespace characters.
+	In particular, trailing whitespace characters are likely to not affect the size of the rectangle, though they will affect the x_advance and y_advance values.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-text-extents"
+
+	self ffiCall: #(
+		void
+		cairo_scaled_font_text_extents (
+			self,
+			const char *utf8,
+			AeCairoTextExtents* aTextExtents
+		))
+
 ]
 
 { #category : #API }

@@ -107,6 +107,27 @@ AeCairoContext >> appendPath: aCairoPath [
 			AeCairoPath aCairoPath ) )
 ]
 
+{ #category : #'API - text toy' }
+AeCairoContext >> appendTextPath: utf8String [
+	"Adds closed paths for text to the current path. The generated path if filled, achieves an effect similar to that of `cairo_show_text()`.
+	
+	The argument must be a NULL-terminated string of text encoded in UTF-8.
+
+	Text conversion and positioning is done similar to `cairo_show_text()`.
+
+	Like `cairo_show_text()`, After this call the current point is moved to the origin of where the next glyph would be placed in this same progression. That is, the current point will be at the origin of the final glyph offset by its advance values. This allows for chaining multiple calls to to `cairo_text_path()` without having to set current point in between.
+
+	Note: This function call is part of what the cairo designers call the ""toy"" text API. It is convenient for short demos and simple programs, but it is not expected to be adequate for serious text-using applications. See `cairo_glyph_path()` for the ""real"" text path API in cairo.
+	
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-text-path"
+
+	self ffiCall: #(
+		void
+		cairo_text_path (
+			self,
+			char* utf8String ))
+]
+
 { #category : #'API - path' }
 AeCairoContext >> arcCenterX: centerX centerY: centerY radius: aRadius startAngle: aStartAngle endAngle: anEndAngle [ 
 
@@ -507,6 +528,16 @@ AeCairoContext >> fillRule: aCairoFillRule [
 ]
 
 { #category : #'API - text' }
+AeCairoContext >> fontExtents [
+	"Answer the font extents for the currently selected font."
+
+	| result |
+	result := AeCairoFontExtents new.
+	self getFontExtentsInto: result.
+	^ result
+]
+
+{ #category : #'API - text' }
 AeCairoContext >> fontFace [
 	"Gets the current font face (owned by cairo).
 	
@@ -521,7 +552,7 @@ AeCairoContext >> fontFace: aFontFace [
 	
 	See: https://www.cairographics.org/manual/cairo-text.html#cairo-set-font-face"
 
-	^ self ffiCall: #( #AeCairoFontFace cairo_get_font_face ( self ) )
+	^ self ffiCall: #( AeCairoFontFace cairo_get_font_face ( self ) )
 ]
 
 { #category : #'API - text' }
@@ -676,7 +707,7 @@ AeCairoContext >> getStrokeExtentsIntoLeft: x1 top: y1 right: x2 bottom: y2 [
 ]
 
 { #category : #'API - text' }
-AeCairoContext >> getTextExtents: utf8String into: extentsObj [
+AeCairoContext >> getTextExtents: utf8String into: aTextExtents [
 
 	self
 		deprecated: 'Renamed selector'
@@ -684,7 +715,7 @@ AeCairoContext >> getTextExtents: utf8String into: extentsObj [
 			'`@rcv getTextExtents: `@arg1 into: `@arg2' ->
 			'`@rcv getTextExtentsOf: `@arg1 into: `@arg2'.
 
-	self getTextExtentsOf: utf8String into: extentsObj
+	self getTextExtentsOf: utf8String into: aTextExtents
 
 ]
 
@@ -1578,6 +1609,18 @@ AeCairoContext >> strokePreserve [
 AeCairoContext >> surface [
 
 	^ surface
+]
+
+{ #category : #'API - text' }
+AeCairoContext >> textExtentsOf: aString [
+	"Gets the extents for a String. The extents describe a user-space rectangle that encloses the 'inked' portion of the glyphs."
+
+	| textExtents |
+	textExtents := AeCairoTextExtents new.
+	self
+		getTextExtentsOf: aString utf8Encoded
+		into: textExtents.
+	^ textExtents
 ]
 
 { #category : #'API - painting settings' }
