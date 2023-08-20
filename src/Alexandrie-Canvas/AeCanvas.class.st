@@ -433,14 +433,14 @@ AeCanvas >> metricsFor: aCairoGlyphsArray font: aCairoScaledFont [
 
 	| textMetrics |
 	textMetrics := AeCairoTextMetrics new
-		ascent: aCairoScaledFont extents ascent negated;
-		descent: aCairoScaledFont extents descent;
-		yourself.
+		               ascent: aCairoScaledFont fontExtents ascent negated;
+		               descent: aCairoScaledFont fontExtents descent;
+		               yourself.
 
 	self
 		textExtentsFor: aCairoGlyphsArray
 		scaledFont: aCairoScaledFont
-		do: [ :aTextExtents | 
+		do: [ :aTextExtents |
 			textMetrics
 				advanceX: aTextExtents advanceX;
 				bearingX: aTextExtents bearingX;
