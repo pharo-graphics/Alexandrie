@@ -88,7 +88,7 @@ AeCairoScaledFont >> fontExtents [
 
 	^ extents ifNil: [
 		extents := AeCairoFontExtents new.
-		self getExtentsInto: extents.
+		self getFontExtentsInto: extents.
 		extents ]
 ]
 
@@ -113,6 +113,16 @@ AeCairoScaledFont >> getCurrentTransformationMatrixInto: aeCairoMatrix [
 
 { #category : #API }
 AeCairoScaledFont >> getExtentsInto: aFontExtents [
+
+	self
+		deprecated: 'Renamed to a more explicit selector'
+		transformWith: '`@receiver getExtentsInto: `@arg' -> '`@receiver getFontExtentsInto: `@arg'.
+
+	^ self getFontExtentsInto: aFontExtents
+]
+
+{ #category : #API }
+AeCairoScaledFont >> getFontExtentsInto: aFontExtents [
 
 	self ffiCall: #(
 		void
