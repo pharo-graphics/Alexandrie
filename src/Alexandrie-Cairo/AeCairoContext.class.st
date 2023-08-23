@@ -129,6 +129,38 @@ AeCairoContext >> appendTextPath: utf8String [
 ]
 
 { #category : #'API - path' }
+AeCairoContext >> arcCenter: aPoint radius: aRadius startAngle: aStartAngleInRadians endAngle: anEndAngleInRadians [
+
+	self
+		arcCenterX: aPoint x
+		centerY: aPoint y
+		radius: aRadius
+		startAngle: aStartAngleInRadians
+		endAngle: anEndAngleInRadians
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> arcCenter: aCenter radius: aRadius startAngle: startAngleInRadians sweep: sweepAngleInRadians [
+	"Draw and arc that may be positive or negative according to the specified sweep angle."
+
+	| endAngle |
+	endAngle := startAngleInRadians + sweepAngleInRadians.
+	sweepAngleInRadians positive
+		ifTrue: [
+			self
+				arcCenter: aCenter
+				radius: aRadius
+				startAngle: startAngleInRadians
+				endAngle: endAngle ]
+		ifFalse: [
+			self
+				arcNegativeCenter: aCenter
+				radius: aRadius
+				startAngle: startAngleInRadians
+				endAngle: endAngle ]
+]
+
+{ #category : #'API - path' }
 AeCairoContext >> arcCenterX: centerX centerY: centerY radius: aRadius startAngle: aStartAngle endAngle: anEndAngle [ 
 
 	self ffiCall: #(
@@ -140,6 +172,17 @@ AeCairoContext >> arcCenterX: centerX centerY: centerY radius: aRadius startAngl
 			double aRadius,
 			double aStartAngle,
 			double anEndAngle ) )
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> arcNegativeCenter: aPoint radius: aRadius startAngle: aStartAngleInRadians endAngle: anEndAngleInRadians [
+
+	^ self
+		  arcNegativeCenterX: aPoint x
+		  centerY: aPoint y
+		  radius: aRadius
+		  startAngle: aStartAngleInRadians
+		  endAngle: anEndAngleInRadians
 ]
 
 { #category : #'API - path' }
