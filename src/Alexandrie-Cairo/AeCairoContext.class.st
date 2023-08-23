@@ -829,7 +829,7 @@ AeCairoContext >> isInClipX: x y: y [
 			double y ) )
 ]
 
-{ #category : #'API - hit testing' }
+{ #category : #'API - query' }
 AeCairoContext >> isInFillX: x y: y [ 
 	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-in-fill"
 
@@ -841,7 +841,7 @@ AeCairoContext >> isInFillX: x y: y [
 			double y ) )
 ]
 
-{ #category : #'API - hit testing' }
+{ #category : #'API - query' }
 AeCairoContext >> isInStrokeX: x y: y [ 
 	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-in-stroke"
 
