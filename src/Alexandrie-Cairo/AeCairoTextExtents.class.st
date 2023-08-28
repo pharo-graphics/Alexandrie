@@ -34,6 +34,12 @@ AeCairoTextExtents class >> fieldsDesc [
 	)
 ]
 
+{ #category : #accessing }
+AeCairoTextExtents >> advance [
+
+	^ self advanceX @ self advanceY
+]
+
 { #category : #'accessing structure variables' }
 AeCairoTextExtents >> advanceX [
 	"This method was automatically generated"
@@ -56,6 +62,12 @@ AeCairoTextExtents >> advanceY [
 AeCairoTextExtents >> advanceY: anObject [
 	"This method was automatically generated"
 	handle doubleAt: OFFSET_ADVANCEY put: anObject
+]
+
+{ #category : #accessing }
+AeCairoTextExtents >> bearing [
+
+	^ self bearingX @ self bearingY
 ]
 
 { #category : #'accessing structure variables' }
@@ -82,6 +94,12 @@ AeCairoTextExtents >> bearingY: anObject [
 	handle doubleAt: OFFSET_BEARINGY put: anObject
 ]
 
+{ #category : #accessing }
+AeCairoTextExtents >> extent [
+
+	^ self width @ self height
+]
+
 { #category : #'accessing structure variables' }
 AeCairoTextExtents >> height [
 	"This method was automatically generated"
@@ -100,9 +118,12 @@ AeCairoTextExtents >> printOn: aStream [
 	super printOn: aStream.
 	aStream nextPut: $(.
 
-	#((width height) (bearingX bearingY) (advanceX advanceY))
-		do: [ :each | aStream print:
-			(self perform: each first) @ (self perform: each second) ].
+	#(extent bearing advance) do: [ :each |
+		aStream
+			nextPutAll: each asMutator;
+			space;
+			print: (self perform: each) ]
+		separatedBy: [ aStream space ].
 
 	aStream nextPut: $)
 ]

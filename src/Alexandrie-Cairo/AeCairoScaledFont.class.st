@@ -281,6 +281,18 @@ AeCairoScaledFont >> status [
 ]
 
 { #category : #API }
+AeCairoScaledFont >> textExtentsOf: aString [
+	"Gets the extents for a String. The extents describe a user-space rectangle that encloses the 'inked' portion of the glyphs."
+
+	| textExtents |
+	textExtents := AeCairoTextExtents new.
+	self
+		getTextExtentsOf: aString utf8Encoded
+		into: textExtents.
+	^ textExtents
+]
+
+{ #category : #API }
 AeCairoScaledFont >> textToGlyphs: aBuffer length: aLength glyphs: theGlyphs num: aGlyphsCount x: aX y: aY [
 	"Convert UTF-8 text to an array of glyphs. Return `CAIRO_STATUS_SUCCESS` upon success, or an error status if the input values are wrong or if conversion failed. If the input values are correct but the conversion failed, the error status is also set on `scaled_font`.
 	
