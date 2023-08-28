@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/github/license/pharo-graphics/Alexandrie.svg)](./LICENSE)
 [![Tests](https://github.com/pharo-graphics/Alexandrie/actions/workflows/test.yml/badge.svg)](https://github.com/pharo-graphics/Alexandrie/actions/workflows/test.yml)
 
-A 2D canvas for [Pharo](https://pharo.org/) based on [Cairo](https://www.cairographics.org).
+A 2D canvas and FFI bindings for [Pharo](https://pharo.org/) on [Cairo](https://www.cairographics.org), [FreeType](https://freetype.org/) and [Harfbuzz](https://harfbuzz.github.io/).
 
 It was born as an alternative for rendering [Bloc](https://github.com/pharo-graphics/Bloc) elements, but it is independent from Bloc.
 
