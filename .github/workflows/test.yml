@@ -32,3 +32,12 @@ jobs:
         timeout-minutes: 10
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload logs
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: Logs
+          path: |
+            *.fuel
+            PharoDebug.log
+          retention-days: 3
