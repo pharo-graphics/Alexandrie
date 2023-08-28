@@ -385,7 +385,7 @@ AeCairoContext >> cubicCurveFrom: startPoint controlPoint1: cp1 controlPoint2: c
 
 { #category : #'API - query' }
 AeCairoContext >> currentPath [
-	"Return a copy of the current path."
+	"Return an instance of `AeCairoPath` that is a copy of the current path."
 
 	^ self unownedCurrentPath
 		  autoRelease;
@@ -495,6 +495,18 @@ AeCairoContext >> dashCount [
 	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-dash-count"
 
 	self ffiCall: #( int cairo_get_dash_count ( self ) )
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> dashDisable [
+	"Disable dashing.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash"
+
+	self
+		dash: ExternalAddress null
+		count: 0
+		offset: 0.0
 ]
 
 { #category : #'API - painting settings' }

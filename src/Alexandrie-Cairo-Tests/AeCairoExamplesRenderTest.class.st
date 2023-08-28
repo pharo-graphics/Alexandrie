@@ -135,17 +135,15 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash
 	"
 
-	| radius lineWidth gapBetweenDots extent aSurface dashByteArray numberOfDots perimeterOfCircle aContext |
-	radius := 10.
-	lineWidth := 5.
-	numberOfDots := 7.
+	| radius lineWidth gapBetweenDots aSurface dashByteArray numberOfDots perimeterOfCircle aContext |
+	radius := 11.
+	lineWidth := 9.
+	numberOfDots := 5.
 	perimeterOfCircle := Float twoPi * radius.
 	gapBetweenDots := perimeterOfCircle / numberOfDots.
-
-	extent := (radius*2 + lineWidth) asPoint.
 	
 	aSurface := AeCairoImageSurface
-		extent: extent
+		extent: 2 * (radius + lineWidth) asPoint
 		format: AeCairoSurfaceFormat argb32.
 
 	"set up dotted dashes"
@@ -153,20 +151,44 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 		newFrom: { 0.0. gapBetweenDots }.
 
 	aContext := aSurface newContext.
-	aContext
-		" draw background "
-		sourceColorRGB: Color yellow;
-		paint;
-		" draw circle "
-		translateBy: (lineWidth/2.0) asPoint;
-		sourceColorRGB: Color black;
-		lineWidth: lineWidth;
-		lineCap: AeCairoCapStyle round;
-		dash: dashByteArray offset: 3;
-		circleRadius: radius;
-		stroke.
 
+	"paint background"
+	aContext
+		sourceColorRGB: Color yellow;
+		paint.
+
+	"set a circle as path"
+	aContext
+		translateBy: lineWidth asPoint;
+		circleRadius: radius;
+		dash: dashByteArray offset: perimeterOfCircle / 4.
+	self assert: aContext hasCurrentPoint.
+
+	"stroke with black squared dots"
+	aContext
+		sourceColorRGB: Color black;
+		lineCap: AeCairoCapStyle square;
+		lineWidth: lineWidth;
+		strokePreserve.
 	self assert: aContext dashes equals: dashByteArray.
+	self assert: aContext hasCurrentPoint.
+
+	"stroke with green circle dots"
+	aContext
+		sourceColorRGB: Color green;
+		lineWidth: lineWidth/1.5;
+		lineCap: AeCairoCapStyle round;
+		strokePreserve.
+	self assert: aContext dashes equals: dashByteArray.
+
+	"stroke red without dashes"
+	aContext
+		sourceColorRGB: Color red;
+		lineWidth: 1;
+		dashDisable;
+		stroke.
+	self assert: aContext dashes equals: #().
+	self deny: aContext hasCurrentPoint.
 
 	^ aSurface
 
