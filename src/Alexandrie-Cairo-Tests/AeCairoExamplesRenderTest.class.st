@@ -596,6 +596,31 @@ AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 ]
 
 { #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithToyAPIAndDefaultFont [
+
+	| string fontSize aSurface aContext |
+	string := 'Hï'.
+	fontSize := 25.
+	aSurface := AeCairoImageSurface
+		  extent: 30 @ 30
+		  format: AeCairoSurfaceFormat rgb24.
+	aContext := aSurface newContext.
+
+	"Draw outlined text with default font"
+	aContext
+		fontSize: fontSize;
+		translateByX: 2 y: fontSize;
+		appendTextPath: string;
+		lineWidth: 3;
+		sourceColorRGB: Color blue;
+		strokePreserve;
+		sourceColorRGB: Color orange;
+		fill.
+
+	^ aSurface
+]
+
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithToyAPIAndSetFaceFont [
 
 	| string fontSize aSurface aContext aFTLibrary aFTFace aFontFace |
