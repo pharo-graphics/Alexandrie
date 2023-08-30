@@ -596,7 +596,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 ]
 
 { #category : #tests }
-AeCairoExamplesRenderTest >> surfaceWithToyAPIAndDefaultFont [
+AeCairoExamplesRenderTest >> surfaceWithToyAPIAndSelectFont [
 
 	| string fontSize aSurface aContext |
 	string := 'Hï'.
@@ -606,8 +606,11 @@ AeCairoExamplesRenderTest >> surfaceWithToyAPIAndDefaultFont [
 		  format: AeCairoSurfaceFormat rgb24.
 	aContext := aSurface newContext.
 
-	"Draw outlined text with default font"
+	"Draw outlined text with toy font selection"
 	aContext
+		selectFont: 'Courier'
+			slant: AeCairoFontSlant normal
+			weight: AeCairoFontWeight normal;
 		fontSize: fontSize;
 		translateByX: 2 y: fontSize;
 		appendTextPath: string;

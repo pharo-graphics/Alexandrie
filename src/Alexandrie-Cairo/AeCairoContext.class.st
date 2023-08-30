@@ -1430,7 +1430,7 @@ AeCairoContext >> selectFont: aFontFamily slant: aFontSlant weight: aFontWeight 
 		void
 		cairo_select_font_face (
 			self,
-			"char" void * aFontFamily,
+			char * aFontFamily,
 			AeCairoFontSlant aFontSlant,
 			AeCairoFontWeight aFontWeight
 		) )
