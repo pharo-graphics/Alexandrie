@@ -599,7 +599,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 AeCairoExamplesRenderTest >> surfaceWithToyAPIAndSelectFont [
 
 	| string fontSize aSurface aContext |
-	string := 'Hï'.
+	string := 'Ae'.
 	fontSize := 25.
 	aSurface := AeCairoImageSurface
 		  extent: 30 @ 30
@@ -608,7 +608,7 @@ AeCairoExamplesRenderTest >> surfaceWithToyAPIAndSelectFont [
 
 	"Draw outlined text with toy font selection"
 	aContext
-		selectFont: 'Courier'
+		selectFont: '@cairo:' "internal font for tests"
 			slant: AeCairoFontSlant normal
 			weight: AeCairoFontWeight normal;
 		fontSize: fontSize;
