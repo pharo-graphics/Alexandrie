@@ -15,8 +15,9 @@ AeCairoExportSurfaceTest class >> isAbstract [
 
 { #category : #accessing }
 AeCairoExportSurfaceTest >> fileName [
+	"Answer a filename that requires utf-8 encoding, to challenge the FFI binding."
 
-	^ self className asString
+	^ 'test_cairo_export_ū'
 ]
 
 { #category : #accessing }
