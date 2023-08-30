@@ -190,4 +190,6 @@ AeCairoImageSurfaceTest >> testWriteNonASCIIFilenamePNG [
 
 	self assert: aPNGFileReference exists.
 	self assert: aPNGFileReference size > 0.
+	aPNGFileReference ensureDelete.
+
 ]
