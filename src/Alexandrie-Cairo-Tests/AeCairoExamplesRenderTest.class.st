@@ -603,3 +603,29 @@ AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 
 	^ aSurface
 ]
+
+{ #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithToyAPIAndSetFaceFont [
+
+	| string fontSize aSurface aContext aFTLibrary aFTFace aFontFace |
+	string := 'Hï'.
+	fontSize := 25.
+	aSurface := AeCairoImageSurface
+		  extent: 30 @ 30
+		  format: AeCairoSurfaceFormat rgb24.
+	aContext := aSurface newContext.
+
+	"Set up a font"
+	aFTLibrary := AeFTLibrary newInitialized.
+	aFTFace := AeSourceSansPro_Italic firstFaceUsing: aFTLibrary.
+	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
+
+	aContext
+		translateByX: 2 y: fontSize;
+		fontFace: aFontFace;
+		fontSize: fontSize;
+		sourceColorRGB: Color white;
+		showText: string.
+
+	^ aSurface
+]

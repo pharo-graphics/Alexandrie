@@ -607,7 +607,12 @@ AeCairoContext >> fontFace: aFontFace [
 	
 	See: https://www.cairographics.org/manual/cairo-text.html#cairo-set-font-face"
 
-	^ self ffiCall: #( AeCairoFontFace cairo_get_font_face ( self ) )
+	^ self ffiCall: #(
+		void
+		cairo_set_font_face (
+			self,
+			AeCairoFontFace aFontFace
+			) )
 ]
 
 { #category : #'API - text' }
