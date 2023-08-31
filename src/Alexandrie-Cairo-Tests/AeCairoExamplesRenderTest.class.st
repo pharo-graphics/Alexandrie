@@ -598,7 +598,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 { #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithToyAPIAndSelectFont [
 
-	| string fontSize aSurface aContext |
+	| string fontSize aSurface aContext aFontOptions |
 	string := 'Ae'.
 	fontSize := 25.
 	aSurface := AeCairoImageSurface
@@ -606,18 +606,27 @@ AeCairoExamplesRenderTest >> surfaceWithToyAPIAndSelectFont [
 		  format: AeCairoSurfaceFormat rgb24.
 	aContext := aSurface newContext.
 
+	aFontOptions := AeCairoFontOptions new
+		antialias: AeCairoAntialias none;
+		hintStyle: AeCairoHintStyle none;
+		hintMetrics: AeCairoHintMetrics off;
+		subpixelOrder: AeCairoSubpixelOrder rgb;
+		yourself.
+
 	"Draw outlined text with toy font selection"
 	aContext
 		selectFont: '@cairo:' "internal font for tests"
 			slant: AeCairoFontSlant normal
 			weight: AeCairoFontWeight normal;
 		fontSize: fontSize;
+		fontOptions: aFontOptions;
 		translateByX: 2 y: fontSize;
 		appendTextPath: string;
 		lineWidth: 3;
-		sourceColorRGB: Color blue;
+		sourceColorRGB: Color white;
+		useLineJoinRound; 
 		strokePreserve;
-		sourceColorRGB: Color orange;
+		sourceColorRGB: Color purple;
 		fill.
 
 	^ aSurface

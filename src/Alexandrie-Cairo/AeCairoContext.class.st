@@ -631,6 +631,19 @@ AeCairoContext >> fontMatrix: aMatrix [
 ]
 
 { #category : #'API - text' }
+AeCairoContext >> fontOptions: options [
+	"Sets a set of custom font rendering options. Rendering options are derived by merging these options with the options derived from underlying surface; if the value in options has a default value (like CAIRO_ANTIALIAS_DEFAULT), then the value from the surface is used.
+	
+	See: https://www.cairographics.org/manual/cairo-text.html#cairo-set-font-options"
+
+	self ffiCall: #(
+		void
+		cairo_set_font_options (
+			self,
+			AeCairoFontOptions options ) )
+]
+
+{ #category : #'API - text' }
 AeCairoContext >> fontSize: aSize [
 	"Sets the current font matrix to a scale by a factor of `aSize`, replacing any font matrix previously set with `cairo_set_font_size()` or `cairo_set_font_matrix()`.
 	This results in a font size of size user space units. (More precisely, this matrix will result in the font's em-square being a size by size square in user space.)
