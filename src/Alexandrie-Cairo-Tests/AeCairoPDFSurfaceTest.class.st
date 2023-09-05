@@ -5,6 +5,12 @@ Class {
 }
 
 { #category : #accessing }
+AeCairoPDFSurfaceTest >> fileName [
+
+	^ self utf8String, '.pdf'
+]
+
+{ #category : #accessing }
 AeCairoPDFSurfaceTest >> surfaceClass [
 
 	^ AeCairoPDFSurface

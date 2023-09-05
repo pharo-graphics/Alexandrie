@@ -13,7 +13,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-AeCairoPDFSurface class >> unownedNewExportingTo: filename width: width height: height [
+AeCairoPDFSurface class >> unownedNewExportingTo: filename width: widthInPoints height: heightInPoints [
 	"Return a newly created PDF surface of the specified size in points to be written to filename.
 	
 	Parameters:
@@ -26,7 +26,7 @@ AeCairoPDFSurface class >> unownedNewExportingTo: filename width: width height: 
 	^ self ffiCall: #(
 		AeCairoPDFSurface
 		cairo_pdf_surface_create (
-			String filename,
-			double width, 
-			double height ) )
+			const char * filename,
+			double widthInPoints,
+			double heightInPoints ) )
 ]

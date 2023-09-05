@@ -126,7 +126,7 @@ AeCairoImageSurface class >> unownedNewFromPngFileAt: pathUTF8Encoded [
 	^ self ffiCall: #(
 		AeCairoImageSurface
 		cairo_image_surface_create_from_png (
-			"const char" void * pathUTF8Encoded ) )
+			const char * pathUTF8Encoded ) )
 ]
 
 { #category : #'instance creation' }

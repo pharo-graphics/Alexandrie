@@ -5,6 +5,12 @@ Class {
 }
 
 { #category : #accessing }
+AeCairoSVGSurfaceTest >> fileName [
+
+	^ self utf8String, '.svg'
+]
+
+{ #category : #accessing }
 AeCairoSVGSurfaceTest >> surfaceClass [
 
 	^ AeCairoSVGSurface

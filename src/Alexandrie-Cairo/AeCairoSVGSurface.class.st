@@ -13,7 +13,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-AeCairoSVGSurface class >> unownedNewExportingTo: filename width: width height: height [
+AeCairoSVGSurface class >> unownedNewExportingTo: filename width: widthInPoints height: heightInPoints [
 	"Return a newly created SVG surface of the specified size in points to be written to filename.
 
 	Parameters:
@@ -26,7 +26,7 @@ AeCairoSVGSurface class >> unownedNewExportingTo: filename width: width height: 
 	^ self ffiCall: #(
 		AeCairoSVGSurface
 		cairo_svg_surface_create (
-			String filename,
-			double width, 
-			double height ) )
+			const char * filename,
+			double widthInPoints,
+			double heightInPoints ) )
 ]

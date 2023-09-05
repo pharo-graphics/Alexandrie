@@ -2,7 +2,8 @@ Class {
 	#name : #AeCairoExportSurfaceTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'surface'
+		'surface',
+		'target'
 	],
 	#category : #'Alexandrie-Cairo-Tests'
 }
@@ -13,24 +14,59 @@ AeCairoExportSurfaceTest class >> isAbstract [
 	^ self == AeCairoExportSurfaceTest
 ]
 
-{ #category : #accessing }
-AeCairoExportSurfaceTest >> fileName [
-	"Answer a filename that requires utf-8 encoding, to challenge the FFI binding."
+{ #category : #tests }
+AeCairoExportSurfaceTest >> assertExportsToTarget [
 
-	^ 'test_cairo_export_ū'
+	| aContext |
+	surface := self surfaceClass
+		           extent: 100 @ 300
+		           to: target.
+
+	surface status ensureIsSuccess.
+
+	aContext := surface newContext.
+
+	"red rectangle"
+	aContext
+		sourceColorRGB: Color red;
+		translateByX: 5 y: 5;
+		rectangle: (0 @ 0 corner: 20 @ 20);
+		fill.
+
+	"blue rectangle"
+	aContext
+		sourceColorRGB: Color blue;
+		translateByX: 5 y: 5;
+		rectangle: (0 @ 0 corner: 20 @ 20);
+		fill.
+
+	"Make cairo write and close the file."
+	surface finish.
+
+	self assert: target exists.
+	self assert: target size > 400 "Good enough as smoke test"
+]
+
+{ #category : #running }
+AeCairoExportSurfaceTest >> ensureDeletePossibleTargets [
+
+	self targetInSubdirectory parent ensureDeleteAll.
+	self targetInSubdirectory ensureDelete.
+	self targetInCurrentWorkingDirectory ensureDelete.
+
 ]
 
 { #category : #accessing }
-AeCairoExportSurfaceTest >> fileReference [
+AeCairoExportSurfaceTest >> fileName [
 
-	^ self fileName asFileReference
+	^ self subclassResponsibility
 ]
 
 { #category : #running }
 AeCairoExportSurfaceTest >> setUp [
 
 	super setUp.
-	self fileReference ensureDelete
+	self ensureDeletePossibleTargets
 ]
 
 { #category : #accessing }
@@ -39,49 +75,68 @@ AeCairoExportSurfaceTest >> surfaceClass [
 	^ self subclassResponsibility
 ]
 
+{ #category : #accessing }
+AeCairoExportSurfaceTest >> targetInCurrentWorkingDirectory [
+
+	^ FileSystem workingDirectory / self fileName
+]
+
+{ #category : #accessing }
+AeCairoExportSurfaceTest >> targetInSubdirectory [
+
+	^ FileSystem workingDirectory / self utf8String / self fileName
+]
+
 { #category : #running }
 AeCairoExportSurfaceTest >> tearDown [
 
-	surface finish.
-	self fileReference ensureDelete.
+	surface ifNotNil: #finish.
+	self ensureDeletePossibleTargets.
 	super tearDown
 ]
 
 { #category : #tests }
-AeCairoExportSurfaceTest >> testExportToFile [
+AeCairoExportSurfaceTest >> testExportInCurrentWorkingDirectory [
 
-	| aContext |
-	surface := self surfaceClass
-		extent: 100@100
-		fileName: self fileName.
+	target := self targetInCurrentWorkingDirectory.
 
-	aContext := surface newContext.
-	"red rectangle"
-	aContext
-		sourceColorRGB: Color red;
-		translateByX: 5 y: 5;
-		rectangle: (0@0 corner: 20@20);
-		fill.
-	"blue rectangle"
-	aContext
-		sourceColorRGB: Color blue;
-		translateByX: 5 y: 5;
-		rectangle: (0@0 corner: 20@20);
-		fill.
+	self assertExportsToTarget
+]
 
-	"Make cairo write and close the file."
-	surface finish.
+{ #category : #tests }
+AeCairoExportSurfaceTest >> testExportInSubdirectory [
 
-	self assert: self fileReference exists.
-	self assert: self fileReference size > 400
+	target := self targetInSubdirectory.
+	self targetInSubdirectory parent ensureCreateDirectory.
+
+	self assertExportsToTarget
+]
+
+{ #category : #tests }
+AeCairoExportSurfaceTest >> testExportInUnexistentSubdirectoryFails [
+
+	target := self targetInSubdirectory.
+
+	self
+		should: [ self assertExportsToTarget ]
+		raise: AeCairoStatusError
+		description: 'AeCairoStatusError: CAIRO_STATUS_WRITE_ERROR (error while writing to output stream)'
 ]
 
 { #category : #tests }
 AeCairoExportSurfaceTest >> testHasDevice [
+	"This kind of cairo surfaces don't have a device."
 
 	surface := self surfaceClass
-		extent: 1@1
-		fileName: self fileName.
+		           extent: 1 @ 1
+		           to: self targetInCurrentWorkingDirectory.
 
 	self deny: surface hasDevice
+]
+
+{ #category : #accessing }
+AeCairoExportSurfaceTest >> utf8String [
+	"Answer a filename (or directory name) that requires utf-8 encoding, to challenge the FFI bindings."
+
+	^ 'testëxpört'
 ]

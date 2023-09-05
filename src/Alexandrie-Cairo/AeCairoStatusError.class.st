@@ -28,9 +28,11 @@ AeCairoStatusError class >> signalFor: anAeCairoStatus [
 ]
 
 { #category : #initialization }
-AeCairoStatusError >> initializeFor: anAeCairoStatus [ 
+AeCairoStatusError >> initializeFor: aeCairoStatus [
 
 	self initialize.
-	status := anAeCairoStatus.
-	self messageText: anAeCairoStatus description
+	status := aeCairoStatus.
+	self messageText: ('{1} ({2})' format: {
+				 aeCairoStatus item.
+				 aeCairoStatus description })
 ]
