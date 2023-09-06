@@ -211,13 +211,13 @@ AeCairoMigratedRenderTest >> surfaceWithFillAndStrokeAlphaAdd [
 					"Use DEST_OUT to subtract stroke from fill."
 					aContext
 						sourceColorRGB: Color black;
-						operator: AeCairoCompositionOp destOut;
+						operator: AeCairoOperator destOut;
 						strokePreserve.
 					
 					"Then use ADD to draw the stroke without a seam."
 					aContext
 						source: strokePattern;
-						operator: AeCairoCompositionOp add;
+						operator: AeCairoOperator add;
 						stroke ] ].
 
 
@@ -313,7 +313,7 @@ AeCairoMigratedRenderTest >> surfaceWithFillEmpty [
 		aContext
 			rectangle: (0 @ (size / 2) extent: size @ (size/2));
 			clip;
-			operator: AeCairoCompositionOp destIn;
+			operator: AeCairoOperator destIn;
 			fill ].
 	
 	^ aSurface
@@ -725,7 +725,7 @@ AeCairoMigratedRenderTest >> surfaceWithOutsideClipping [
 	aContext := aSurface newContext.
 
 	aContext
-		operator: AeCairoCompositionOp source;
+		operator: AeCairoOperator source;
 		sourceColorRGB: Color white;
 		paint.
 

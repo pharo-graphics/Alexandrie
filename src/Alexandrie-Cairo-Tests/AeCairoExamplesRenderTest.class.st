@@ -28,7 +28,7 @@ AeCairoExamplesRenderTest >> surfaceWithAllOperators [
 	See: https://www.cairographics.org/operators/"
 
 	| operators fontSize rectangleExtent rectangleOffset margin rowHeight aSurface aContext aFTLibrary aFTFace aFontFace |
-	operators := AeCairoCompositionOp allValues.
+	operators := AeCairoOperator allValues.
 	margin := 3.
 	fontSize := 8.
 	rectangleExtent := 50 @ fontSize.

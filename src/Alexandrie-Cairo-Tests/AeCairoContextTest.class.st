@@ -127,13 +127,13 @@ AeCairoContextTest >> testOperator [
 	
 	self
 		assert: context operator
-		equals: AeCairoCompositionOp over.
+		equals: AeCairoOperator over.
 
 	context setOperatorClear.
 
 	self
 		assert: context operator
-		equals: AeCairoCompositionOp clear.
+		equals: AeCairoOperator clear.
 
 ]
 

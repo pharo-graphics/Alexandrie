@@ -1463,7 +1463,7 @@ AeCairoContext >> setOperatorClear [
 	
 	See https://www.cairographics.org/operators/"
 	
-	self operator: AeCairoCompositionOp clear
+	self operator: AeCairoOperator clear
 ]
 
 { #category : #'API - compositing' }
@@ -1472,7 +1472,7 @@ AeCairoContext >> setOperatorOver [
 
 	See https://www.cairographics.org/operators/"
 	
-	self operator: AeCairoCompositionOp over
+	self operator: AeCairoOperator over
 ]
 
 { #category : #'API - compositing' }
@@ -1481,7 +1481,7 @@ AeCairoContext >> setOperatorSource [
 
 	See https://www.cairographics.org/operators/"
 	
-	self operator: AeCairoCompositionOp source
+	self operator: AeCairoOperator source
 ]
 
 { #category : #'API - text' }
