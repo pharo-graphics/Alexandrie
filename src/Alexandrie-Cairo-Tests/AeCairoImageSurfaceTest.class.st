@@ -186,10 +186,10 @@ AeCairoImageSurfaceTest >> testWriteNonASCIIFilenamePNG [
 	aPNGFileReference ensureDelete.
 	self deny: aPNGFileReference exists.
 
-	surface writeToPngAtFileReference: aPNGFileReference.
+	surface writePngTo: aPNGFileReference.
 
 	self assert: aPNGFileReference exists.
-	self assert: aPNGFileReference size > 0.
+	self assert: aPNGFileReference size > 50.
 	aPNGFileReference ensureDelete.
 
 ]

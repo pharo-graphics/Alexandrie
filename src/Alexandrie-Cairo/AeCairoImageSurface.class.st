@@ -327,17 +327,17 @@ AeCairoImageSurface >> width [
 ]
 
 { #category : #API }
-AeCairoImageSurface >> writeToPngAtFileReference: aFileReference [
+AeCairoImageSurface >> writePngTo: aFileReference [
 
-	| path status |
-	path := aFileReference pathString nullTerminatedEncodeWith: #utf8.
-	status := self writeToPngAtUtf8EncodedPath: path.
+	| utf8EncodedPath status |
+	utf8EncodedPath := aFileReference pathString nullTerminatedEncodeWith: #utf8.
+	status := self writePngToPathString: utf8EncodedPath.
 	status ensureIsSuccess.
 	^ status
 ]
 
 { #category : #API }
-AeCairoImageSurface >> writeToPngAtUtf8EncodedPath: filename [
+AeCairoImageSurface >> writePngToPathString: path [
 	"Write the contents of surface to a new file filename as a PNG image.
 	Returns CAIRO_STATUS_SUCCESS if the PNG file was written successfully.
 
@@ -347,5 +347,28 @@ AeCairoImageSurface >> writeToPngAtUtf8EncodedPath: filename [
 		AeCairoStatus
 		cairo_surface_write_to_png (
 			self,
-			const char *filename ) )
+			const char *path ) )
+]
+
+{ #category : #API }
+AeCairoImageSurface >> writeToPngAtFileReference: aFileReference [
+
+	self
+		deprecated: 'Use #writePngTo:'
+		transformWith:
+			'`@rcv writeToPngAtFileReference: `@arg'
+			-> '`@rcv writePngTo: `@arg'.
+
+	^ self writePngTo: aFileReference
+]
+
+{ #category : #API }
+AeCairoImageSurface >> writeToPngAtUtf8EncodedPath: filename [
+
+	self
+		deprecated: 'Use writePngToPathString:'
+		transformWith: '`@rcv writeToPngAtUtf8EncodedPath: `@arg'
+			-> '`@rcv writePngToPathString: `@arg'.
+
+	^ self writePngToPathString: filename
 ]
