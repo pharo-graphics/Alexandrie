@@ -10,7 +10,13 @@ Class {
 { #category : #accessing }
 AeEnumeration class >> allValues [
 
-	^ self classPool values sorted: [ :a :b | a item < b item ]
+	| allValues |
+	allValues := SortedCollection sortUsing: [ :a :b | a item < b item ].
+
+	self withAllSuperclassesDo: [ :each |
+		each = AeEnumeration
+			ifFalse: [ allValues addAll: each classPool values ]
+			ifTrue: [ ^ allValues asArray "done!" ] ]
 ]
 
 { #category : #initialization }
