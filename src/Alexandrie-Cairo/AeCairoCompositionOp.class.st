@@ -3,6 +3,7 @@ Normally, you will be using cairo to draw objects on top of each other. But cair
 
 To understand the effect of compositing operators, please refer to https://www.cairographics.org/operators/
 
+See `AeCairoExamplesRenderTest>>#surfaceWithAllOperators`.
 "
 Class {
 	#name : #AeCairoCompositionOp,

@@ -22,6 +22,65 @@ AeCairoExamplesRenderTest class >> inspectMismatches [
 ]
 
 { #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithAllOperators [
+	"Catalog of cairo's compositing operators.
+
+	See: https://www.cairographics.org/operators/"
+
+	| operators fontSize rectangleExtent rectangleOffset margin rowHeight aSurface aContext aFTLibrary aFTFace aFontFace |
+	operators := AeCairoCompositionOp allValues.
+	margin := 3.
+	fontSize := 8.
+	rectangleExtent := 50 @ fontSize.
+	rectangleOffset := (rectangleExtent x // 4) @ margin.
+	rowHeight := rectangleExtent y + rectangleOffset y + margin.
+
+	aSurface := AeCairoImageSurface
+		extent: 200 @ (rowHeight * operators size)
+		format: AeCairoSurfaceFormat argb32.
+	aContext := aSurface newContext.
+
+	"Set up text"
+	aFTLibrary := AeFTLibrary newInitialized.
+	aFTFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
+	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
+	aContext
+		fontFace: aFontFace;
+		fontSize: fontSize.
+
+	operators do: [ :eachOperator |
+
+		"Draw a row at current position"
+		aContext paintGroupWith: [
+
+			"First rectangle"
+			aContext
+				rectangle: (0@0 extent: rectangleExtent);
+				sourceColorRGBA: (Color red alpha: 0.6);
+				fill.
+
+			"Second"
+			aContext
+				rectangle: (rectangleOffset extent: rectangleExtent);
+				sourceColorRGBA: (Color blue alpha: 0.6);
+				operator: eachOperator;
+				fill.
+
+			"Label"
+			aContext
+				translateByX: rectangleOffset x + rectangleExtent x + margin
+					y: fontSize;
+				sourceColorRGB: Color black;
+				setOperatorOver;
+				showText: eachOperator item asString ].
+
+		"Prepare for next row"
+		aContext translateByX: 0 y: rowHeight ].
+
+	^ aSurface
+]
+
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithColoredIcons [
 
 	| inputForm inputSurface outputColors outputSurface outputContext |
