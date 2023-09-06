@@ -215,6 +215,78 @@ AeCairoCompositionOp class >> CAIRO_OPERATOR_XOR [
 	^ CAIRO_OPERATOR_XOR
 ]
 
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> add [
+
+	^ CAIRO_OPERATOR_ADD
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> atop [
+
+	^ CAIRO_OPERATOR_ATOP
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> clear [
+
+	^ CAIRO_OPERATOR_CLEAR
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> colorBurn [
+
+	^ CAIRO_OPERATOR_COLOR_BURN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> colorDodge [
+
+	^ CAIRO_OPERATOR_COLOR_DODGE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> darken [
+
+	^ CAIRO_OPERATOR_DARKEN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> dest [
+
+	^ CAIRO_OPERATOR_DEST
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> destAtop [
+
+	^ CAIRO_OPERATOR_DEST_ATOP
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> destIn [
+
+	^ CAIRO_OPERATOR_DEST_IN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> destOut [
+
+	^ CAIRO_OPERATOR_DEST_OUT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> destOver [
+
+	^ CAIRO_OPERATOR_DEST_OVER
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> difference [
+
+	^ CAIRO_OPERATOR_DIFFERENCE
+]
+
 { #category : #'enum declaration' }
 AeCairoCompositionOp class >> enumDecl [
 	"
@@ -258,8 +330,110 @@ AeCairoCompositionOp class >> enumDecl [
 	)
 ]
 
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> exclusion [
+
+	^ CAIRO_OPERATOR_EXCLUSION
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> hardLight [
+
+	^ CAIRO_OPERATOR_HARD_LIGHT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> hslColor [
+
+	^ CAIRO_OPERATOR_HSL_COLOR
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> hslHue [
+
+	^ CAIRO_OPERATOR_HSL_HUE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> hslLuminosity [
+
+	^ CAIRO_OPERATOR_HSL_LUMINOSITY
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> hslSaturation [
+
+	^ CAIRO_OPERATOR_HSL_SATURATION
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> in [
+
+	^ CAIRO_OPERATOR_IN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> lighten [
+
+	^ CAIRO_OPERATOR_LIGHTEN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> multiply [
+
+	^ CAIRO_OPERATOR_MULTIPLY
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> out [
+
+	^ CAIRO_OPERATOR_OUT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> over [
+
+	^ CAIRO_OPERATOR_OVER
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> overlay [
+
+	^ CAIRO_OPERATOR_OVERLAY
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> saturate [
+
+	^ CAIRO_OPERATOR_SATURATE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> screen [
+
+	^ CAIRO_OPERATOR_SCREEN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> softLight [
+
+	^ CAIRO_OPERATOR_SOFT_LIGHT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> source [
+
+	^ CAIRO_OPERATOR_SOURCE
+]
+
 { #category : #hook }
 AeCairoCompositionOp class >> underlinedNamePrefix [
 	
 	^ 'CAIRO_OPERATOR_'
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoCompositionOp class >> xor [
+
+	^ CAIRO_OPERATOR_XOR
 ]

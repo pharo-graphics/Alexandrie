@@ -24,11 +24,11 @@ AeEnumeration class >> underlineToCamelCaseDictionary [
 	"
 	Example of use:
 		| aClass |
-		aClass := AeCairoPatternType.
+		aClass := AeCairoCompositionOp.
 		aClass underlineToCamelCaseDictionary keysAndValuesDo: [ :k :v |
 		aClass class compile: ('{2}
 
-	^ {1}' format: { k. v }) classified: 'accessing enum' ]
+	^ {1}' format: { k. v }) classified: 'accessing enum camelcased' ]
 	"
 
 	| result |
