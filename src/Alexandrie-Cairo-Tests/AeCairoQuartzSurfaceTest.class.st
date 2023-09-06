@@ -11,6 +11,8 @@ Class {
 AeCairoQuartzSurfaceTest >> testItIsNotCurrentlySupported [
 
 	| aSurface |
+	Smalltalk os isMacOSX ifFalse: [ ^ self skip ].
+	
 	aSurface := AeCairoQuartzSurface
 						extent: 100 @ 100
 						format: AeCairoSurfaceFormat rgb24.
