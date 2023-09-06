@@ -1032,7 +1032,7 @@ AeCairoContext >> moveToX: aX y: aY [
 AeCairoContext >> operator [
 	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-operator"
 
-	^ self ffiCall: #( AeCairoCompositionOp cairo_get_operator ( self ) )
+	^ self ffiCall: #( AeCairoOperator cairo_get_operator ( self ) )
 ]
 
 { #category : #'API - compositing' }
@@ -1042,7 +1042,7 @@ AeCairoContext >> operator: aCairoOperator [
 		void
 		cairo_set_operator (
 			self,
-			AeCairoCompositionOp aCairoOperator ) )
+			AeCairoOperator aCairoOperator ) )
 ]
 
 { #category : #'API - painting' }
