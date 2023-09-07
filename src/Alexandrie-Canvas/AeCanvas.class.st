@@ -863,3 +863,9 @@ AeCanvas >> textExtentsFor: aeGlyphsArray scaledFont: aeScaledFont do: aUnaryBlo
 			into: textExtents.
 	aUnaryBlockClosure value: textExtents
 ]
+
+{ #category : #accessing }
+AeCanvas >> writePngTo: aFileReference [
+
+	^ cairoSurface writePngTo: aFileReference
+]
