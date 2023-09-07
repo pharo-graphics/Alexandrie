@@ -421,6 +421,12 @@ AeCanvas >> initializeWith: aeCairoSurface [
 
 ]
 
+{ #category : #testing }
+AeCanvas >> isValid [
+	
+	^ cairoContext isNull not
+]
+
 { #category : #'API - painting' }
 AeCanvas >> maskGroupWith: aBlockClosure [
 
