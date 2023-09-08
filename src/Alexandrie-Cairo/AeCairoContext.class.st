@@ -280,6 +280,16 @@ AeCairoContext >> clearTransparent [
 
 { #category : #'API - clipping' }
 AeCairoContext >> clip [
+	"Establishes a new clip region by intersecting the current clip region with the current path as it would be filled according to the current fill rule.
+
+	The current path will be cleared from the cairo context.
+
+	The current clip region affects all drawing operations by effectively masking out any changes to the surface that are outside the current clip region.
+
+	This operation can only make the clip region smaller, never larger. But the current clip is part of the graphics state, so a temporary restriction of the clip region can be achieved by calling `cairo_clip_preserve()` within a `cairo_save()`/`cairo_restore()` pair.
+	The only other means of increasing the size of the clip region is `cairo_reset_clip()`.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-clip"
 
 	self ffiCall: #( void cairo_clip ( self ) )
 ]
@@ -328,34 +338,28 @@ AeCairoContext >> clipExtentsInUserSpace [
 
 { #category : #'API - clipping' }
 AeCairoContext >> clipPreserve [
+	"Establishes a new clip region by intersecting the current clip region with the current path as it would be filled according to the current fill rule.
+
+	Preserve the path within the cairo context.
+
+	The current clip region affects all drawing operations by effectively masking out any changes to the surface that are outside the current clip region.
+
+	This operation can only make the clip region smaller, never larger. But the current clip is part of the graphics state, so a temporary restriction of the clip region can be achieved by calling `cairo_clip_preserve()` within a `cairo_save()`/`cairo_restore()` pair.
+	The only other means of increasing the size of the clip region is `cairo_reset_clip()`.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-clip-preserve"
 
 	self ffiCall: #( void cairo_clip_preserve ( self ) )
 ]
 
 { #category : #'API - clipping' }
-AeCairoContext >> clippingAreaAsForm [ 
-	
-	| clippingForm |
-	"Temporarily reset CTM matrix"
-	self
-		saveState;
-		setIdentityMatrix.
+AeCairoContext >> clipPreservingPath: aBoolean [
+	"Establishes a new clip region by intersecting the current clip region with the current path as it would be filled according to the current fill rule.
+	The argument indicates whether the path must be preserved within the cairo context."
 
-	clippingForm := Form extent: surface extent depth: 1.
-	0 to: clippingForm width - 1 do: [ :x |
-		0 to: clippingForm height - 1 do: [ :y |
-			| isInClip |
-			isInClip := self isInClipX: x y: y.
-			clippingForm
-				colorAt: x@y
-				put: (isInClip
-					ifTrue: [ Color black ]
-					ifFalse: [ Color white ]).
-			] ].
-
-	self restoreState.
-		
-	^ clippingForm
+	aBoolean
+		ifTrue: [ self clipPreserve ]
+		ifFalse: [ self clip ]
 ]
 
 { #category : #'API - path' }
@@ -546,14 +550,33 @@ AeCairoContext >> ellipseWidth: width height: height [
 
 { #category : #'API - painting' }
 AeCairoContext >> fill [
+	"Fill the current path according to the current fill rule.
+
+	The current path will be cleared from the cairo context.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-fill"
 
 	self ffiCall: #( void cairo_fill ( self ) )
 ]
 
 { #category : #'API - painting' }
 AeCairoContext >> fillPreserve [
+	"Fill the current path according to the current fill rule.
+	Preserve the path within the cairo context.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-fill-preserve"
 
 	self ffiCall: #( void cairo_fill_preserve ( self ) )
+]
+
+{ #category : #'API - painting' }
+AeCairoContext >> fillPreservingPath: aBoolean [
+	"Fill the current path according to the current fill rule.
+	The argument indicates whether the path must be preserved within the cairo context."
+
+	aBoolean
+		ifTrue: [ self fillPreserve ]
+		ifFalse: [ self fill ]
 ]
 
 { #category : #'API - path' }
@@ -847,7 +870,7 @@ AeCairoContext >> initializeWith: anAeCairoSurface [
 	surface := anAeCairoSurface
 ]
 
-{ #category : #'API - clipping' }
+{ #category : #'API - query' }
 AeCairoContext >> isInClipX: x y: y [ 
 	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-in-clip"
 
@@ -1030,13 +1053,20 @@ AeCairoContext >> moveToX: aX y: aY [
 
 { #category : #'API - compositing' }
 AeCairoContext >> operator [
-	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-operator"
+	"Answer the current compositing operator for a cairo context.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-operator"
 
 	^ self ffiCall: #( AeCairoOperator cairo_get_operator ( self ) )
 ]
 
 { #category : #'API - compositing' }
 AeCairoContext >> operator: aCairoOperator [
+	"Sets the compositing operator to be used for all drawing operations. See `AeCairoOperator` for details on the semantics of each available compositing operator.
+
+	The default operator is `CAIRO_OPERATOR_OVER`.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-operator"
 
 	self ffiCall: #(
 		void
@@ -1264,6 +1294,9 @@ AeCairoContext >> relativeMoveToX: aX y: aY [
 
 { #category : #'API - clipping' }
 AeCairoContext >> resetClip [
+	"Reset the current clip region to its original, unrestricted state. That is, set the clip region to an infinitely large shape containing the target surface. Equivalently, if infinity is too hard to grasp, one can imagine the clip region being reset to the exact bounds of the target surface.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-reset-clip"
 
 	self ffiCall: #( void cairo_reset_clip #( self ) )
 ]
@@ -1626,6 +1659,11 @@ AeCairoContext >> status [
 
 { #category : #'API - painting' }
 AeCairoContext >> stroke [
+	"Stroke the current path according to the current line width, line join, line cap, and dash settings.
+
+	The current path will be cleared from the cairo context.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-stroke"
 
 	self ffiCall: #( void cairo_stroke ( self ) )
 ]
@@ -1674,8 +1712,22 @@ AeCairoContext >> strokeExtentsInUserSpace [
 
 { #category : #'API - painting' }
 AeCairoContext >> strokePreserve [
+	"Stroke the current path according to the current line width, line join, line cap, and dash settings.
+	Preserve the path within the cairo context.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-stroke-preserve"
 
 	self ffiCall: #( void cairo_stroke_preserve ( self ))
+]
+
+{ #category : #'API - painting' }
+AeCairoContext >> strokePreservingPath: aBoolean [
+	"Stroke the current path according to the current line width, line join, line cap, and dash settings.
+	The argument indicates whether the path must be preserved within the cairo context."
+
+	aBoolean
+		ifTrue: [ self strokePreserve ]
+		ifFalse: [ self stroke ]
 ]
 
 { #category : #accessing }
