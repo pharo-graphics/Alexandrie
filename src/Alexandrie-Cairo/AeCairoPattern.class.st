@@ -12,7 +12,7 @@ Class {
 	#category : #'Alexandrie-Cairo-Patterns'
 }
 
-{ #category : #'private - ffi' }
+{ #category : #finalization }
 AeCairoPattern class >> externallyFree: aHandle [
 	
 	self ffiCall: #( void cairo_pattern_destroy ( void * aHandle ) )

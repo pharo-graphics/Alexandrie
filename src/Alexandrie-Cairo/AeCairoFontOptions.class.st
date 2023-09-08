@@ -28,7 +28,7 @@ AeCairoFontOptions class >> new [
 		  yourself
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'instance creation' }
 AeCairoFontOptions class >> unownedNew [
 
 	^ self ffiCall: #( AeCairoFontOptions cairo_font_options_create () )

@@ -40,7 +40,7 @@ AeCairoContext class >> newFor: aSurface [
 		yourself
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'instance creation' }
 AeCairoContext class >> unownedNewFor: aSurface [
 
 	^ self ffiCall: #( AeCairoContext cairo_create ( AeCairoImageSurface aSurface ) )

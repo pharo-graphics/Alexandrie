@@ -43,7 +43,7 @@ AeCairoScaledFont class >> fontFace: aCairoFontFace fontMatrix: aFontMatrix user
 		  yourself
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'instance creation' }
 AeCairoScaledFont class >> unownedNewFor: aCairoFontFace fontMatrix: aFontMatrix userToDeviceMatrix: aCTM options: theFontOptions [
 	"Creates a ´cairo_scaled_font_t´ object from a font face and matrices that describe the size of the font and the environment in which it will be used.
 	

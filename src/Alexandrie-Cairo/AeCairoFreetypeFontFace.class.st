@@ -26,7 +26,7 @@ AeCairoFreetypeFontFace class >> newForFace: aFTFace [
 
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'instance creation' }
 AeCairoFreetypeFontFace class >> unownedNewFor: aFreetypeFontFace [
 
 	^ self ffiCall: #(

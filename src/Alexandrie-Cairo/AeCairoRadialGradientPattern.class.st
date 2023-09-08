@@ -35,7 +35,7 @@ AeCairoRadialGradientPattern class >> innerCenter: anInnerCenter innerRadius: an
 		  yourself
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'instance creation' }
 AeCairoRadialGradientPattern class >> unownedNewWithInnerX: anInnerX innerY: anInnerY innerRadius: anInnerRadius outerX: anOuterX outerY: anOuterY outerRadius: anOuterRadius [
 	"See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-radial"
 	

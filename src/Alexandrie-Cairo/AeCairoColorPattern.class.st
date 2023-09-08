@@ -44,7 +44,7 @@ AeCairoColorPattern class >> r: red g: green b: blue alpha: alpha [
 		  yourself
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'instance creation' }
 AeCairoColorPattern class >> unownedNewR: red g: green b: blue [
 	"See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-rgb"
 
@@ -56,7 +56,7 @@ AeCairoColorPattern class >> unownedNewR: red g: green b: blue [
 			double blue ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #'instance creation' }
 AeCairoColorPattern class >> unownedNewR: red g: green b: blue alpha: alpha [
 	"See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-rgba"
 
