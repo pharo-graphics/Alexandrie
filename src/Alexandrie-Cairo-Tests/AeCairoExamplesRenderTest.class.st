@@ -707,10 +707,10 @@ AeCairoExamplesRenderTest >> surfaceWithToyAPIAndSetFaceFont [
 	aFTFace := AeSourceSansPro_Italic firstFaceUsing: aFTLibrary.
 	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
 	aFontOptions := AeCairoFontOptions new
-		antialias: AeCairoAntialias none;
+		antialias: AeCairoAntialias gray;
 		hintStyle: AeCairoHintStyle none;
-		hintMetrics: AeCairoHintMetrics off;
-		subpixelOrder: AeCairoSubpixelOrder rgb;
+		hintMetrics: AeCairoHintMetrics on;
+		subpixelOrder: AeCairoSubpixelOrder default;
 		yourself.
 
 	aContext
