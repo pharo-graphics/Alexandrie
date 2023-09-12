@@ -694,7 +694,7 @@ AeCairoExamplesRenderTest >> surfaceWithToyAPIAndSelectFont [
 { #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithToyAPIAndSetFaceFont [
 
-	| string fontSize aSurface aContext aFTLibrary aFTFace aFontFace |
+	| string fontSize aSurface aContext aFTLibrary aFTFace aFontFace aFontOptions |
 	string := 'Hï'.
 	fontSize := 25.
 	aSurface := AeCairoImageSurface
@@ -706,11 +706,18 @@ AeCairoExamplesRenderTest >> surfaceWithToyAPIAndSetFaceFont [
 	aFTLibrary := AeFTLibrary newInitialized.
 	aFTFace := AeSourceSansPro_Italic firstFaceUsing: aFTLibrary.
 	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
+	aFontOptions := AeCairoFontOptions new
+		antialias: AeCairoAntialias none;
+		hintStyle: AeCairoHintStyle none;
+		hintMetrics: AeCairoHintMetrics off;
+		subpixelOrder: AeCairoSubpixelOrder rgb;
+		yourself.
 
 	aContext
 		translateByX: 2 y: fontSize;
 		fontFace: aFontFace;
 		fontSize: fontSize;
+		fontOptions: aFontOptions;
 		sourceColorRGB: Color white;
 		showText: string.
 
