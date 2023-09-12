@@ -9,7 +9,7 @@ Class {
 		'string',
 		'fontHeight'
 	],
-	#category : #'Alexandrie-Canvas-Tests-Examples'
+	#category : #'Alexandrie-Harfbuzz-Tests'
 }
 
 { #category : #examples }
