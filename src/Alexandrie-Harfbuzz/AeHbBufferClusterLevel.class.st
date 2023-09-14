@@ -68,6 +68,18 @@ AeHbBufferClusterLevel class >> enumDecl [
 ]
 
 { #category : #'accessing enum' }
+AeHbBufferClusterLevel class >> monotoneCharacters [
+
+	^ HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS
+]
+
+{ #category : #'accessing enum' }
+AeHbBufferClusterLevel class >> monotoneGraphemes [
+
+	^ HB_BUFFER_CLUSTER_LEVEL_MONOTONE_GRAPHEMES
+]
+
+{ #category : #'accessing enum' }
 AeHbBufferClusterLevel class >> recommended [
 	"Answer the recommended value. Harfbuzz documentation says:
 

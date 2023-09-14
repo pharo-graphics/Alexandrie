@@ -27,6 +27,12 @@ AeFTStyleFlag class >> FT_STYLE_FLAG_ITALIC [
 	^ FT_STYLE_FLAG_ITALIC
 ]
 
+{ #category : #'accessing enum' }
+AeFTStyleFlag class >> bold [
+
+	^ FT_STYLE_FLAG_BOLD
+]
+
 { #category : #'enum declaration' }
 AeFTStyleFlag class >> enumDecl [
 	"
@@ -43,6 +49,12 @@ AeFTStyleFlag class >> enumDecl [
 AeFTStyleFlag class >> initialize [
 
 	self initializeEnumeration
+]
+
+{ #category : #'accessing enum' }
+AeFTStyleFlag class >> italic [
+
+	^ FT_STYLE_FLAG_ITALIC
 ]
 
 { #category : #hook }

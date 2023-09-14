@@ -75,6 +75,12 @@ AeHbDirection class >> enumDecl [
 ]
 
 { #category : #'accessing enum' }
+AeHbDirection class >> invalid [
+
+	^ self HB_DIRECTION_INVALID
+]
+
+{ #category : #'accessing enum' }
 AeHbDirection class >> leftToRight [
 
 	^ self HB_DIRECTION_LTR

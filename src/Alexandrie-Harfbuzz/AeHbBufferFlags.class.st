@@ -95,6 +95,30 @@ AeHbBufferFlags class >> beginningOrEndingOfText [
 	^ HB_BUFFER_FLAG_BOT value bitOr: HB_BUFFER_FLAG_EOT value
 ]
 
+{ #category : #'accessing enum camelcased' }
+AeHbBufferFlags class >> bot [
+
+	^ HB_BUFFER_FLAG_BOT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbBufferFlags class >> default [
+
+	^ HB_BUFFER_FLAG_DEFAULT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbBufferFlags class >> defined [
+
+	^ HB_BUFFER_FLAG_DEFINED
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbBufferFlags class >> doNotInsertDottedCircle [
+
+	^ HB_BUFFER_FLAG_DO_NOT_INSERT_DOTTED_CIRCLE
+]
+
 { #category : #'accessing enum' }
 AeHbBufferFlags class >> endingOfText [
 
@@ -122,8 +146,44 @@ AeHbBufferFlags class >> enumDecl [
 	)
 ]
 
+{ #category : #'accessing enum camelcased' }
+AeHbBufferFlags class >> eot [
+
+	^ HB_BUFFER_FLAG_EOT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbBufferFlags class >> preserveDefaultIgnorables [
+
+	^ HB_BUFFER_FLAG_PRESERVE_DEFAULT_IGNORABLES
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbBufferFlags class >> produceSafeToInsertTatweel [
+
+	^ HB_BUFFER_FLAG_PRODUCE_SAFE_TO_INSERT_TATWEEL
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbBufferFlags class >> produceUnsafeToConcat [
+
+	^ HB_BUFFER_FLAG_PRODUCE_UNSAFE_TO_CONCAT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbBufferFlags class >> removeDefaultIgnorables [
+
+	^ HB_BUFFER_FLAG_REMOVE_DEFAULT_IGNORABLES
+]
+
 { #category : #hook }
 AeHbBufferFlags class >> underlinedNamePrefix [
 	
 	^ 'HB_BUFFER_FLAG_'
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbBufferFlags class >> verify [
+
+	^ HB_BUFFER_FLAG_VERIFY
 ]

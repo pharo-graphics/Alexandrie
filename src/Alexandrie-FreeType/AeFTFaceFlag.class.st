@@ -132,6 +132,18 @@ AeFTFaceFlag class >> FT_FACE_FLAG_VERTICAL [
 	^ FT_FACE_FLAG_VERTICAL
 ]
 
+{ #category : #'accessing enum camelcased' }
+AeFTFaceFlag class >> cidKeyed [
+
+	^ self FT_FACE_FLAG_CID_KEYED
+]
+
+{ #category : #'accessing enum camelcased' }
+AeFTFaceFlag class >> color [
+
+	^ self FT_FACE_FLAG_COLOR
+]
+
 { #category : #'enum declaration' }
 AeFTFaceFlag class >> enumDecl [
 	"
@@ -161,14 +173,104 @@ AeFTFaceFlag class >> enumDecl [
 	}
 ]
 
+{ #category : #'accessing enum camelcased' }
+AeFTFaceFlag class >> fixedSizes [
+
+	^ self FT_FACE_FLAG_FIXED_SIZES
+]
+
+{ #category : #'accessing enum camelcased' }
+AeFTFaceFlag class >> fixedWidth [
+
+	^ self FT_FACE_FLAG_FIXED_WIDTH
+]
+
+{ #category : #'accessing enum camelcased' }
+AeFTFaceFlag class >> glyphNames [
+
+	^ self FT_FACE_FLAG_GLYPH_NAMES
+]
+
+{ #category : #'accessing enum camelcased' }
+AeFTFaceFlag class >> hinter [
+
+	^ self FT_FACE_FLAG_HINTER
+]
+
+{ #category : #'accessing enum camelcased' }
+AeFTFaceFlag class >> horizontal [
+
+	^ self FT_FACE_FLAG_HORIZONTAL
+]
+
 { #category : #'enum declaration' }
 AeFTFaceFlag class >> initialize [
 
 	self initializeEnumeration
 ]
 
+{ #category : #'accessing enum camelcased' }
+AeFTFaceFlag class >> kerning [
+
+	^ self FT_FACE_FLAG_KERNING
+]
+
+{ #category : #'accessing enum camelcased' }
+AeFTFaceFlag class >> multipleMasters [
+
+	^ self FT_FACE_FLAG_MULTIPLE_MASTERS
+]
+
+{ #category : #'accessing enum camelcased' }
+AeFTFaceFlag class >> sbix [
+
+	^ self FT_FACE_FLAG_SBIX
+]
+
+{ #category : #'accessing enum camelcased' }
+AeFTFaceFlag class >> sbixOverlay [
+
+	^ self FT_FACE_FLAG_SBIX_OVERLAY
+]
+
+{ #category : #'accessing enum camelcased' }
+AeFTFaceFlag class >> scalable [
+
+	^ self FT_FACE_FLAG_SCALABLE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeFTFaceFlag class >> sfnt [
+
+	^ self FT_FACE_FLAG_SFNT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeFTFaceFlag class >> svg [
+
+	^ self FT_FACE_FLAG_SVG
+]
+
+{ #category : #'accessing enum camelcased' }
+AeFTFaceFlag class >> tricky [
+
+	^ self FT_FACE_FLAG_TRICKY
+]
+
 { #category : #hook }
 AeFTFaceFlag class >> underlinedNamePrefix [
 	
 	^ 'FT_FACE_FLAG'
+]
+
+{ #category : #'accessing enum camelcased' }
+AeFTFaceFlag class >> variation [
+
+	^ self FT_FACE_FLAG_VARIATION
+]
+
+{ #category : #'accessing enum camelcased' }
+AeFTFaceFlag class >> vertical [
+
+	^ self FT_FACE_FLAG_VERTICAL
 ]

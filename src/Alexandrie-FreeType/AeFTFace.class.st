@@ -12,6 +12,9 @@ Class {
 	#superclass : #FFIExternalStructure,
 	#traits : 'AeTFreeTypeLibrary + AeTExternalFree',
 	#classTraits : 'AeTFreeTypeLibrary classTrait + AeTExternalFree classTrait',
+	#instVars : [
+		'library'
+	],
 	#classVars : [
 		'OFFSET_FACEFLAGS',
 		'OFFSET_FACEINDEX',
@@ -159,7 +162,7 @@ AeFTFace >> flags [
 { #category : #testing }
 AeFTFace >> isBold [
 
-	^ self styleFlags allMask: AeFTStyleFlag FT_STYLE_FLAG_BOLD value
+	^ self styleFlags allMask: AeFTStyleFlag bold value
 ]
 
 { #category : #testing }
@@ -168,19 +171,19 @@ AeFTFace >> isFixedSize [
 	
 	Source: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_face_flag_fixed_sizes"
 
-	^ self styleFlags allMask: AeFTFaceFlag FT_FACE_FLAG_FIXED_SIZES value
+	^ self styleFlags allMask: AeFTFaceFlag fixedSizes value
 ]
 
 { #category : #testing }
 AeFTFace >> isFixedWidth [
 
-	^ self faceFlags allMask: AeFTFaceFlag FT_FACE_FLAG_FIXED_WIDTH value
+	^ self faceFlags allMask: AeFTFaceFlag fixedWidth value
 ]
 
 { #category : #testing }
 AeFTFace >> isItalic [
 
-	^ self styleFlags allMask: AeFTStyleFlag FT_STYLE_FLAG_ITALIC value
+	^ self styleFlags allMask: AeFTStyleFlag italic value
 ]
 
 { #category : #'accessing - structure variables' }
