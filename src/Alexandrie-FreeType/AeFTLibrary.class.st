@@ -68,7 +68,7 @@ AeFTLibrary >> facesOn: aFileReference [
 { #category : #iteration }
 AeFTLibrary >> fastReadFacesOn: aFileReference do: aBlock [
 	"Iterate over all the faces in a file path. 
-	IMPORTANT: The Face will be freed (done) after each iteration."
+	IMPORTANT: The faces will be freed (done) after each iteration."
 
 	self
 		unownedNewFacesFromFile: aFileReference
@@ -80,7 +80,7 @@ AeFTLibrary >> fastReadFacesOn: aFileReference do: aBlock [
 { #category : #iteration }
 AeFTLibrary >> fastReadFacesOnMemory: aByteArray do: aBlock [
 	"Iterate over all the faces in a given ByteArray.
-	IMPORTANT: The Face will be freed (done) after each iteration."
+	IMPORTANT: The faces will be freed (done) after each iteration."
 
 	self
 		unownedNewFacesFromBytes: aByteArray

@@ -212,6 +212,7 @@ AeFTFace >> numberOfGlyphs: anObject [
 
 { #category : #accessing }
 AeFTFace >> postscriptName [
+	"See: https://freetype.org/freetype2/docs/reference/ft2-information_retrieval.html#ft_get_postscript_name"
 
 	^ self ffiCall: #(String FT_Get_Postscript_Name (self))
 ]
