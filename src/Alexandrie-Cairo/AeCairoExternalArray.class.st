@@ -51,16 +51,3 @@ AeCairoExternalArray class >> unownedNewOf: aSize [
 
 	^ self externalNewType: self type size: aSize
 ]
-
-{ #category : #'external resource management' }
-AeCairoExternalArray >> autoRelease [
-	"Note, subclasses should implement #resourceData
-	and #finalizeResourceData: on class side"
-	FFIExternalResourceManager addResource: self
-]
-
-{ #category : #'external resource management' }
-AeCairoExternalArray >> resourceData [
-
-	^ handle
-]
