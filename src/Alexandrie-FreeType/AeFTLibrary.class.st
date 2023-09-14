@@ -210,6 +210,7 @@ AeFTLibrary >> unownedNewFacesFromBytes: aByteArray withIndexDo: aBlock [
 		returnCode = 0 ifFalse: [ ^ self ].
 
 		aFace := AeFTFace fromHandle: aPointer.
+		aFace library: self.
 
 		faceIndex = 0 ifTrue: [
 			numberOfFaces := aFace numberOfFaces ].
@@ -240,6 +241,7 @@ AeFTLibrary >> unownedNewFacesFromFile: aFileReference withIndexDo: aBlock [
 		returnCode = 0 ifFalse: [ ^ self ].
 
 		aFace := AeFTFace fromHandle: aPointer.
+		aFace library: self.
 
 		faceIndex = 0 ifTrue: [
 			numberOfFaces := aFace numberOfFaces ].

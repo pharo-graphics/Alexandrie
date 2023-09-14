@@ -186,6 +186,19 @@ AeFTFace >> isItalic [
 	^ self styleFlags allMask: AeFTStyleFlag italic value
 ]
 
+{ #category : #accessing }
+AeFTFace >> library [
+
+	^ library
+]
+
+{ #category : #accessing }
+AeFTFace >> library: aeFTLibrary [
+	"Set the library that created this font face. This avoids garbage collection of the library before of me."
+
+	library := aeFTLibrary
+]
+
 { #category : #'accessing - structure variables' }
 AeFTFace >> numberOfFaces [
 	"This method was automatically generated"
