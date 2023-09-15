@@ -26,7 +26,7 @@ Class {
 		'CAIRO_PATTERN_TYPE_SURFACE'
 	],
 	#classInstVars : [
-		'classByValue'
+		'correspondingClassByValue'
 	],
 	#category : #'Alexandrie-Cairo-Enumerations'
 }
@@ -68,10 +68,11 @@ AeCairoPatternType class >> CAIRO_PATTERN_TYPE_SURFACE [
 ]
 
 { #category : #'enum declaration' }
-AeCairoPatternType class >> classByValue [
+AeCairoPatternType class >> correspondingClassAt: anInstance [
 
-	classByValue ifNil: [ self initializeClassByValue ].
-	^ classByValue
+	correspondingClassByValue ifNil: [ self initializeCorrespondingClassByValue ].
+
+	^ correspondingClassByValue at: anInstance value
 ]
 
 { #category : #'enum declaration' }
@@ -91,15 +92,21 @@ AeCairoPatternType class >> enumDecl [
 ]
 
 { #category : #'enum declaration' }
-AeCairoPatternType class >> initializeClassByValue [
+AeCairoPatternType class >> initializeCorrespondingClassByValue [
 
-	classByValue := Dictionary new
-		at: CAIRO_PATTERN_TYPE_SOLID put: AeCairoColorPattern;
-		at: CAIRO_PATTERN_TYPE_SURFACE put: AeCairoSurfacePattern;
-		at: CAIRO_PATTERN_TYPE_LINEAR put: AeCairoLinearGradientPattern;
-		at: CAIRO_PATTERN_TYPE_RADIAL put: AeCairoRadialGradientPattern;
-		at: CAIRO_PATTERN_TYPE_MESH put: AeCairoMeshPattern;
-		at: CAIRO_PATTERN_TYPE_RASTER_SOURCE put: AeCairoPattern;
+	correspondingClassByValue := Dictionary new
+		at: CAIRO_PATTERN_TYPE_SOLID value
+			put: AeCairoColorPattern;
+		at: CAIRO_PATTERN_TYPE_SURFACE value
+			put: AeCairoSurfacePattern;
+		at: CAIRO_PATTERN_TYPE_LINEAR value
+			put: AeCairoLinearGradientPattern;
+		at: CAIRO_PATTERN_TYPE_RADIAL value
+			put: AeCairoRadialGradientPattern;
+		at: CAIRO_PATTERN_TYPE_MESH value
+			put: AeCairoMeshPattern;
+		at: CAIRO_PATTERN_TYPE_RASTER_SOURCE value
+			put: AeCairoPattern;
 		yourself
 
 	"Note: CAIRO_PATTERN_TYPE_RASTER_SOURCE is not yet implemented.
@@ -152,7 +159,7 @@ AeCairoPatternType class >> underlinedNamePrefix [
 
 { #category : #accessing }
 AeCairoPatternType >> correspondingClass [
-	"Answer the member of BlCairoPattern hierarchy that most precisely represents this type."
+	"Answer the member of `AeCairoPattern` hierarchy that most precisely represents this type."
 
-	^ self class classByValue at: self
+	^ self class correspondingClassAt: self
 ]
