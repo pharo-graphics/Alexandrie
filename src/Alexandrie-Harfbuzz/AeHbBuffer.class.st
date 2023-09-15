@@ -30,7 +30,7 @@ AeHbBuffer class >> defaultCairoGlyphArrayFor: aString face: aeFTFace size: font
 		script: AeHbScript latin;
 		language: AeHbLanguage en;
 		clusterLevel: AeHbBufferClusterLevel recommended;
-		addUtf8String: aString;
+		addString: aString;
 		cairoGlyphArrayForFace: aeFTFace size: fontSize
 ]
 
@@ -59,6 +59,18 @@ AeHbBuffer class >> unownedNew [
 ]
 
 { #category : #'accessing - input' }
+AeHbBuffer >> addString: aString [
+
+	| encoded |
+	encoded := aString utf8Encoded.
+	self
+		addUTF8ByteArray: encoded
+		length: encoded size
+		itemOffset: 0
+		itemLength: encoded size
+]
+
+{ #category : #'accessing - input' }
 AeHbBuffer >> addUTF8ByteArray: text length: text_length itemOffset: item_offset itemLength: item_length [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-add-utf8"
 
@@ -71,15 +83,6 @@ AeHbBuffer >> addUTF8ByteArray: text length: text_length itemOffset: item_offset
 			uint item_offset,
 			int item_length)
 	)
-]
-
-{ #category : #'accessing - input' }
-AeHbBuffer >> addUtf8String: aString [
-
-	| encoded |
-	encoded := aString utf8Encoded.
-	self addUTF8ByteArray: encoded length: encoded size itemOffset: 0 itemLength: encoded size
-
 ]
 
 { #category : #convenience }

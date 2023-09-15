@@ -17,7 +17,7 @@ AeHbBufferTest >> testClearContents [
 		language: AeHbLanguage en;
 		yourself.
 
-	buffer addUtf8String: 'ab'.
+	buffer addString: 'ab'.
 	buffer clearContents.
 	self assert: buffer length equals: 0.
 
@@ -35,10 +35,10 @@ AeHbBufferTest >> testMultipleAdd [
 
 	self assert: buffer length equals: 0.
 
-	buffer addUtf8String: 'ab'.
+	buffer addString: 'ab'.
 	self assert: buffer length equals: 2.
 
-	buffer addUtf8String: 'cd'.
+	buffer addString: 'cd'.
 	self assert: buffer length equals: 4.
 
 ]
@@ -53,7 +53,7 @@ AeHbBufferTest >> testReset [
 		language: AeHbLanguage en;
 		yourself.
 
-	buffer addUtf8String: 'ab'.
+	buffer addString: 'ab'.
 	buffer reset.
 	self assert: buffer length equals: 0.
 
@@ -66,7 +66,7 @@ AeHbBufferTest >> testSimpleExample [
 	| buffer font infos positions blob face |
 	"1. Create a buffer and put your text in it."
 	buffer := AeHbBuffer new.
-	buffer addUtf8String: 'flor'.
+	buffer addString: 'flor'.
 
 	"2. Set the script, language and direction of the buffer."
 	buffer direction: AeHbDirection leftToRight.

@@ -134,7 +134,7 @@ AeHarfbuzzRenderExample >> glyphArrayWithHarfbuzz [
 		language: AeHbLanguage en;
 		clusterLevel: AeHbBufferClusterLevel recommended;
 		flags: AeHbBufferFlags beginningOrEndingOfText;
-		addUtf8String: string;
+		addString: string;
 		cairoGlyphArrayForFace: freetypeFace size: fontHeight
 ]
 
