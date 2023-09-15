@@ -119,6 +119,7 @@ AeFTLibrary >> newFaceFromBytes: aByteArray index: aZeroBasedIndex [
 		AeFreeTypeError signalForCode: returnCode ].
 		
 	^ (AeFTFace fromHandle: aPointer)
+		library: self;
 		autoRelease;
 		yourself
 ]
@@ -138,6 +139,7 @@ AeFTLibrary >> newFaceFromFile: aFileReference index: aZeroBasedIndex [
 		AeFreeTypeError signalForCode: returnCode ].
 		
 	^ (AeFTFace fromHandle: aPointer)
+		library: self;
 		autoRelease;
 		yourself
 ]
