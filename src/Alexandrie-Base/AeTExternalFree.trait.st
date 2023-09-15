@@ -13,21 +13,11 @@ AeTExternalFree classSide >> externallyFree: aHandle [
 ]
 
 { #category : #finalization }
-AeTExternalFree classSide >> finalizeResourceData: anObject [
+AeTExternalFree classSide >> finalizeResourceData: aHandle [
 
-	| aHandle |
-	aHandle := self resourceDataFrom: anObject.
 	aHandle isNull ifTrue: [ ^ self ].
 	self externallyFree: aHandle.
 	aHandle beNull
-]
-
-{ #category : #finalization }
-AeTExternalFree classSide >> resourceDataFrom: anObject [
-	"Answer the handle from the resource data received as parameter.
-	This is the inverse of the `resourceData` as implemented in instance-side."
-
-	^ anObject
 ]
 
 { #category : #finalization }
@@ -47,7 +37,8 @@ AeTExternalFree >> externallyFree [
 
 { #category : #finalization }
 AeTExternalFree >> resourceData [
-	"Answer an object that doesn't point to self and that is used in `resourceDataFrom:` to obtain the handle at freeing time."
+	"Answer an object to be received in `finalizeResourceData:` to free external resources.
+	Such object will be stored in a finalization registry, so shouldn't point directly or indirectly to myself."
 
 	^ self getHandle
 ]
