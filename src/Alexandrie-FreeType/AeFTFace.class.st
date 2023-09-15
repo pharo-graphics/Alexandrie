@@ -58,6 +58,19 @@ AeFTFace class >> fieldsDesc [
 	"... we ignore remaining fields"
 ]
 
+{ #category : #finalization }
+AeFTFace class >> finalizeResourceData: anArray [
+	"Free a face, with an exception: If library was already freed, then all faces were already freed."
+
+	| libraryHandle aHandle |
+	aHandle := anArray first.
+	libraryHandle := anArray second.
+	libraryHandle isNull ifFalse: [
+		aHandle isNull ifTrue: [ ^ self ].
+		self externallyFree: aHandle ].
+	aHandle beNull
+]
+
 { #category : #accessing }
 AeFTFace >> charHeight: aNumber [
 	"Request nominal height, taking resolution of 72 dpi."
@@ -251,6 +264,13 @@ AeFTFace >> printOn: aStream [
 		print: self styleName;
 		nextPutAll: ' flags: '.
 	self printFaceFlagsOn: aStream
+]
+
+{ #category : #finalization }
+AeFTFace >> resourceData [
+	"Answer an object that doesn't point to self and that is used in `resourceDataFrom:` to obtain the handle at freeing time."
+
+	^ { self getHandle. library getHandle }
 ]
 
 { #category : #'accessing - structure variables' }
