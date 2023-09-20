@@ -316,7 +316,7 @@ AeCairoA8FastGaussianBlurFilter >> prepareBuffers [
 	surfaceBuffer := FFIExternalArray
 		fromHandle: surface data getHandle
 		type: FFIUInt8
-		size: surface height * surface stride.
+		size: surface byteSize.
 	bufferA := ByteArray withAll: surfaceBuffer. 
 	bufferB := ByteArray new: surfaceBuffer size.
 

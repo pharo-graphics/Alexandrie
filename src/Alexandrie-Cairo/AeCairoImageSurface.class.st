@@ -227,7 +227,7 @@ AeCairoImageSurface >> asFormARGB32 [
 	| uint32Size theData |
 	self flush.
 	
-	uint32Size := self height * self stride.
+	uint32Size := self byteSize.
 	
 	uint32Size = 0 ifTrue: [ 
 		^ Form
@@ -244,6 +244,12 @@ AeCairoImageSurface >> asFormARGB32 [
 		depth: 32
 		bits: (Bitmap newFrom: theData)
 
+]
+
+{ #category : #API }
+AeCairoImageSurface >> byteSize [
+
+	^ self height * self stride
 ]
 
 { #category : #'private - ffi' }
