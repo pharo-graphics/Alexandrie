@@ -224,39 +224,41 @@ AeCairoImageSurface >> asFormA8 [
 
 { #category : #converting }
 AeCairoImageSurface >> asFormARGB32 [
-	"Answer myself converted as a 32-bits Form, which means converting pixels from premultiplied-alpha to straight-alpha.
+	"Answer myself converted as a 32-bits Form.
+	This means converting pixels from premultiplied-alpha to straight-alpha.
 
 	Assumes:
-		self format = AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32
-	"
+		self format = AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32 "
 
-	| aSizeInWords theData |
+	| aSizeInWords bits |
 	aSizeInWords := self byteSize >> 2.
-	
 	aSizeInWords = 0 ifTrue: [ 
-		^ Form
-			extent: self extent
-			depth: 32 ].
+		^ Form extent: self extent depth: 32 ].
 	
-	self flush.
-
-	theData := FFIExternalArray
-		fromHandle: self data
-		type: FFIUInt32
-		size: aSizeInWords.
-
-	^ Form
-		extent: self extent
-		depth: 32
-		bits: (Bitmap new: aSizeInWords streamContents: [ :stream |
-			theData do: [ :pixel |
-				| alpha a r g b |
+	bits := Bitmap
+		new: aSizeInWords
+		streamContents: [ :stream |
+			| words |
+			self flush.
+			words := FFIExternalArray
+				fromHandle: self data
+				type: FFIUInt32
+				size: aSizeInWords.
+			words do: [ :pixel |
+				| alpha |
 				alpha := pixel >> 24.
-				a := pixel bitAnd: 16rFF000000.
-				r := ((pixel       bitAnd: 255) * alpha // 255).
-				g := ((pixel >> 8  bitAnd: 255) * alpha // 255) << 8.
-				b := ((pixel >> 16 bitAnd: 255) * alpha // 255) << 16.
-				stream nextPut: a + r + g + b ] ])
+				stream nextPut: (alpha = 0
+					ifTrue: [ 16r00FFFFFF ]
+					ifFalse: [
+						| alphaFix a r g b |
+						alphaFix := 255.0 / alpha.
+						a := pixel bitAnd: 16rFF000000.
+						r := (((pixel >> 16 bitAnd: 255) * alphaFix) asInteger) << 16.
+						g := (((pixel >> 8  bitAnd: 255) * alphaFix) asInteger) << 8.
+						b := (((pixel       bitAnd: 255) * alphaFix) asInteger).
+						a + r + g + b ]) ] ].
+
+	^ Form extent: self extent depth: 32 bits: bits
 ]
 
 { #category : #API }
