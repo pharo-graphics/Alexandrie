@@ -250,13 +250,12 @@ AeCairoImageSurface >> asFormARGB32 [
 		depth: 32
 		bits: (Bitmap new: aSizeInWords streamContents: [ :stream |
 			theData do: [ :pixel |
-				| alphaByte alpha a r g b |
-				alphaByte := pixel >> 24.
-				alpha := alphaByte / 255.0.
+				| alpha a r g b |
+				alpha := pixel >> 24.
 				a := pixel bitAnd: 16rFF000000.
-				r := ( (pixel       bitAnd: 255) / alpha ) asInteger.
-				g := ( (pixel >> 8  bitAnd: 255) / alpha ) asInteger << 8.
-				b := ( (pixel >> 16 bitAnd: 255) / alpha ) asInteger << 16.
+				r := ((pixel       bitAnd: 255) * alpha // 255).
+				g := ((pixel >> 8  bitAnd: 255) * alpha // 255) << 8.
+				b := ((pixel >> 16 bitAnd: 255) * alpha // 255) << 16.
 				stream nextPut: a + r + g + b ] ])
 ]
 
