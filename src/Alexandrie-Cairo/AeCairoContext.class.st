@@ -1575,6 +1575,23 @@ AeCairoContext >> source: aPattern [
 ]
 
 { #category : #'API - source' }
+AeCairoContext >> sourceColor: aColor [
+
+	aColor isTranslucent
+		ifTrue: [
+			self
+				sourceColorR: aColor red
+				g: aColor green
+				b: aColor blue
+				a: aColor alpha ]
+		ifFalse: [
+			self
+				sourceColorR: aColor red
+				g: aColor green
+				b: aColor blue ]
+]
+
+{ #category : #'API - source' }
 AeCairoContext >> sourceColorR: aRed g: aGreen b: aBlue [
 	
 	self ffiCall: #(
