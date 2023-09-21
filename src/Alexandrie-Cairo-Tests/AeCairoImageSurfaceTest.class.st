@@ -79,17 +79,13 @@ AeCairoImageSurfaceTest >> testNewForByteArray [
 		stride: stride
 		format: format.
 
-	self
-		shouldnt: [[
-			surface newContext
-				sourceColorRGB: Color blue;
-				circleRadius: extent min / 2;
-				fill.
-			surface flush ] ensure: [
-				"The buffer must be destroyed after the surface."
-				surface externallyFree ]]
-		raise: Error
-
+	[	surface newContext
+			sourceColor: Color blue;
+			circleRadius: extent min / 2;
+			fill.
+		surface flush ] ensure: [
+			"The buffer must be destroyed after the surface."
+			surface externallyFree ]
 ]
 
 { #category : #tests }
@@ -108,18 +104,14 @@ AeCairoImageSurfaceTest >> testNewForFFIExternalArray [
 		stride: stride
 		format: format.
 
-	self
-		shouldnt: [[
-			surface newContext
-				sourceColorRGB: Color blue;
-				circleRadius: extent min / 2;
-				fill.
-			surface flush ] ensure: [
-				"The buffer must be destroyed after the surface."
-				surface externallyFree.
-				buffer free ]]
-		raise: Error
-
+	[	surface newContext
+			sourceColor: Color blue;
+			circleRadius: extent min / 2;
+			fill.
+		surface flush ] ensure: [
+			"The buffer must be destroyed after the surface."
+			surface externallyFree.
+			buffer free ]
 ]
 
 { #category : #tests }

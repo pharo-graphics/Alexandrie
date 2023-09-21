@@ -40,7 +40,7 @@ AeCairoA8FastGaussianBlurFilter class >> example1MultipleRadius [
 				extent: surfaceExtent
 				format: AeCairoSurfaceFormat a8.
 			aSurface newContext
-				sourceColorRGB: Color black;
+				sourceColor: Color black;
 				translateBy: (shadowGap/2) asPoint;
 				circleRadius: circleRadius;
 				fill.
@@ -70,7 +70,7 @@ AeCairoA8FastGaussianBlurFilter class >> example2MultiplePasses [
 			extent: surfaceExtent
 			format: AeCairoSurfaceFormat a8.
 		aSurface newContext
-			sourceColorRGB: Color black;
+			sourceColor: Color black;
 			lineWidth: blurRadius * 2;
 			lineTo: (shadowGap/2) asPoint;
 			relativeLineTo: lineLength asPoint;
@@ -112,7 +112,7 @@ AeCairoA8FastGaussianBlurFilter class >> example3Text [
 	aGlyphArray := aScaledFont glyphArrayForString: string.
 	shadowSurface newContext
 		translateByX: 5 y: fontSize;
-		sourceColorRGB: Color black;
+		sourceColor: Color black;
 		scaledFont: aScaledFont;
 		showGlyphs: aGlyphArray.
 	[ AeCairoA8FastGaussianBlurFilter new
@@ -130,16 +130,16 @@ AeCairoA8FastGaussianBlurFilter class >> example3Text [
 		  fileName: Time microsecondClockValue asString, '.pdf'."
 
 	mainSurface newContext
-		sourceColorRGB: Color white;
+		sourceColor: Color white;
 		paint;
 
-		sourceColorRGB: Color red darker;
+		sourceColor: Color red darker;
 		maskSurface: shadowSurface
 			x: shadowOffset x
 			y: shadowOffset y;
 
 		translateByX: 5 y: fontSize;
-		sourceColorRGB: Color blue muchDarker;
+		sourceColor: Color blue muchDarker;
 		scaledFont: aScaledFont;
 		showGlyphs: aGlyphArray.
 
@@ -159,7 +159,7 @@ AeCairoA8FastGaussianBlurFilter class >> example4RectangleStroke [
 		extent: (rectangleWidth + shadowGap) asPoint
 		format: AeCairoSurfaceFormat a8.
 	aSurface newContext
-		sourceColorRGB: Color black;
+		sourceColor: Color black;
 		rectangle: ((shadowGap/2) asPoint extent: rectangleWidth asPoint);
 		stroke.
 	aSurface flush.
@@ -183,7 +183,7 @@ AeCairoA8FastGaussianBlurFilter class >> example5DottedCircle [
 		extent: (circleRadius*2 + shadowGap) asPoint
 		format: AeCairoSurfaceFormat a8.
 	aSurface newContext
-		sourceColorRGB: Color black;
+		sourceColor: Color black;
 		translateBy: (shadowGap/2) asPoint;
 		lineWidth: 10;
 		lineCap: AeCairoCapStyle square;

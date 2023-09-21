@@ -16,7 +16,7 @@ AeCairoRecordingSurfaceTest >> testInkExtentsInBoundedSurface [
 			bounds: (AeCairoRectangle origin: aRectangle origin extent: aRectangle extent).
 
 	aRecordingSurface newContext
-		sourceColorRGB: Color cyan;
+		sourceColor: Color cyan;
 		rectangle: aRectangle;
 		lineWidth: 10; 
 		stroke.
@@ -38,7 +38,7 @@ AeCairoRecordingSurfaceTest >> testInkExtentsInUnboundedSurface [
 			bounds: AeCairoRectangle null.
 
 	aRecordingSurface newContext
-		sourceColorRGB: Color cyan;
+		sourceColor: Color cyan;
 		rectangle: aRectangle;
 		lineWidth: 10; 
 		stroke.

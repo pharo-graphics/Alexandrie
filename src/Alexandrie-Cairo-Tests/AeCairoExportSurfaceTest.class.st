@@ -28,14 +28,14 @@ AeCairoExportSurfaceTest >> assertExportsToTarget [
 
 	"red rectangle"
 	aContext
-		sourceColorRGB: Color red;
+		sourceColor: Color red;
 		translateByX: 5 y: 5;
 		rectangle: (0 @ 0 corner: 20 @ 20);
 		fill.
 
 	"blue rectangle"
 	aContext
-		sourceColorRGB: Color blue;
+		sourceColor: Color blue;
 		translateByX: 5 y: 5;
 		rectangle: (0 @ 0 corner: 20 @ 20);
 		fill.

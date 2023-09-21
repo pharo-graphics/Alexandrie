@@ -52,7 +52,7 @@ AeShadowOfRectangleExample >> surfaceWithBoxBlurShadow [
 
 	shadowGap := blurRadius * 3/2.
 	shadowSurface newContext
-		sourceColorRGB: Color black;
+		sourceColor: Color black;
 		translateBy: shadowGap asPoint;
 		rectangleTo: aRectangle extent;
 		fill.
@@ -67,16 +67,16 @@ AeShadowOfRectangleExample >> surfaceWithBoxBlurShadow [
 		  format: AeCairoSurfaceFormat argb32.
 
 	mainSurface newContext
-		sourceColorRGB: Color white;
+		sourceColor: Color white;
 		paint;
 		translateBy: aRectangle origin;
 
-		sourceColorRGBA: shadowColor;
+		sourceColor: shadowColor;
 		maskSurface: shadowSurface
 			x: shadowOffset x - shadowGap
 			y: shadowOffset y - shadowGap;
 			
-		sourceColorRGB: rectangleSolidColor;
+		sourceColor: rectangleSolidColor;
 		rectangleTo: aRectangle extent;
 		fill.
 	
@@ -93,7 +93,7 @@ AeShadowOfRectangleExample >> surfaceWithGradientsShadow [
 	aContext := aSurface newContext.
 
 	aContext
-			sourceColorRGB: Color white;
+			sourceColor: Color white;
 			paint;
 			translateBy: shadowOffset.
 
@@ -107,13 +107,13 @@ AeShadowOfRectangleExample >> surfaceWithGradientsShadow [
 
 	aContext
 		rectangle: shadowRect;
-		sourceColorRGBA: shadowColor;
+		sourceColor: shadowColor;
 		fill.
 
 	aContext
 		translateBy: shadowOffset negated;
 		rectangle: aRectangle;
-		sourceColorRGB: rectangleSolidColor;
+		sourceColor: rectangleSolidColor;
 		fill.
 
 	^ aSurface

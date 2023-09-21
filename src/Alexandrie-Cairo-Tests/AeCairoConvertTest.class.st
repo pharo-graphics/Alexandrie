@@ -20,9 +20,9 @@ AeCairoConvertTest >> surfaceWithDeviceScaleAsARGB32ImageSurface [
 	aContext := aSurface newContext.
 
 	aContext
-		sourceColorRGB: Color blue;
+		sourceColor: Color blue;
 		paint;
-		sourceColorRGB: Color orange;
+		sourceColor: Color orange;
 		circleRadius: radius; 
 		fill.
 
@@ -45,7 +45,7 @@ AeCairoConvertTest >> surfaceWithDeviceScaleAsAlphaChannelGrayscaleImage [
 	aContext := aSurface newContext.
 
 	aContext
-		sourceColorRGB: Color green;
+		sourceColor: Color green;
 		circleRadius: radius; 
 		fill.
 

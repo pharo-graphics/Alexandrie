@@ -1619,17 +1619,25 @@ AeCairoContext >> sourceColorR: aRed g: aGreen b: aBlue a: anAlpha [
 { #category : #'API - source' }
 AeCairoContext >> sourceColorRGB: aColor [
 
-	self sourceColorR: aColor red g: aColor green b: aColor blue
+	self
+		deprecated: 'Please use #sourceColor: instead'
+		transformWith:
+			'`@receiver sourceColorRGB: `@arg' ->
+			'`@receiver sourceColor: `@arg'.
+
+	self sourceColor: aColor
 ]
 
 { #category : #'API - source' }
 AeCairoContext >> sourceColorRGBA: aColor [
 
 	self
-		sourceColorR: aColor red
-		g: aColor green
-		b: aColor blue
-		a: aColor alpha
+		deprecated: 'Please use #sourceColor: instead'
+		transformWith:
+			'`@receiver sourceColorRGBA: `@arg' ->
+			'`@receiver sourceColor: `@arg'.
+
+	self sourceColor: aColor
 ]
 
 { #category : #'API - source' }

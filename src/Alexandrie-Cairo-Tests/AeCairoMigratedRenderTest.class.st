@@ -109,9 +109,9 @@ AeCairoMigratedRenderTest >> surfaceWithFillAndStroke [
 
 	aContext
 		rectangle: (pad asPoint extent: size asPoint);
-		sourceColorRGB: Color blue;
+		sourceColor: Color blue;
 		fillPreserve;
-		sourceColorRGB: Color red;
+		sourceColor: Color red;
 		stroke.
 
 	aContext translateByX: size + (2 * pad) y: 0.
@@ -121,7 +121,7 @@ AeCairoMigratedRenderTest >> surfaceWithFillAndStroke [
 			y: pad + (size/2)
 			radius: size/2;
 		fillPreserve;
-		sourceColorRGB: Color blue;
+		sourceColor: Color blue;
 		stroke.
 
 	^ aSurface
@@ -210,7 +210,7 @@ AeCairoMigratedRenderTest >> surfaceWithFillAndStrokeAlphaAdd [
 
 					"Use DEST_OUT to subtract stroke from fill."
 					aContext
-						sourceColorRGB: Color black;
+						sourceColor: Color black;
 						operator: AeCairoOperator destOut;
 						strokePreserve.
 					
@@ -264,11 +264,11 @@ AeCairoMigratedRenderTest >> surfaceWithFillDisjoint [
 
 	"black background"
 	aContext
-		sourceColorRGB: Color black;
+		sourceColor: Color black;
 		paint.
 
 	"white rectangles"
-	aContext sourceColorRGB: Color white.
+	aContext sourceColor: Color white.
 
 	"fill with a set of rectangles that the rectangular tessellator
 	will not emit sorted."
@@ -296,10 +296,10 @@ AeCairoMigratedRenderTest >> surfaceWithFillEmpty [
 	aContext := aSurface newContext.
 
 	aContext
-		sourceColorRGB: Color blue;
+		sourceColor: Color blue;
 		paint.
 
-	aContext sourceColorRGB: Color red.
+	aContext sourceColor: Color red.
 	
 	"first drawn an ordinary empty path"
 	aContext restoreStateAfter: [
@@ -350,7 +350,7 @@ AeCairoMigratedRenderTest >> surfaceWithFillMissedStop [
 	aContext := aSurface newContext.
 
 	aContext
-		sourceColorRGB: Color red;
+		sourceColor: Color red;
 		translateByX: 1 y: 1.
 
 	aContext
@@ -457,7 +457,7 @@ AeCairoMigratedRenderTest >> surfaceWithGradientZeroStopsMask [
 	aSurface := self newSurfaceExtent: surfaceSize.
 	aContext := aSurface newContext.
 
-	aContext sourceColorRGB: Color red.
+	aContext sourceColor: Color red.
 
 	aLinearGradient :=
 		AeCairoLinearGradientPattern
@@ -488,14 +488,14 @@ AeCairoMigratedRenderTest >> surfaceWithGroupClip [
 	aContext := aSurface newContext.
 
 	aContext
-		sourceColorRGB: Color white;
+		sourceColor: Color white;
 		paint.
 
 	aContext
 		rectangle: (25@25 extent: surfaceSize);
 		clipPreserve;
 		pushGroup;
-		sourceColorRGB: Color blue;
+		sourceColor: Color blue;
 		fill;
 		rectangle: (0@0 extent: surfaceSize);
 		popGroupToSource;
@@ -504,7 +504,7 @@ AeCairoMigratedRenderTest >> surfaceWithGroupClip [
 	aContext
 		resetClip;
 		clipPreserve;
-		sourceColorRGBA: (Color red alpha: 0.5);
+		sourceColor: (Color red alpha: 0.5);
 		paint.
 
 	^ aSurface
@@ -522,7 +522,7 @@ AeCairoMigratedRenderTest >> surfaceWithGroupPaint [
 	aContext pushGroup.
 
 	aContext
-		sourceColorRGB: Color blue;
+		sourceColor: Color blue;
 		paint.
 
 	aContext
@@ -543,17 +543,17 @@ AeCairoMigratedRenderTest >> surfaceWithGroupUnaligned [
 	aContext := aSurface newContext.
 
 	aContext
-		sourceColorRGB: Color white;
+		sourceColor: Color white;
 		paint.
 
 	aContext
-		sourceColorRGB: Color red;
+		sourceColor: Color red;
 		circleCenterX: 12.5 y: 12.5 radius: 10.0;
 		fill.
 
 	aContext
 		pushGroup;
-		sourceColorRGB: Color blue;
+		sourceColor: Color blue;
 		circleCenterX: 12.5 y: 12.5 radius: 10.0;
 		fill;
 		popGroupToSource;
@@ -577,7 +577,7 @@ AeCairoMigratedRenderTest >> surfaceWithInvertedClip [
 
 	aContext
 		useFillRuleEvenOdd;
-		sourceColorRGB: Color green;
+		sourceColor: Color green;
 		arcCenterX: 50
 			centerY: 50
 			radius: 40
@@ -615,7 +615,7 @@ AeCairoMigratedRenderTest >> surfaceWithMeshPatternConical [
 	aContext := aSurface newContext.
 
 	aContext
-		sourceColorRGB: Color white;
+		sourceColor: Color white;
 		paint;
 		translateByX: pad y: pad.
 	
@@ -726,7 +726,7 @@ AeCairoMigratedRenderTest >> surfaceWithOutsideClipping [
 
 	aContext
 		operator: AeCairoOperator source;
-		sourceColorRGB: Color white;
+		sourceColor: Color white;
 		paint.
 
 	"Do two drawing passes, once clipped inside the region, then clipped outside.
@@ -749,7 +749,7 @@ AeCairoMigratedRenderTest >> surfaceWithOutsideClipping [
 				lineToX: size y: size;
 				closePath ].
 		aContext clip.
-		aContext sourceColorRGB: (isOutside
+		aContext sourceColor: (isOutside
 			ifTrue: [ Color orange ]
 			ifFalse: [Color green darker ]).
 		aContext

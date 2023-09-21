@@ -37,7 +37,7 @@ AeCairoRecordingSurfaceRenderTest >> surfaceWithBounds [
 			newContentType: AeCairoContent colorAndAlpha
 			bounds: (AeCairoRectangle origin: aRectangle origin extent: aRectangle extent).
 	aRecordingSurface newContext
-		sourceColorRGBA: (Color cyan alpha: 0.8);
+		sourceColor: (Color cyan alpha: 0.8);
 		rectangle: aRectangle;
 		lineWidth: 10; 
 		stroke.
@@ -48,7 +48,7 @@ AeCairoRecordingSurfaceRenderTest >> surfaceWithBounds [
 		format: AeCairoSurfaceFormat argb32.
 
 	targetSurface newContext
-		sourceColorRGB: Color blue;
+		sourceColor: Color blue;
 		paint;
 
 		"Draw a rectangle with the recorded surface"
@@ -81,7 +81,7 @@ AeCairoRecordingSurfaceRenderTest >> surfaceWithNoBounds [
 			newContentType: AeCairoContent colorAndAlpha
 			bounds: AeCairoRectangle null.
 	aRecordingSurface newContext
-		sourceColorRGBA: (Color cyan alpha: 0.8);
+		sourceColor: (Color cyan alpha: 0.8);
 		rectangle: aRectangle;
 		lineWidth: 10; 
 		stroke.
@@ -92,7 +92,7 @@ AeCairoRecordingSurfaceRenderTest >> surfaceWithNoBounds [
 		format: AeCairoSurfaceFormat argb32.
 
 	targetSurface newContext
-		sourceColorRGB: Color blue;
+		sourceColor: Color blue;
 		paint;
 
 		"Draw a rectangle with the recorded surface.

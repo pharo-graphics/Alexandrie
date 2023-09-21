@@ -850,7 +850,7 @@ AeCanvas >> setSourceSolidColor: aColor [
 { #category : #'API - source' }
 AeCanvas >> setSourceTranslucentColor: aColor [
 
-	cairoContext sourceColorRGBA: aColor
+	cairoContext sourceColor: aColor
 
 ]
 

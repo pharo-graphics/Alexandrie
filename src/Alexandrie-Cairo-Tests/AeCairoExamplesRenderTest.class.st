@@ -56,13 +56,13 @@ AeCairoExamplesRenderTest >> surfaceWithAllOperators [
 			"First rectangle"
 			aContext
 				rectangle: (0@0 extent: rectangleExtent);
-				sourceColorRGBA: (Color red alpha: 0.6);
+				sourceColor: (Color red alpha: 0.6);
 				fill.
 
 			"Second"
 			aContext
 				rectangle: (rectangleOffset extent: rectangleExtent);
-				sourceColorRGBA: (Color blue alpha: 0.6);
+				sourceColor: (Color blue alpha: 0.6);
 				operator: eachOperator;
 				fill.
 
@@ -70,7 +70,7 @@ AeCairoExamplesRenderTest >> surfaceWithAllOperators [
 			aContext
 				translateByX: rectangleOffset x + rectangleExtent x + margin
 					y: fontSize;
-				sourceColorRGB: Color black;
+				sourceColor: Color black;
 				setOperatorOver;
 				showText: eachOperator item asString ].
 
@@ -99,7 +99,7 @@ AeCairoExamplesRenderTest >> surfaceWithColoredIcons [
 	outputColors
 	    do: [ :eachColor |
 	        outputContext
-	            sourceColorRGBA: eachColor;
+	            sourceColor: eachColor;
 	            maskSurface: inputSurface x: 0 y: 0 ]
 	    separatedBy: [
 	        outputContext
@@ -126,16 +126,16 @@ AeCairoExamplesRenderTest >> surfaceWithDeviceOffset [
 
 	aSurface newContext
 		" clear background "
-		sourceColorRGB: Color yellow;
+		sourceColor: Color yellow;
 		paint;
 
 		" mark 0@0 "
-		sourceColorRGB: Color black;
+		sourceColor: Color black;
 		rectangleTo: 1 asPoint;
 		fill;
 
 		" draw a square "
-		sourceColorRGB: Color blue;
+		sourceColor: Color blue;
 		rectangle: aSquare;
 		fill.
 
@@ -164,17 +164,17 @@ AeCairoExamplesRenderTest >> surfaceWithDeviceScale [
 
 	aSurface newContext
 		" clear background "
-		sourceColorRGB: Color yellow;
+		sourceColor: Color yellow;
 		paint;
 
 		" mark 0@0 "
-		sourceColorRGB: Color black;
+		sourceColor: Color black;
 		rectangleTo: 1 asPoint;
 		fill;
 
 		" draw square (that won't look as a square due
 		to device scale)"
-		sourceColorRGB: Color blue;
+		sourceColor: Color blue;
 		rectangle: aSquare;
 		fill.
 
@@ -213,7 +213,7 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 
 	"paint background"
 	aContext
-		sourceColorRGB: Color yellow;
+		sourceColor: Color yellow;
 		paint.
 
 	"set a circle as path"
@@ -225,7 +225,7 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 
 	"stroke with black squared dots"
 	aContext
-		sourceColorRGB: Color black;
+		sourceColor: Color black;
 		lineCap: AeCairoCapStyle square;
 		lineWidth: lineWidth;
 		strokePreserve.
@@ -234,7 +234,7 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 
 	"stroke with green circle dots"
 	aContext
-		sourceColorRGB: Color green;
+		sourceColor: Color green;
 		lineWidth: lineWidth/1.5;
 		lineCap: AeCairoCapStyle round;
 		strokePreserve.
@@ -242,7 +242,7 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 
 	"stroke red without dashes"
 	aContext
-		sourceColorRGB: Color red;
+		sourceColor: Color red;
 		lineWidth: 1;
 		dashDisable;
 		stroke.
@@ -262,7 +262,7 @@ AeCairoExamplesRenderTest >> surfaceWithEmulatedRadialGradient [
 	
 	context
 		pushGroupWithContent: AeCairoContent alphaOnly;
-		sourceColorRGBA: (Color black alpha: 0.25).
+		sourceColor: (Color black alpha: 0.25).
 	(2 to: 10 by: 2) do: [ :radius |
 		context
 			circleCenterX: 10 y: 10 radius: radius;
@@ -270,9 +270,9 @@ AeCairoExamplesRenderTest >> surfaceWithEmulatedRadialGradient [
 	aPattern := context popGroupAsSurfacePattern.
 	
 	context
-		sourceColorRGB: Color white;
+		sourceColor: Color white;
 		paint;
-		sourceColorRGB: Color blue;
+		sourceColor: Color blue;
 		mask: aPattern.
 
 	^ aSurface
@@ -292,7 +292,7 @@ AeCairoExamplesRenderTest >> surfaceWithRoundedRectangle [
 	aContext := aSurface newContext.
 	
 	aContext
-		sourceColorRGB: Color orange;
+		sourceColor: Color orange;
 		paint.
 	
 	aContext
@@ -307,7 +307,7 @@ AeCairoExamplesRenderTest >> surfaceWithRoundedRectangle [
 
 	aContext
 		lineWidth: 10;
-		sourceColorRGBA: (Color blue alpha: 0.5);
+		sourceColor: (Color blue alpha: 0.5);
 		stroke.
 
 	^ aSurface
@@ -348,17 +348,17 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedBuffered [
 
 	mainSurface := AeCairoImageSurface
 		extent: extent
-		format: AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32.
+		format: AeCairoSurfaceFormat argb32.
 	mainContext := mainSurface newContext.
 
 	"draw background"
 	mainContext
-		sourceColorRGB: Color yellow;
+		sourceColor: Color yellow;
 		paint.
 
 	"draw shadow"
 	mainContext
-		sourceColorRGBA: (shadowColor alpha: shadowAlpha);
+		sourceColor: (shadowColor alpha: shadowAlpha);
 		maskSurface: aShadowSurface
 			x: shadowSize - shadowOffset x
 			y: shadowSize - shadowOffset y.
@@ -366,7 +366,7 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedBuffered [
 	"draw circle"
 	mainContext
 		translateBy: position;
-		sourceColorRGBA: Color green;
+		sourceColor: Color green;
 		circleRadius: radius;
 		fill.
 
@@ -395,7 +395,7 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedDirect [
 
 	"draw background"
 	mainContext
-		sourceColorRGB: Color yellow;
+		sourceColor: Color yellow;
 		paint.
 
 	"draw shadow"
@@ -415,7 +415,7 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedDirect [
 	"draw circle"
 	mainContext
 		translateBy: position;
-		sourceColorRGBA: Color green;
+		sourceColor: Color green;
 		circleRadius: radius;
 		fill.
 
@@ -439,7 +439,7 @@ AeCairoExamplesRenderTest >> surfaceWithSphere [
 
 	"paint background"
 	aContext
-		sourceColorRGB: Color blue muchDarker;
+		sourceColor: Color blue muchDarker;
 		paint.
 
 	"draw sphere"
@@ -476,11 +476,11 @@ AeCairoExamplesRenderTest >> surfaceWithStraightEdgesCurve [
 
 	"paint background"
 	aContext
-		sourceColorRGB: Color black;
+		sourceColor: Color black;
 		paint.
 
 	aContext
-		sourceColorRGB: Color white;
+		sourceColor: Color white;
 		lineWidth: lineWidth;
 		cubicCurveFrom: startPoint
 			controlPoint1: startPoint + (0 @ 35.4)
@@ -513,7 +513,7 @@ AeCairoExamplesRenderTest >> surfaceWithStretchedIcon [
 	
 	"Paint background"
 	aContext
-		sourceColorRGB: Color orange;
+		sourceColor: Color orange;
 		paint.
 
 	"Draw a the icon"
@@ -548,10 +548,10 @@ AeCairoExamplesRenderTest >> surfaceWithText [
 
 	"Draw glyphs"
 	aContext
-		sourceColorRGB: Color paleGreen;
+		sourceColor: Color paleGreen;
 		paint;
 		translateByX: 5 y: fontSize;
-		sourceColorRGB: Color blue;
+		sourceColor: Color blue;
 		scaledFont: aScaledFont;
 		showGlyphs: (aScaledFont glyphArrayForString: ''); "Draws nothing"
 		showGlyphs: (aScaledFont glyphArrayForString: string).
@@ -583,7 +583,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
 
 	"Add glyphs to path"
 	aContext
-		sourceColorRGB: Color paleGreen;
+		sourceColor: Color paleGreen;
 		paint;
 		translateByX: 4 y: fontSize;
 		scaledFont: aScaledFont;
@@ -591,7 +591,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
 
 	"Draw dashed stroke (border)"
 	aContext
-		sourceColorRGB: Color blue;
+		sourceColor: Color blue;
 		dash: (AeCairoDoubleArray newFrom: { 7. 1 }) offset: 3;
 		lineWidth: 1.5;
 		stroke.
@@ -637,7 +637,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 	aPattern := aContext
 		pushGroup;
 			translateByX: 2 y: fontSize;
-			sourceColorRGB: Color blue;
+			sourceColor: Color blue;
 			scaledFont: aScaledFont;
 			showGlyphs: aGlyphArray;
 		popGroupAsSurfacePattern.
@@ -646,7 +646,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 		matrix: (AeCairoMatrix newScalingBy: (1.0/zoom) asPoint).
 
 	aContext
-		sourceColorRGB: Color paleGreen;
+		sourceColor: Color paleGreen;
 		paint;
 		source: aPattern;
 		paint.
@@ -682,10 +682,10 @@ AeCairoExamplesRenderTest >> surfaceWithToyAPIAndSelectFont [
 		translateByX: 2 y: fontSize;
 		appendTextPath: string;
 		lineWidth: 3;
-		sourceColorRGB: Color white;
+		sourceColor: Color white;
 		useLineJoinRound; 
 		strokePreserve;
-		sourceColorRGB: Color purple;
+		sourceColor: Color purple;
 		fill.
 
 	^ aSurface
@@ -718,7 +718,7 @@ AeCairoExamplesRenderTest >> surfaceWithToyAPIAndSetFaceFont [
 		fontFace: aFontFace;
 		fontSize: fontSize;
 		fontOptions: aFontOptions;
-		sourceColorRGB: Color white;
+		sourceColor: Color white;
 		showText: string.
 
 	^ aSurface
