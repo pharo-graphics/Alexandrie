@@ -218,32 +218,40 @@ AeCairoImageSurface >> asFormA8 [
 
 { #category : #converting }
 AeCairoImageSurface >> asFormARGB32 [
-	"Answer myself converted as a 32-bits Form. Loseless conversion.
+	"Answer myself converted as a 32-bits Form, which means converting pixels from premultiplied-alpha to straight-alpha.
 
 	Assumes:
 		self format = AeCairoSurfaceFormat CAIRO_FORMAT_ARGB32
 	"
 
-	| uint32Size theData |
-	self flush.
+	| aSizeInWords theData |
+	aSizeInWords := self byteSize >> 2.
 	
-	uint32Size := self byteSize.
-	
-	uint32Size = 0 ifTrue: [ 
+	aSizeInWords = 0 ifTrue: [ 
 		^ Form
 			extent: self extent
 			depth: 32 ].
 	
+	self flush.
+
 	theData := FFIExternalArray
-		fromHandle: self data getHandle
+		fromHandle: self data
 		type: FFIUInt32
-		size: uint32Size / 4.
+		size: aSizeInWords.
 
 	^ Form
 		extent: self extent
 		depth: 32
-		bits: (Bitmap newFrom: theData)
-
+		bits: (Bitmap new: aSizeInWords streamContents: [ :stream |
+			theData do: [ :pixel |
+				| alphaByte alpha a r g b |
+				alphaByte := pixel >> 24.
+				alpha := alphaByte / 255.0.
+				a := pixel bitAnd: 16rFF000000.
+				r := ( (pixel       bitAnd: 255) / alpha ) asInteger.
+				g := ( (pixel >> 8  bitAnd: 255) / alpha ) asInteger << 8.
+				b := ( (pixel >> 16 bitAnd: 255) / alpha ) asInteger << 16.
+				stream nextPut: a + r + g + b ] ])
 ]
 
 { #category : #API }
