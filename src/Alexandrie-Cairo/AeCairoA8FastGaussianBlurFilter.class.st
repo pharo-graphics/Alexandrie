@@ -314,12 +314,11 @@ AeCairoA8FastGaussianBlurFilter >> boxBlurTFrom: scl to: tcl boxRadius: r [
 AeCairoA8FastGaussianBlurFilter >> prepareBuffers [
 
 	surfaceBuffer := FFIExternalArray
-		fromHandle: surface data getHandle
+		fromHandle: surface data
 		type: FFIUInt8
 		size: surface byteSize.
-	bufferA := ByteArray withAll: surfaceBuffer. 
-	bufferB := ByteArray new: surfaceBuffer size.
-
+	bufferA := ByteArray withAll: surfaceBuffer.
+	bufferB := ByteArray new: surfaceBuffer size
 
 ]
 
