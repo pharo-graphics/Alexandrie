@@ -30,29 +30,35 @@ AeCairoImageSurface class >> extent: anExtent format: aSurfaceFormat [
 
 { #category : #'instance creation' }
 AeCairoImageSurface class >> fromForm: aForm [
+	"Answer a new surface with argb32 format, by converting the received `Form`.
+	
+	See: https://www.cairographics.org/manual/cairo-Image-Surfaces.html#cairo-format-t"
 
-	| form aSurface newBits |
-	form := aForm unhibernate; asFormOfDepth: 32.
-
+	| form aSurface dataHandle |
 	aSurface := self
 		extent: aForm extent
 		format: AeCairoSurfaceFormat argb32.
-	
-	"Convert form bits with premultiplied alpha"
-	newBits := form bits collect: [ :pixel |
-		| alpha r g b |
-		alpha := (pixel >> 24) / 255.
-		
-		r := ( (pixel bitAnd: 255) * alpha ) asInteger.
-		g := ( (pixel >>8 bitAnd: 255) * alpha ) asInteger.
-		b := ( (pixel >>16 bitAnd: 255) * alpha ) asInteger.
-		
-		(pixel bitAnd: 16rFF000000) + (b<<16) + (g<<8) + r ].
-	
-	LibC
-		memCopy: newBits
-		to: aSurface data getHandle
-		size: (form width * form height * 4).
+	dataHandle := aSurface data.
+
+	"Received form may be hibernated"
+	aForm unhibernate.
+
+	"Ensure we are working on 32-bits (Note: it may answer same instance)"
+	form := aForm asFormOfDepth: 32.
+
+	"Convert Form bits to premultiplied alpha"
+	form bits withIndexDo: [ :pixel :oneBasedPixelIndex |
+		| alphaByte alpha zeroBasedSurfaceIndex a r g b |
+		alphaByte := pixel >> 24.
+		alpha := alphaByte / 255.0.
+		zeroBasedSurfaceIndex := (oneBasedPixelIndex - 1) * 4.
+		a := pixel bitAnd: 16rFF000000.
+		r := ( (pixel       bitAnd: 255) * alpha ) asInteger.
+		g := ( (pixel >> 8  bitAnd: 255) * alpha ) asInteger << 8.
+		b := ( (pixel >> 16 bitAnd: 255) * alpha ) asInteger << 16.
+		dataHandle
+			uint32AtOffset: zeroBasedSurfaceIndex
+			put: a + r + g + b ].
 	
 	^ aSurface
 		markDirty;
