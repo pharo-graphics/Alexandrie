@@ -585,7 +585,7 @@ AeCairoExamplesRenderTest >> surfaceWithStretchedIcon [
 	^ aSurface
 ]
 
-{ #category : #tests }
+{ #category : #'tests - text' }
 AeCairoExamplesRenderTest >> surfaceWithText [
 
 	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aFontFace aScaledFont |
@@ -620,7 +620,7 @@ AeCairoExamplesRenderTest >> surfaceWithText [
 	^ aSurface
 ]
 
-{ #category : #tests }
+{ #category : #'tests - text' }
 AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
 
 	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aFontFace aScaledFont |
@@ -660,7 +660,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
 	^ aSurface
 ]
 
-{ #category : #tests }
+{ #category : #'tests - text' }
 AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 	"The trick is: 
 	- Create special font options with full hinting and without anti-aliasing
@@ -715,7 +715,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 	^ aSurface
 ]
 
-{ #category : #tests }
+{ #category : #'tests - text' }
 AeCairoExamplesRenderTest >> surfaceWithToyAPIAndSelectFont [
 
 	| string fontSize aSurface aContext aFontOptions |
@@ -752,7 +752,7 @@ AeCairoExamplesRenderTest >> surfaceWithToyAPIAndSelectFont [
 	^ aSurface
 ]
 
-{ #category : #tests }
+{ #category : #'tests - text' }
 AeCairoExamplesRenderTest >> surfaceWithToyAPIAndSetFaceFont [
 
 	| string fontSize aSurface aContext aFTLibrary aFTFace aFontFace aFontOptions |
