@@ -18,7 +18,7 @@ Class {
 
 { #category : #convenience }
 AeCairoMigratedRenderTest class >> exportAll [
-	<script: 'self exportAll' >
+	<script: 'super exportAll' >
 
 	super exportAll
 ]
@@ -26,12 +26,15 @@ AeCairoMigratedRenderTest class >> exportAll [
 { #category : #convenience }
 AeCairoMigratedRenderTest class >> inspectAll [
 	<script: 'super inspectAll'>
-
+	
+	super inspectAll
 ]
 
 { #category : #convenience }
 AeCairoMigratedRenderTest class >> inspectMismatches [
-	<script: 'super inspectMismatches' >
+	<script: 'super inspectMismatches'>
+	
+	super inspectMismatches
 ]
 
 { #category : #private }

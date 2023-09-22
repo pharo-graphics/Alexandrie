@@ -20,7 +20,7 @@ AeCanvasTest class >> allFormSelectors [
 
 { #category : #convenience }
 AeCanvasTest class >> exportAll [
-	<script: 'self exportAll' >
+	<script: 'super exportAll' >
 
 	super exportAll
 ]
@@ -28,11 +28,15 @@ AeCanvasTest class >> exportAll [
 { #category : #convenience }
 AeCanvasTest class >> inspectAll [
 	<script: 'super inspectAll'>
+	
+	super inspectAll
 ]
 
 { #category : #convenience }
 AeCanvasTest class >> inspectMismatches [
-	<script: 'super inspectMismatches' >
+	<script: 'super inspectMismatches'>
+	
+	super inspectMismatches
 ]
 
 { #category : #private }

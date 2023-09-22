@@ -14,11 +14,15 @@ AeCairoExamplesRenderTest class >> exportAll [
 { #category : #convenience }
 AeCairoExamplesRenderTest class >> inspectAll [
 	<script: 'super inspectAll'>
+	
+	super inspectAll
 ]
 
 { #category : #convenience }
 AeCairoExamplesRenderTest class >> inspectMismatches [
-	<script: 'super inspectMismatches' >
+	<script: 'super inspectMismatches'>
+	
+	super inspectMismatches
 ]
 
 { #category : #tests }

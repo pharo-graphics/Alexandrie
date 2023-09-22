@@ -8,17 +8,21 @@ Class {
 AeCairoRecordingSurfaceRenderTest class >> exportAll [
 	<script: 'super exportAll' >
 
+	super exportAll
 ]
 
 { #category : #convenience }
 AeCairoRecordingSurfaceRenderTest class >> inspectAll [
 	<script: 'super inspectAll'>
+	
+	super inspectAll
 ]
 
 { #category : #convenience }
 AeCairoRecordingSurfaceRenderTest class >> inspectMismatches [
-	<script: 'super inspectMismatches' >
-
+	<script: 'super inspectMismatches'>
+	
+	super inspectMismatches
 ]
 
 { #category : #tests }
