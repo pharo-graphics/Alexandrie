@@ -18,13 +18,6 @@ AeCairoPattern class >> externallyFree: aHandle [
 	self ffiCall: #( void cairo_pattern_destroy ( void * aHandle ) )
 ]
 
-{ #category : #'instance creation' }
-AeCairoPattern class >> new [
-	"Instance are created via FFI, with specialized class side methods of each subclass."
-
-	^ self shouldNotImplement
-]
-
 { #category : #API }
 AeCairoPattern >> extend: anExtendMode [
 	"Sets the mode to be used for drawing outside the area of a pattern. See cairo_extend_t for details on the semantics of each extend strategy.

@@ -21,6 +21,13 @@ AeTExternalFree classSide >> finalizeResourceData: aHandle [
 ]
 
 { #category : #finalization }
+AeTExternalFree classSide >> new [
+	"Answer a new instance, that has an external resource associated."
+
+	^ self error: 'Create instances via specialized API'
+]
+
+{ #category : #finalization }
 AeTExternalFree >> autoRelease [
 	"Add to finalization system so GC frees me when there are no more references.
 	

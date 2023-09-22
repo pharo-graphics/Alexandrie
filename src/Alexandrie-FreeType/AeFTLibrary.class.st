@@ -33,12 +33,13 @@ AeFTLibrary class >> newInitialized [
 	aPointer := ExternalAddress new.
 
 	errorCode := self unownedNewInitializedOn: aPointer.
+	errorCode = 0 ifFalse: [
+		AeFreeTypeError signalForCode: errorCode ].
 
-	errorCode = 0 ifFalse: [ AeFreeTypeError signalForCode: errorCode ].
-
-	^ (self fromHandle: aPointer)
-		  autoRelease;
-		  yourself
+	^ self basicNew
+		setHandle: aPointer;
+		autoRelease;
+		yourself
 ]
 
 { #category : #'instance creation' }
