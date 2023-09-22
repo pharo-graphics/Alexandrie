@@ -340,6 +340,45 @@ AeCairoExamplesRenderTest >> surfaceWithGouraudBasedTriangle [
 ]
 
 { #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithPixelatedIcon [
+
+	| iconForm iconSurface iconPattern scale aSurface aContext |
+	iconForm := Smalltalk ui icons iconNamed: #removeIcon.
+	iconSurface := AeCairoImageSurface fromForm: iconForm.
+	iconPattern := AeCairoSurfacePattern surface: iconSurface.
+	scale := 5.0.
+
+	"Create a surface with yellow background"
+	aSurface := AeCairoImageSurface
+		            extent: (iconForm width * scale) asInteger * 2
+							@ (iconForm height * scale) asInteger
+		            format: AeCairoSurfaceFormat rgb24.
+	aContext := aSurface newContext.
+	aContext
+		sourceColor: Color yellow;
+		paint.
+
+	"Draw a pixelated icon"
+	iconPattern filter: AeCairoSamplingFilter nearest.
+	aContext
+		scaleByX: scale y: scale;
+		source: iconPattern;
+		rectangleTo: iconForm extent * scale;
+		fill.
+
+	"Draw a blurred icon"
+	iconPattern
+		filter: AeCairoSamplingFilter bilinear;
+		matrix: (AeCairoMatrix newTranslationByX: iconForm width negated y: 0).
+	aContext
+		translateByX: iconForm width y: 0;
+		rectangleTo: iconForm extent;
+		fill.
+
+	^ aSurface
+]
+
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithRoundedRectangle [
 
 	| extent aSurface aContext aRectangle |
