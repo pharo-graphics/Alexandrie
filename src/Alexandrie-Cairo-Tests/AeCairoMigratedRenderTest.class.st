@@ -619,7 +619,7 @@ AeCairoMigratedRenderTest >> surfaceWithMeshPatternConical [
 		paint;
 		translateByX: pad y: pad.
 	
-	aMesh := AeCairoMeshPattern newEmpty.
+	aMesh := AeCairoMeshPattern new.
 
 	{{ 0.0         -> Color red.
 		Float pi/4  -> Color yellow }.
@@ -687,7 +687,7 @@ AeCairoMigratedRenderTest >> surfaceWithMeshPatternOverlap [
 	self drawTestPaintCheckeredOn: aContext.
 	aContext translateByX: pad y: pad.
 	
-	aMesh := AeCairoMeshPattern newEmpty.
+	aMesh := AeCairoMeshPattern new.
 	aMesh beginPatch.
 	
 	aMesh

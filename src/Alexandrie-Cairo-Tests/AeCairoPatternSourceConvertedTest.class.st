@@ -33,7 +33,7 @@ AeCairoPatternSourceConvertedTest >> testMesh [
 	surface := AeCairoImageSurface extent: 100 @ 100.
 	context := surface newContext.
 	
-	meshPattern := AeCairoMeshPattern newEmpty.
+	meshPattern := AeCairoMeshPattern new.
 	context source: meshPattern.
 	
 	self

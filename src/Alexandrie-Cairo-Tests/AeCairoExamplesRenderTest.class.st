@@ -109,6 +109,39 @@ AeCairoExamplesRenderTest >> surfaceWithColoredIcons [
 	^ outputSurface
 ]
 
+{ #category : #'tests - mesh gradient' }
+AeCairoExamplesRenderTest >> surfaceWithCoonsPatch [
+	"See: https://blogs.igalia.com/dpino/2020/06/11/renderization-of-conic-gradients/"
+
+	| aSurface aContext aMeshPattern |
+	aSurface := AeCairoImageSurface extent: 150 @ 110.
+	aContext := aSurface newContext.
+
+	aMeshPattern := AeCairoMeshPattern new.
+	aMeshPattern
+		beginPatch;
+		moveTo: 45 @ 12;
+		curveVia: 69 @ 24 via: 173 @ -15 to: 115 @ 50;
+		curveVia: 127 @ 66 via: 174 @ 47 to: 148 @ 104;
+		curveVia: 65 @ 58 via: 70 @ 69 to: 18 @ 103;
+		curveVia: 42 @ 43 via: 63 @ 45 to: 45 @ 12;
+		cornerColors: {
+			Color red.
+			Color green.
+			Color blue.
+			Color red alpha: 0.5 };
+		endPatch.
+
+	aContext
+		sourceColor: Color yellow;
+		paint;
+		translateByX: -15 y: 0;
+		source: aMeshPattern;
+		paint.
+
+	^ aSurface
+]
+
 { #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithDeviceOffset [
 
@@ -274,6 +307,34 @@ AeCairoExamplesRenderTest >> surfaceWithEmulatedRadialGradient [
 		paint;
 		sourceColor: Color blue;
 		mask: aPattern.
+
+	^ aSurface
+]
+
+{ #category : #'tests - mesh gradient' }
+AeCairoExamplesRenderTest >> surfaceWithGouraudBasedTriangle [
+
+	| aSurface aContext aMeshPattern |
+	aSurface := AeCairoImageSurface extent: 100 @ 100.
+	aContext := aSurface newContext.
+
+	aMeshPattern := AeCairoMeshPattern new.
+	aMeshPattern
+		beginPatch;
+		moveTo: 50 @ 0;
+		lineTo: 100 @ 100;
+		lineTo: 0 @ 100;
+		cornerColors: {
+			Color red alpha: 0.5.
+			Color green.
+			Color blue };
+		endPatch.
+
+	aContext
+		sourceColor: Color yellow;
+		paint;
+		source: aMeshPattern;
+		paint.
 
 	^ aSurface
 ]

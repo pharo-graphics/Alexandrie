@@ -14,15 +14,15 @@ Class {
 }
 
 { #category : #'instance creation' }
-AeCairoMeshPattern class >> newEmpty [
+AeCairoMeshPattern class >> new [
 
-	^ self unownedNewEmpty
+	^ self unownedNew
 		autoRelease;
 		yourself
 ]
 
 { #category : #'instance creation' }
-AeCairoMeshPattern class >> unownedNewEmpty [
+AeCairoMeshPattern class >> unownedNew [
 	"See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-create-mesh"
 	
 	^ self ffiCall: #(
@@ -32,7 +32,9 @@ AeCairoMeshPattern class >> unownedNewEmpty [
 
 { #category : #'begin/end' }
 AeCairoMeshPattern >> beginPatch [
-	"See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-begin-patch"
+	"Begin a patch in a mesh pattern.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-begin-patch"
 
 	self ffiCall: #(
 		void
@@ -40,20 +42,28 @@ AeCairoMeshPattern >> beginPatch [
 ]
 
 { #category : #color }
-AeCairoMeshPattern >> cornerAt: index putColorRGB: aColor [
+AeCairoMeshPattern >> cornerAt: zeroBasedIndex putColor: aColor [
+
+	aColor isTranslucent
+		ifTrue: [ self cornerAt: zeroBasedIndex putColorRGBA: aColor ]
+		ifFalse: [ self cornerAt: zeroBasedIndex putColorRGB: aColor ]
+]
+
+{ #category : #color }
+AeCairoMeshPattern >> cornerAt: zeroBasedIndex putColorRGB: aColor [
 
 	self
-		cornerAt: index
+		cornerAt: zeroBasedIndex
 		putR: aColor red
 		g: aColor green
 		b: aColor blue
 ]
 
 { #category : #color }
-AeCairoMeshPattern >> cornerAt: index putColorRGBA: aColor [
+AeCairoMeshPattern >> cornerAt: zeroBasedIndex putColorRGBA: aColor [
 
 	self
-		cornerAt: index
+		cornerAt: zeroBasedIndex
 		putR: aColor red
 		g: aColor green
 		b: aColor blue
@@ -61,32 +71,39 @@ AeCairoMeshPattern >> cornerAt: index putColorRGBA: aColor [
 ]
 
 { #category : #color }
-AeCairoMeshPattern >> cornerAt: index putR: r g: g b: b [ 
+AeCairoMeshPattern >> cornerAt: zeroBasedIndex putR: r g: g b: b [ 
 	"See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-set-corner-color-rgb"
 	
 	self ffiCall: #(
 		void
 		cairo_mesh_pattern_set_corner_color_rgb (
 			self,
-			uint index,
+			uint zeroBasedIndex,
 			double r,
 			double g,
 			double b ) )
 ]
 
 { #category : #color }
-AeCairoMeshPattern >> cornerAt: index putR: r g: g b: b a: a [
+AeCairoMeshPattern >> cornerAt: zeroBasedIndex putR: r g: g b: b a: a [
 	"See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-set-corner-color-rgba"
 	
 	self ffiCall: #(
 		void
 		cairo_mesh_pattern_set_corner_color_rgba (
 			self,
-			uint index,
+			uint zeroBasedIndex,
 			double r,
 			double g,
 			double b,
 			double a ) )
+]
+
+{ #category : #color }
+AeCairoMeshPattern >> cornerColors: aSequenceOfColors [
+
+	aSequenceOfColors doWithIndex: [ :aColor :aOneBasedIndex |
+		self cornerAt: aOneBasedIndex - 1 putColor: aColor ]
 ]
 
 { #category : #path }
@@ -116,7 +133,9 @@ AeCairoMeshPattern >> curveViaX: x1 y: y1 viaX: x2 y: y2 toX: x3 y: y3 [
 
 { #category : #'begin/end' }
 AeCairoMeshPattern >> endPatch [
-	"See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-end-patch"
+	"End the current patch in this mesh pattern.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-end-patch"
 
 	self ffiCall: #(
 		void
@@ -132,7 +151,11 @@ AeCairoMeshPattern >> lineTo: aPoint [
 
 { #category : #path }
 AeCairoMeshPattern >> lineToX: x y: y [
-	"See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-line-to"
+	"Add a line to the current patch from the current point to the indicated position, in pattern-space coordinates.
+
+	If there is no current point in the patch, this function will behave as a move.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-line-to"
 
 	self ffiCall: #(
 		void
@@ -150,7 +173,9 @@ AeCairoMeshPattern >> moveTo: aPoint [
 
 { #category : #path }
 AeCairoMeshPattern >> moveToX: x y: y [
-	"See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-move-to"
+	"Define the first point of the current patch in a mesh pattern.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-mesh-pattern-move-to"
 
 	self ffiCall: #(
 		void
