@@ -104,6 +104,12 @@ AeCanvas >> clearTransparent [
 	cairoContext clearTransparent
 ]
 
+{ #category : #accessing }
+AeCanvas >> deviceScale [
+
+	^ cairoSurface deviceScale
+]
+
 { #category : #'API - draw' }
 AeCanvas >> drawFigure [
 
@@ -218,7 +224,7 @@ AeCanvas >> drawFigureWithBorderOutsideAndNoBackground [
 
 	self preparePath.
 
-	self paintGroupWith: [ 
+	cairoContext paintGroupWith: [ 
 		
 		"Paint border with double width"
 		self prepareStrokeWithDoubledWidth.
@@ -264,7 +270,7 @@ AeCanvas >> drawFigureWithBorderOutsideAndTranslucentBackground [
 
 	self preparePath.
 
-	self paintGroupWith: [
+	cairoContext paintGroupWith: [
 		
 		"Paint border with double width"
 		self prepareStrokeWithDoubledWidth.
@@ -433,6 +439,15 @@ AeCanvas >> maskGroupWith: aBlockClosure [
 	cairoContext maskGroupWith: aBlockClosure
 ]
 
+{ #category : #'API - painting' }
+AeCanvas >> maskSurface: aSurface x: surfaceX y: surfaceY color: aColor [
+	"Apply a surface as a mask, previously setting a color as source. Note: Context state is not restored."
+
+	cairoContext
+		sourceColor: aColor;
+		maskSurface: aSurface x: surfaceX y: surfaceY
+]
+
 { #category : #'API - text' }
 AeCanvas >> metricsFor: aCairoGlyphsArray font: aCairoScaledFont [
 	"Return a AeCairoTextMetrics font metrics for the given glyphs and font"
@@ -455,6 +470,49 @@ AeCanvas >> metricsFor: aCairoGlyphsArray font: aCairoScaledFont [
 				height: aTextExtents height ].
 
 	^ textMetrics
+]
+
+{ #category : #'API - other' }
+AeCanvas >> newCairoSurfaceExtent: aLogicalExtent [
+
+	| aScale aSurface |
+	aScale := self deviceScale.
+	aSurface := AeCairoImageSurface extent: aLogicalExtent * aScale.
+	aSurface deviceScale: aScale.
+	^ aSurface
+]
+
+{ #category : #'API - other' }
+AeCanvas >> newSurfaceWithGaussianShadow: extent width: width canvasDo: aBlock [
+
+	| alphaSurface alphaCanvas |
+	alphaSurface := cairoSurface
+		newSimilarImageFormat: AeCairoSurfaceFormat a8
+		width: extent x
+		height: extent y.
+	alphaSurface status ensureIsSuccess.
+
+	alphaCanvas := AeCanvas newFor: alphaSurface.
+	aBlock value: alphaCanvas.
+	alphaSurface flush.
+
+	AeCairoA8FastGaussianBlurFilter new
+		surface: alphaSurface;
+		applyRadius: width.
+
+	^ alphaSurface
+]
+
+{ #category : #'API - painting' }
+AeCanvas >> paint: aCairoPattern alpha: opacity [
+	"Paint a pattern. opacity is a Number between 0 and 1. Note: Context state is not restored."
+
+	cairoContext source: aCairoPattern.
+
+	opacity < 1.0
+		ifTrue: [ cairoContext paintWithAlpha: opacity ]
+		ifFalse: [ cairoContext paint ]
+	
 ]
 
 { #category : #'API - painting' }
@@ -546,13 +604,13 @@ AeCanvas >> prepareStrokeWithSingleWidth [
 
 ]
 
-{ #category : #accessing }
+{ #category : #unstable }
 AeCanvas >> privateAeCairoContext [
 
 	^ cairoContext
 ]
 
-{ #category : #accessing }
+{ #category : #unstable }
 AeCanvas >> privateAeCairoSurface [
 
 	^ cairoSurface
@@ -699,6 +757,12 @@ AeCanvas >> setHighQualityOptions [
 		subpixelOrder: AeCairoSubpixelOrder default;
 		yourself
 
+]
+
+{ #category : #'API - transformations' }
+AeCanvas >> setIdentityMatrix [
+
+	cairoContext setIdentityMatrix
 ]
 
 { #category : #'API - border' }
@@ -873,7 +937,7 @@ AeCanvas >> textExtentsFor: aeGlyphsArray scaledFont: aeScaledFont do: aUnaryBlo
 	aUnaryBlockClosure value: textExtents
 ]
 
-{ #category : #accessing }
+{ #category : #'API - other' }
 AeCanvas >> writePngTo: aFileReference [
 
 	^ cairoSurface writePngTo: aFileReference
