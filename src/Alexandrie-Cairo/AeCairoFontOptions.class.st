@@ -43,7 +43,11 @@ AeCairoFontOptions >> antialias [
 { #category : #'private - ffi' }
 AeCairoFontOptions >> antialias: anAntialias [
 
-	self ffiCall: #(void cairo_font_options_set_antialias ( self, AeCairoAntialias anAntialias) )
+	self ffiCall: #(
+		void
+		cairo_font_options_set_antialias (
+			self,
+			AeCairoAntialias anAntialias ) )
 ]
 
 { #category : #'private - ffi' }

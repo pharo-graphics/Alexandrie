@@ -1472,7 +1472,7 @@ AeCairoContext >> scaledFont: aScaledFont [
 { #category : #'API - text toy' }
 AeCairoContext >> selectFont: aFontFamily slant: aFontSlant weight: aFontWeight [
 
-	^ self ffiCall: #(
+	self ffiCall: #(
 		void
 		cairo_select_font_face (
 			self,
