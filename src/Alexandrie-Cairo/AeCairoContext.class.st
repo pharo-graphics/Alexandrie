@@ -21,7 +21,8 @@ Class {
 
 { #category : #finalization }
 AeCairoContext class >> externallyFree: aHandle [
-	
+	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-destroy"
+
 	self ffiCall: #( void cairo_destroy ( void * aHandle ) )
 ]
 
@@ -41,9 +42,15 @@ AeCairoContext class >> newFor: aSurface [
 ]
 
 { #category : #'instance creation' }
-AeCairoContext class >> unownedNewFor: aSurface [
+AeCairoContext class >> unownedNewFor: targetSurface [
+	"Answer a new `cairo_t` with all graphics state parameters set to default values and with target as a target surface.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-create"
 
-	^ self ffiCall: #( AeCairoContext cairo_create ( AeCairoImageSurface aSurface ) )
+	^ self ffiCall: #(
+		AeCairoContext
+		cairo_create (
+			AeCairoImageSurface targetSurface ) )
 ]
 
 { #category : #'API - path' }
@@ -99,6 +106,9 @@ AeCairoContext >> appendGlyphsPath: aGlyphsArray length: aNumberOfGlyphs [
 
 { #category : #'API - path' }
 AeCairoContext >> appendPath: aCairoPath [
+	"Append the path onto the current path.
+	
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-append-path"
 
 	self ffiCall: #(
 		void
@@ -162,6 +172,11 @@ AeCairoContext >> arcCenter: aCenter radius: aRadius startAngle: startAngleInRad
 
 { #category : #'API - path' }
 AeCairoContext >> arcCenterX: centerX centerY: centerY radius: aRadius startAngle: aStartAngle endAngle: anEndAngle [ 
+	"Adds a circular arc of the given radius to the current path.
+	The arc is centered at xc@yc, begins at angle1 and proceeds in the direction of increasing angles to end at angle2.
+	If angle2 is less than angle1 it will be progressively increased by 2*PI until it is greater than angle1.
+	
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-arc"
 
 	self ffiCall: #(
 		void
@@ -187,6 +202,10 @@ AeCairoContext >> arcNegativeCenter: aPoint radius: aRadius startAngle: aStartAn
 
 { #category : #'API - path' }
 AeCairoContext >> arcNegativeCenterX: centerX centerY: centerY radius: aRadius startAngle: aStartAngle endAngle: anEndAngle [ 
+	"Adds a circular arc of the given radius to the current path.
+	The arc is centered at xc@yc, begins at angle1 and proceeds in the direction of decreasing angles to end at angle2. If angle2 is greater than angle1 it will be progressively decreased by 2*PI until it is less than angle1.
+	
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-arc-negative"
 
 	self ffiCall: #(
 		void
@@ -364,7 +383,10 @@ AeCairoContext >> clipPreservingPath: aBoolean [
 
 { #category : #'API - path' }
 AeCairoContext >> closePath [
+	"Adds a line segment to the path from the current point to the beginning of the current sub-path, (the most recent point passed to `cairo_move_to()`), and closes this sub-path. After this call the current point will be at the joined endpoint of the sub-path.
 	
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-close-path"
+
 	self ffiCall: #( void cairo_close_path ( self ) )
 ]
 
