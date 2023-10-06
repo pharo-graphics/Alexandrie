@@ -74,6 +74,9 @@ AeCairoContext >> annulusSectorCenter: aPoint from: radiansStart to: radiansStop
 
 { #category : #'API - painting settings' }
 AeCairoContext >> antialias: aCairoAntialias [
+	"Set the antialiasing mode of the rasterizer used for drawing shapes. This value is a hint, and a particular backend may or may not support a particular value.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-antialias"
 
 	self ffiCall: #(
 		void
@@ -963,14 +966,19 @@ AeCairoContext >> lineTo: aPoint [
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> lineToX: aX y: aY [
+AeCairoContext >> lineToX: x y: y [
+	"Adds a line to the path from the current point to position (x@y) in user-space coordinates. After this call the current point will be (x@y).
+
+	If there is no current point before the call to `cairo_line_to()` this function will behave as `cairo_move_to(cr, x, y)`.
+
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-line-to"
 
 	self ffiCall: #(
 		void
 		cairo_line_to (
 			self,
-			double aX,
-			double aY ) )
+			double x,
+			double y ) )
 ]
 
 { #category : #'API - painting settings' }
@@ -1037,13 +1045,16 @@ AeCairoContext >> matrix [
 ]
 
 { #category : #'API - matrix' }
-AeCairoContext >> matrix: aCairoMatrix [
+AeCairoContext >> matrix: aMatrix [
+	"Modifies the current transformation matrix (CTM) by setting it equal to the received matrix.
+	
+	See: https://www.cairographics.org/manual/cairo-Transformations.html#cairo-set-matrix"
 
 	self ffiCall: #(
 		void
 		cairo_set_matrix (
 			self,
-			AeCairoMatrix *aCairoMatrix ) )
+			AeCairoMatrix *aMatrix ) )
 ]
 
 { #category : #'API - painting settings' }
@@ -1063,14 +1074,17 @@ AeCairoContext >> moveTo: aPoint [
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> moveToX: aX y: aY [
+AeCairoContext >> moveToX: x y: y [
+	"Begin a new sub-path. After this call the current point will be (x@y).
+	
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-move-to"
 
 	self ffiCall: #(
 		void
 		cairo_move_to (
 			self,
-			double aX,
-			double aY ) )
+			double x,
+			double y ) )
 ]
 
 { #category : #'API - compositing' }
@@ -1281,37 +1295,45 @@ AeCairoContext >> rectangleX: aX y: aY width: aWidth height: aHeight [
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> relativeLineTo: aPoint [
+AeCairoContext >> relativeLineTo: deltaPoint [
+	"Relative-coordinate version of `#lineTo:`"
 
-	^ self relativeLineToX: aPoint x asFloat y: aPoint y asFloat
+	^ self relativeLineToX: deltaPoint x asFloat y: deltaPoint y asFloat
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> relativeLineToX: aX y: aY [
+AeCairoContext >> relativeLineToX: dx y: dy [
+	"Relative-coordinate version of `#lineToX:y:`.
+	
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-rel-line-to"
 
 	self ffiCall: #(
 		void
 		cairo_rel_line_to (
 			self,
-			double aX,
-			double aY ) )
+			double dx,
+			double dy ) )
 ]
 
 { #category : #'API - path' }
 AeCairoContext >> relativeMoveTo: aPoint [
+	"Begin a new sub-path. After this call the current point will offset by aPoint."
 
 	self relativeMoveToX: aPoint x asFloat y: aPoint y asFloat
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> relativeMoveToX: aX y: aY [
+AeCairoContext >> relativeMoveToX: dx y: dy [
+	"Begin a new sub-path. After this call the current point will offset by (dx @ dy).
+	
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-rel-move-to"
 
 	self ffiCall: #(
 		void
 		cairo_rel_move_to (
 			self,
-			double aX,
-			double aY ) )
+			double dx,
+			double dy ) )
 ]
 
 { #category : #'API - clipping' }
@@ -1506,6 +1528,9 @@ AeCairoContext >> selectFont: aFontFamily slant: aFontSlant weight: aFontWeight 
 
 { #category : #'API - matrix' }
 AeCairoContext >> setIdentityMatrix [
+	"Resets the current transformation matrix (CTM) by setting it equal to the identity matrix. That is, the user-space and device-space axes will be aligned and one user-space unit will transform to one device-space unit.
+	
+	See: https://www.cairographics.org/manual/cairo-Transformations.html#cairo-identity-matrix"
 
 	self ffiCall: #( void cairo_identity_matrix ( self ) )
 ]

@@ -247,6 +247,9 @@ AeCairoMatrix >> hash [
 
 { #category : #'API - initialize' }
 AeCairoMatrix >> invert [
+	"Changes matrix to be the inverse of its original value. Not all transformation matrices have inverses; if the matrix collapses points together (it is degenerate), then it has no inverse and this function will fail (check returned status).
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-matrix-t.html#cairo-matrix-invert"
 
 	^ self ffiCall: #( AeCairoStatus cairo_matrix_invert ( self ) )
 ]
@@ -295,6 +298,9 @@ AeCairoMatrix >> printOn: aStream [
 
 { #category : #'API - transformations' }
 AeCairoMatrix >> rotateByRadians: angle [
+	"Applies rotation by radians to the transformation in this matrix. The effect of the new transformation is to first rotate the coordinates by radians, then apply the original transformation to the coordinates.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-matrix-t.html#cairo-matrix-rotate"
 
 	self ffiCall: #(
 		void
@@ -310,14 +316,17 @@ AeCairoMatrix >> scaleBy: aPoint [
 ]
 
 { #category : #'API - transformations' }
-AeCairoMatrix >> scaleByX: x y: y [
+AeCairoMatrix >> scaleByX: sx y: sy [
+	"Applies scaling by (sx @ sy) to the transformation in this matrix. The effect of the new transformation is to first scale the coordinates by sx and sy, then apply the original transformation to the coordinates.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-matrix-t.html#cairo-matrix-scale"
 
 	self ffiCall: #(
 		void
 		cairo_matrix_scale (
 			self,
-			double x,
-			double y ) )
+			double sx,
+			double sy ) )
 ]
 
 { #category : #'accessing - structure variables' }
@@ -384,19 +393,23 @@ AeCairoMatrix >> sy: anObject [
 
 { #category : #'API - transformations' }
 AeCairoMatrix >> translateBy: aPoint [
+	"Applies a translation by aPoint. The effect of the new transformation is to first translate the coordinates by aPoint, then apply the original transformation to the coordinates."
 
 	self translateByX: aPoint x y: aPoint y
 ]
 
 { #category : #'API - transformations' }
-AeCairoMatrix >> translateByX: px y: py [
+AeCairoMatrix >> translateByX: tx y: ty [
+	"Applies a translation by (tx@ty). The effect of the new transformation is to first translate the coordinates by tx and ty, then apply the original transformation to the coordinates.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-matrix-t.html#cairo-matrix-translate"
 
 	self ffiCall: #(
 		void
 		cairo_matrix_translate (
 			self,
-			double px,
-			double py ) )
+			double tx,
+			double ty ) )
 
 ]
 
@@ -416,7 +429,10 @@ AeCairoMatrix >> value: aPoint [
 
 { #category : #'API - query' }
 AeCairoMatrix >> valueOnX: xPointer onY: yPointer [
+	"Transforms the pointed coordinates by this matrix.
 	
+	See: https://www.cairographics.org/manual/cairo-cairo-matrix-t.html#cairo-matrix-transform-point"
+
 	^ self ffiCall: #(
 		void
 		cairo_matrix_transform_point (
