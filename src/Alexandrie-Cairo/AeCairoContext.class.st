@@ -43,14 +43,14 @@ AeCairoContext class >> newFor: aSurface [
 
 { #category : #'instance creation' }
 AeCairoContext class >> unownedNewFor: targetSurface [
-	"Answer a new `cairo_t` with all graphics state parameters set to default values and with target as a target surface.
+	"Answer a new instance with all graphics state parameters set to default values.
 	
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-create"
 
 	^ self ffiCall: #(
 		AeCairoContext
 		cairo_create (
-			AeCairoImageSurface targetSurface ) )
+			AeCairoSurface targetSurface ) )
 ]
 
 { #category : #'API - path' }
