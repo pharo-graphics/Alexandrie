@@ -14,7 +14,10 @@ Class {
 
 { #category : #finalization }
 AeCairoPattern class >> externallyFree: aHandle [
+	"Decreases the reference count on pattern by one. If the result is zero, then pattern and all associated resources are freed.
 	
+	See: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-destroy"
+
 	self ffiCall: #( void cairo_pattern_destroy ( void * aHandle ) )
 ]
 

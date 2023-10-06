@@ -14,7 +14,10 @@ Class {
 
 { #category : #finalization }
 AeCairoFontFace class >> externallyFree: aHandle [
+	"Decreases the reference count on a font face by one. If the result is zero, then font_face and all associated resources are freed.
 	
+	See: https://www.cairographics.org/manual/cairo-cairo-font-face-t.html#cairo-font-face-destroy"
+
 	self ffiCall: #( void cairo_font_face_destroy ( void * aHandle) )
 ]
 

@@ -1946,7 +1946,7 @@ AeCairoContext >> translateByX: tx y: ty [
 
 { #category : #'API - query' }
 AeCairoContext >> unownedCurrentPath [
-	"Return a copy of the current path.
+	"Return a copy of the current path. The sender owns the returned object and should free when finished with it.
 	
 	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-copy-path"
 

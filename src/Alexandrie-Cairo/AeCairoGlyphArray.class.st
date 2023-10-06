@@ -11,7 +11,8 @@ Class {
 
 { #category : #finalization }
 AeCairoGlyphArray class >> externallyFree: aHandle [
-	
+	"See: https://www.cairographics.org/manual/cairo-text.html#cairo-glyph-free"
+
 	self ffiCall: #( void cairo_glyph_free ( void * aHandle ) )
 ]
 

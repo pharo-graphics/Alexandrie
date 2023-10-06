@@ -15,6 +15,9 @@ Class {
 
 { #category : #finalization }
 AeCairoPath class >> externallyFree: aHandle [
+	"Immediately releases all memory associated with path . After a call to cairo_path_destroy() the path pointer is no longer valid and should not be used further.
 	
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-path-destroy"
+
 	self ffiCall: #( void cairo_path_destroy ( void * aHandle ) )
 ]
