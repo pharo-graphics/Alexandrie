@@ -13,7 +13,8 @@ Class {
 
 { #category : #finalization }
 AeCairoSurface class >> externallyFree: aHandle [
-	
+	"See: https://www.cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-destroy"
+
 	self ffiCall: #( void cairo_surface_destroy ( void * aHandle ) )
 ]
 
@@ -202,7 +203,10 @@ AeCairoSurface >> hasDevice [
 
 { #category : #API }
 AeCairoSurface >> markDirty [
+	"Tells cairo that drawing has been done to surface using means other than cairo, and that cairo should reread any cached areas. Note that you must call `#flush` before doing such drawing.
 	
+	See: https://www.cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-mark-dirty"	
+
 	self ffiCall: #( void cairo_surface_mark_dirty ( self ) )
 ]
 

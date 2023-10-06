@@ -93,6 +93,9 @@ AeCairoImageSurface class >> newFromPngFileAt: aFileReference [
 
 { #category : #query }
 AeCairoImageSurface class >> strideForWidth: aWidth format: aSurfaceFormat [
+	"This function provides a stride value that will respect all alignment requirements of the accelerated image-rendering code within cairo.
+	
+	See: https://www.cairographics.org/manual/cairo-Image-Surfaces.html#cairo-format-stride-for-width"
 
 	^ self ffiCall: #(
 		int
@@ -127,7 +130,7 @@ AeCairoImageSurface class >> unownedNewForData: aData width: width height: heigh
 
 { #category : #'instance creation' }
 AeCairoImageSurface class >> unownedNewFromPngFileAt: pathUTF8Encoded [
-	"Return a new `cairo_surface_t` initialized with the contents of the PNG file, or a nil surface if any error occurred. A nil surface can be checked for with `cairo_surface_status()`.
+	"Return a new instance initialized with the contents of the PNG file, or a nil surface if any error occurred. A nil surface can be checked for with `cairo_surface_status()`.
 
 	See: https://www.cairographics.org/manual/cairo-PNG-Support.html#cairo-image-surface-create-from-png"
 
@@ -139,6 +142,13 @@ AeCairoImageSurface class >> unownedNewFromPngFileAt: pathUTF8Encoded [
 
 { #category : #'instance creation' }
 AeCairoImageSurface class >> unownedNewWithFormat: aSurfaceFormat width: aWidth height: aHeight [
+	"Answer a new image surface of the specified format and dimensions.
+	
+	Initially the surface contents are set to 0. (Specifically, within each pixel, each color or alpha channel belonging to format will be 0. The contents of bits within a pixel, but not belonging to the given format are undefined).
+	
+	The caller owns the surface and should call `cairo_surface_destroy()` when done with it.
+	
+	See: https://www.cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-create"
 
 	^ self ffiCall: #(
 		AeCairoImageSurface
@@ -288,6 +298,9 @@ AeCairoImageSurface >> extent [
 
 { #category : #'private - ffi' }
 AeCairoImageSurface >> format [
+	"Answer the format of this surface.
+	
+	See: https://www.cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-get-format"
 
 	^ self ffiCall: #( AeCairoSurfaceFormat cairo_image_surface_get_format (self) )
 ]

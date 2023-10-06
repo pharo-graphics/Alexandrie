@@ -933,6 +933,11 @@ AeCairoContext >> isInStrokeX: x y: y [
 
 { #category : #'API - painting settings' }
 AeCairoContext >> lineCap: aCairoCapStyle [
+	"Sets the current line cap style within the cairo context.
+	
+	The default line cap style is CAIRO_LINE_CAP_BUTT.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-cap"
 
 	self ffiCall: #(
 		void
@@ -951,6 +956,11 @@ AeCairoContext >> lineFrom: aPoint to: anotherPoint [
 
 { #category : #'API - painting settings' }
 AeCairoContext >> lineJoin: aCairoJoinStyle [
+	"Sets the current line join style within the cairo context.
+	
+	The default line join style is CAIRO_LINE_JOIN_MITER.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-join"
 
 	self ffiCall: #(
 		void
@@ -983,6 +993,9 @@ AeCairoContext >> lineToX: x y: y [
 
 { #category : #'API - painting settings' }
 AeCairoContext >> lineWidth: aNumber [
+	"Sets the current line width within the cairo context. The line width value specifies the diameter of a pen that is circular in user space, (though device-space pen may be an ellipse in general due to scaling/shear/rotation of the CTM).
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-width"
 
 	self ffiCall: #(
 		void
@@ -1059,6 +1072,13 @@ AeCairoContext >> matrix: aMatrix [
 
 { #category : #'API - painting settings' }
 AeCairoContext >> miterLimit: aNumber [
+	"Sets the current miter limit within the cairo context.
+
+	The default miter limit value is 10.0, which will convert joins with interior angles less than 11 degrees to bevels instead of miters. For reference, a miter limit of 2.0 makes the miter cutoff at 60 degrees, and a miter limit of 1.414 makes the cutoff at 90 degrees.
+
+	A miter limit for a desired angle can be computed as: miter limit = 1/sin(angle/2).
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-miter-limit"
 
 	self ffiCall: #(
 		void
@@ -1113,6 +1133,9 @@ AeCairoContext >> operator: aCairoOperator [
 
 { #category : #'API - painting' }
 AeCairoContext >> paint [
+	"A drawing operator that paints the current source everywhere within the current clip region.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-paint"
 
 	self ffiCall: #( void cairo_paint ( self ) )
 ]
@@ -1145,6 +1168,9 @@ AeCairoContext >> paintGroupWith: aBlockClosure alpha: aNumber [
 
 { #category : #'API - painting' }
 AeCairoContext >> paintWithAlpha: aNumber [
+	"A drawing operator that paints the current source everywhere within the current clip region using a mask of constant alpha. The effect is similar to `#paint`, but the drawing is faded out using the alpha value (between 0.0 (transparent) and 1.0 (opaque)).
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-paint-with-alpha"
 
 	self ffiCall: #(
 		void
@@ -1214,15 +1240,22 @@ AeCairoContext >> popGroupToSource [
 
 { #category : #'API - compositing' }
 AeCairoContext >> pushGroup [
+	"Temporarily redirects drawing to an intermediate surface known as a group. The redirection lasts until the group is completed by a call to `#popGroup` or `#popGroupToSource`. These calls provide the result of any drawing to the group as a pattern, (either as an explicit object, or set as the source pattern).
+
+	This group functionality can be convenient for performing intermediate compositing. One common use of a group is to render objects as opaque within the group, (so that they occlude each other), and then blend the result with translucence onto the destination.
+
+	Groups can be nested arbitrarily deep by making balanced calls to `#pushGroup`/`popGroup`. Each call pushes/pops the new target group onto/from a stack.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-push-group"
 
 	self ffiCall: #( void cairo_push_group ( self ) )
 ]
 
 { #category : #'API - compositing' }
 AeCairoContext >> pushGroupWithContent: content [
-	"Temporarily redirects drawing to an intermediate surface known as a group. The redirection lasts until the group is completed by a call to `cairo_pop_group()` or `cairo_pop_group_to_source()`. These calls provide the result of any drawing to the group as a pattern, (either as an explicit object, or set as the source pattern).
+	"Temporarily redirects drawing to an intermediate surface known as a group. The redirection lasts until the group is completed by a call to `#popGroup` or `#popGroupToSource`. These calls provide the result of any drawing to the group as a pattern, (either as an explicit object, or set as the source pattern).
 
-	The group will have a content type of content . The ability to control this content type is the only distinction between this function and cairo_push_group() which you should see for a more detailed description of group rendering.
+	The group will have a content type of content. The ability to control this content type is the only distinction between this function and `#pushGroup` which you should see for a more detailed description of group rendering.
 
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-push-group-with-content"
 
@@ -1515,6 +1548,11 @@ AeCairoContext >> scaledFont: aScaledFont [
 
 { #category : #'API - text toy' }
 AeCairoContext >> selectFont: aFontFamily slant: aFontSlant weight: aFontWeight [
+	"Selects a family and style of font from a simplified description as a family name, slant and weight. Cairo provides no operation to list available family names on the system.
+	
+	Note: This function call is part of what the cairo designers call the 'toy' text API.
+
+	See: https://www.cairographics.org/manual/cairo-text.html#cairo-select-font-face"
 
 	self ffiCall: #(
 		void
@@ -1613,6 +1651,13 @@ AeCairoContext >> source [
 
 { #category : #'API - source' }
 AeCairoContext >> source: aPattern [
+	"Sets the source pattern to aPattern. This pattern will then be used for any subsequent drawing operation until a new source pattern is set.
+
+	Note: The pattern's transformation matrix will be locked to the user space in effect at the time of this function. This means that further modifications of the current transformation matrix will not affect the source pattern. See `cairo_pattern_set_matrix()`.
+
+	The default source pattern is a solid pattern that is opaque black.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-source"
 
 	self ffiCall: #(
 		void
@@ -1640,7 +1685,10 @@ AeCairoContext >> sourceColor: aColor [
 
 { #category : #'API - source' }
 AeCairoContext >> sourceColorR: aRed g: aGreen b: aBlue [
+	"Sets the source pattern to an opaque color.
 	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-source-rgb"
+
 	self ffiCall: #(
 		void
 		cairo_set_source_rgb (
@@ -1652,7 +1700,16 @@ AeCairoContext >> sourceColorR: aRed g: aGreen b: aBlue [
 
 { #category : #'API - source' }
 AeCairoContext >> sourceColorR: aRed g: aGreen b: aBlue a: anAlpha [
-	
+	"Sets the source pattern within cr to a translucent color. This color will then be used for any subsequent drawing operation until a new source pattern is set.
+
+	The color and alpha components are floating point numbers in the range 0 to 1. If the values passed in are outside that range, they will be clamped.
+
+	Note that the color and alpha values are not premultiplied.
+
+	The default source pattern is opaque black.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-source-rgba"
+
 	self ffiCall: #(
 		void
 		cairo_set_source_rgba (
@@ -1821,13 +1878,18 @@ AeCairoContext >> textExtentsOf: aString [
 ]
 
 { #category : #'API - painting settings' }
-AeCairoContext >> tolerance: aNumber [ 
+AeCairoContext >> tolerance: tolerance [ 
+	"Sets the tolerance used when converting paths into trapezoids. Curved segments of the path will be subdivided until the maximum deviation between the original path and the polygonal approximation is less than tolerance.
+	The default value is 0.1. A larger value will give better performance, a smaller value, better appearance. (Reducing the value from the default value of 0.1 is unlikely to improve appearance significantly.) The accuracy of paths within Cairo is limited by the precision of its internal arithmetic, and the prescribed tolerance is restricted to the smallest representable internal value.
+	The tolerance value is expressed in device units (typically pixels).
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-tolerance"
 
 	self ffiCall: #(
 		void
 		cairo_set_tolerance (
 			self,
-			double aNumber ) )
+			double tolerance ) )
 ]
 
 { #category : #'API - matrix' }
