@@ -199,6 +199,12 @@ AeFTFace >> isItalic [
 	^ self styleFlags allMask: AeFTStyleFlag italic value
 ]
 
+{ #category : #testing }
+AeFTFace >> isSfnt [
+
+	^ self faceFlags allMask: AeFTFaceFlag sfnt value
+]
+
 { #category : #accessing }
 AeFTFace >> library [
 
@@ -271,6 +277,41 @@ AeFTFace >> resourceData [
 	"Answer an object that doesn't point to self and that is used in `resourceDataFrom:` to obtain the handle at freeing time."
 
 	^ { self getHandle. library getHandle }
+]
+
+{ #category : #accessing }
+AeFTFace >> sfntOS2Table [
+
+	^ self sfntOS2TableIfNone: [ NotFound signal ]
+]
+
+{ #category : #accessing }
+AeFTFace >> sfntOS2TableIfNone: noneBlock [
+	
+	| tableAddressOrNull |
+	self isSfnt ifFalse: [ ^ noneBlock value ].
+	
+	tableAddressOrNull := self sfntTableAddressAt: AeFTSfntTag os2.
+	tableAddressOrNull isNull ifTrue: [ ^ noneBlock value ].
+
+	^ AeFTSfntOS2Table fromHandle: tableAddressOrNull
+]
+
+{ #category : #accessing }
+AeFTFace >> sfntTableAddressAt: tag [
+	"Return a pointer to the specified table. This will be NULL in case of error, or if the corresponding table was not found OR loaded from the file.
+
+	Note: The table is owned by the face object and disappears with it.
+
+	Note: This function is only useful to access SFNT tables that are loaded by the sfnt, truetype, and opentype drivers.
+
+	See: https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#ft_get_sfnt_table"
+	
+	^ self ffiCall: #(
+		void *
+		FT_Get_Sfnt_Table (
+			self,
+			AeFTSfntTag tag ) )
 ]
 
 { #category : #'accessing - structure variables' }
