@@ -70,6 +70,22 @@ AeFTSfntOS2Table >> fsType: anObject [
 	handle unsignedShortAt: OFFSET_FSTYPE put: anObject
 ]
 
+{ #category : #printing }
+AeFTSfntOS2Table >> printOn: aStream [
+
+	super printOn: aStream.
+	aStream nextPut: $(.
+
+	(self class selectors select: #isUnary) sorted do: [ :each |
+		aStream
+			nextPutAll: each asMutator;
+			space;
+			print: (self perform: each) ]
+		separatedBy: [ aStream space ].
+
+	aStream nextPut: $)
+]
+
 { #category : #'accessing - structure variables' }
 AeFTSfntOS2Table >> sFamilyClass [
 	"This method was automatically generated"
