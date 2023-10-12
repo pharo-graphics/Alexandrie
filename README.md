@@ -8,7 +8,7 @@ This repository includes:
 - A font manager that can scan filesystem for fonts files, and provide a simple selection API (extracted from Pharo's FT2 bindings)
 - A 2D canvas for drawing figures and text (unstable). It was born as an alternative for rendering [Bloc](https://github.com/pharo-graphics/Bloc) elements, but it is independent from Bloc.
 
-Please check the [Wiki](../../wiki) for more information.
+Please check our [wiki](../../wiki) for more information.
 
 ## License
 
