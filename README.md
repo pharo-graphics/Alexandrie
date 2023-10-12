@@ -6,7 +6,7 @@
 This repository includes:
 - [Pharo](https://pharo.org/) FFI bindings to [Cairo](https://www.cairographics.org), [FreeType](https://freetype.org/) and [Harfbuzz](https://harfbuzz.github.io/).
 - A font manager that can scan filesystem for fonts files, and provide a simple selection API (extracted from Pharo's FT2 bindings)
-- A 2D canvas for drawing figures and text (unstable). It was born as an alternative for rendering [Bloc](https://github.com/pharo-graphics/Bloc) elements, but it is independent from Bloc.
+- A 2D canvas (unstable) for drawing figures and text providing an abstraction layer on top of Cairo. It was born as an alternative for rendering [Bloc](https://github.com/pharo-graphics/Bloc) elements, but it is independent from Bloc.
 
 Please check our [wiki](../../wiki) for more information.
 
