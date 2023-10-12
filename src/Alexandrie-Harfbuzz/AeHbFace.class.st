@@ -94,3 +94,25 @@ AeHbFace class >> unownedNewForFTFaceReferenced: ft_face [
 		hb_ft_face_create_referenced (AeFTFace * ft_face)
 		)
 ]
+
+{ #category : #accessing }
+AeHbFace >> glyphCount [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-face.html#hb-face-get-glyph-count"
+
+	^ self ffiCall: #(
+		uint
+		hb_face_get_glyph_count ( self ) )
+]
+
+{ #category : #accessing }
+AeHbFace >> unitsPerEm [
+	"Answer my units-per-em (UPEM) value.
+
+	Typical UPEM values for fonts are 1000, or 2048, but any value in between 16 and 16,384 is allowed for OpenType fonts.
+
+	See: https://harfbuzz.github.io/harfbuzz-hb-face.html#hb-face-get-upem"
+
+	^ self ffiCall: #(
+		uint
+		hb_face_get_upem ( self ) )
+]

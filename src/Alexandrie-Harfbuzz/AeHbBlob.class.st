@@ -80,11 +80,21 @@ AeHbBlob class >> unownedNewLocatedAtOrFail: file_name [
 ]
 
 { #category : #accessing }
+AeHbBlob >> faceCount [
+	"Answer the number of faces in this bloc.
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-blob.html#hb-blob-get-length"
+
+	^ self ffiCall: #(
+		uint
+		hb_face_count ( self ) )
+]
+
+{ #category : #accessing }
 AeHbBlob >> length [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-blob.html#hb-blob-get-length"
 
 	^ self ffiCall: #(
 		uint
-			hb_blob_get_length (self)
-		)
+		hb_blob_get_length ( self ) )
 ]

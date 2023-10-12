@@ -7,14 +7,25 @@ Class {
 	#category : #'Alexandrie-Harfbuzz-Tests'
 }
 
+{ #category : #running }
+AeHbBlobTest >> inriaSerifRegularBlob [
+
+	^ AeHbBlob newLocatedAt: AeFilesystemResources inriaSerifRegularTTF
+]
+
+{ #category : #tests }
+AeHbBlobTest >> testFaceCount [
+
+	self
+		assert: self inriaSerifRegularBlob faceCount
+		equals: 1
+]
+
 { #category : #tests }
 AeHbBlobTest >> testLength [
 
-	| aBlob |
-	aBlob := AeHbBlob newLocatedAt: AeFilesystemResources inriaSerifRegularTTF.
-
 	self
-		assert: aBlob length
+		assert: self inriaSerifRegularBlob length
 		equals: AeFilesystemResources inriaSerifRegularTTF size
 ]
 
@@ -43,8 +54,5 @@ AeHbBlobTest >> testOpenFailure [
 { #category : #tests }
 AeHbBlobTest >> testOpenSuccess [
 
-	self
-		shouldnt: [
-			AeHbBlob newLocatedAt: AeFilesystemResources inriaSerifRegularTTF ]
-		raise: Error
+	self deny: self inriaSerifRegularBlob isNull
 ]
