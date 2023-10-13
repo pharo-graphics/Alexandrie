@@ -69,6 +69,31 @@ AeHbFont class >> unownedNewForHbFace: anHbFace [
 		)
 ]
 
+{ #category : #accessing }
+AeHbFont >> face [
+	"Answer my associated face.
+
+	See: https://harfbuzz.github.io/harfbuzz-hb-font.html#hb-font-get-face"
+
+	^ self ffiCall: #( AeHbFace hb_font_get_face ( self ) )
+]
+
+{ #category : #accessing }
+AeHbFont >> getPointsPerEmIntoX: xAddress y: yAddress [
+	"Fetches the horizontal and vertical points-per-em (ppem) of this font.
+	
+	Zero values means unset.
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-font.html#hb-font-get-ppem"
+
+	self ffiCall: #(
+		void
+		hb_font_get_ppem (
+			self,
+			uint *xAddress,
+			uint *yAddress ) )
+]
+
 { #category : #concurrency }
 AeHbFont >> lock [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-ft.html#hb-ft-font-lock-face"
@@ -76,6 +101,45 @@ AeHbFont >> lock [
 	^ self ffiCall: #(
 		AeFTFace *
 		hb_ft_font_lock_face ( self ) )
+]
+
+{ #category : #accessing }
+AeHbFont >> pointSize [
+	"Fetches the 'point size' of a font. Zero means unset value.
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-font.html#hb-font-get-ptem"
+
+	^ self ffiCall: #( float hb_font_get_ptem ( self ) )
+]
+
+{ #category : #accessing }
+AeHbFont >> pointSize: ptem [
+	"Sets the 'point size' of a font. Set to zero to unset.
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-font.html#hb-font-set-ptem"
+
+	self ffiCall: #(
+		void
+		hb_font_set_ptem (
+			self,
+			float ptem ) )
+]
+
+{ #category : #accessing }
+AeHbFont >> pointsPerEm [
+	"Fetches the horizontal and vertical points-per-em (ppem) of this font.
+	
+	Zero values means unset.
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-font.html#hb-font-get-ppem"
+
+	| xAddress yAddress |
+	xAddress := FFIInt32 newBuffer.
+	yAddress := FFIInt32 newBuffer.
+
+	self getPointsPerEmIntoX: xAddress y: yAddress.
+
+	^ (xAddress int32AtOffset: 0) @ (yAddress int32AtOffset: 0)
 ]
 
 { #category : #refreshing }
@@ -103,6 +167,52 @@ AeHbFont >> refreshOnHbFontChanged [
 	^ self ffiCall: #(
 		hb_bool_t
 		hb_ft_hb_font_changed ( self ) )
+]
+
+{ #category : #accessing }
+AeHbFont >> scale [
+	"Answer the horizontal and vertical scale of this font.
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-font.html#hb-font-get-scale"
+
+	| xAddress yAddress |
+	xAddress := FFIInt32 newBuffer.
+	yAddress := FFIInt32 newBuffer.
+
+	self getScaleIntoX: xAddress y: yAddress.
+
+	^ Point
+		x: (xAddress int32AtOffset: 0)
+		y: (yAddress int32AtOffset: 0)
+]
+
+{ #category : #accessing }
+AeHbFont >> scale: aPoint [
+	"Sets the horizontal and vertical scale of this font.
+
+	The font scale is a number related to, but not the same as, font size.
+	
+	Fonts default to a scale equal to the UPEM value of their face. A font with this setting is sometimes called an 'unscaled' font."
+
+	self scaleX: aPoint x y: aPoint y
+]
+
+{ #category : #accessing }
+AeHbFont >> scaleX: x y: y [
+	"Sets the horizontal and vertical scale of this font.
+
+	The font scale is a number related to, but not the same as, font size.
+	
+	Fonts default to a scale equal to the UPEM value of their face. A font with this setting is sometimes called an 'unscaled' font.
+
+	See: https://harfbuzz.github.io/harfbuzz-hb-font.html#hb-font-set-scale"
+
+	self ffiCall: #(
+		void
+		hb_font_set_scale (
+			self,
+			int x,
+			int y ) )
 ]
 
 { #category : #concurrency }
