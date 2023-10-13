@@ -94,6 +94,20 @@ AeHbFont >> getPointsPerEmIntoX: xAddress y: yAddress [
 			uint *yAddress ) )
 ]
 
+{ #category : #accessing }
+AeHbFont >> getScaleIntoX: xAddress y: yAddress [
+	"Fetches the horizontal and vertical scale of this font.
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-font.html#hb-font-get-scale"
+
+	self ffiCall: #(
+		void
+		hb_font_get_scale (
+			self,
+			int *xAddress,
+			int *yAddress ) )
+]
+
 { #category : #concurrency }
 AeHbFont >> lock [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-ft.html#hb-ft-font-lock-face"
