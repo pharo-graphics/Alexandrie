@@ -104,3 +104,10 @@ AeHbBlob >> newHbFaceAtIndex: zeroBasedIndex [
 
 	^ AeHbFace newForBlob: self index: zeroBasedIndex
 ]
+
+{ #category : #'instance creation' }
+AeHbBlob >> newHbFaces [
+
+	^ (0 to: self faceCount - 1)
+			collect: [ :i | self newHbFaceAtIndex: i ]
+]

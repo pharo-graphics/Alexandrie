@@ -40,6 +40,16 @@ AeHbBlobTest >> testNewEmpty [
 ]
 
 { #category : #tests }
+AeHbBlobTest >> testNewHbFaces [
+
+	| faces |
+	faces := self inriaSerifRegularBlob newHbFaces.
+	
+	self assert: faces size equals: 1.
+	self assert: faces first class equals: AeHbFace
+]
+
+{ #category : #tests }
 AeHbBlobTest >> testOpenFailure [
 
 	self
