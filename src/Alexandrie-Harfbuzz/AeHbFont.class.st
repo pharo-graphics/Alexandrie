@@ -69,6 +69,18 @@ AeHbFont class >> unownedNewForHbFace: anHbFace [
 		)
 ]
 
+{ #category : #metrics }
+AeHbFont >> allMetricsAsDictionary [
+
+	| result |
+	result := OrderedDictionary new.
+	
+	AeHbOpenTypeMetricsTag allValues do: [ :each |
+		result at: each item put: (self positionWithFallback: each) ].
+
+	^ result 
+]
+
 { #category : #accessing }
 AeHbFont >> face [
 	"Answer my associated face.
@@ -92,6 +104,20 @@ AeHbFont >> getPointsPerEmIntoX: xAddress y: yAddress [
 			self,
 			uint *xAddress,
 			uint *yAddress ) )
+]
+
+{ #category : #metrics }
+AeHbFont >> getPositionWithFallback: metricsTag into: positionAddress [
+	"Fetches metrics value corresponding to a tag, and synthesizes a value if it the value is missing in this font.
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-ot-metrics.html#hb-ot-metrics-get-position-with-fallback"
+
+	self ffiCall: #(
+		void
+		hb_ot_metrics_get_position_with_fallback (
+			self,
+			AeHbOpenTypeMetricsTag metricsTag,
+			int32 * positionAddress ) )
 ]
 
 { #category : #accessing }
@@ -154,6 +180,22 @@ AeHbFont >> pointsPerEm [
 	self getPointsPerEmIntoX: xAddress y: yAddress.
 
 	^ (xAddress int32AtOffset: 0) @ (yAddress int32AtOffset: 0)
+]
+
+{ #category : #accessing }
+AeHbFont >> positionWithFallback: metricsTag [
+	"Fetches metrics value corresponding to a tag, and synthesizes a value if it the value is missing in this font.
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-ot-metrics.html#hb-ot-metrics-get-position-with-fallback"
+
+	| positionAddress |
+	positionAddress := FFIInt32 newBuffer.
+
+	self
+		getPositionWithFallback: metricsTag
+		into: positionAddress.
+
+	^ (positionAddress int32AtOffset: 0) from26Dot6FractionalPoint
 ]
 
 { #category : #refreshing }
