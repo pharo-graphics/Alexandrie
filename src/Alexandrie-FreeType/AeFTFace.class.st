@@ -281,13 +281,15 @@ AeFTFace >> resourceData [
 
 { #category : #accessing }
 AeFTFace >> sfntOS2Table [
+	"Read and answer my `AeFTSfntOS2Table`. Signal an error if not found."
 
 	^ self sfntOS2TableIfNone: [ NotFound signal ]
 ]
 
 { #category : #accessing }
 AeFTFace >> sfntOS2TableIfNone: noneBlock [
-	
+	"Read and answer my `AeFTSfntOS2Table`. Evaluate a block if not found."
+
 	| tableAddressOrNull |
 	self isSfnt ifFalse: [ ^ noneBlock value ].
 	

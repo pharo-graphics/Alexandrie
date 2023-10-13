@@ -797,7 +797,7 @@ AeCairoContext >> getGlyphExtentsOf: aGlyphArray size: numberOfGlyphs into: aTex
 
 { #category : #'API - matrix' }
 AeCairoContext >> getMatrixInto: aCairoMatrix [
-	"Stores the current transformation matrix (CTM) into to argument.
+	"Fetches the current transformation matrix.
 	
 	See: https://www.cairographics.org/manual/cairo-Transformations.html#cairo-get-matrix"
 
