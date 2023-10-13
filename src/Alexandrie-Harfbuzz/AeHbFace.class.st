@@ -105,6 +105,13 @@ AeHbFace >> glyphCount [
 ]
 
 { #category : #accessing }
+AeHbFace >> newHbFont [
+	"Answer a new `AeHbFont` from me"
+
+	^ AeHbFont newForHbFace: self
+]
+
+{ #category : #accessing }
 AeHbFace >> unitsPerEm [
 	"Answer my units-per-em (UPEM) value.
 

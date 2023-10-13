@@ -17,7 +17,7 @@ AeHbFaceTest >> setUp [
 	super setUp.
 
 	inriaSerifRegularBlob := AeHbBlob newLocatedAt: AeFilesystemResources inriaSerifRegularTTF.
-	inriaSerifRegularFace := AeHbFace newForBlob: inriaSerifRegularBlob index: 0
+	inriaSerifRegularFace := inriaSerifRegularBlob newHbFaceAtIndex: 0
 ]
 
 { #category : #tests }

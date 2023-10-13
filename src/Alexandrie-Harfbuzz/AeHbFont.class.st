@@ -36,6 +36,7 @@ AeHbFont class >> newForFTFaceReferenced: ft_face [
 
 { #category : #'instance creation' }
 AeHbFont class >> newForHbFace: anHbFace [
+	"Answer a new font from the specified `AeHbFace` instance."
 
 	^ (self unownedNewForHbFace: anHbFace)
 		  autoRelease;
@@ -58,7 +59,7 @@ AeHbFont class >> unownedNewFTFaceReferenced: aFTFace [
 
 { #category : #'instance creation' }
 AeHbFont class >> unownedNewForHbFace: anHbFace [
-	"Creates a new font object from the specified `AeHbFace` instance.
+	"Answer a new font from the specified `AeHbFace` instance.
 	
 	See: https://harfbuzz.github.io/harfbuzz-hb-font.html#hb-font-create"
 

@@ -75,8 +75,8 @@ AeHbBufferTest >> testSimpleExample [
 
 	"3. Create a face and a font from a font file."
 	blob := AeHbBlob newLocatedAt: AeFilesystemResources inriaSerifRegularTTF.
-	face := AeHbFace newForBlob: blob index: 0. 
-	font := AeHbFont newForHbFace: face.
+	face := blob newHbFaceAtIndex: 0. 
+	font := face newHbFont.
 
 	"4. Shape!"
 	buffer shapeWithFont: font.

@@ -98,3 +98,9 @@ AeHbBlob >> length [
 		uint
 		hb_blob_get_length ( self ) )
 ]
+
+{ #category : #'instance creation' }
+AeHbBlob >> newHbFaceAtIndex: zeroBasedIndex [ 
+
+	^ AeHbFace newForBlob: self index: zeroBasedIndex
+]
