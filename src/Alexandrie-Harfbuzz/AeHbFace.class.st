@@ -105,6 +105,48 @@ AeHbFace >> glyphCount [
 ]
 
 { #category : #accessing }
+AeHbFace >> hasColor [
+	"Answer whether this font can have colors.
+	
+	Based on helper_cairo_scaled_font_has_color function in harfbuzz/util/helper-cairo.hh"
+
+	^ self hasPng or: [ self hasLayers or: [ self hasPaint ] ]
+]
+
+{ #category : #accessing }
+AeHbFace >> hasLayers [
+	"Answer whether this face includes a COLR table with data according to COLRv0.
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-ot-color.html#hb-ot-color-has-layers"
+
+	^ self ffiCall: #(
+		Boolean
+		hb_ot_color_has_layers ( self ) )
+]
+
+{ #category : #accessing }
+AeHbFace >> hasPaint [
+	"Answer whether this face includes a COLR table with data according to COLRv1.
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-ot-color.html#hb-ot-color-has-paint"
+
+	^ self ffiCall: #(
+		Boolean
+		hb_ot_color_has_paint ( self ) )
+]
+
+{ #category : #accessing }
+AeHbFace >> hasPng [
+	"Answer whether this face has PNG glyph images (either in CBDT or sbix tables).
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-ot-color.html#hb-ot-color-has-png"
+
+	^ self ffiCall: #(
+		Boolean
+		hb_ot_color_has_png ( self ) )
+]
+
+{ #category : #accessing }
 AeHbFace >> newHbFont [
 	"Answer a new `AeHbFont` from me"
 
