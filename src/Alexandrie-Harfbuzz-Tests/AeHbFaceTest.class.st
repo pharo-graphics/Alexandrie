@@ -35,6 +35,8 @@ AeHbFaceTest >> testGlyphCount [
 { #category : #tests }
 AeHbFaceTest >> testHasColor [
 
+	self skip: 'This API requires Harfbuzz >= 7.0.0'.
+
 	self deny: inriaSerifRegularFace hasColor.
 	self assert: emojiFace hasColor
 ]
@@ -48,6 +50,8 @@ AeHbFaceTest >> testHasLayers [
 
 { #category : #tests }
 AeHbFaceTest >> testHasPaint [
+
+	self skip: 'This API requires Harfbuzz >= 7.0.0'.
 
 	self deny: inriaSerifRegularFace hasPaint.
 	self deny: emojiFace hasPaint

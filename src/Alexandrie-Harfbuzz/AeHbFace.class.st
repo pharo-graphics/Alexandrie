@@ -128,6 +128,8 @@ AeHbFace >> hasLayers [
 AeHbFace >> hasPaint [
 	"Answer whether this face includes a COLR table with data according to COLRv1.
 	
+	Introduced in Harfbuzz v7.0.0.
+
 	See: https://harfbuzz.github.io/harfbuzz-hb-ot-color.html#hb-ot-color-has-paint"
 
 	^ self ffiCall: #(
