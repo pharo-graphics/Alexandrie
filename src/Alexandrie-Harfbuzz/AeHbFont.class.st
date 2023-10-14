@@ -200,7 +200,9 @@ AeHbFont >> positionWithFallback: metricsTag [
 
 { #category : #refreshing }
 AeHbFont >> refreshOnFTFontChanged [
-	"Refreshes the state of font when the underlying `FT_Face` has changed. This function should be called after changing the size or variation-axis settings on the `FT_Face`.
+	"Refreshes the state of font when the underlying `FT_Face` has changed.
+	
+	This function should be called after changing the size or variation-axis settings on the `FT_Face`.
 	
 	See: https://harfbuzz.github.io/harfbuzz-hb-ft.html#hb-ft-font-changed"
 
