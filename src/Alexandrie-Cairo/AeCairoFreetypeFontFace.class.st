@@ -36,16 +36,6 @@ AeCairoFreetypeFontFace class >> unownedNewFor: aFreetypeFontFace [
 			0 ) )
 ]
 
-{ #category : #'instance creation' }
-AeCairoFreetypeFontFace >> newScaledFontWithFontMatrix: aFontMatrix userToDeviceMatrix: aUserToDeviceCairoMatrix options: theFontOptions [
-
-	^ AeCairoScaledFont
-		  fontFace: self
-		  fontMatrix: aFontMatrix
-		  userToDeviceMatrix: aUserToDeviceCairoMatrix
-		  options: theFontOptions
-]
-
 { #category : #'private - ffi' }
 AeCairoFreetypeFontFace >> synthesize [
 

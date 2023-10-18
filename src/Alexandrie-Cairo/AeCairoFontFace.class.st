@@ -21,6 +21,16 @@ AeCairoFontFace class >> externallyFree: aHandle [
 	self ffiCall: #( void cairo_font_face_destroy ( void * aHandle) )
 ]
 
+{ #category : #'instance creation' }
+AeCairoFontFace >> newScaledFontWithFontMatrix: aFontMatrix userToDeviceMatrix: aUserToDeviceCairoMatrix options: theFontOptions [
+
+	^ AeCairoScaledFont
+		  fontFace: self
+		  fontMatrix: aFontMatrix
+		  userToDeviceMatrix: aUserToDeviceCairoMatrix
+		  options: theFontOptions
+]
+
 { #category : #'private - ffi' }
 AeCairoFontFace >> status [
 
