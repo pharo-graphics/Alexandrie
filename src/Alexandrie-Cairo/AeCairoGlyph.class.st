@@ -50,13 +50,18 @@ AeCairoGlyph >> position [
 AeCairoGlyph >> printOn: aStream [
 
 	super printOn: aStream.
+	self printShortOn: aStream
+]
+
+{ #category : #printing }
+AeCairoGlyph >> printShortOn: aStream [
+
 	aStream
-		nextPutAll: '(position: ';
+		nextPutAll: '(';
 		print: self position;
-		nextPutAll: ' index: ';
+		nextPutAll: ' -> ';
 		print: self index;
 		nextPut: $)
-
 ]
 
 { #category : #'accessing structure variables' }
