@@ -40,17 +40,12 @@ AeHbBlob class >> newEmpty [
 { #category : #'instance creation' }
 AeHbBlob class >> newLocatedAt: aFileReference [
 
-	| pathString blob |
-	pathString := aFileReference pathString "utf8Encoded".
-
-	blob := self unownedNewLocatedAtOrFail: pathString.
-
-	blob getHandle isNull ifTrue: [
-		self error: 'Failed to open file: ', aFileReference pathString ].
-	
-	^ blob
-		  autoRelease;
-		  yourself
+	^ self
+		unownedNewLocatedAt: aFileReference
+		ifSuccess: [ :b | b autoRelease; yourself ]
+		ifFail: [
+			self error: 'Harfbuzz failed to read: ',
+							aFileReference pathString ]
 ]
 
 { #category : #'instance creation' }
@@ -67,15 +62,26 @@ AeHbBlob class >> unownedNewLocatedAt: aPathString [
 ]
 
 { #category : #'instance creation' }
-AeHbBlob class >> unownedNewLocatedAtOrFail: file_name [
-	"Creates a new blob containing the data from the specified binary font file.
-	Returns: An hb_blob_t pointer with the content of the file, or NULL if failed.
+AeHbBlob class >> unownedNewLocatedAt: aFileReference ifSuccess: successBlock ifFail: failedBlock [
+
+	| blob |
+	blob := self unownedNewLocatedAtOrFail: aFileReference pathString.
+
+	^ blob getHandle isNull
+		ifFalse: [ successBlock value: blob ]
+		ifTrue: [ failedBlock value ]
+]
+
+{ #category : #'instance creation' }
+AeHbBlob class >> unownedNewLocatedAtOrFail: aPathString [
+	"Answer the address of a new blob containing the data from the specified binary font file.
+	Return NULL if failed.
 
 	See: https://harfbuzz.github.io/harfbuzz-hb-blob.html#hb-blob-create-from-file-or-fail"
 
 	^ self ffiCall: #(
 		hb_blob_t *
-		hb_blob_create_from_file_or_fail (const char *file_name)
+		hb_blob_create_from_file_or_fail (const char *aPathString)
 	)
 ]
 
