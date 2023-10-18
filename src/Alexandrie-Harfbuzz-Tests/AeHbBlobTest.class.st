@@ -56,7 +56,7 @@ AeHbBlobTest >> testOpenFailure [
 		should: [
 			AeHbBlob newLocatedAt: AeFilesystemResources inriaSerifRegularTTF / '.doesNotExist' ]
 		raise: Error
-		whoseDescriptionIncludes: 'Failed to open'
+		whoseDescriptionIncludes: 'Harfbuzz failed to read'
 		description: 'Should have problems to open this file.'.
 
 ]
