@@ -290,6 +290,30 @@ AeCairoStatus class >> CAIRO_STATUS_WRITE_ERROR [
 	^ CAIRO_STATUS_WRITE_ERROR
 ]
 
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> clipNotRepresentable [
+
+	^ self CAIRO_STATUS_CLIP_NOT_REPRESENTABLE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> deviceError [
+
+	^ self CAIRO_STATUS_DEVICE_ERROR
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> deviceFinished [
+
+	^ self CAIRO_STATUS_DEVICE_FINISHED
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> deviceTypeMismatch [
+
+	^ self CAIRO_STATUS_DEVICE_TYPE_MISMATCH
+]
+
 { #category : #'enum declaration' }
 AeCairoStatus class >> enumDecl [
 	"
@@ -340,10 +364,220 @@ AeCairoStatus class >> enumDecl [
 	)
 ]
 
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> fileNotFound [
+
+	^ self CAIRO_STATUS_FILE_NOT_FOUND
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> fontTypeMismatch [
+
+	^ self CAIRO_STATUS_FONT_TYPE_MISMATCH
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> invalidClusters [
+
+	^ self CAIRO_STATUS_INVALID_CLUSTERS
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> invalidContent [
+
+	^ self CAIRO_STATUS_INVALID_CONTENT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> invalidDash [
+
+	^ self CAIRO_STATUS_INVALID_DASH
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> invalidDscComment [
+
+	^ self CAIRO_STATUS_INVALID_DSC_COMMENT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> invalidFormat [
+
+	^ self CAIRO_STATUS_INVALID_FORMAT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> invalidIndex [
+
+	^ self CAIRO_STATUS_INVALID_INDEX
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> invalidMatrix [
+
+	^ self CAIRO_STATUS_INVALID_MATRIX
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> invalidMeshConstruction [
+
+	^ self CAIRO_STATUS_INVALID_MESH_CONSTRUCTION
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> invalidPathData [
+
+	^ self CAIRO_STATUS_INVALID_PATH_DATA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> invalidPopGroup [
+
+	^ self CAIRO_STATUS_INVALID_POP_GROUP
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> invalidRestore [
+
+	^ self CAIRO_STATUS_INVALID_RESTORE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> invalidSize [
+
+	^ self CAIRO_STATUS_INVALID_SIZE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> invalidSlant [
+
+	^ self CAIRO_STATUS_INVALID_SLANT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> invalidStatus [
+
+	^ self CAIRO_STATUS_INVALID_STATUS
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> invalidStride [
+
+	^ self CAIRO_STATUS_INVALID_STRIDE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> invalidString [
+
+	^ self CAIRO_STATUS_INVALID_STRING
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> invalidVisual [
+
+	^ self CAIRO_STATUS_INVALID_VISUAL
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> invalidWeight [
+
+	^ self CAIRO_STATUS_INVALID_WEIGHT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> jbig2GlobalMissing [
+
+	^ self CAIRO_STATUS_JBIG2_GLOBAL_MISSING
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> negativeCount [
+
+	^ self CAIRO_STATUS_NEGATIVE_COUNT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> noCurrentPoint [
+
+	^ self CAIRO_STATUS_NO_CURRENT_POINT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> noMemory [
+
+	^ self CAIRO_STATUS_NO_MEMORY
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> nullPointer [
+
+	^ self CAIRO_STATUS_NULL_POINTER
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> patternTypeMismatch [
+
+	^ self CAIRO_STATUS_PATTERN_TYPE_MISMATCH
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> readError [
+
+	^ self CAIRO_STATUS_READ_ERROR
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> success [
+
+	^ self CAIRO_STATUS_SUCCESS
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> surfaceFinished [
+
+	^ self CAIRO_STATUS_SURFACE_FINISHED
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> surfaceTypeMismatch [
+
+	^ self CAIRO_STATUS_SURFACE_TYPE_MISMATCH
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> tempFileError [
+
+	^ self CAIRO_STATUS_TEMP_FILE_ERROR
+]
+
 { #category : #hook }
 AeCairoStatus class >> underlinedNamePrefix [
 	
 	^ 'CAIRO_STATUS_'
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> userFontError [
+
+	^ self CAIRO_STATUS_USER_FONT_ERROR
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> userFontImmutable [
+
+	^ self CAIRO_STATUS_USER_FONT_IMMUTABLE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> userFontNotImplemented [
+
+	^ self CAIRO_STATUS_USER_FONT_NOT_IMPLEMENTED
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoStatus class >> writeError [
+
+	^ self CAIRO_STATUS_WRITE_ERROR
 ]
 
 { #category : #printing }
@@ -366,5 +600,5 @@ AeCairoStatus >> ensureIsSuccess [
 { #category : #testing }
 AeCairoStatus >> isSuccess [
 
-	^ self = self class CAIRO_STATUS_SUCCESS
+	^ self = CAIRO_STATUS_SUCCESS
 ]
