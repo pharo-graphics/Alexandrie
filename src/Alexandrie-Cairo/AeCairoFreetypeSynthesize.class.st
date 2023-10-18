@@ -27,6 +27,12 @@ AeCairoFreetypeSynthesize class >> CAIRO_FT_SYNTHESIZE_OBLIQUE [
 	^ CAIRO_FT_SYNTHESIZE_OBLIQUE
 ]
 
+{ #category : #'accessing enum' }
+AeCairoFreetypeSynthesize class >> bold [
+
+	^ self CAIRO_FT_SYNTHESIZE_BOLD
+]
+
 { #category : #'enum declaration' }
 AeCairoFreetypeSynthesize class >> enumDecl [
 	"
@@ -37,6 +43,12 @@ AeCairoFreetypeSynthesize class >> enumDecl [
 		CAIRO_FT_SYNTHESIZE_BOLD 1
 		CAIRO_FT_SYNTHESIZE_OBLIQUE 2
 	)
+]
+
+{ #category : #'accessing enum' }
+AeCairoFreetypeSynthesize class >> oblique [
+
+	^ self CAIRO_FT_SYNTHESIZE_OBLIQUE
 ]
 
 { #category : #hook }
