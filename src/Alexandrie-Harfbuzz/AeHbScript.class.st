@@ -1162,6 +1162,234 @@ AeHbScript class >> HB_SCRIPT_ZANABAZAR_SQUARE [
 	^ HB_SCRIPT_ZANABAZAR_SQUARE
 ]
 
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> adlam [
+
+	^ self HB_SCRIPT_ADLAM
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> ahom [
+
+	^ self HB_SCRIPT_AHOM
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> anatolianHieroglyphs [
+
+	^ self HB_SCRIPT_ANATOLIAN_HIEROGLYPHS
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> arabic [
+
+	^ self HB_SCRIPT_ARABIC
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> armenian [
+
+	^ self HB_SCRIPT_ARMENIAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> avestan [
+
+	^ self HB_SCRIPT_AVESTAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> balinese [
+
+	^ self HB_SCRIPT_BALINESE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> bamum [
+
+	^ self HB_SCRIPT_BAMUM
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> bassaVah [
+
+	^ self HB_SCRIPT_BASSA_VAH
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> batak [
+
+	^ self HB_SCRIPT_BATAK
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> bengali [
+
+	^ self HB_SCRIPT_BENGALI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> bhaiksuki [
+
+	^ self HB_SCRIPT_BHAIKSUKI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> bopomofo [
+
+	^ self HB_SCRIPT_BOPOMOFO
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> brahmi [
+
+	^ self HB_SCRIPT_BRAHMI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> braille [
+
+	^ self HB_SCRIPT_BRAILLE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> buginese [
+
+	^ self HB_SCRIPT_BUGINESE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> buhid [
+
+	^ self HB_SCRIPT_BUHID
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> canadianSyllabics [
+
+	^ self HB_SCRIPT_CANADIAN_SYLLABICS
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> carian [
+
+	^ self HB_SCRIPT_CARIAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> caucasianAlbanian [
+
+	^ self HB_SCRIPT_CAUCASIAN_ALBANIAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> chakma [
+
+	^ self HB_SCRIPT_CHAKMA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> cham [
+
+	^ self HB_SCRIPT_CHAM
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> cherokee [
+
+	^ self HB_SCRIPT_CHEROKEE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> chorasmian [
+
+	^ self HB_SCRIPT_CHORASMIAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> common [
+
+	^ self HB_SCRIPT_COMMON
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> coptic [
+
+	^ self HB_SCRIPT_COPTIC
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> cuneiform [
+
+	^ self HB_SCRIPT_CUNEIFORM
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> cypriot [
+
+	^ self HB_SCRIPT_CYPRIOT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> cyproMinoan [
+
+	^ self HB_SCRIPT_CYPRO_MINOAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> cyrillic [
+
+	^ self HB_SCRIPT_CYRILLIC
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> deseret [
+
+	^ self HB_SCRIPT_DESERET
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> devanagari [
+
+	^ self HB_SCRIPT_DEVANAGARI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> divesAkuru [
+
+	^ self HB_SCRIPT_DIVES_AKURU
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> dogra [
+
+	^ self HB_SCRIPT_DOGRA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> duployan [
+
+	^ self HB_SCRIPT_DUPLOYAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> egyptianHieroglyphs [
+
+	^ self HB_SCRIPT_EGYPTIAN_HIEROGLYPHS
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> elbasan [
+
+	^ self HB_SCRIPT_ELBASAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> elymaic [
+
+	^ self HB_SCRIPT_ELYMAIC
+]
+
 { #category : #'enum declaration' }
 AeHbScript class >> enumDecl [
 
@@ -1330,6 +1558,12 @@ AeHbScript class >> enumDecl [
 	HB_SCRIPT_VITHKUQI	 	1449751656
 	HB_SCRIPT_MATH	 	1517122664
 	HB_SCRIPT_INVALID 0)
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> ethiopic [
+
+	^ self HB_SCRIPT_ETHIOPIC
 ]
 
 { #category : #'enum declaration' }
@@ -1522,14 +1756,758 @@ HB_SCRIPT_MATH Zmth
 
 ]
 
-{ #category : #'accessing enum' }
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> georgian [
+
+	^ self HB_SCRIPT_GEORGIAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> glagolitic [
+
+	^ self HB_SCRIPT_GLAGOLITIC
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> gothic [
+
+	^ self HB_SCRIPT_GOTHIC
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> grantha [
+
+	^ self HB_SCRIPT_GRANTHA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> greek [
+
+	^ self HB_SCRIPT_GREEK
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> gujarati [
+
+	^ self HB_SCRIPT_GUJARATI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> gunjalaGondi [
+
+	^ self HB_SCRIPT_GUNJALA_GONDI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> gurmukhi [
+
+	^ self HB_SCRIPT_GURMUKHI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> han [
+
+	^ self HB_SCRIPT_HAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> hangul [
+
+	^ self HB_SCRIPT_HANGUL
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> hanifiRohingya [
+
+	^ self HB_SCRIPT_HANIFI_ROHINGYA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> hanunoo [
+
+	^ self HB_SCRIPT_HANUNOO
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> hatran [
+
+	^ self HB_SCRIPT_HATRAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> hebrew [
+
+	^ self HB_SCRIPT_HEBREW
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> hiragana [
+
+	^ self HB_SCRIPT_HIRAGANA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> imperialAramaic [
+
+	^ self HB_SCRIPT_IMPERIAL_ARAMAIC
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> inherited [
+
+	^ self HB_SCRIPT_INHERITED
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> inscriptionalPahlavi [
+
+	^ self HB_SCRIPT_INSCRIPTIONAL_PAHLAVI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> inscriptionalParthian [
+
+	^ self HB_SCRIPT_INSCRIPTIONAL_PARTHIAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> invalid [
+
+	^ self HB_SCRIPT_INVALID
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> javanese [
+
+	^ self HB_SCRIPT_JAVANESE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> kaithi [
+
+	^ self HB_SCRIPT_KAITHI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> kannada [
+
+	^ self HB_SCRIPT_KANNADA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> katakana [
+
+	^ self HB_SCRIPT_KATAKANA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> kayahLi [
+
+	^ self HB_SCRIPT_KAYAH_LI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> kharoshthi [
+
+	^ self HB_SCRIPT_KHAROSHTHI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> khitanSmallScript [
+
+	^ self HB_SCRIPT_KHITAN_SMALL_SCRIPT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> khmer [
+
+	^ self HB_SCRIPT_KHMER
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> khojki [
+
+	^ self HB_SCRIPT_KHOJKI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> khudawadi [
+
+	^ self HB_SCRIPT_KHUDAWADI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> lao [
+
+	^ self HB_SCRIPT_LAO
+]
+
+{ #category : #'accessing enum camelcased' }
 AeHbScript class >> latin [
 
 	^ self HB_SCRIPT_LATIN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> lepcha [
+
+	^ self HB_SCRIPT_LEPCHA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> limbu [
+
+	^ self HB_SCRIPT_LIMBU
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> linearA [
+
+	^ self HB_SCRIPT_LINEAR_A
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> linearB [
+
+	^ self HB_SCRIPT_LINEAR_B
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> lisu [
+
+	^ self HB_SCRIPT_LISU
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> lycian [
+
+	^ self HB_SCRIPT_LYCIAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> lydian [
+
+	^ self HB_SCRIPT_LYDIAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> mahajani [
+
+	^ self HB_SCRIPT_MAHAJANI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> makasar [
+
+	^ self HB_SCRIPT_MAKASAR
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> malayalam [
+
+	^ self HB_SCRIPT_MALAYALAM
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> mandaic [
+
+	^ self HB_SCRIPT_MANDAIC
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> manichaean [
+
+	^ self HB_SCRIPT_MANICHAEAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> marchen [
+
+	^ self HB_SCRIPT_MARCHEN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> masaramGondi [
+
+	^ self HB_SCRIPT_MASARAM_GONDI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> math [
+
+	^ self HB_SCRIPT_MATH
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> medefaidrin [
+
+	^ self HB_SCRIPT_MEDEFAIDRIN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> meeteiMayek [
+
+	^ self HB_SCRIPT_MEETEI_MAYEK
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> mendeKikakui [
+
+	^ self HB_SCRIPT_MENDE_KIKAKUI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> meroiticCursive [
+
+	^ self HB_SCRIPT_MEROITIC_CURSIVE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> meroiticHieroglyphs [
+
+	^ self HB_SCRIPT_MEROITIC_HIEROGLYPHS
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> miao [
+
+	^ self HB_SCRIPT_MIAO
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> modi [
+
+	^ self HB_SCRIPT_MODI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> mongolian [
+
+	^ self HB_SCRIPT_MONGOLIAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> mro [
+
+	^ self HB_SCRIPT_MRO
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> multani [
+
+	^ self HB_SCRIPT_MULTANI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> myanmar [
+
+	^ self HB_SCRIPT_MYANMAR
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> nabataean [
+
+	^ self HB_SCRIPT_NABATAEAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> nandinagari [
+
+	^ self HB_SCRIPT_NANDINAGARI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> newTaiLue [
+
+	^ self HB_SCRIPT_NEW_TAI_LUE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> newa [
+
+	^ self HB_SCRIPT_NEWA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> nko [
+
+	^ self HB_SCRIPT_NKO
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> nushu [
+
+	^ self HB_SCRIPT_NUSHU
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> nyiakengPuachueHmong [
+
+	^ self HB_SCRIPT_NYIAKENG_PUACHUE_HMONG
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> ogham [
+
+	^ self HB_SCRIPT_OGHAM
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> olChiki [
+
+	^ self HB_SCRIPT_OL_CHIKI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> oldHungarian [
+
+	^ self HB_SCRIPT_OLD_HUNGARIAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> oldItalic [
+
+	^ self HB_SCRIPT_OLD_ITALIC
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> oldNorthArabian [
+
+	^ self HB_SCRIPT_OLD_NORTH_ARABIAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> oldPermic [
+
+	^ self HB_SCRIPT_OLD_PERMIC
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> oldPersian [
+
+	^ self HB_SCRIPT_OLD_PERSIAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> oldSogdian [
+
+	^ self HB_SCRIPT_OLD_SOGDIAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> oldSouthArabian [
+
+	^ self HB_SCRIPT_OLD_SOUTH_ARABIAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> oldTurkic [
+
+	^ self HB_SCRIPT_OLD_TURKIC
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> oldUyghur [
+
+	^ self HB_SCRIPT_OLD_UYGHUR
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> oriya [
+
+	^ self HB_SCRIPT_ORIYA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> osage [
+
+	^ self HB_SCRIPT_OSAGE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> osmanya [
+
+	^ self HB_SCRIPT_OSMANYA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> pahawhHmong [
+
+	^ self HB_SCRIPT_PAHAWH_HMONG
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> palmyrene [
+
+	^ self HB_SCRIPT_PALMYRENE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> pauCinHau [
+
+	^ self HB_SCRIPT_PAU_CIN_HAU
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> phagsPa [
+
+	^ self HB_SCRIPT_PHAGS_PA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> phoenician [
+
+	^ self HB_SCRIPT_PHOENICIAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> psalterPahlavi [
+
+	^ self HB_SCRIPT_PSALTER_PAHLAVI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> rejang [
+
+	^ self HB_SCRIPT_REJANG
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> runic [
+
+	^ self HB_SCRIPT_RUNIC
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> samaritan [
+
+	^ self HB_SCRIPT_SAMARITAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> saurashtra [
+
+	^ self HB_SCRIPT_SAURASHTRA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> sharada [
+
+	^ self HB_SCRIPT_SHARADA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> shavian [
+
+	^ self HB_SCRIPT_SHAVIAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> siddham [
+
+	^ self HB_SCRIPT_SIDDHAM
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> signwriting [
+
+	^ self HB_SCRIPT_SIGNWRITING
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> sinhala [
+
+	^ self HB_SCRIPT_SINHALA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> sogdian [
+
+	^ self HB_SCRIPT_SOGDIAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> soraSompeng [
+
+	^ self HB_SCRIPT_SORA_SOMPENG
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> soyombo [
+
+	^ self HB_SCRIPT_SOYOMBO
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> sundanese [
+
+	^ self HB_SCRIPT_SUNDANESE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> sylotiNagri [
+
+	^ self HB_SCRIPT_SYLOTI_NAGRI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> syriac [
+
+	^ self HB_SCRIPT_SYRIAC
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> tagalog [
+
+	^ self HB_SCRIPT_TAGALOG
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> tagbanwa [
+
+	^ self HB_SCRIPT_TAGBANWA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> taiLe [
+
+	^ self HB_SCRIPT_TAI_LE
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> taiTham [
+
+	^ self HB_SCRIPT_TAI_THAM
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> taiViet [
+
+	^ self HB_SCRIPT_TAI_VIET
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> takri [
+
+	^ self HB_SCRIPT_TAKRI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> tamil [
+
+	^ self HB_SCRIPT_TAMIL
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> tangsa [
+
+	^ self HB_SCRIPT_TANGSA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> tangut [
+
+	^ self HB_SCRIPT_TANGUT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> telugu [
+
+	^ self HB_SCRIPT_TELUGU
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> thaana [
+
+	^ self HB_SCRIPT_THAANA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> thai [
+
+	^ self HB_SCRIPT_THAI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> tibetan [
+
+	^ self HB_SCRIPT_TIBETAN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> tifinagh [
+
+	^ self HB_SCRIPT_TIFINAGH
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> tirhuta [
+
+	^ self HB_SCRIPT_TIRHUTA
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> toto [
+
+	^ self HB_SCRIPT_TOTO
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> ugaritic [
+
+	^ self HB_SCRIPT_UGARITIC
 ]
 
 { #category : #hook }
 AeHbScript class >> underlinedNamePrefix [
 	
 	^ 'HB_SCRIPT_'
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> unknown [
+
+	^ self HB_SCRIPT_UNKNOWN
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> vai [
+
+	^ self HB_SCRIPT_VAI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> vithkuqi [
+
+	^ self HB_SCRIPT_VITHKUQI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> wancho [
+
+	^ self HB_SCRIPT_WANCHO
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> warangCiti [
+
+	^ self HB_SCRIPT_WARANG_CITI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> yezidi [
+
+	^ self HB_SCRIPT_YEZIDI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> yi [
+
+	^ self HB_SCRIPT_YI
+]
+
+{ #category : #'accessing enum camelcased' }
+AeHbScript class >> zanabazarSquare [
+
+	^ self HB_SCRIPT_ZANABAZAR_SQUARE
 ]
