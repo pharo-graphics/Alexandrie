@@ -143,17 +143,6 @@ AeHbFont >> lock [
 		hb_ft_font_lock_face ( self ) )
 ]
 
-{ #category : #'instance creation' }
-AeHbFont >> newCairoFontFace [
-	"Answer a new `AeCairoFontFace` for rendering text according to this font.
-
-	Note that the scale of font does not affect the rendering, but the variations and slant that are set on font do."
-
-	^ self unownedNewCairoFontFace
-		autoRelease;
-		yourself
-]
-
 { #category : #accessing }
 AeHbFont >> pointSize [
 	"Fetches the 'point size' of a font. Zero means unset value.
@@ -291,21 +280,4 @@ AeHbFont >> unlock [
 	self ffiCall: #(
 		void
 		hb_ft_font_unlock_face ( self ) )
-]
-
-{ #category : #'instance creation' }
-AeHbFont >> unownedNewCairoFontFace [
-	"Answer a new `AeCairoFontFace` for rendering text according to this font.
-
-	Note that the scale of font does not affect the rendering, but the variations and slant that are set on font do.
-	
-	Sender is responsible of destroying the new object.
-
-	See: https://harfbuzz.github.io/harfbuzz-hb-cairo.html#hb-cairo-font-face-create-for-font"
-
-	^ self
-		ffiCall: #(
-			AeCairoFontFace
-			hb_cairo_font_face_create_for_font ( self ) )
-		library: AeHarfbuzzCairoLibrary
 ]

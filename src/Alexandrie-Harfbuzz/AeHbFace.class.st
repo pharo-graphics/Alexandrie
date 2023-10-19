@@ -149,15 +149,6 @@ AeHbFace >> hasPng [
 ]
 
 { #category : #accessing }
-AeHbFace >> newCairoFontFace [
-	"Answer a new `AeCairoFontFace` for rendering text according to this face."
-
-	^ self unownedNewCairoFontFace
-		autoRelease;
-		yourself
-]
-
-{ #category : #accessing }
 AeHbFace >> newHbFont [
 	"Answer a new `AeHbFont` from me"
 
@@ -175,19 +166,4 @@ AeHbFace >> unitsPerEm [
 	^ self ffiCall: #(
 		uint
 		hb_face_get_upem ( self ) )
-]
-
-{ #category : #accessing }
-AeHbFace >> unownedNewCairoFontFace [
-	"Answer a new `AeCairoFontFace` for rendering text according to this face.
-	
-	Sender is responsible of destroying the new object.
-
-	See: https://harfbuzz.github.io/harfbuzz-hb-cairo.html#hb-cairo-font-face-create-for-face"
-
-	^ self
-		ffiCall: #(
-			AeCairoFontFace
-			hb_cairo_font_face_create_for_face ( self ) )
-		library: AeHarfbuzzCairoLibrary
 ]

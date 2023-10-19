@@ -7,7 +7,7 @@ See: https://harfbuzz.github.io/harfbuzz-hb-cairo.html
 Class {
 	#name : #AeHarfbuzzCairoLibrary,
 	#superclass : #FFILibrary,
-	#category : #'Alexandrie-Harfbuzz-Library'
+	#category : #'Alexandrie-HarfbuzzCairo'
 }
 
 { #category : #'accessing - platform' }
