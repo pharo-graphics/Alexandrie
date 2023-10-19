@@ -7,7 +7,7 @@ Class {
 	#category : #BaselineOfAlexandrie
 }
 
-{ #category : #baseline }
+{ #category : #baselines }
 BaselineOfAlexandrie >> baseline: spec [
 	<baseline>
 
@@ -39,6 +39,8 @@ BaselineOfAlexandrie >> baseline: spec [
 					with: [ spec requires: #('Alexandrie-FreeType') ];
 				package: 'Alexandrie-Harfbuzz-Tests'
 					with: [ spec requires: #('Alexandrie-Harfbuzz' 'Alexandrie-FreeType-Tests') ];
+				package: 'Alexandrie-HarfbuzzCairo'
+					with: [ spec requires: #('Alexandrie-Harfbuzz' 'Alexandrie-Cairo') ];
 				
 				package: 'Alexandrie-Canvas'
 					with: [ spec requires: #('Alexandrie-Cairo' 'Alexandrie-FreeType' 'Alexandrie-Harfbuzz') ];
