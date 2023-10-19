@@ -631,7 +631,7 @@ AeCairoExamplesRenderTest >> surfaceWithStretchedIcon [
 { #category : #'tests - text' }
 AeCairoExamplesRenderTest >> surfaceWithText [
 
-	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aFontFace aScaledFont |
+	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aScaledFont |
 	fontSize := 12.
 	"Get Lorem Ipsum without last cr character"
 	string := (String loremIpsum: 28) allButLast.
@@ -641,19 +641,21 @@ AeCairoExamplesRenderTest >> surfaceWithText [
 		  format: AeCairoSurfaceFormat argb32.
 	aContext := aSurface newContext.
 
-	"Set up aScaleFont"
-	aFTLibrary := AeFTLibrary newInitialized.
-	aFTFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
-	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
-	aScaledFont := aFontFace 
-		newScaledFontWithFontMatrix: (AeCairoMatrix newScalingBy: fontSize asPoint)
-		userToDeviceMatrix: AeCairoMatrix newIdentity
-		options: AeCairoFontOptions new.
-
-	"Draw glyphs"
+	"Paint background"
 	aContext
 		sourceColor: Color paleGreen;
-		paint;
+		paint.
+	
+	"Set up scaled font in the context"
+	aFTLibrary := AeFTLibrary newInitialized.
+	aFTFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
+	aContext
+		fontFace: (AeCairoFreetypeFontFace newForFace: aFTFace);
+		fontSize: fontSize.
+	aScaledFont := aContext scaledFont.
+
+	"Draw text"
+	aContext
 		translateByX: 5 y: fontSize;
 		sourceColor: Color blue;
 		scaledFont: aScaledFont;
