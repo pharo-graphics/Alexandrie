@@ -21,3 +21,13 @@ AeCairoGlyphArray class >> type [
 
 	^ AeCairoGlyph
 ]
+
+{ #category : #printing }
+AeCairoGlyphArray >> printGlyphsOn: aStream [
+
+	aStream nextPut: $(.
+	self
+		do: [ :each | each printShortOn: aStream ]
+		separatedBy: [ aStream space ].
+	aStream nextPut: $)
+]

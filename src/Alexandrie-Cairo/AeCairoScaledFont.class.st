@@ -232,29 +232,53 @@ AeCairoScaledFont >> glyphArrayForString: aString [
 { #category : #API }
 AeCairoScaledFont >> glyphArrayForUtf8Array: aUtf8EncodedByteArray [
 
-	| aGlyphsArrayPtr aGlyphsNumPtr aStatus arraySize aGlyphsArray |
-	aGlyphsArrayPtr := ExternalAddress new.
-	aGlyphsNumPtr := FFIInt32 newBuffer.
+	| glyphsAddress glyphCountAddress aStatus glyphCount glyphs |
+	glyphsAddress := ExternalAddress new.
+	glyphCountAddress := FFIInt32 newBuffer.
 
 	aStatus := self
-		textToGlyphs: aUtf8EncodedByteArray
-		length: aUtf8EncodedByteArray size
-		glyphs: aGlyphsArrayPtr
-		num: aGlyphsNumPtr
-		x: 0.0
-		y: 0.0.
+		glyphsFrom: aUtf8EncodedByteArray
+		size: aUtf8EncodedByteArray size
+		intoGlyphs: glyphsAddress
+		size: glyphCountAddress.
 	aStatus ensureIsSuccess.
 	
 	"Cairo returns NULL pointer when no glyphs, so needs special treatment."
-	arraySize := aGlyphsNumPtr signedLongAt: 1.
-	aGlyphsArray := arraySize isZero
+	glyphCount := glyphCountAddress signedLongAt: 1.
+	glyphs := glyphCount isZero
 		ifTrue: [ AeCairoGlyphArray unownedNewOf: 0 ]
-		ifFalse: [ AeCairoGlyphArray fromHandle: aGlyphsArrayPtr size: arraySize ].
+		ifFalse: [
+			AeCairoOpaqueGlyphArray
+				fromHandle: glyphsAddress
+				size: glyphCount ].
 
 	"In both cases we must to take care of freeing the array."
-	aGlyphsArray autoRelease.
+	glyphs autoRelease.
 	
-	^ aGlyphsArray
+	^ glyphs
+]
+
+{ #category : #API }
+AeCairoScaledFont >> glyphsFrom: bytes size: byteCount intoGlyphs: glyphs size: glyphCount [
+	"Convert UTF-8 text to an array of glyphs. Return `CAIRO_STATUS_SUCCESS` upon success, or an error status if the input values are wrong or if conversion failed.
+	
+	The user is responsible for freeing the allocated glyph array.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-text-to-glyphs"
+
+	^ self ffiCall: #(
+		AeCairoStatus
+		cairo_scaled_font_text_to_glyphs ( 
+			self,
+			double 0.0,
+			double 0.0,
+			void * bytes,
+			int byteCount,
+			void ** glyphs,
+			int * glyphCount,
+			nil,
+			nil,
+			nil ) )
 ]
 
 { #category : #API }
@@ -293,29 +317,6 @@ AeCairoScaledFont >> textExtentsOf: aString [
 		getTextExtentsOf: aString utf8Encoded
 		into: textExtents.
 	^ textExtents
-]
-
-{ #category : #API }
-AeCairoScaledFont >> textToGlyphs: aBuffer length: aLength glyphs: theGlyphs num: aGlyphsCount x: x y: y [
-	"Convert UTF-8 text to an array of glyphs. Return `CAIRO_STATUS_SUCCESS` upon success, or an error status if the input values are wrong or if conversion failed.
-	
-	The user is responsible for freeing the allocated glyph array.
-	
-	See: https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-text-to-glyphs"
-
-	^ self ffiCall: #(
-		AeCairoStatus
-		cairo_scaled_font_text_to_glyphs ( 
-			self,
-			double x,
-			double y,
-			void * aBuffer,
-			int aLength,
-			void ** theGlyphs,
-			"int" void * aGlyphsCount,
-			nil,
-			nil,
-			nil ) )
 ]
 
 { #category : #API }
