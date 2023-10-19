@@ -99,11 +99,11 @@ AeHbBuffer >> cairoGlyphArrayForFace: freetypeFace size: fontSize [
 	length = 0 ifTrue: [ ^ AeCairoGlyphArray newOf: 0 ].
 
 	infos := FFIExternalArray
-		  fromHandle: (self getGlyphInfosOn: ExternalAddress null)
+		  fromHandle: (self getGlyphInfosInto: ExternalAddress null)
 		  type: AeHbGlyphInfo
 		  size: length.
 	positions := FFIExternalArray
-		  fromHandle: (self getGlyphPositionsOn: ExternalAddress null)
+		  fromHandle: (self getGlyphPositionsInto: ExternalAddress null)
 		  type: AeHbGlyphPosition
 		  size: length.
 
@@ -172,7 +172,7 @@ AeHbBuffer >> flags: flags [
 ]
 
 { #category : #'accessing - output' }
-AeHbBuffer >> getGlyphInfosOn: aPointer [
+AeHbBuffer >> getGlyphInfosInto: aPointer [
 	"Returns a collection of `AeHbGlyphInfo` with glyph information. Returned pointer is valid as long as buffer contents are not modified.
 
 	See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-get-glyph-infos"
@@ -186,7 +186,7 @@ AeHbBuffer >> getGlyphInfosOn: aPointer [
 ]
 
 { #category : #'accessing - output' }
-AeHbBuffer >> getGlyphPositionsOn: aPointer [
+AeHbBuffer >> getGlyphPositionsInto: aPointer [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-get-glyph-positions"
 
 	^ self ffiCall: #(
@@ -203,7 +203,7 @@ AeHbBuffer >> glyphInfos [
 
 	| lengthPointer aHandle |
 	lengthPointer := FFIUInt32 newBuffer.
-	aHandle := self getGlyphInfosOn: lengthPointer.
+	aHandle := self getGlyphInfosInto: lengthPointer.
 	"Library has responsability to free it."
 	
 	^ FFIExternalArray
@@ -219,7 +219,7 @@ AeHbBuffer >> glyphPositions [
 
 	| lengthPointer aHandle |
 	lengthPointer := FFIUInt32 newBuffer.
-	aHandle := self getGlyphPositionsOn: lengthPointer.
+	aHandle := self getGlyphPositionsInto: lengthPointer.
 	"Library has responsability to free."
 
 	^ FFIExternalArray
