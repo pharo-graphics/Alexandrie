@@ -51,6 +51,25 @@ AeCairoFontOptions >> antialias: anAntialias [
 ]
 
 { #category : #'private - ffi' }
+AeCairoFontOptions >> colorMode [
+	"See: https://www.cairographics.org/manual/cairo-cairo-font-options-t.html#cairo-font-options-get-color-mode"
+
+	^ self ffiCall: #( AeCairoGlyphColorMode cairo_font_options_get_color_mode ( self ) )
+]
+
+{ #category : #'private - ffi' }
+AeCairoFontOptions >> colorMode: aColorMode [
+	"See: https://www.cairographics.org/manual/cairo-cairo-font-options-t.html#cairo-font-options-set-color-mode"
+
+	self ffiCall: #(
+		void
+		cairo_font_options_set_color_mode (
+			self,
+			AeCairoGlyphColorMode aColorMode
+			) )
+]
+
+{ #category : #'private - ffi' }
 AeCairoFontOptions >> hintMetrics [
 
 	^ self ffiCall: #( AeCairoHintMetrics cairo_font_options_get_hint_metrics ( self ) )
