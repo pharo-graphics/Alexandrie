@@ -61,17 +61,21 @@ AeHbBuffer class >> unownedNew [
 { #category : #'accessing - input' }
 AeHbBuffer >> addString: aString [
 
-	| encoded |
-	encoded := aString utf8Encoded.
+	self addUtf8ByteArray: aString utf8Encoded
+]
+
+{ #category : #'accessing - input' }
+AeHbBuffer >> addUtf8ByteArray: encoded [
+
 	self
-		addUTF8ByteArray: encoded
+		addUtf8ByteArray: encoded
 		length: encoded size
 		itemOffset: 0
 		itemLength: encoded size
 ]
 
 { #category : #'accessing - input' }
-AeHbBuffer >> addUTF8ByteArray: text length: text_length itemOffset: item_offset itemLength: item_length [
+AeHbBuffer >> addUtf8ByteArray: text length: text_length itemOffset: item_offset itemLength: item_length [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-add-utf8"
 
 	self ffiCall: #(
@@ -86,15 +90,10 @@ AeHbBuffer >> addUTF8ByteArray: text length: text_length itemOffset: item_offset
 ]
 
 { #category : #convenience }
-AeHbBuffer >> cairoGlyphArrayForFace: freetypeFace size: fontSize [
+AeHbBuffer >> cairoGlyphArray [
 	"Based on: https://github.com/harfbuzz/harfbuzz-tutorial/blob/master/hello-harfbuzz-freetype.c"
 
-	| hbFont length infos positions cairoGlyphsArray currentX currentY |
-	
-	freetypeFace charHeight: fontSize.
-	hbFont := AeHbFont newForFTFaceReferenced: freetypeFace.
-	self shapeWithFont: hbFont.
-
+	| length infos positions cairoGlyphsArray currentX currentY |
 	length := self length.
 	length = 0 ifTrue: [ ^ AeCairoGlyphArray newOf: 0 ].
 
@@ -121,6 +120,17 @@ AeHbBuffer >> cairoGlyphArrayForFace: freetypeFace size: fontSize [
 		currentY := currentY + position yAdvanceFrom26Dot6 ].
 
 	^ cairoGlyphsArray
+]
+
+{ #category : #convenience }
+AeHbBuffer >> cairoGlyphArrayForFace: freetypeFace size: fontSize [
+	"Based on: https://github.com/harfbuzz/harfbuzz-tutorial/blob/master/hello-harfbuzz-freetype.c"
+
+	| hbFont |
+	freetypeFace charHeight: fontSize.
+	hbFont := AeHbFont newForFTFaceReferenced: freetypeFace.
+	self shapeWithFont: hbFont.
+	^ self cairoGlyphArray
 ]
 
 { #category : #'accessing - output' }
