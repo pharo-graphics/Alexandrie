@@ -21,6 +21,7 @@ AeCairoFreetypeFontFace class >> newForFace: aFTFace [
 	aCairoFontFace status ensureIsSuccess.
 
 	^ aCairoFontFace
+		freetypeFace: aFTFace;
 		autoRelease;
 		yourself
 
@@ -34,6 +35,20 @@ AeCairoFreetypeFontFace class >> unownedNewFor: aFreetypeFontFace [
 		cairo_ft_font_face_create_for_ft_face (
 			void* aFreetypeFontFace,
 			0 ) )
+]
+
+{ #category : #accessing }
+AeCairoFreetypeFontFace >> freetypeFace [
+	"Answer the `AeFTFace` associated with this font face"
+
+	^ freetypeFace
+]
+
+{ #category : #accessing }
+AeCairoFreetypeFontFace >> freetypeFace: aFTFace [
+	"Set the aFTFace associated with this font face. This should avoid it to be garbage collection before me."
+
+	freetypeFace := aFTFace
 ]
 
 { #category : #'private - ffi' }
