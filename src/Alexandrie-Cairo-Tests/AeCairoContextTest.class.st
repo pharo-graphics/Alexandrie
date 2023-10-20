@@ -264,13 +264,14 @@ AeCairoContextTest >> testPathExtents [
 { #category : #tests }
 AeCairoContextTest >> testScaledFont [
 
-	| aSurface aContext scaledFont17 scaledFont71 scaledFont17b |
+	| aSurface aContext aCairoFontFace scaledFont17 scaledFont71 scaledFont17b |
 	aSurface := AeCairoImageSurface extent: 1@1.
 	aContext := aSurface newContext.
 	
 	"Set up scaled font in the context"
+	aCairoFontFace := self newSourceSansProRegularFontFace.
 	aContext
-		fontFace: self newSourceSansProRegularFontFace;
+		fontFace: aCairoFontFace;
 		fontSize: 17.
 	scaledFont17 := aContext scaledFont.
 
@@ -298,6 +299,19 @@ AeCairoContextTest >> testScaledFont [
 
 	"Caching, also when switching back to fontSize=71 via #fontSize:"
 	aContext fontSize: 71.
+	self
+		assert: aContext scaledFont getHandle
+		equals: scaledFont71 getHandle.
+	
+	"There isn't cache when same cairo font face but in new instance."
+	aContext fontFace: self newSourceSansProRegularFontFace.
+	self
+		deny: aContext scaledFont getHandle
+		equals: scaledFont71 getHandle.
+
+	"Getting back to original cairo font face instance, gets
+	cached scaled font face."
+	aContext fontFace: aCairoFontFace.
 	self
 		assert: aContext scaledFont getHandle
 		equals: scaledFont71 getHandle
