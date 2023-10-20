@@ -68,6 +68,12 @@ AeCairoFontExtents >> height: anObject [
 	handle doubleAt: OFFSET_HEIGHT put: anObject
 ]
 
+{ #category : #accessing }
+AeCairoFontExtents >> maxAdvance [
+	
+	^ self maxAdvanceX @ self maxAdvanceY
+]
+
 { #category : #'accessing structure variables' }
 AeCairoFontExtents >> maxAdvanceX [
 	"This method was automatically generated"

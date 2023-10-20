@@ -790,7 +790,7 @@ AeCairoContext >> getGlyphExtentsOf: aGlyphArray size: numberOfGlyphs into: aTex
 		void
 		cairo_glyph_extents (
 			self,
-			AeCairoGlyphArray aGlyphArray,
+			void *aGlyphArray,
 			int numberOfGlyphs,
 			AeCairoTextExtents *aTextMetrics ) )
 ]

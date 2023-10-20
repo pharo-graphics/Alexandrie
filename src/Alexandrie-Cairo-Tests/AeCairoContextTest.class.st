@@ -8,6 +8,15 @@ Class {
 	#category : #'Alexandrie-Cairo-Tests'
 }
 
+{ #category : #running }
+AeCairoContextTest >> newSourceSansProRegularFontFace [
+
+	| aFTLibrary aFTFace |
+	aFTLibrary := AeFTLibrary newInitialized.
+	aFTFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
+	^ AeCairoFreetypeFontFace newForFace: aFTFace
+]
+
 { #category : #tests }
 AeCairoContextTest >> testClipExtents [
 
@@ -120,6 +129,83 @@ AeCairoContextTest >> testFillRule [
 ]
 
 { #category : #tests }
+AeCairoContextTest >> testFontExtents [
+
+	| aSurface aContext aScaledFont aFontExtents |
+	aSurface := AeCairoImageSurface extent: 1@1.
+	aContext := aSurface newContext.
+	
+	"Set up scaled font in the context"
+	aContext
+		fontFace: self newSourceSansProRegularFontFace;
+		fontSize: 17.
+
+	"Measure glyphs extents"
+	aFontExtents := aContext fontExtents.
+	self assert: aFontExtents height closeTo: 21.
+	self assert: aFontExtents ascent closeTo: 17.
+	self assert: aFontExtents descent closeTo: 5.
+	self assert: aFontExtents maxAdvance closeTo: 37@0.
+
+	"Changing fontSize implies a new scaledFont is set"
+	aContext fontSize: 71.
+	aScaledFont := aContext scaledFont.
+	aFontExtents := aContext fontExtents.
+	self assert: aFontExtents height closeTo: 89.
+	self assert: aFontExtents ascent closeTo: 70.
+	self assert: aFontExtents descent closeTo: 20.
+	self assert: aFontExtents maxAdvance closeTo: 156@0.
+
+	"Switch back to fontSize=17 but via setting the matrix"	
+	aContext fontMatrix: (AeCairoMatrix newScalingBy: 17 asPoint).
+	aScaledFont := aContext scaledFont.
+	aFontExtents := aContext fontExtents.
+	self assert: aFontExtents height closeTo: 21.
+	self assert: aFontExtents ascent closeTo: 17.
+	self assert: aFontExtents descent closeTo: 5.
+	self assert: aFontExtents maxAdvance closeTo: 37@0.
+
+]
+
+{ #category : #tests }
+AeCairoContextTest >> testGlyphExtentsOf [
+
+	| aSurface aContext string aScaledFont aGlyphArray aTextExtents |
+	aSurface := AeCairoImageSurface extent: 1@1.
+	aContext := aSurface newContext.
+	string := 'Hola'.
+	
+	"Set up scaled font in the context"
+	aContext
+		fontFace: self newSourceSansProRegularFontFace;
+		fontSize: 17.
+	aScaledFont := aContext scaledFont.
+	aGlyphArray := aScaledFont glyphArrayForString: string.
+	aTextExtents := aContext glyphExtentsOf: aGlyphArray.
+	self assert: aTextExtents extent closeTo: 33@13.
+	self assert: aTextExtents bearing closeTo: 1@ -13.
+	self assert: aTextExtents advance closeTo: 34@0.
+
+	"Change and fetch different measurements"
+	aContext fontSize: 71.
+	aScaledFont := aContext scaledFont.
+	aGlyphArray := aScaledFont glyphArrayForString: string.
+	aTextExtents := aContext glyphExtentsOf: aGlyphArray.
+	self assert: aTextExtents extent closeTo: 129@51.
+	self assert: aTextExtents bearing closeTo: 6@ -50.
+	self assert: aTextExtents advance closeTo: 139@0.
+
+	"Switch back to fontSize=17, but this time via #fontMatrix:"
+	aContext fontMatrix: (AeCairoMatrix newScalingBy: 17 asPoint).
+	aScaledFont := aContext scaledFont.
+	aGlyphArray := aScaledFont glyphArrayForString: string.
+	aTextExtents := aContext glyphExtentsOf: aGlyphArray.
+	self assert: aTextExtents extent closeTo: 33@13.
+	self assert: aTextExtents bearing closeTo: 1@ -13.
+	self assert: aTextExtents advance closeTo: 34@0
+]
+
+{ #category : #tests }
 AeCairoContextTest >> testOperator [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
@@ -173,6 +259,48 @@ AeCairoContextTest >> testPathExtents [
 		assert: context pathExtentsInDeviceSpace
 		equals: (Rectangle origin: -1 @ -2 extent: 0 asPoint).
 
+]
+
+{ #category : #tests }
+AeCairoContextTest >> testScaledFont [
+
+	| aSurface aContext scaledFont17 scaledFont71 scaledFont17b |
+	aSurface := AeCairoImageSurface extent: 1@1.
+	aContext := aSurface newContext.
+	
+	"Set up scaled font in the context"
+	aContext
+		fontFace: self newSourceSansProRegularFontFace;
+		fontSize: 17.
+	scaledFont17 := aContext scaledFont.
+
+	"Second time we get the same address (it's not a copy)."
+	self
+		assert: aContext scaledFont getHandle
+		equals: scaledFont17 getHandle.
+
+	"Changing fontSize implies a new scaledFont is set"
+	aContext fontSize: 71.
+	self
+		deny: aContext scaledFont getHandle
+		equals: scaledFont17 getHandle.
+	scaledFont71 := aContext scaledFont.
+
+	"Caching, when switching back to fontSize=17 via #fontMatrix:"
+	aContext fontMatrix: (AeCairoMatrix newScalingBy: 17 asPoint).
+	self
+		deny: aContext scaledFont getHandle
+		equals: scaledFont71 getHandle.
+	scaledFont17b := aContext scaledFont.
+	self
+		assert: scaledFont17b getHandle
+		equals: scaledFont17 getHandle.
+
+	"Caching, also when switching back to fontSize=71 via #fontSize:"
+	aContext fontSize: 71.
+	self
+		assert: aContext scaledFont getHandle
+		equals: scaledFont71 getHandle
 ]
 
 { #category : #tests }
