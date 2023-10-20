@@ -889,14 +889,14 @@ AeCanvas >> setSourceLinearPatternStops: aCollection start: startPoint end: endP
 ]
 
 { #category : #'API - source' }
-AeCanvas >> setSourceRadialPatternStops: aCollection center: aPoint radius: aNumber [
+AeCanvas >> setSourceRadialPatternStops: aCollection innerCenter: anInnerCenter innerRadius: anInnerRadius outerCenter: anOuterCenter outerRadius: anOuterRadius [ 
 	
 	| aPattern |
 	aPattern := AeCairoRadialGradientPattern
-		innerCenter: aPoint
-		innerRadius: 0
-		outerCenter: aPoint
-		outerRadius: aNumber
+		innerCenter: anInnerCenter
+		innerRadius: anInnerRadius
+		outerCenter: anOuterCenter
+		outerRadius: anOuterRadius
 		addStopsFrom: aCollection.
 	
 	cairoContext source: aPattern.
