@@ -1,13 +1,14 @@
 Class {
-	#name : #BaselineOfAlexandrie,
-	#superclass : #BaselineOf,
+	#name : 'BaselineOfAlexandrie',
+	#superclass : 'BaselineOf',
 	#classVars : [
 		'Initialized'
 	],
-	#category : #BaselineOfAlexandrie
+	#category : 'BaselineOfAlexandrie',
+	#package : 'BaselineOfAlexandrie'
 }
 
-{ #category : #baseline }
+{ #category : 'baseline' }
 BaselineOfAlexandrie >> baseline: spec [
 	<baseline>
 
@@ -52,23 +53,30 @@ BaselineOfAlexandrie >> baseline: spec [
 			]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 BaselineOfAlexandrie >> downloadTestFonts [
 
 	| aeDownloadedFont aeFilesystemResources aeFontManager |
 	"Do this class name trick to avoid loading warnings such as: 
 	NewUndeclaredWarning: BaselineOfAlexandrie>>downloadTestFonts (AeFilesystemResources is Undeclared)"
 
-	aeDownloadedFont := #AeDownloadedFont asClassInEnvironment: self class environment.
-	aeFilesystemResources := #AeFilesystemResources asClassInEnvironment: self class environment.
-	aeFontManager := #AeFontManager asClassInEnvironment: self class environment.
+	aeDownloadedFont := #AeDownloadedFont 
+		asClassInEnvironment: self class environment
+		ifAbsent:  [ nil ].
+	aeFilesystemResources := #AeFilesystemResources 
+		asClassInEnvironment: self class environment
+		ifAbsent:  [ nil ].
+	aeFontManager := #AeFontManager 
+		asClassInEnvironment: self class environment
+		ifAbsent:  [ nil ].
 	
-	aeDownloadedFont ensureAllDownloadedAt: aeFilesystemResources downloadedFontsDirectory.
-	aeFontManager globalInstance scanDirectory: aeFilesystemResources fontsDirectory.
-
+	aeDownloadedFont ifNotNil: [ 
+		aeDownloadedFont ensureAllDownloadedAt: aeFilesystemResources downloadedFontsDirectory ].
+	aeFontManager ifNotNil: [ 
+		aeFontManager globalInstance scanDirectory: aeFilesystemResources fontsDirectory ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 BaselineOfAlexandrie >> postload: loader package: packageSpec [
 
 	"Ignore pre and post loads if already executed"
@@ -84,7 +92,7 @@ BaselineOfAlexandrie >> postload: loader package: packageSpec [
 	Initialized := true.
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 BaselineOfAlexandrie >> stdoutLibraryVersions [
 	
 	| aeCairoLibrary aeFTLibrary aeHarfbuzzLibrary |
