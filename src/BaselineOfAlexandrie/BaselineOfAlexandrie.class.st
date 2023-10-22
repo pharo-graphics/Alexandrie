@@ -94,14 +94,22 @@ BaselineOfAlexandrie >> postload: loader package: packageSpec [
 
 { #category : 'actions' }
 BaselineOfAlexandrie >> stdoutLibraryVersions [
-	
 	| aeCairoLibrary aeFTLibrary aeHarfbuzzLibrary |
 	"Do this class name trick to avoid loading warnings such as: 
 	NewUndeclaredWarning: BaselineOfAlexandrie>>stdoutLibraryVersions (AeCairoLibrary is Undeclared)"
 
-	aeCairoLibrary := #AeCairoLibrary asClassInEnvironment: self class environment.
-	aeFTLibrary := #AeFTLibrary asClassInEnvironment: self class environment.
-	aeHarfbuzzLibrary := #AeHarfbuzzLibrary asClassInEnvironment: self class environment.
+	aeCairoLibrary := #AeCairoLibrary 
+		asClassInEnvironment: self class environment
+		ifAbsent: [ nil ].
+	aeFTLibrary := #AeFTLibrary 
+		asClassInEnvironment: self class environment
+		ifAbsent: [ nil ].
+	aeHarfbuzzLibrary := #AeHarfbuzzLibrary 
+		asClassInEnvironment: self class environment
+		ifAbsent: [ nil ].
+	
+	(aeCairoLibrary isNil or: [ aeFTLibrary isNil or: [ aeHarfbuzzLibrary isNil ] ])
+		ifTrue: [ ^ self ].
 	
 	Stdio stdout
 		<< '-----------------------------'; lf;
