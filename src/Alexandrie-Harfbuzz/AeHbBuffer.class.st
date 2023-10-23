@@ -207,6 +207,43 @@ AeHbBuffer >> getGlyphPositionsInto: aPointer [
 		)
 ]
 
+{ #category : #'cairo integration' }
+AeHbBuffer >> glyphArrayForString: aString scaleFactor: aPoint [
+
+	^ self
+		glyphArrayForUtf8Array: aString utf8Encoded
+		scaleFactor: aPoint
+]
+
+{ #category : #'cairo integration' }
+AeHbBuffer >> glyphArrayForUtf8Array: aUtf8EncodedByteArray scaleFactor: aPoint [
+
+	| glyphsAddress glyphCountAddress glyphCount aGlyphsArray |
+	glyphsAddress := ExternalAddress new.
+	glyphCountAddress := FFIInt32 newBuffer.
+
+	self
+		unownedGlyphsFrom: aUtf8EncodedByteArray
+		length: aUtf8EncodedByteArray size
+		xScaleFactor: aPoint x
+		yScaleFactor: aPoint y
+		intoGlyphs: glyphsAddress
+		num: glyphCountAddress.
+	
+	glyphCount := glyphCountAddress signedLongAt: 1.
+	aGlyphsArray := glyphCount isZero
+		ifTrue: [ AeCairoGlyphArray unownedNewOf: 0 ]
+		ifFalse: [
+			AeCairoOpaqueGlyphArray
+				fromHandle: glyphsAddress
+				size: glyphCount ].
+
+	"In both cases we must to take care of freeing the array."
+	aGlyphsArray autoRelease.
+	
+	^ aGlyphsArray
+]
+
 { #category : #'accessing - output' }
 AeHbBuffer >> glyphInfos [
 	"Answer an array of `AeHbGlyphInfo` that indicate information of each glyph of this buffer."
