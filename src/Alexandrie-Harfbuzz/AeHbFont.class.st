@@ -273,6 +273,30 @@ AeHbFont >> scaleX: x y: y [
 			int y ) )
 ]
 
+{ #category : #metrics }
+AeHbFont >> strikeoutOffset [
+
+	^ self positionWithFallback: AeHbOpenTypeMetricsTag strikeoutOffset
+]
+
+{ #category : #metrics }
+AeHbFont >> strikeoutSize [
+
+	^ self positionWithFallback: AeHbOpenTypeMetricsTag strikeoutSize
+]
+
+{ #category : #metrics }
+AeHbFont >> underlineOffset [
+
+	^ self positionWithFallback: AeHbOpenTypeMetricsTag underlineOffset
+]
+
+{ #category : #metrics }
+AeHbFont >> underlineSize [
+
+	^ self positionWithFallback: AeHbOpenTypeMetricsTag underlineSize
+]
+
 { #category : #concurrency }
 AeHbFont >> unlock [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-ft.html#hb-ft-font-unlock-face"
