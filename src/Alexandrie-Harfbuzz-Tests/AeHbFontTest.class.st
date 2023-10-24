@@ -38,6 +38,22 @@ AeHbFontTest >> testFace [
 		equals: inriaSerifRegularFace getHandle
 ]
 
+{ #category : #test }
+AeHbFontTest >> testItalic [
+
+	self
+		assert: inriaSerifRegularFont italic
+		equals: 0.0
+]
+
+{ #category : #test }
+AeHbFontTest >> testOpticalSize [
+
+	self
+		assert: inriaSerifRegularFont opticalSize
+		equals: 12.0.
+]
+
 { #category : #tests }
 AeHbFontTest >> testPointSize [
 
@@ -76,4 +92,30 @@ AeHbFontTest >> testScale [
 	self
 		assert: inriaSerifRegularFont scale
 		equals: 3000 @ 2000
+]
+
+{ #category : #test }
+AeHbFontTest >> testSlantAngle [
+
+	self
+		assert: inriaSerifRegularFont slantAngle
+		equals: 0.0.
+]
+
+{ #category : #test }
+AeHbFontTest >> testSlantRatio [
+
+	self assert: inriaSerifRegularFont slantRatio equals: 0.0
+]
+
+{ #category : #test }
+AeHbFontTest >> testWeight [
+
+	self assert: inriaSerifRegularFont weight equals: 400.0
+]
+
+{ #category : #test }
+AeHbFontTest >> testWidth [
+
+	self assert: inriaSerifRegularFont width equals: 100.0
 ]

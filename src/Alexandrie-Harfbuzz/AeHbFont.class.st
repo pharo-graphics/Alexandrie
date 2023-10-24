@@ -130,6 +130,13 @@ AeHbFont >> getScaleIntoX: xAddress y: yAddress [
 			int *yAddress ) )
 ]
 
+{ #category : #accessing }
+AeHbFont >> italic [
+
+	^ self styleValueAt: AeHbStyleTag italic
+
+]
+
 { #category : #concurrency }
 AeHbFont >> lock [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-ft.html#hb-ft-font-lock-face"
@@ -137,6 +144,13 @@ AeHbFont >> lock [
 	^ self ffiCall: #(
 		AeFTFace *
 		hb_ft_font_lock_face ( self ) )
+]
+
+{ #category : #accessing }
+AeHbFont >> opticalSize [
+
+	^ self styleValueAt: AeHbStyleTag opticalSize
+
 ]
 
 { #category : #accessing }
@@ -288,6 +302,19 @@ AeHbFont >> scaleX: x y: y [
 			int y ) )
 ]
 
+{ #category : #accessing }
+AeHbFont >> slantAngle [
+
+	^ self styleValueAt: AeHbStyleTag slantAngle
+]
+
+{ #category : #accessing }
+AeHbFont >> slantRatio [
+
+	^ self styleValueAt: AeHbStyleTag slantRatio
+
+]
+
 { #category : #metrics }
 AeHbFont >> strikeoutOffset [
 
@@ -298,6 +325,19 @@ AeHbFont >> strikeoutOffset [
 AeHbFont >> strikeoutSize [
 
 	^ self positionWithFallback: AeHbOpenTypeMetricsTag strikeoutSize
+]
+
+{ #category : #accessing }
+AeHbFont >> styleValueAt: styleTag [
+	"Answer style information from fonts.
+
+	See: https://harfbuzz.github.io/harfbuzz-hb-style.html#hb-style-get-value"
+
+	^ self ffiCall: #(
+		float
+		hb_style_get_value (
+			self,
+			AeHbStyleTag styleTag) )
 ]
 
 { #category : #metrics }
@@ -319,4 +359,16 @@ AeHbFont >> unlock [
 	self ffiCall: #(
 		void
 		hb_ft_font_unlock_face ( self ) )
+]
+
+{ #category : #accessing }
+AeHbFont >> weight [
+
+	^ self styleValueAt: AeHbStyleTag weight
+]
+
+{ #category : #accessing }
+AeHbFont >> width [
+
+	^ self styleValueAt: AeHbStyleTag width
 ]
