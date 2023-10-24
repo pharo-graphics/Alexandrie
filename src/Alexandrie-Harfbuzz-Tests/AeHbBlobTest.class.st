@@ -14,6 +14,14 @@ AeHbBlobTest >> inriaSerifRegularBlob [
 ]
 
 { #category : #tests }
+AeHbBlobTest >> testAsString [
+
+	self
+		assert: self inriaSerifRegularBlob asString
+		equals: 'an AeHbBlob(1 faces)'
+]
+
+{ #category : #tests }
 AeHbBlobTest >> testFaceCount [
 
 	self

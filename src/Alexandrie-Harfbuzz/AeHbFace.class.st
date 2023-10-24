@@ -212,6 +212,21 @@ AeHbFace >> openTypeName: nameId [
 	^ result
 ]
 
+{ #category : #printing }
+AeHbFace >> printOn: aStream [
+
+	self isNull ifTrue: [ ^ super printOn: aStream ].
+
+	aStream
+		nextPutAll: 'an ';
+		nextPutAll: self className;
+		nextPutAll: '(';
+		nextPutAll: self openTypeFontFamily;
+		nextPutAll: ', ';
+		nextPutAll: self openTypeFontSubfamily;
+		nextPutAll: ')'
+]
+
 { #category : #accessing }
 AeHbFace >> unitsPerEm [
 	"Answer my units-per-em (UPEM) value.

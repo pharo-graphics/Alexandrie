@@ -117,3 +117,16 @@ AeHbBlob >> newHbFaces [
 	^ (0 to: self faceCount - 1)
 			collect: [ :i | self newHbFaceAtIndex: i ]
 ]
+
+{ #category : #printing }
+AeHbBlob >> printOn: aStream [
+
+	self isNull ifTrue: [ ^ super printOn: aStream ].
+
+	aStream
+		nextPutAll: 'an ';
+		nextPutAll: self className;
+		nextPutAll: '(';
+		print: self faceCount;
+		nextPutAll: ' faces)'
+]

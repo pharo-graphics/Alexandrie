@@ -3,10 +3,6 @@ I represent FFI bindings to `hb_font_t`: Font objects.
 
 A font object represents a font face at a specific size and with certain other parameters (pixels-per-em, points-per-em, variation settings) specified. Font objects are created from font face objects, and are used as input to `hb_shape()`, among other things.
 
-Client programs can optionally pass in their own functions that implement the basic, lower-level queries of font objects. This set of font functions is defined by the virtual methods in `hb_font_funcs_t`.
-
-HarfBuzz provides a built-in set of lightweight default functions for each method in `hb_font_funcs_t`.
-
 See: https://harfbuzz.github.io/harfbuzz-hb-font.html
 "
 Class {
@@ -196,6 +192,25 @@ AeHbFont >> positionWithFallback: metricsTag [
 		into: positionAddress.
 
 	^ (positionAddress int32AtOffset: 0) from26Dot6FractionalPoint
+]
+
+{ #category : #printing }
+AeHbFont >> printOn: aStream [
+
+	| myFace |
+	self isNull ifTrue: [ ^ super printOn: aStream ].
+
+	myFace := self face.
+	aStream
+		nextPutAll: 'an ';
+		nextPutAll: self className;
+		nextPutAll: '(';
+		nextPutAll: myFace openTypeFontFamily;
+		nextPutAll: ', ';
+		nextPutAll: myFace openTypeFontSubfamily;
+		nextPutAll: ', ';
+		print: self scale;
+		nextPutAll: ')'
 ]
 
 { #category : #refreshing }

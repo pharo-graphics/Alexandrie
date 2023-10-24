@@ -23,6 +23,14 @@ AeHbFontTest >> setUp [
 ]
 
 { #category : #tests }
+AeHbFontTest >> testAsString [
+
+	self
+		assert: inriaSerifRegularFont asString
+		equals: 'an AeHbFont(Inria Serif, Regular, (1000@1000))'
+]
+
+{ #category : #tests }
 AeHbFontTest >> testFace [
 
 	self

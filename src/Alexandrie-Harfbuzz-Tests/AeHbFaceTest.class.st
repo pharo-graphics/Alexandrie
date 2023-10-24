@@ -25,6 +25,14 @@ AeHbFaceTest >> setUp [
 ]
 
 { #category : #tests }
+AeHbFaceTest >> testAsString [
+
+	self
+		assert: inriaSerifRegularFace asString
+		equals: 'an AeHbFace(Inria Serif, Regular)'
+]
+
+{ #category : #tests }
 AeHbFaceTest >> testGlyphCount [
 
 	self
