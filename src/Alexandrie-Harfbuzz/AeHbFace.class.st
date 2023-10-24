@@ -95,8 +95,8 @@ AeHbFace class >> unownedNewForFTFaceReferenced: ft_face [
 		)
 ]
 
-{ #category : #'as yet unclassified' }
-AeHbFace >> allPredefinedNamesAsDictionary [
+{ #category : #accessing }
+AeHbFace >> allOpenTypePredefinedNamesAsDictionary [
 
 	| result |
 	result := OrderedDictionary new.
@@ -130,7 +130,7 @@ AeHbFace >> glyphCount [
 		hb_face_get_glyph_count ( self ) )
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 AeHbFace >> hasColor [
 	"Answer whether this font can have colors.
 	
@@ -139,7 +139,7 @@ AeHbFace >> hasColor [
 	^ self hasPng or: [ self hasLayers or: [ self hasPaint ] ]
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 AeHbFace >> hasLayers [
 	"Answer whether this face includes a COLR table with data according to COLRv0.
 	
@@ -150,7 +150,7 @@ AeHbFace >> hasLayers [
 		hb_ot_color_has_layers ( self ) )
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 AeHbFace >> hasPaint [
 	"Answer whether this face includes a COLR table with data according to COLRv1.
 	
@@ -163,7 +163,7 @@ AeHbFace >> hasPaint [
 		hb_ot_color_has_paint ( self ) )
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 AeHbFace >> hasPng [
 	"Answer whether this face has PNG glyph images (either in CBDT or sbix tables).
 	
@@ -174,23 +174,29 @@ AeHbFace >> hasPng [
 		hb_ot_color_has_png ( self ) )
 ]
 
-{ #category : #accessing }
+{ #category : #'instance creation' }
 AeHbFace >> newHbFont [
 	"Answer a new `AeHbFont` from me"
 
 	^ AeHbFont newForHbFace: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AeHbFace >> openTypeFontFamily [
 
 	^ self openTypeName: AeHbOpenTypePredefinedNameId fontFamily
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AeHbFace >> openTypeFontSubfamily [
 
 	^ self openTypeName: AeHbOpenTypePredefinedNameId fontSubfamily
+]
+
+{ #category : #accessing }
+AeHbFace >> openTypeFullName [
+	
+	^ self openTypeName: AeHbOpenTypePredefinedNameId fullName
 ]
 
 { #category : #accessing }
