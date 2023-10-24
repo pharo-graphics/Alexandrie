@@ -209,6 +209,7 @@ AeHbFace >> openTypeName: nameId [
 		language: AeHbLanguage en.
 	
 	result := textAddress utf8StringFromCString.
+	textAddress free.
 	^ result
 ]
 
