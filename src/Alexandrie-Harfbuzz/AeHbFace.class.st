@@ -95,6 +95,32 @@ AeHbFace class >> unownedNewForFTFaceReferenced: ft_face [
 		)
 ]
 
+{ #category : #'as yet unclassified' }
+AeHbFace >> allPredefinedNamesAsDictionary [
+
+	| result |
+	result := OrderedDictionary new.
+	
+	AeHbOpenTypePredefinedNameId allValues do: [ :each |
+		result at: each item put: (self openTypeName: each) ].
+
+	^ result 
+]
+
+{ #category : #accessing }
+AeHbFace >> getOpenTypeUtf8Name: nameId into: text num: textSize language: language [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-ot-name.html#hb-ot-name-get-utf8"
+
+	^ self ffiCall: #(
+		uint
+		hb_ot_name_get_utf8 (
+			self,
+			"hb_ot_name_id_t" uint nameId,
+			hb_language_t language,
+			uint *textSize,
+			char *text) )
+]
+
 { #category : #accessing }
 AeHbFace >> glyphCount [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-face.html#hb-face-get-glyph-count"
@@ -153,6 +179,37 @@ AeHbFace >> newHbFont [
 	"Answer a new `AeHbFont` from me"
 
 	^ AeHbFont newForHbFace: self
+]
+
+{ #category : #'as yet unclassified' }
+AeHbFace >> openTypeFontFamily [
+
+	^ self openTypeName: AeHbOpenTypePredefinedNameId fontFamily
+]
+
+{ #category : #'as yet unclassified' }
+AeHbFace >> openTypeFontSubfamily [
+
+	^ self openTypeName: AeHbOpenTypePredefinedNameId fontSubfamily
+]
+
+{ #category : #accessing }
+AeHbFace >> openTypeName: nameId [
+
+	| textAddress textSizeAddress result len |
+	len := 64.
+	textAddress := ExternalAddress allocate: len.
+	textSizeAddress := FFIUInt32 newBuffer.
+	textSizeAddress uint32AtOffset: 0 put: len.
+
+	self
+		getOpenTypeUtf8Name: nameId
+		into: textAddress
+		num: textSizeAddress
+		language: AeHbLanguage en.
+	
+	result := textAddress utf8StringFromCString.
+	^ result
 ]
 
 { #category : #accessing }

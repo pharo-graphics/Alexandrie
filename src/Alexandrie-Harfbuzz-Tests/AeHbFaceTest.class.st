@@ -64,6 +64,28 @@ AeHbFaceTest >> testHasPng [
 	self assert: emojiFace hasPng
 ]
 
+{ #category : #test }
+AeHbFaceTest >> testOpenTypeFontFamily [
+
+	self
+		assert: inriaSerifRegularFace openTypeFontFamily
+		equals: 'Inria Serif'.
+	self
+		assert: emojiFace openTypeFontFamily
+		equals: 'Noto Color Emoji'
+]
+
+{ #category : #test }
+AeHbFaceTest >> testOpenTypeFontSubfamily [
+
+	self
+		assert: inriaSerifRegularFace openTypeFontSubfamily
+		equals: 'Regular'.
+	self
+		assert: emojiFace openTypeFontSubfamily
+		equals: 'Regular'
+]
+
 { #category : #tests }
 AeHbFaceTest >> testUnitsPerEm [
 
