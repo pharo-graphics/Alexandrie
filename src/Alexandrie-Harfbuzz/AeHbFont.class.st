@@ -361,6 +361,24 @@ AeHbFont >> unlock [
 		hb_ft_font_unlock_face ( self ) )
 ]
 
+{ #category : #metrics }
+AeHbFont >> verticalAscender [
+
+	^ self positionWithFallback: AeHbOpenTypeMetricsTag verticalAscender
+]
+
+{ #category : #metrics }
+AeHbFont >> verticalDescender [
+
+	^ self positionWithFallback: AeHbOpenTypeMetricsTag verticalDescender
+]
+
+{ #category : #metrics }
+AeHbFont >> verticalLineGap [
+
+	^ self positionWithFallback: AeHbOpenTypeMetricsTag verticalLineGap
+]
+
 { #category : #accessing }
 AeHbFont >> weight [
 
