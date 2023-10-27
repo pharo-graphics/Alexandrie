@@ -152,12 +152,12 @@ AeCairoScaledFont >> getGlyphExtentsOf: aGlyphArray into: aTextExtents [
 
 	self
 		getGlyphExtentsOf: aGlyphArray
-		length: aGlyphArray size
+		size: aGlyphArray size
 		into: aTextExtents
 ]
 
 { #category : #API }
-AeCairoScaledFont >> getGlyphExtentsOf: aGlyphArray length: num into: aTextExtents [
+AeCairoScaledFont >> getGlyphExtentsOf: aGlyphArray size: num into: aTextExtents [
 	"Gets the extents for an array of glyphs. 
 
 	The extents describe a user-space rectangle that encloses the ""inked"" portion of the glyphs, (as they would be drawn by `cairo_show_glyphs()` if the cairo graphics state were set to the same font_face, font_matrix, ctm, and font_options as scaled_font).
@@ -256,6 +256,19 @@ AeCairoScaledFont >> glyphArrayForUtf8Array: aUtf8EncodedByteArray [
 	glyphs autoRelease.
 	
 	^ glyphs
+]
+
+{ #category : #API }
+AeCairoScaledFont >> glyphExtentsOf: aGlyphArray [
+	"Gets the extents for an array of glyphs. The extents describe a user-space rectangle that encloses the 'inked' portion of the glyphs."
+
+	| textExtents |
+	textExtents := AeCairoTextExtents new.
+	self
+		getGlyphExtentsOf: aGlyphArray
+		size: aGlyphArray size
+		into: textExtents.
+	^ textExtents
 ]
 
 { #category : #API }
