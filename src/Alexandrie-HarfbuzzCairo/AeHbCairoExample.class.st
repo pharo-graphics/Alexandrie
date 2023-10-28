@@ -49,7 +49,7 @@ AeHbCairoExample class >> exampleDraw: aString face: aHbFace [
 	
 	instance
 		clearSurface;
-		drawBackground;
+		drawHighlighting;
 		drawBaseline;
 		drawText;
 		drawUnderline;
@@ -60,7 +60,7 @@ AeHbCairoExample class >> exampleDraw: aString face: aHbFace [
 { #category : #examples }
 AeHbCairoExample class >> exampleDrawFFLigature [
 
-	self exampleDraw: 'Office' face: self newInriaFace
+	self exampleDraw: 'Officey' face: self newInriaFace
 ]
 
 { #category : #examples }
@@ -132,51 +132,71 @@ AeHbCairoExample >> clearSurface [
 ]
 
 { #category : #drawing }
-AeHbCairoExample >> drawBackground [
+AeHbCairoExample >> drawBaseline [
+
+	self
+		drawDottedHLineCenteredAt: fontExtents ascent
+		thickness: 2.0
+		left: 0.0
+		right: glyphExtents advanceX
+		color: Color blue
+]
+
+{ #category : #drawing }
+AeHbCairoExample >> drawDottedHLineCenteredAt: centerY thickness: thickness left: left right: right color: aColor [
+
+	cairoContext restoreStateAfter: [
+		cairoContext
+			moveToX: left y: centerY;
+			lineToX: right y: centerY.
+
+		cairoContext
+			lineWidth: thickness;
+			lineCap: AeCairoCapStyle round;
+			dash: (AeCairoDoubleArray newFrom: {0.0. 2*thickness}) offset: 0.
+
+		cairoContext
+			sourceColor: aColor;
+			stroke ]
+]
+
+{ #category : #drawing }
+AeHbCairoExample >> drawHighlighting [
 
 	cairoContext restoreStateAfter: [
 		cairoContext
 			rectangleX: glyphExtents bearingX
 				y: 0
 				width: glyphExtents width
-				height: fontExtents ascent;
+				height: fontExtents height;
 			sourceColor: Color yellow;
 			fill ]
 
 ]
 
 { #category : #drawing }
-AeHbCairoExample >> drawBaseline [
+AeHbCairoExample >> drawSolidHLineAtTop: top thickness: thickness left: left width: width color: aColor [
 
-	| thickness lineY |
-	thickness := 1.0.
-	lineY := fontExtents ascent + (thickness/2.0).
 	cairoContext restoreStateAfter: [
 		cairoContext
-			moveToX: 0.0 y: lineY;
-			lineToX: glyphExtents advanceX y: lineY.
-
+			rectangleX: left
+			y: top
+			width: width
+			height: thickness.
 		cairoContext
-			lineCap: AeCairoCapStyle square;
-			dash: (AeCairoDoubleArray newFrom: {0.0. 3*thickness}) offset: 0.
-
-		cairoContext
-			sourceColor: Color black;
-			stroke ]
-
+			sourceColor: aColor;
+			fill ]
 ]
 
 { #category : #drawing }
 AeHbCairoExample >> drawStrikeout [
 
-	cairoContext restoreStateAfter: [
-		cairoContext
-			rectangleX: glyphExtents bearingX
-			y: fontExtents ascent - font strikeoutOffset
-			width: glyphExtents width
-			height: font strikeoutSize.
-		cairoContext sourceColor: Color green; fill ]
-
+	self
+		drawSolidHLineAtTop: fontExtents ascent - font strikeoutOffset
+		thickness: font strikeoutSize
+		left: glyphExtents bearingX
+		width: glyphExtents width
+		color: Color green
 ]
 
 { #category : #drawing }
@@ -192,13 +212,12 @@ AeHbCairoExample >> drawText [
 { #category : #drawing }
 AeHbCairoExample >> drawUnderline [
 
-	cairoContext restoreStateAfter: [
-		cairoContext
-			rectangleX: glyphExtents bearingX
-			y: fontExtents ascent - font underlineOffset
-			width: glyphExtents width
-			height: font underlineSize.
-		cairoContext sourceColor: Color red; fill ]
+	self
+		drawSolidHLineAtTop: fontExtents ascent - font underlineOffset
+		thickness: font underlineSize
+		left: glyphExtents bearingX
+		width: glyphExtents width
+		color: Color red
 ]
 
 { #category : #initialization }
