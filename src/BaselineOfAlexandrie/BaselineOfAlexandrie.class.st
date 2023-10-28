@@ -50,8 +50,12 @@ BaselineOfAlexandrie >> baseline: spec [
 				package: 'Alexandrie-NewTools'
 					with: [ spec requires: #('Alexandrie-Canvas') ];
 				package: 'Alexandrie-NewTools-Tests'
-					with: [ spec requires: #('Alexandrie-NewTools' 'Alexandrie-Canvas-Tests') ]
-			]
+					with: [ spec requires: #('Alexandrie-NewTools' 'Alexandrie-Canvas-Tests') ].
+
+			spec
+				group: 'ffi-minimal' with: #('Alexandrie-Harfbuzz' 'Alexandrie-Cairo' 'Alexandrie-FreeType');
+				group: 'development' with: #('Alexandrie-NewTools-Tests');
+				group: 'default' with: #('development')	]
 ]
 
 { #category : #actions }
