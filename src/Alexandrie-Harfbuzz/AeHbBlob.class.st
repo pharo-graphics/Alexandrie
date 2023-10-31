@@ -38,6 +38,15 @@ AeHbBlob class >> newEmpty [
 ]
 
 { #category : #'instance creation' }
+AeHbBlob class >> newFrom: aByteArray [
+
+	^ self
+		unownedNewFrom: aByteArray
+		ifSuccess: [ :b | b autoRelease; yourself ]
+		ifFail: [ self error: 'Harfbuzz failed to read data' ]
+]
+
+{ #category : #'instance creation' }
 AeHbBlob class >> newLocatedAt: aFileReference [
 
 	^ self
@@ -46,6 +55,33 @@ AeHbBlob class >> newLocatedAt: aFileReference [
 		ifFail: [
 			self error: 'Harfbuzz failed to read: ',
 							aFileReference pathString ]
+]
+
+{ #category : #'instance creation' }
+AeHbBlob class >> unownedNewFrom: aByteArray ifSuccess: successBlock ifFail: failedBlock [
+
+	| blob |
+	blob := self unownedNewFrom: aByteArray size: aByteArray size.
+
+	^ blob isEmpty
+		ifFalse: [ successBlock value: blob ]
+		ifTrue: [ failedBlock value ]
+]
+
+{ #category : #'instance creation' }
+AeHbBlob class >> unownedNewFrom: data size: dataSize [
+	"Answer a new object wrapping data, or the empty singleton if failed. User must destroy the answer in former case.
+
+	See: https://harfbuzz.github.io/harfbuzz-hb-blob.html#hb-blob-create"
+
+	^ self ffiCall: #(
+		hb_blob_t *
+		hb_blob_create (
+			const char *data,
+			int dataSize,
+			1, "HB_MEMORY_MODE_READONLY"
+			nil,
+			nil ) )
 ]
 
 { #category : #'instance creation' }
@@ -94,6 +130,12 @@ AeHbBlob >> faceCount [
 	^ self ffiCall: #(
 		uint
 		hb_face_count ( self ) )
+]
+
+{ #category : #testing }
+AeHbBlob >> isEmpty [
+	
+	^ self faceCount isZero
 ]
 
 { #category : #accessing }

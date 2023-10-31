@@ -13,6 +13,12 @@ AeHbBlobTest >> inriaSerifRegularBlob [
 	^ AeHbBlob newLocatedAt: AeFilesystemResources inriaSerifRegularTTF
 ]
 
+{ #category : #running }
+AeHbBlobTest >> sourceSansProBlob [
+
+	^ AeHbBlob newFrom: AeSourceSansPro_Regular fontContentsData
+]
+
 { #category : #tests }
 AeHbBlobTest >> testAsString [
 
@@ -67,6 +73,24 @@ AeHbBlobTest >> testOpenFailure [
 		whoseDescriptionIncludes: 'Harfbuzz failed to read'
 		description: 'Should have problems to open this file.'.
 
+]
+
+{ #category : #tests }
+AeHbBlobTest >> testOpenFromMemoryFailure [
+
+	self
+		should: [
+			AeHbBlob newFrom: #[0 1 2 3] ]
+		raise: Error
+		whoseDescriptionIncludes: 'Harfbuzz failed to read data'
+		description: 'Should have problems to open this ByteArray'.
+
+]
+
+{ #category : #tests }
+AeHbBlobTest >> testOpenFromMemorySuccess [
+
+	self assert: self sourceSansProBlob faceCount equals: 1
 ]
 
 { #category : #tests }
