@@ -8,10 +8,7 @@ See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-glyph-position-t
 Class {
 	#name : #AeHbGlyphPosition,
 	#superclass : #FFIExternalStructure,
-	#traits : 'AeTHarfbuzzLibrary',
-	#classTraits : 'AeTHarfbuzzLibrary classTrait',
 	#classVars : [
-		'OFFSET_VAR',
 		'OFFSET_X_ADVANCE',
 		'OFFSET_X_OFFSET',
 		'OFFSET_Y_ADVANCE',
@@ -34,7 +31,7 @@ AeHbGlyphPosition class >> fieldsDesc [
 		hb_position_t  y_advance
 		hb_position_t  x_offset
 		hb_position_t  y_offset
-		uint32 var "<private> hb_var_int_t   var;"
+		"uint32 var <private> hb_var_int_t   var;"
 		)
 ]
 
@@ -50,18 +47,6 @@ AeHbGlyphPosition >> printOn: aStream [
 			print: (self perform: each).
 		 ]
 
-]
-
-{ #category : #'accessing - structure variables' }
-AeHbGlyphPosition >> var [
-	"This method was automatically generated"
-	^handle unsignedLongAt: OFFSET_VAR
-]
-
-{ #category : #'accessing - structure variables' }
-AeHbGlyphPosition >> var: anObject [
-	"This method was automatically generated"
-	handle unsignedLongAt: OFFSET_VAR put: anObject
 ]
 
 { #category : #accessing }

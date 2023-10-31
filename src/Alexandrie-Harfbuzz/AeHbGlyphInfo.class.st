@@ -13,14 +13,10 @@ See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-glyph-info-t
 Class {
 	#name : #AeHbGlyphInfo,
 	#superclass : #FFIExternalStructure,
-	#traits : 'AeTHarfbuzzLibrary',
-	#classTraits : 'AeTHarfbuzzLibrary classTrait',
 	#classVars : [
 		'OFFSET_CLUSTER',
 		'OFFSET_CODEPOINT',
-		'OFFSET_MASK',
-		'OFFSET_VAR1',
-		'OFFSET_VAR2'
+		'OFFSET_MASK'
 	],
 	#pools : [
 		'AeHbTypes'
@@ -44,9 +40,9 @@ AeHbGlyphInfo class >> fieldsDesc [
 
 		"/*< private >*/
 		  hb_var_int_t   var1;
-		  hb_var_int_t   var2;"
+		  hb_var_int_t   var2;
 		uint32 var1
-		uint32 var2
+		uint32 var2"
 		)
 ]
 
@@ -98,28 +94,4 @@ AeHbGlyphInfo >> printOn: aStream [
 			print: (self perform: each).
 		 ].
 
-]
-
-{ #category : #'accessing - structure variables' }
-AeHbGlyphInfo >> var1 [
-	"This method was automatically generated"
-	^handle unsignedLongAt: OFFSET_VAR1
-]
-
-{ #category : #'accessing - structure variables' }
-AeHbGlyphInfo >> var1: anObject [
-	"This method was automatically generated"
-	handle unsignedLongAt: OFFSET_VAR1 put: anObject
-]
-
-{ #category : #'accessing - structure variables' }
-AeHbGlyphInfo >> var2 [
-	"This method was automatically generated"
-	^handle unsignedLongAt: OFFSET_VAR2
-]
-
-{ #category : #'accessing - structure variables' }
-AeHbGlyphInfo >> var2: anObject [
-	"This method was automatically generated"
-	handle unsignedLongAt: OFFSET_VAR2 put: anObject
 ]
