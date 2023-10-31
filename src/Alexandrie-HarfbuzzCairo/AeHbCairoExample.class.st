@@ -20,9 +20,13 @@ Class {
 { #category : #'instance creation' }
 AeHbCairoExample class >> exampleDraw: aString face: aHbFace [
 
-	| cairoSurface fontSize instance |
-	fontSize := 100.
+	self exampleDraw: aString face: aHbFace fontSize: 100
+]
 
+{ #category : #'instance creation' }
+AeHbCairoExample class >> exampleDraw: aString face: aHbFace fontSize: fontSize [
+
+	| cairoSurface instance |
 	cairoSurface := AeCairoImageSurface
 		extent: 1000 @ (fontSize * 2)
 		format: AeCairoSurfaceFormat argb32.
@@ -70,6 +74,15 @@ AeHbCairoExample class >> exampleDrawLigature [
 ]
 
 { #category : #examples }
+AeHbCairoExample class >> exampleDrawLoremIpsum [
+
+	self
+		exampleDraw: (String loremIpsum: 120)
+		face: self newSourceSansProFace
+		fontSize: 20
+]
+
+{ #category : #examples }
 AeHbCairoExample class >> exampleEmoji [
 
 	self exampleDraw: '😁' face: self newEmojiFace
@@ -109,6 +122,39 @@ AeHbCairoExample class >> newInriaFace [
 	^ (AeHbBlob newLocatedAt:
 			AeFilesystemResources inriaSerifRegularTTF)
 				newHbFaceAtIndex: 0
+]
+
+{ #category : #examples }
+AeHbCairoExample class >> newSourceSansProFace [
+
+	^ (AeHbBlob newFrom:
+			AeSourceSansPro_Regular fontContentsData)
+				newHbFaceAtIndex: 0
+]
+
+{ #category : #'instance creation' }
+AeHbCairoExample class >> newWith: aString face: aHbFace fontSize: aFontSize [
+
+	| cairoSurface |
+	cairoSurface := AeCairoImageSurface
+		extent: 1000 @ (aFontSize * 2)
+		format: AeCairoSurfaceFormat argb32.
+	
+	"cairoSurface := AeCairoPDFSurface
+		extent: 1000 @ 1000
+		to: 'c.pdf' asFileReference.
+	cairoSurface status ensureIsSuccess."
+	"cairoSurface := AeCairoSVGSurface
+		extent: 1000 @ (fontSize * 20)
+		to: 'b_.svg' asFileReference."
+	"cairoSurface :=
+		AeCairoRecordingSurface
+			newContentType: AeCairoContent colorAndAlpha
+			bounds: AeCairoRectangle null."
+
+	cairoSurface status ensureIsSuccess.
+	
+	^ self newWith: aString face: aHbFace fontSize: aFontSize cairoContext: cairoSurface newContext
 ]
 
 { #category : #'instance creation' }
@@ -175,12 +221,12 @@ AeHbCairoExample >> drawHighlighting [
 ]
 
 { #category : #drawing }
-AeHbCairoExample >> drawSolidHLineAtTop: top thickness: thickness left: left width: width color: aColor [
+AeHbCairoExample >> drawSolidHLineCenteredAt: centerY thickness: thickness left: left width: width color: aColor [
 
 	cairoContext restoreStateAfter: [
 		cairoContext
 			rectangleX: left
-			y: top
+			y: centerY - (thickness/2.0)
 			width: width
 			height: thickness.
 		cairoContext
@@ -192,7 +238,7 @@ AeHbCairoExample >> drawSolidHLineAtTop: top thickness: thickness left: left wid
 AeHbCairoExample >> drawStrikeout [
 
 	self
-		drawSolidHLineAtTop: fontExtents ascent - font strikeoutOffset
+		drawSolidHLineCenteredAt: fontExtents ascent - font strikeoutOffset
 		thickness: font strikeoutSize
 		left: glyphExtents bearingX
 		width: glyphExtents width
@@ -213,7 +259,7 @@ AeHbCairoExample >> drawText [
 AeHbCairoExample >> drawUnderline [
 
 	self
-		drawSolidHLineAtTop: fontExtents ascent - font underlineOffset
+		drawSolidHLineCenteredAt: fontExtents ascent - font underlineOffset
 		thickness: font underlineSize
 		left: glyphExtents bearingX
 		width: glyphExtents width
