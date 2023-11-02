@@ -8,7 +8,7 @@ See: https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-script-t
 "
 Class {
 	#name : #AeHbScript,
-	#superclass : #AeEnumeration,
+	#superclass : #AeHbTagEnumeration,
 	#classVars : [
 		'HB_SCRIPT_ADLAM',
 		'HB_SCRIPT_AHOM',
@@ -1746,7 +1746,7 @@ HB_SCRIPT_MATH Zmth
 '.
 
 		pairsArray pairsDo: [ :a :b |
-			stream nextPutAll: ('	{1}	 	{2}' format: { a. b asByteArray asInteger }); cr. ].
+			stream nextPutAll: ('	{1}	 	{2}' format: { a. b asHbTagInteger }); cr. ].
 
 		stream nextPutAll: '	HB_SCRIPT_INVALID 0)' ].
 

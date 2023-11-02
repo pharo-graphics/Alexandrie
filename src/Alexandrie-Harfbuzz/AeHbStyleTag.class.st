@@ -14,7 +14,7 @@ See: https://docs.microsoft.com/en-us/typography/opentype/spec/dvaraxisreg
 "
 Class {
 	#name : #AeHbStyleTag,
-	#superclass : #AeEnumeration,
+	#superclass : #AeHbTagEnumeration,
 	#classVars : [
 		'HB_STYLE_TAG_ITALIC',
 		'HB_STYLE_TAG_OPTICAL_SIZE',
@@ -98,7 +98,7 @@ HB_STYLE_TAG_WEIGHT		  wght
 '.
 
 		pairsArray pairsDo: [ :a :b |
-			stream nextPutAll: ('	{1}	 	{2}' format: { a. b asByteArray asInteger }); cr. ].
+			stream nextPutAll: ('	{1}	 	{2}' format: { a. b asHbTagInteger }); cr. ].
 
 		stream nextPutAll: ')' ].
 

@@ -35,7 +35,7 @@ See: https://docs.microsoft.com/en-us/typography/opentype/spec/mvar#value-tags
 "
 Class {
 	#name : #AeHbOpenTypeMetricsTag,
-	#superclass : #AeEnumeration,
+	#superclass : #AeHbTagEnumeration,
 	#classVars : [
 		'HB_OT_METRICS_TAG_CAP_HEIGHT',
 		'HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER',
@@ -344,7 +344,7 @@ HB_OT_METRICS_TAG_UNDERLINE_OFFSET		undo
 '.
 
 		pairsArray pairsDo: [ :a :b |
-			stream nextPutAll: ('	{1}	 	{2}' format: { a. b asByteArray asInteger }); cr. ].
+			stream nextPutAll: ('	{1}	 	{2}' format: { a. b asHbTagInteger }); cr. ].
 
 		stream nextPutAll: ')' ].
 

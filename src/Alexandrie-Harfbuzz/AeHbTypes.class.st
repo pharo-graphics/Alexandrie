@@ -20,6 +20,7 @@ Class {
 		'hb_mask_t',
 		'hb_position_t',
 		'hb_script_t',
+		'hb_tag_t',
 		'int32_t',
 		'uint32_t'
 	],
@@ -37,7 +38,7 @@ AeHbTypes class >> initialize [
 
 	int32_t := 'int32'.
 	hb_position_t := int32_t.
-
+	hb_tag_t := uint32_t.
 	hb_buffer_t := AeHbBuffer.
 	hb_direction_t := AeHbDirection.
 	hb_script_t := AeHbScript.
@@ -48,5 +49,5 @@ AeHbTypes class >> initialize [
 	hb_glyph_info_t := AeHbGlyphInfo.
 	hb_glyph_position_t := AeHbGlyphPosition.
 	hb_buffer_cluster_level_t := AeHbBufferClusterLevel.
-	hb_buffer_flags_t := AeHbBufferFlags.
+	hb_buffer_flags_t := AeHbBufferFlags
 ]
