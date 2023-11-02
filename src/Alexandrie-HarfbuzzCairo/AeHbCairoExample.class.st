@@ -20,11 +20,11 @@ Class {
 { #category : #'instance creation' }
 AeHbCairoExample class >> exampleDraw: aString face: aHbFace [
 
-	self exampleDraw: aString face: aHbFace fontSize: 100
+	self exampleDraw: aString font: aHbFace newHbFont fontSize: 100
 ]
 
 { #category : #'instance creation' }
-AeHbCairoExample class >> exampleDraw: aString face: aHbFace fontSize: fontSize [
+AeHbCairoExample class >> exampleDraw: aString font: aHbFont fontSize: fontSize [
 
 	| cairoSurface instance |
 	cairoSurface := AeCairoImageSurface
@@ -47,7 +47,7 @@ AeHbCairoExample class >> exampleDraw: aString face: aHbFace fontSize: fontSize 
 	
 	instance := self
 			newWith: aString
-			face: aHbFace
+			font: aHbFont
 			fontSize: fontSize
 			cairoContext: cairoSurface newContext.
 	
@@ -78,7 +78,7 @@ AeHbCairoExample class >> exampleDrawLoremIpsum [
 
 	self
 		exampleDraw: (String loremIpsum: 120)
-		face: self newSourceSansProFace
+		font: self newSourceSansProFace newHbFont
 		fontSize: 20
 ]
 
@@ -137,7 +137,7 @@ AeHbCairoExample class >> newWith: aString face: aHbFace fontSize: aFontSize [
 
 	| cairoSurface |
 	cairoSurface := AeCairoImageSurface
-		extent: 1000 @ (aFontSize * 2)
+		extent: 1000 @ (aFontSize * 1.5)
 		format: AeCairoSurfaceFormat argb32.
 	
 	"cairoSurface := AeCairoPDFSurface
@@ -154,15 +154,15 @@ AeHbCairoExample class >> newWith: aString face: aHbFace fontSize: aFontSize [
 
 	cairoSurface status ensureIsSuccess.
 	
-	^ self newWith: aString face: aHbFace fontSize: aFontSize cairoContext: cairoSurface newContext
+	^ self newWith: aString font: aHbFace fontSize: aFontSize cairoContext: cairoSurface newContext
 ]
 
 { #category : #'instance creation' }
-AeHbCairoExample class >> newWith: aString face: aHbFace fontSize: aFontSize cairoContext: aCairoContext [
+AeHbCairoExample class >> newWith: aString font: aHbFont fontSize: aFontSize cairoContext: aCairoContext [
 
 	^ self basicNew
 		  initializeWith: aString
-		  face: aHbFace
+		  font: aHbFont
 		  fontSize: aFontSize
 		  cairoContext: aCairoContext;
 		  yourself
@@ -267,17 +267,16 @@ AeHbCairoExample >> drawUnderline [
 ]
 
 { #category : #initialization }
-AeHbCairoExample >> initializeWith: aString face: aHbFace fontSize: aFontSize cairoContext: aCairoContext [
+AeHbCairoExample >> initializeWith: aString font: aHbFont fontSize: aFontSize cairoContext: aCairoContext [
 
-	| face fontSize |
+	| fontSize |
 	self initialize.
 	
-	string :=aString.
-	face := aHbFace.
+	string := aString.
 	fontSize := aFontSize.
 	cairoContext := aCairoContext.
 
-	font := face newHbFont.
+	font := aHbFont.
 	font scale: fontSize as26Dot6FractionalPoint asPoint.
 	cairoFontFace := font newCairoFontFace.
 
