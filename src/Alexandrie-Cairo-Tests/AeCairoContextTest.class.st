@@ -131,13 +131,14 @@ AeCairoContextTest >> testFillRule [
 { #category : #tests }
 AeCairoContextTest >> testFontExtents [
 
-	| aSurface aContext aScaledFont aFontExtents |
+	| aSurface aContext aFontFace aScaledFont aFontExtents |
 	aSurface := AeCairoImageSurface extent: 1@1.
 	aContext := aSurface newContext.
 	
 	"Set up scaled font in the context"
+	aFontFace := self newSourceSansProRegularFontFace.
 	aContext
-		fontFace: self newSourceSansProRegularFontFace;
+		fontFace: aFontFace;
 		fontSize: 17.
 
 	"Measure glyphs extents"
@@ -170,14 +171,15 @@ AeCairoContextTest >> testFontExtents [
 { #category : #tests }
 AeCairoContextTest >> testGlyphExtentsOf [
 
-	| aSurface aContext string aScaledFont aGlyphArray aTextExtents |
+	| aSurface aContext string aScaledFont aGlyphArray aTextExtents aFontFace |
 	aSurface := AeCairoImageSurface extent: 1@1.
 	aContext := aSurface newContext.
 	string := 'Hola'.
 	
 	"Set up scaled font in the context"
+	aFontFace := self newSourceSansProRegularFontFace.
 	aContext
-		fontFace: self newSourceSansProRegularFontFace;
+		fontFace: aFontFace;
 		fontSize: 17.
 	aScaledFont := aContext scaledFont.
 	aGlyphArray := aScaledFont glyphArrayForString: string.
@@ -264,14 +266,14 @@ AeCairoContextTest >> testPathExtents [
 { #category : #tests }
 AeCairoContextTest >> testScaledFont [
 
-	| aSurface aContext aCairoFontFace scaledFont17 scaledFont71 scaledFont17b |
+	| aSurface aContext aFontFace scaledFont17 scaledFont71 scaledFont17b |
 	aSurface := AeCairoImageSurface extent: 1@1.
 	aContext := aSurface newContext.
 	
 	"Set up scaled font in the context"
-	aCairoFontFace := self newSourceSansProRegularFontFace.
+	aFontFace := self newSourceSansProRegularFontFace.
 	aContext
-		fontFace: aCairoFontFace;
+		fontFace: aFontFace;
 		fontSize: 17.
 	scaledFont17 := aContext scaledFont.
 
@@ -311,7 +313,7 @@ AeCairoContextTest >> testScaledFont [
 
 	"Getting back to original cairo font face instance, gets
 	cached scaled font face."
-	aContext fontFace: aCairoFontFace.
+	aContext fontFace: aFontFace.
 	self
 		assert: aContext scaledFont getHandle
 		equals: scaledFont71 getHandle
