@@ -1,7 +1,7 @@
 Extension { #name : #AeHbCairoExample }
 
 { #category : #'*Alexandrie-HarfbuzzVariableFonts' }
-AeHbCairoExample class >> exampleDrawVariableFont [
+AeHbCairoExample classSide >> exampleDrawVariableFont [
 
 	| fileReference hbBlob hbFace hbFont variations |
 	fileReference := AeSourceCodeVFDownloadedFont new

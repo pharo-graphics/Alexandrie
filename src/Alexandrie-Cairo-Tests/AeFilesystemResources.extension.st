@@ -1,7 +1,7 @@
 Extension { #name : #AeFilesystemResources }
 
 { #category : #'*Alexandrie-Cairo-Tests' }
-AeFilesystemResources class >> cairoDirectory [ 
+AeFilesystemResources classSide >> cairoDirectory [ 
 
 	^ self testsDirectory / 'cairo'
 ]
