@@ -668,7 +668,7 @@ AeCairoExamplesRenderTest >> surfaceWithText [
 { #category : #'tests - text' }
 AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
 
-	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aFontFace aScaledFont |
+	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aFontFace glyphArray |
 
 	fontSize := 25.
 	string := 'Hola'.
@@ -678,24 +678,22 @@ AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
 		  format: AeCairoSurfaceFormat argb32.
 	aContext := aSurface newContext.
 
-	"Set up aScaleFont"
+	"Set up"
 	aFTLibrary := AeFTLibrary newInitialized.
 	aFTFace := AeSourceSansPro_Bold firstFaceUsing: aFTLibrary.
 	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
-	aScaledFont := aFontFace 
-		newScaledFontWithFontMatrix: (AeCairoMatrix newScalingBy: fontSize asPoint)
-		userToDeviceMatrix: AeCairoMatrix newIdentity
-		options: AeCairoFontOptions new.
-
-	"Add glyphs to path"
 	aContext
 		sourceColor: Color paleGreen;
 		paint;
 		translateByX: 4 y: fontSize;
-		scaledFont: aScaledFont;
-		appendGlyphsPath: (aScaledFont glyphArrayForString: string).
+		fontFace: aFontFace;
+		fontSize: fontSize.
 
-	"Draw dashed stroke (border)"
+	"Add glyphs to path"
+	glyphArray := aContext scaledFont glyphArrayForString: string.
+	aContext appendGlyphsPath: glyphArray.
+
+	"Draw dashed stroke using the path"
 	aContext
 		sourceColor: Color blue;
 		dash: (AeCairoDoubleArray newFrom: { 7. 1 }) offset: 3;
