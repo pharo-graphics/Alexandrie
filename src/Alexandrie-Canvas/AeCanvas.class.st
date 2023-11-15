@@ -202,15 +202,15 @@ AeCanvas >> drawFigureWithBorderOutsideAndNoBackground [
 
 	self preparePath.
 
-	cairoContext paintGroupWith: [ 
-		"Draw border as centered BUT with double width"
+	"Draw border.
+	The stroke is draw as centered and with double width,
+	BUT inner half will be cleared afterwards. This needs to be
+	done inside a group to do not clear the target surface.
+	Note: The clear operator affects only the group."
+	cairoContext paintGroupWith: [
 		self prepareStrokeWithDoubledWidth.
-		cairoContext strokePreserve.
-		
-		"Clear the inner half of the border.
-		Needs to be done inside a group to do not erase the target surface.
-		The changed operator will be restored when the group is pop'ed."
 		cairoContext
+			strokePreserve;
 			setOperatorClear;
 			fillPreservingPath: clipAfterwards ].
 	
