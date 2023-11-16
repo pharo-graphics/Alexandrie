@@ -243,17 +243,19 @@ AeCanvas >> drawFigureWithBorderOutsideAndTranslucentBackground [
 
 	self preparePath.
 
+	"Draw border.
+	The stroke is draw as centered and with double width,
+	BUT inner half will be cleared afterwards. This needs to be
+	done inside a group to do not clear the target surface.
+	Note: The clear operator affects only the group."
 	cairoContext paintGroupWith: [
-		
-		"Paint border with double width"
 		self prepareStrokeWithDoubledWidth.
-		cairoContext strokePreserve.
-
-		"Clear the inner half of the double-sized
-		border to emulate outside outskirts."
-		cairoContext setOperatorClear; fillPreserve ].
+		cairoContext
+			strokePreserve;
+			setOperatorClear;
+			fillPreserve ].
 	
-	"Paint background"
+	"Draw background"
 	backgroundSourceBlock value.
 	self restoreContextOnlyIfClipAfterwards: [
 		cairoContext clip; paintWithAlpha: backgroundAlpha ]
