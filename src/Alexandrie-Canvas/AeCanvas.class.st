@@ -43,8 +43,8 @@ Class {
 		'borderBlock',
 		'figureBlock',
 		'dashesCache',
-		'shouldClipAfterDrawingFigure',
-		'borderPathBlock'
+		'borderPathBlock',
+		'clipAfterwards'
 	],
 	#category : #'Alexandrie-Canvas-Base'
 }
@@ -119,14 +119,14 @@ AeCanvas >> drawFigure [
 { #category : #'API - draw' }
 AeCanvas >> drawFigureAndPrepareToClip [
 
-	shouldClipAfterDrawingFigure := true.
+	clipAfterwards := true.
 	figureBlock value
 ]
 
 { #category : #'API - draw' }
 AeCanvas >> drawFigureAndPrepareToClip: aBoolean [
 
-	shouldClipAfterDrawingFigure := aBoolean.
+	clipAfterwards := aBoolean.
 	figureBlock value
 ]
 
@@ -134,14 +134,8 @@ AeCanvas >> drawFigureAndPrepareToClip: aBoolean [
 AeCanvas >> drawFigureWithBackgroundAndNoBorder [
 	
 	self preparePath.
-
-	self restoreContextIfShouldntClipAfter: [
-
-		"Paint background"
-		backgroundSourceBlock value.
-		cairoContext clip.
-		self paintWithBackgroundAlpha ]
-
+	backgroundSourceBlock value.
+	self fillAndClipAfterwardsIfRequired
 ]
 
 { #category : #private }
@@ -149,24 +143,20 @@ AeCanvas >> drawFigureWithBorderCenterAndBackground [
 
 	self preparePath.
 
-	"Need to restore clipping area to draw the border afterwards"
-	self restoreContextAfter: [
-
- 		"Paint background"
-		backgroundSourceBlock value.
-		cairoContext clipPreserve.
-		self paintWithBackgroundAlpha ].
-
-	"Paint border, and clip if required"
-	self prepareStrokeWithSingleWidth.
-	shouldClipAfterDrawingFigure
+	"Draw background"
+	backgroundSourceBlock value.
+	(backgroundAlpha < 1.0)
 		ifTrue: [
-			cairoContext
-				strokePreserve;
-				clip ]
-		ifFalse: [
-			cairoContext stroke ]
+			"Need to restore clipping area to draw the border afterwards"
+			self restoreContextAfter: [
+				self fillViaClipPreservingPath ] ]
+		ifFalse: [ cairoContext fillPreserve ].
 
+	"Draw border, and clip afterwards if required"
+	self prepareStrokeWithSingleWidth.
+	clipAfterwards
+		ifTrue: [ cairoContext strokePreserve; clip ]
+		ifFalse: [ cairoContext stroke ]
 ]
 
 { #category : #private }
@@ -174,16 +164,11 @@ AeCanvas >> drawFigureWithBorderCenterAndNoBackground [
 
 	self preparePath.
 
-	"Paint border, and clip if required"
+	"Draw border and clip (if required)"
 	self prepareStrokeWithSingleWidth.
-	shouldClipAfterDrawingFigure
-		ifTrue: [
-			cairoContext
-				strokePreserve;
-				clip ]
-		ifFalse: [
-			cairoContext stroke ]
-
+	clipAfterwards
+		ifTrue: [ cairoContext strokePreserve; clip ]
+		ifFalse: [ cairoContext stroke ]
 ]
 
 { #category : #private }
@@ -191,17 +176,14 @@ AeCanvas >> drawFigureWithBorderInsideAndBackground [
 
 	self preparePath.
 
-	self restoreContextIfShouldntClipAfter: [
-
-		"Paint background"
+	self restoreContextOnlyIfClipAfterwards: [
+		"Draw background"
 		backgroundSourceBlock value.
-		cairoContext clipPreserve.
-		self paintWithBackgroundAlpha.
+		self fillViaClipPreservingPath.
 
-		"Paint border"
+		"Draw border"
 		self prepareStrokeWithDoubledWidth.
 		cairoContext stroke ]
-
 ]
 
 { #category : #private }
@@ -209,14 +191,10 @@ AeCanvas >> drawFigureWithBorderInsideAndNoBackground [
 
 	self preparePath.
 
-	self restoreContextIfShouldntClipAfter: [
-
-		"Paint border"
+	self restoreContextOnlyIfClipAfterwards: [
+		"Draw border"
 		self prepareStrokeWithDoubledWidth.
-		cairoContext 
-			clipPreserve;
-			stroke ]
-
+		cairoContext clipPreserve; stroke ]
 ]
 
 { #category : #private }
@@ -224,25 +202,21 @@ AeCanvas >> drawFigureWithBorderOutsideAndNoBackground [
 
 	self preparePath.
 
-	cairoContext paintGroupWith: [ 
-		
-		"Paint border with double width"
+	"Draw border.
+	The stroke is draw as centered and with double width,
+	BUT inner half will be cleared afterwards. This needs to be
+	done inside a group to do not clear the target surface.
+	Note: The clear operator affects only the group."
+	cairoContext paintGroupWith: [
 		self prepareStrokeWithDoubledWidth.
-		cairoContext strokePreserve.
-		
-		"Clear the inner half of the border.
-		Needs to be done inside a group to do not erase the target surface.
-		The changed operator will be restored when the group is poped."
-		cairoContext setOperatorClear.
-		shouldClipAfterDrawingFigure
-			ifTrue: [ cairoContext fillPreserve ]
-			ifFalse: [ cairoContext fill ] ].
+		cairoContext
+			strokePreserve;
+			setOperatorClear;
+			fillPreservingPath: clipAfterwards ].
 	
 	"Clip if required.
-	Needs to be doen after poping the group (above)."
-	shouldClipAfterDrawingFigure
-		ifTrue: [ cairoContext clip ]
-
+	Needs to be done after poping the group (above)."
+	clipAfterwards ifTrue: [ cairoContext clip ]
 ]
 
 { #category : #private }
@@ -250,16 +224,15 @@ AeCanvas >> drawFigureWithBorderOutsideAndOpaqueBackground [
 
 	self preparePath.
 
-	"Paint border"
+	"Draw border"
 	self prepareStrokeWithDoubledWidth.
 	cairoContext strokePreserve.
 
-	"Paint background. As it is opaque, it overlaps
+	"Draw background. As it is opaque, it overlaps
 	the inner half of the double-sized border, emulating
 	the outside outskirts."
 	backgroundSourceBlock value.
-	
-	shouldClipAfterDrawingFigure
+	clipAfterwards
 		ifTrue: [ cairoContext clip; paint ]
 		ifFalse: [ cairoContext fill ]
 
@@ -270,38 +243,33 @@ AeCanvas >> drawFigureWithBorderOutsideAndTranslucentBackground [
 
 	self preparePath.
 
+	"Draw border.
+	The stroke is draw as centered and with double width,
+	BUT inner half will be cleared afterwards. This needs to be
+	done inside a group to do not clear the target surface.
+	Note: The clear operator affects only the group."
 	cairoContext paintGroupWith: [
-		
-		"Paint border with double width"
 		self prepareStrokeWithDoubledWidth.
-		cairoContext strokePreserve.
-
-		"Clear the inner half of the double-sized
-		border to emulate outside outskirts."
 		cairoContext
+			strokePreserve;
 			setOperatorClear;
 			fillPreserve ].
 	
-	"Paint background"
+	"Draw background"
 	backgroundSourceBlock value.
-	self restoreContextIfShouldntClipAfter: [
-		cairoContext
-			clip;
-			paintWithAlpha: backgroundAlpha ]
-
+	self restoreContextOnlyIfClipAfterwards: [
+		cairoContext clip; paintWithAlpha: backgroundAlpha ]
 ]
 
 { #category : #private }
 AeCanvas >> drawFigureWithExplicitBorderInsideAndBackground [
 
-	"Paint background"
+	"Draw background"
 	self preparePath.
 	backgroundSourceBlock value.
-	self restoreContextIfShouldntClipAfter: [
-		cairoContext clip.
-		self paintWithBackgroundAlpha ].
+	self fillAndClipAfterwardsIfRequired.
 
-	"Paint border. 
+	"Draw border. 
 	As it's outskirts inside, then:
 	- no problem with current clip as it fits inside
 	- it needs to be done after (over) the background"
@@ -314,59 +282,57 @@ AeCanvas >> drawFigureWithExplicitBorderInsideAndBackground [
 { #category : #private }
 AeCanvas >> drawFigureWithExplicitBorderInsideAndNoBackground [
 
-	"Paint border"
-	self prepareStrokeWithSingleWidth.
+	"Draw border"
 	self prepareBorderPath.
+	self prepareStrokeWithSingleWidth.
 	cairoContext stroke.
 
-	"Clip is done over the full background"
-	shouldClipAfterDrawingFigure ifTrue: [
-		self preparePath.
-		cairoContext clip ]
-
+	"Clip is done over the default border"
+	clipAfterwards ifFalse: [ ^ self ].
+	self preparePath.
+	cairoContext clip
 ]
 
 { #category : #private }
 AeCanvas >> drawFigureWithExplicitBorderOutsideAndBackground [
 
-	"Paint border"
-	self prepareStrokeWithSingleWidth.
+	"Draw border"
 	self prepareBorderPath.
+	self prepareStrokeWithSingleWidth.
 	cairoContext stroke.
 
-	"Paint background. Do it after border because:
-	- the border is outside then it doesn't overlap with background
-	- if we did it before border, same clip needs to be set twice"
+	"Draw background. Do it after border because:
+	- the border is outside then it shouldn't overlap with background
+	- if we'd do it before border, same clip could need to be set twice (less efficient)"
 	self preparePath.
 	backgroundSourceBlock value.
-	self restoreContextIfShouldntClipAfter: [
-		cairoContext clip.
-		self paintWithBackgroundAlpha ]
-
+	self fillAndClipAfterwardsIfRequired
 ]
 
 { #category : #private }
 AeCanvas >> drawFigureWithExplicitBorderOutsideAndNoBackground [
 
 	"Paint border"
-	self prepareStrokeWithSingleWidth.
 	self prepareBorderPath.
+	self prepareStrokeWithSingleWidth.
 	cairoContext stroke.
 
-	"Clip is done over the background only,
-	so do not consider the outside borded."
-	shouldClipAfterDrawingFigure ifTrue: [
-		self preparePath.
-		cairoContext clip ]
+	clipAfterwards ifFalse: [ ^self ].
 
+	"We are responsible of updating the clipping area. 
+	The path to use in this case if the default one
+	(not the explicit border path)."
+	self preparePath.
+	cairoContext clip
 ]
 
 { #category : #private }
 AeCanvas >> drawNothingButMayClip [
 
-	shouldClipAfterDrawingFigure ifTrue: [
-		self preparePath.
-		cairoContext clip ]
+	clipAfterwards ifFalse: [ ^ self ].
+
+	self preparePath.
+	cairoContext clip
 ]
 
 { #category : #'API - text' }
@@ -381,6 +347,35 @@ AeCanvas >> drawText: aeGlyphArray font: aScaledFont [
 AeCanvas >> extent [
 
 	^ cairoSurface extent
+]
+
+{ #category : #private }
+AeCanvas >> fillAndClipAfterwardsIfRequired [
+
+	clipAfterwards ifTrue: [ ^ self fillViaClip ].
+
+	backgroundAlpha < 1.0 ifTrue: [
+		^ self restoreContextAfter: [ self fillViaClip ] ].
+
+	cairoContext fill
+]
+
+{ #category : #private }
+AeCanvas >> fillViaClip [
+
+	cairoContext clip.
+	backgroundAlpha < 1.0
+		ifTrue: [ cairoContext paintWithAlpha: backgroundAlpha ]
+		ifFalse: [ cairoContext paint ]
+]
+
+{ #category : #private }
+AeCanvas >> fillViaClipPreservingPath [
+
+	cairoContext clipPreserve.
+	backgroundAlpha < 1.0
+		ifTrue: [ cairoContext paintWithAlpha: backgroundAlpha ]
+		ifFalse: [ cairoContext paint ]
 ]
 
 { #category : #'API - state' }
@@ -527,14 +522,6 @@ AeCanvas >> paintGroupWith: aBlock alpha: aNumber [
 	cairoContext paintGroupWith: aBlock alpha: aNumber
 ]
 
-{ #category : #private }
-AeCanvas >> paintWithBackgroundAlpha [
-
-	backgroundAlpha < 1.0
-		ifTrue: [ cairoContext paintWithAlpha: backgroundAlpha ]
-		ifFalse: [ cairoContext paint ]
-]
-
 { #category : #'API - background' }
 AeCanvas >> pathFactory: aUnaryBlock [
 	"Establish how to draw the backgroudn and the border path.
@@ -623,9 +610,9 @@ AeCanvas >> restoreContextAfter: aBlock [
 ]
 
 { #category : #private }
-AeCanvas >> restoreContextIfShouldntClipAfter: aBlock [
+AeCanvas >> restoreContextOnlyIfClipAfterwards: aBlock [
 
-	shouldClipAfterDrawingFigure
+	clipAfterwards
 		ifTrue: aBlock
 		ifFalse: [ self restoreContextAfter: aBlock ]
 
