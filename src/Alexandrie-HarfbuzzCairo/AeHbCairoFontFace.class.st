@@ -10,8 +10,27 @@ See: https://www.cairographics.org/manual/cairo-cairo-font-face-t.html
 Class {
 	#name : #AeHbCairoFontFace,
 	#superclass : #AeCairoFontFace,
+	#instVars : [
+		'hbFaceOrFont'
+	],
 	#category : #'Alexandrie-HarfbuzzCairo'
 }
+
+{ #category : #accessing }
+AeHbCairoFontFace >> hbFaceOrFont: aHarfbuzzFaceOrFont [
+	"Associate with either the Harfbuzz face or font that was used to create this object."
+
+	hbFaceOrFont := aHarfbuzzFaceOrFont
+]
+
+{ #category : #printing }
+AeHbCairoFontFace >> printOn: aStream [
+
+	super printOn: aStream.
+	aStream
+		nextPutAll: ' --> ';
+		print: hbFaceOrFont
+]
 
 { #category : #accessing }
 AeHbCairoFontFace >> scaleFactor [

@@ -5,6 +5,7 @@ AeHbFace >> newCairoFontFace [
 	"Answer a new `AeHbCairoFontFace` for rendering text according to this face."
 
 	^ self unownedNewCairoFontFace
+		hbFaceOrFont: self;
 		autoRelease;
 		yourself
 ]

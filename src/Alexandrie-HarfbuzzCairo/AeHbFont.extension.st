@@ -2,11 +2,12 @@ Extension { #name : #AeHbFont }
 
 { #category : #'*Alexandrie-HarfbuzzCairo' }
 AeHbFont >> newCairoFontFace [
-	"Answer a new `AeCairoFontFace` for rendering text according to this font.
+	"Answer a new `AeHbCairoFontFace` for rendering text according to this font.
 
 	Note that the scale of font does not affect the rendering, but the variations and slant that are set on font do."
 
 	^ self unownedNewCairoFontFace
+		hbFaceOrFont: self;
 		autoRelease;
 		yourself
 ]
