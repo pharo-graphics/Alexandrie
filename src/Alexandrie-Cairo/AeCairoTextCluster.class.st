@@ -52,3 +52,21 @@ AeCairoTextCluster >> glyphCount: anObject [
 	"This method was automatically generated"
 	handle signedLongAt: OFFSET_GLYPHCOUNT put: anObject
 ]
+
+{ #category : #printing }
+AeCairoTextCluster >> printOn: aStream [
+
+	super printOn: aStream.
+	self printShortOn: aStream
+]
+
+{ #category : #printing }
+AeCairoTextCluster >> printShortOn: aStream [
+
+	aStream
+		nextPut: $(;
+		print: self byteCount;
+		nextPutAll: ' ';
+		print: self glyphCount;
+		nextPut: $)
+]

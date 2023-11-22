@@ -24,7 +24,14 @@ AeCairoExternalArray class >> fromHandle: aHandle size: aNumber [
 { #category : #'class initialization' }
 AeCairoExternalArray class >> initialize [
 
+	self isAbstract ifTrue: [ ^self ].
 	resolvedType := self resolveType: self type
+]
+
+{ #category : #testing }
+AeCairoExternalArray class >> isAbstract [
+
+	^ self == AeCairoExternalArray
 ]
 
 { #category : #'instance creation' }

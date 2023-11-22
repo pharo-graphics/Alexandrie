@@ -1,6 +1,8 @@
 Class {
 	#name : #AeCairoTextToGlyphShaping,
 	#superclass : #Object,
+	#traits : 'AeTCairoLibrary',
+	#classTraits : 'AeTCairoLibrary classTrait',
 	#instVars : [
 		'scaledFont',
 		'x',
@@ -16,6 +18,45 @@ Class {
 	],
 	#category : #'Alexandrie-Cairo-Text'
 }
+
+{ #category : #examples }
+AeCairoTextToGlyphShaping class >> exampleShapeAndDraw [
+
+	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aScaledFont aShaping aStatus |
+	fontSize := 12.
+	"Get Lorem Ipsum without last cr character"
+	string := (String loremIpsum: 28) allButLast.
+	surfaceSize := 150 @ (fontSize*1.3).
+	aSurface := AeCairoImageSurface
+		  extent: surfaceSize
+		  format: AeCairoSurfaceFormat argb32.
+	aContext := aSurface newContext.
+
+	"Set up scaled font in the context"
+	aFTLibrary := AeFTLibrary newInitialized.
+	aFTFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
+	aContext
+		fontFace: (AeCairoFreetypeFontFace newForFace: aFTFace);
+		fontSize: fontSize.
+	aScaledFont := aContext scaledFont.
+
+	aShaping := AeCairoTextToGlyphShaping new.
+	aShaping string: string.
+	aShaping scaledFont: aScaledFont.
+	aStatus := aShaping convertTextToGlyphs.
+	aStatus ensureIsSuccess.
+"	aShaping newGlyphArray.
+	aShaping newClusterArray."
+	
+	aContext
+		translateByX: 5 y: fontSize;
+		sourceColor: Color blue;
+		scaledFont: aScaledFont.
+	
+	aShaping showTextGlyphsOn: aContext.
+
+	^ aSurface inspect
+]
 
 { #category : #private }
 AeCairoTextToGlyphShaping >> convertTextToGlyphs [
@@ -49,9 +90,53 @@ AeCairoTextToGlyphShaping >> initialize [
 
 	x := y := 0.0.
 
-	clusters := nil.
-	clusterCount := nil.
-	clusterFlags := nil.
+	glyphs := ExternalAddress new.
+	glyphCount := FFIInt32 newBuffer.
+
+	clusters := ExternalAddress new.
+	clusterCount := FFIInt32 newBuffer.
+	clusterFlags := FFIInt32 newBuffer.
+]
+
+{ #category : #API }
+AeCairoTextToGlyphShaping >> newClusterArray [
+	"Precondition: convertTextToGlyphs"
+
+	| clusterArray |
+	clusterCount := clusterCount signedLongAt: 1.
+	clusterArray := clusterCount isZero
+		ifTrue: [
+			AeCairoTextClusterArray unownedNewOf: 0 ]
+		ifFalse: [
+			AeCairoTextClusterArray
+				fromHandle: clusters
+				size: clusterCount ].
+
+	"In both cases we must take care of freeing the array."
+	clusterArray autoRelease.
+	
+	^ clusterArray
+]
+
+{ #category : #API }
+AeCairoTextToGlyphShaping >> newGlyphArray [
+	"Precondition: convertTextToGlyphs"
+
+	| glyphArray |
+	"Cairo returns NULL pointer when no glyphs, so needs special treatment."
+	glyphCount := glyphCount signedLongAt: 1.
+	glyphArray := glyphCount isZero
+		ifTrue: [
+			AeCairoGlyphArray unownedNewOf: 0 ]
+		ifFalse: [
+			AeCairoGlyphArray
+				fromHandle: glyphs
+				size: glyphCount ].
+
+	"In both cases we must take care of freeing the array."
+	glyphArray autoRelease.
+	
+	^ glyphArray
 ]
 
 { #category : #API }
@@ -67,11 +152,11 @@ AeCairoTextToGlyphShaping >> newGlyphArrayByConvertingText [
 		ifTrue: [
 			AeCairoGlyphArray unownedNewOf: 0 ]
 		ifFalse: [
-			AeCairoOpaqueGlyphArray
+			AeCairoGlyphArray
 				fromHandle: glyphs
 				size: glyphCount ].
 
-	"In both cases we must to take care of freeing the array."
+	"In both cases we must take care of freeing the array."
 	glyphArray autoRelease.
 	
 	^ glyphArray
@@ -100,9 +185,9 @@ AeCairoTextToGlyphShaping >> showTextGlyphsOn: cairoContext [
 			int utf8ByteCount,
 			void *glyphs,
 			int glyphCount,
-			const cairo_text_cluster_t *clusters,
+			void *clusters,
 			int clusterCount,
-			cairo_text_cluster_flags_t clusterFlags
+			int clusterFlags
 			) )
 ]
 

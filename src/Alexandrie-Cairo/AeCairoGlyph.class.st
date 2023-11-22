@@ -58,9 +58,9 @@ AeCairoGlyph >> printShortOn: aStream [
 
 	aStream
 		nextPutAll: '(';
-		print: self position;
-		nextPutAll: ' -> ';
 		print: self index;
+		nextPutAll: ': ';
+		print: self position;
 		nextPut: $)
 ]
 
