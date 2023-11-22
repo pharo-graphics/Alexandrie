@@ -6,6 +6,9 @@ Class {
 	#superclass : #FFIExternalArray,
 	#traits : 'AeTExternalFree',
 	#classTraits : 'AeTExternalFree classTrait',
+	#classInstVars : [
+		'resolvedType'
+	],
 	#category : #'Alexandrie-Cairo-Structures'
 }
 
@@ -16,6 +19,12 @@ AeCairoExternalArray class >> fromHandle: aHandle size: aNumber [
 		  fromHandle: aHandle
 		  type: self type
 		  size: aNumber
+]
+
+{ #category : #'class initialization' }
+AeCairoExternalArray class >> initialize [
+
+	resolvedType := self resolveType: self type
 ]
 
 { #category : #'instance creation' }
@@ -49,5 +58,7 @@ AeCairoExternalArray class >> type [
 AeCairoExternalArray class >> unownedNewOf: aSize [
 	"Answer a new instance of the specified size. Sender is responsible of freeing handle."
 
-	^ self externalNewType: self type size: aSize
+	^ self basicNew
+		initializeExternalType: resolvedType size: aSize;
+		yourself
 ]
