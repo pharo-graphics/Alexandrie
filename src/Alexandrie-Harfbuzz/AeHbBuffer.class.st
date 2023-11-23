@@ -97,18 +97,16 @@ AeHbBuffer >> cairoGlyphArray [
 	length := self length.
 	length = 0 ifTrue: [ ^ AeCairoGlyphArray newOf: 0 ].
 
-	infos := FFIExternalArray
+	infos := AeHbGlyphInfoArray
 		  fromHandle: (self getGlyphInfosInto: ExternalAddress null)
-		  type: AeHbGlyphInfo
 		  size: length.
-	positions := FFIExternalArray
+	positions := AeHbGlyphPositionArray
 		  fromHandle: (self getGlyphPositionsInto: ExternalAddress null)
-		  type: AeHbGlyphPosition
 		  size: length.
 
 	cairoGlyphsArray := AeCairoGlyphArray newOf: length.
-	currentX := 0.
-	currentY := 0.
+	currentX := 0.0.
+	currentY := 0.0.
 	cairoGlyphsArray doWithIndex: [ :each :index | 
 		| position |
 		position := positions at: index.
