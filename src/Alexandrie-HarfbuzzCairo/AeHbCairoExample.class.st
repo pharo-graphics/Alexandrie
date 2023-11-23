@@ -199,7 +199,7 @@ AeHbCairoExample >> drawDottedHLineCenteredAt: centerY thickness: thickness left
 		cairoContext
 			lineWidth: thickness;
 			lineCap: AeCairoCapStyle round;
-			dash: (AeCairoDoubleArray newFrom: {0.0. 2*thickness}) offset: 0.
+			dash: (AeFFIDoubleArray newFrom: {0.0. 2*thickness}) offset: 0.
 
 		cairoContext
 			sourceColor: aColor;

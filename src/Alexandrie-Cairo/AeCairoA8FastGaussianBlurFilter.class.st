@@ -187,7 +187,7 @@ AeCairoA8FastGaussianBlurFilter class >> example5DottedCircle [
 		translateBy: (shadowGap/2) asPoint;
 		lineWidth: 10;
 		lineCap: AeCairoCapStyle square;
-		dash: (AeCairoDoubleArray newFrom: #(0 20)) offset: 0;
+		dash: (AeFFIDoubleArray newFrom: #(0 20)) offset: 0;
 		circleRadius: circleRadius;
 		stroke.
 	aSurface flush.

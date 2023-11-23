@@ -1,19 +1,19 @@
 "
-I'm an external array specialized for Cairo FFI bindings.
+I'm an external array specialized for Alexandrie's FFI bindings.
 "
 Class {
-	#name : #AeCairoExternalArray,
+	#name : #AeFFIExternalArray,
 	#superclass : #FFIExternalArray,
 	#traits : 'AeTExternalFree',
 	#classTraits : 'AeTExternalFree classTrait',
 	#classInstVars : [
 		'resolvedType'
 	],
-	#category : #'Alexandrie-Cairo-Structures'
+	#category : #'Alexandrie-Base'
 }
 
 { #category : #'instance creation' }
-AeCairoExternalArray class >> fromHandle: aHandle size: aNumber [
+AeFFIExternalArray class >> fromHandle: aHandle size: aNumber [
 
 	^ self
 		  fromHandle: aHandle
@@ -22,13 +22,13 @@ AeCairoExternalArray class >> fromHandle: aHandle size: aNumber [
 ]
 
 { #category : #testing }
-AeCairoExternalArray class >> isAbstract [
+AeFFIExternalArray class >> isAbstract [
 
-	^ self == AeCairoExternalArray
+	^ self == AeFFIExternalArray
 ]
 
 { #category : #'instance creation' }
-AeCairoExternalArray class >> newFrom: anArrayedCollection [
+AeFFIExternalArray class >> newFrom: anArrayedCollection [
 
 	| newInstance |
 	newInstance := self newOf: anArrayedCollection size.
@@ -40,7 +40,7 @@ AeCairoExternalArray class >> newFrom: anArrayedCollection [
 ]
 
 { #category : #'instance creation' }
-AeCairoExternalArray class >> newOf: aSize [
+AeFFIExternalArray class >> newOf: aSize [
 	"Answer a new instance of the specified size, with autoRelease."
 
 	^ (self unownedNewOf: aSize)
@@ -49,7 +49,7 @@ AeCairoExternalArray class >> newOf: aSize [
 ]
 
 { #category : #'instance creation' }
-AeCairoExternalArray class >> unownedNewOf: aSize [
+AeFFIExternalArray class >> unownedNewOf: aSize [
 	"Answer a new instance of the specified size. Sender is responsible of freeing handle."
 
 	^ self basicNew

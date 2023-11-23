@@ -3,7 +3,7 @@ I'm an array of `AeCairoTextCluster`.
 "
 Class {
 	#name : #AeCairoTextClusterArray,
-	#superclass : #AeCairoExternalArray,
+	#superclass : #AeFFIExternalArray,
 	#traits : 'AeTCairoLibrary',
 	#classTraits : 'AeTCairoLibrary classTrait',
 	#category : #'Alexandrie-Cairo-Text'

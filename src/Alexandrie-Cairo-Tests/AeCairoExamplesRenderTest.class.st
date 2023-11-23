@@ -243,7 +243,7 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 		format: AeCairoSurfaceFormat argb32.
 
 	"set up dotted dashes"
-	dashByteArray := AeCairoDoubleArray
+	dashByteArray := AeFFIDoubleArray
 		newFrom: { 0.0. gapBetweenDots }.
 
 	aContext := aSurface newContext.
@@ -696,7 +696,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
 	"Draw dashed stroke using the path"
 	aContext
 		sourceColor: Color blue;
-		dash: (AeCairoDoubleArray newFrom: { 7. 1 }) offset: 3;
+		dash: (AeFFIDoubleArray newFrom: { 7. 1 }) offset: 3;
 		lineWidth: 1.5;
 		stroke.
 

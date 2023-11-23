@@ -3,7 +3,7 @@ I'm an array of `AeCairoGlyph`.
 "
 Class {
 	#name : #AeCairoGlyphArray,
-	#superclass : #AeCairoExternalArray,
+	#superclass : #AeFFIExternalArray,
 	#traits : 'AeTCairoLibrary',
 	#classTraits : 'AeTCairoLibrary classTrait',
 	#category : #'Alexandrie-Cairo-Text'

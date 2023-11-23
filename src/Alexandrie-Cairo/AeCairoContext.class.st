@@ -545,7 +545,7 @@ AeCairoContext >> dashes [
 	count := self dashCount.
 	count = 0 ifTrue: [ ^ Array empty ].
 
-	aDashArray := AeCairoDoubleArray newOf: count.
+	aDashArray := AeFFIDoubleArray newOf: count.
 
 	self
 		getDashesInto: aDashArray getHandle
