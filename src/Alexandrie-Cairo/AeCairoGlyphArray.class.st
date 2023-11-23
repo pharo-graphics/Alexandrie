@@ -17,9 +17,9 @@ AeCairoGlyphArray class >> externallyFree: aHandle [
 ]
 
 { #category : #'instance creation' }
-AeCairoGlyphArray class >> type [
+AeCairoGlyphArray class >> initialize [
 
-	^ AeCairoGlyph
+	resolvedType := self resolveType: AeCairoGlyph
 ]
 
 { #category : #printing }

@@ -21,13 +21,6 @@ AeCairoExternalArray class >> fromHandle: aHandle size: aNumber [
 		  size: aNumber
 ]
 
-{ #category : #'class initialization' }
-AeCairoExternalArray class >> initialize [
-
-	self isAbstract ifTrue: [ ^self ].
-	resolvedType := self resolveType: self type
-]
-
 { #category : #testing }
 AeCairoExternalArray class >> isAbstract [
 
@@ -53,12 +46,6 @@ AeCairoExternalArray class >> newOf: aSize [
 	^ (self unownedNewOf: aSize)
 		  autoRelease;
 		  yourself
-]
-
-{ #category : #accessing }
-AeCairoExternalArray class >> type [
-
-	^ self subclassResponsibility
 ]
 
 { #category : #'instance creation' }

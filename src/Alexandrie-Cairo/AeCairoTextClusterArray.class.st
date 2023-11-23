@@ -17,7 +17,7 @@ AeCairoTextClusterArray class >> externallyFree: aHandle [
 ]
 
 { #category : #accessing }
-AeCairoTextClusterArray class >> type [
+AeCairoTextClusterArray class >> initialize [
 
-	^ AeCairoTextCluster
+	resolvedType := self resolveType: AeCairoTextCluster
 ]

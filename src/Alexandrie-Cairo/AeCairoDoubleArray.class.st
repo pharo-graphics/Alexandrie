@@ -14,7 +14,7 @@ AeCairoDoubleArray class >> externallyFree: aHandle [
 ]
 
 { #category : #accessing }
-AeCairoDoubleArray class >> type [
+AeCairoDoubleArray class >> initialize [
 
-	^ FFIFloat64
+	resolvedType := self resolveType: FFIFloat64
 ]
