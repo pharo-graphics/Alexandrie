@@ -252,9 +252,8 @@ AeCairoImageSurface >> asFormARGB32 [
 		streamContents: [ :stream |
 			| words |
 			self flush.
-			words := FFIExternalArray
+			words := AeFFIUInt32Array
 				fromHandle: self data
-				type: FFIUInt32
 				size: aSizeInWords.
 			words do: [ :pixel |
 				| alpha |

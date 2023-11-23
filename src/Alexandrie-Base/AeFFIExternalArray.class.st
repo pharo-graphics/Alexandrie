@@ -12,6 +12,12 @@ Class {
 	#category : #'Alexandrie-Base'
 }
 
+{ #category : #finalization }
+AeFFIExternalArray class >> externallyFree: aHandle [
+
+	aHandle free
+]
+
 { #category : #'instance creation' }
 AeFFIExternalArray class >> fromHandle: aHandle size: aNumber [
 
