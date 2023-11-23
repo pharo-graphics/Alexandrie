@@ -15,10 +15,9 @@ Class {
 { #category : #'instance creation' }
 AeFFIExternalArray class >> fromHandle: aHandle size: aNumber [
 
-	^ self
-		  fromHandle: aHandle
-		  type: self type
-		  size: aNumber
+	^ self basicNew
+		initializeHandle: aHandle type: resolvedType size: aNumber;
+		yourself
 ]
 
 { #category : #testing }
