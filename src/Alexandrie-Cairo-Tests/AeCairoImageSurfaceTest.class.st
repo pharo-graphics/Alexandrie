@@ -95,8 +95,7 @@ AeCairoImageSurfaceTest >> testNewForFFIExternalArray [
 	extent := 200 @ 150.
 	format := AeCairoSurfaceFormat argb32.
 	stride := AeCairoImageSurface strideForWidth: extent x format: format.
-
-	buffer := FFIExternalArray externalNewType: FFIUInt8 size: stride * extent y.
+	buffer := AeFFIUInt8Array unownedNewOf: stride * extent y.
 
 	surface := AeCairoImageSurface 
 		newForData: buffer
