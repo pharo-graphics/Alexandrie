@@ -106,13 +106,6 @@ AeCairoMatrix class >> newX: x y: y sx: sx sy: sy shx: shx shy: shy [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
-AeCairoMatrix class >> unownedNew [
-	"Answer a new instance. Sender is responsible of freeing handle."
-
-	^ self externalNew
-]
-
 { #category : #comparing }
 AeCairoMatrix >> = anObject [
 	"Answer whether the receiver and anObject represent the same object."

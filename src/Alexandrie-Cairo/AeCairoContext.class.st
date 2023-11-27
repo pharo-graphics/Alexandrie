@@ -1050,11 +1050,9 @@ AeCairoContext >> maskSurface: aSurface x: surfaceX y: surfaceY [
 AeCairoContext >> matrix [
 
 	| aCairoMatrix |
-	aCairoMatrix := AeCairoMatrix unownedNew.
+	aCairoMatrix := AeCairoMatrix new.
 	self getMatrixInto: aCairoMatrix.
 	^ aCairoMatrix
-		  autoRelease;
-		  yourself
 ]
 
 { #category : #'API - matrix' }

@@ -69,7 +69,7 @@ AeCairoScaledFont class >> unownedNewFor: aCairoFontFace fontMatrix: aFontMatrix
 AeCairoScaledFont >> currentTransformationMatrix [
 
 	| aCairoMatrix |
-	aCairoMatrix := AeCairoMatrix externalNew autoRelease; yourself.
+	aCairoMatrix := AeCairoMatrix new.
 	self getCurrentTransformationMatrixInto: aCairoMatrix.
 	^ aCairoMatrix
 ]
@@ -97,7 +97,7 @@ AeCairoScaledFont >> fontExtents [
 AeCairoScaledFont >> fontMatrix [
 
 	| aCairoMatrix |
-	aCairoMatrix := AeCairoMatrix externalNew autoRelease; yourself.
+	aCairoMatrix := AeCairoMatrix new.
 	self getFontMatrixInto: aCairoMatrix.
 	^ aCairoMatrix
 ]
@@ -306,7 +306,7 @@ AeCairoScaledFont >> lock [
 AeCairoScaledFont >> scaleMatrix [
 
 	| aCairoMatrix |
-	aCairoMatrix := AeCairoMatrix externalNew autoRelease; yourself.
+	aCairoMatrix := AeCairoMatrix new.
 	self getScaleMatrixInto: aCairoMatrix.
 	^ aCairoMatrix
 ]
@@ -346,7 +346,7 @@ AeCairoScaledFont >> userToDeviceMatrix [
 	Note that the translation offsets are ignored."
 
 	| aCairoMatrix |
-	aCairoMatrix := AeCairoMatrix externalNew autoRelease; yourself.
+	aCairoMatrix := AeCairoMatrix new.
 	self getUserToDeviceMatrixInto: aCairoMatrix.
 	^ aCairoMatrix
 ]
