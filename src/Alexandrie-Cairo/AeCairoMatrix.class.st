@@ -22,9 +22,17 @@ Class {
 }
 
 { #category : #'field definition' }
+AeCairoMatrix class >> byteSize [
+	^ 48
+]
+
+{ #category : #'field definition' }
 AeCairoMatrix class >> fieldsDesc [
 	"
-	self rebuildFieldAccessors
+	self rebuildFieldAccessors.
+	
+	self classSide compile: 'byteSize
+	^ ', self byteSize asString classified: 'field definition'.
 	"
 	^ #(
 		double sx; double shy;
