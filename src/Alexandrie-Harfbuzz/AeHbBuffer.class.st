@@ -244,34 +244,30 @@ AeHbBuffer >> glyphArrayForUtf8Array: aUtf8EncodedByteArray scaleFactor: aPoint 
 
 { #category : #'accessing - output' }
 AeHbBuffer >> glyphInfos [
-	"Answer an array of `AeHbGlyphInfo` that indicate information of each glyph of this buffer."
+	"Answer an array of `AeHbGlyphInfo` that indicate information of each glyph of this buffer.
+	Library has responsability to free it."
 
 	| lengthPointer aHandle |
 	lengthPointer := FFIUInt32 newBuffer.
 	aHandle := self getGlyphInfosInto: lengthPointer.
-	"Library has responsability to free it."
 	
-	^ FFIExternalArray
+	^ AeHbGlyphInfoArray
 		  fromHandle: aHandle
-		  type: AeHbGlyphInfo
 		  size: (lengthPointer unsignedLongAt: 1)
-
 ]
 
 { #category : #'accessing - output' }
 AeHbBuffer >> glyphPositions [
-	"Answer an array of `AeHbGlyphPosition` that indicate the position of each glyph of this buffer."
+	"Answer an array of `AeHbGlyphPosition` that indicate the position of each glyph of this buffer.
+	Library has responsability to free it."
 
 	| lengthPointer aHandle |
 	lengthPointer := FFIUInt32 newBuffer.
 	aHandle := self getGlyphPositionsInto: lengthPointer.
-	"Library has responsability to free."
 
-	^ FFIExternalArray
+	^ AeHbGlyphPositionArray
 		  fromHandle: aHandle
-		  type: AeHbGlyphPosition
 		  size: (lengthPointer unsignedLongAt: 1)
-
 ]
 
 { #category : #'accessing - input' }
