@@ -7,7 +7,7 @@ AeHbFace >> axisInfos [
 	| infosArray axisCount axisCountAddress |
 	axisCount := self variableFontAxisCount.
 	infosArray := FFIExternalArray
-		externalNewType: AeHbVariableFontAxisInfo
+		newType: AeHbVariableFontAxisInfo
 		size: axisCount.
 	axisCountAddress := FFIUInt32 newBuffer.
 	axisCountAddress unsignedLongAt: 1 put: axisCount.
