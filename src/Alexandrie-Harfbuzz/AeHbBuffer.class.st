@@ -98,10 +98,10 @@ AeHbBuffer >> cairoGlyphArray [
 	length = 0 ifTrue: [ ^ AeCairoGlyphArray newOf: 0 ].
 
 	infos := AeHbGlyphInfoArray
-		  fromHandle: (self getGlyphInfosInto: ExternalAddress null)
+		  fromHandle: (self glyphInfosWritingSizeInto: ExternalAddress null)
 		  size: length.
 	positions := AeHbGlyphPositionArray
-		  fromHandle: (self getGlyphPositionsInto: ExternalAddress null)
+		  fromHandle: (self glyphPositionsWritingSizeInto: ExternalAddress null)
 		  size: length.
 
 	cairoGlyphsArray := AeCairoGlyphArray newOf: length.
@@ -179,32 +179,6 @@ AeHbBuffer >> flags: flags [
 	)
 ]
 
-{ #category : #'accessing - output' }
-AeHbBuffer >> getGlyphInfosInto: aPointer [
-	"Returns a collection of `AeHbGlyphInfo` with glyph information. Returned pointer is valid as long as buffer contents are not modified.
-
-	See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-get-glyph-infos"
-
-	^ self ffiCall: #(
-		"hb_glyph_info_t" void *
-		hb_buffer_get_glyph_infos (
-			self,
-			uint * aPointer)
-		)
-]
-
-{ #category : #'accessing - output' }
-AeHbBuffer >> getGlyphPositionsInto: aPointer [
-	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-get-glyph-positions"
-
-	^ self ffiCall: #(
-		"hb_glyph_position_t" void *
-		hb_buffer_get_glyph_positions (
-			self,
-			uint * aPointer)
-		)
-]
-
 { #category : #'cairo integration' }
 AeHbBuffer >> glyphArrayForString: aString scaleFactor: aPoint [
 
@@ -249,11 +223,25 @@ AeHbBuffer >> glyphInfos [
 
 	| lengthPointer aHandle |
 	lengthPointer := FFIUInt32 newBuffer.
-	aHandle := self getGlyphInfosInto: lengthPointer.
+	aHandle := self glyphInfosWritingSizeInto: lengthPointer.
 	
 	^ AeHbGlyphInfoArray
 		  fromHandle: aHandle
 		  size: (lengthPointer unsignedLongAt: 1)
+]
+
+{ #category : #'accessing - output' }
+AeHbBuffer >> glyphInfosWritingSizeInto: aPointer [
+	"Returns a collection of `AeHbGlyphInfo` with glyph information. Returned pointer is valid as long as buffer contents are not modified.
+
+	See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-get-glyph-infos"
+
+	^ self ffiCall: #(
+		"hb_glyph_info_t" void *
+		hb_buffer_get_glyph_infos (
+			self,
+			uint * aPointer)
+		)
 ]
 
 { #category : #'accessing - output' }
@@ -263,11 +251,23 @@ AeHbBuffer >> glyphPositions [
 
 	| lengthPointer aHandle |
 	lengthPointer := FFIUInt32 newBuffer.
-	aHandle := self getGlyphPositionsInto: lengthPointer.
+	aHandle := self glyphPositionsWritingSizeInto: lengthPointer.
 
 	^ AeHbGlyphPositionArray
 		  fromHandle: aHandle
 		  size: (lengthPointer unsignedLongAt: 1)
+]
+
+{ #category : #'accessing - output' }
+AeHbBuffer >> glyphPositionsWritingSizeInto: aPointer [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-get-glyph-positions"
+
+	^ self ffiCall: #(
+		"hb_glyph_position_t" void *
+		hb_buffer_get_glyph_positions (
+			self,
+			uint * aPointer)
+		)
 ]
 
 { #category : #'accessing - input' }
