@@ -53,7 +53,7 @@ Class {
 		'CAIRO_STATUS_USER_FONT_NOT_IMPLEMENTED',
 		'CAIRO_STATUS_WRITE_ERROR'
 	],
-	#category : #'Alexandrie-Cairo-Enumerations'
+	#category : #'Alexandrie-Cairo-Context'
 }
 
 { #category : #'accessing enum' }

@@ -17,7 +17,7 @@ Class {
 		'CAIRO_FORMAT_RGB24',
 		'CAIRO_FORMAT_RGB30'
 	],
-	#category : #'Alexandrie-Cairo-Enumerations'
+	#category : #'Alexandrie-Cairo-Context'
 }
 
 { #category : #'accessing enum' }

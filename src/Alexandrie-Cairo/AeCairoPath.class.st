@@ -10,7 +10,7 @@ Class {
 	#superclass : #FFIExternalObject,
 	#traits : 'AeTCairoLibrary + AeTExternalFree',
 	#classTraits : 'AeTCairoLibrary classTrait + AeTExternalFree classTrait',
-	#category : #'Alexandrie-Cairo-Structures'
+	#category : #'Alexandrie-Cairo-Context'
 }
 
 { #category : #finalization }

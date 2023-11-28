@@ -25,7 +25,7 @@ Class {
 		'CAIRO_EXTEND_REFLECT',
 		'CAIRO_EXTEND_REPEAT'
 	],
-	#category : #'Alexandrie-Cairo-Enumerations'
+	#category : #'Alexandrie-Cairo-Patterns'
 }
 
 { #category : #'accessing enum' }

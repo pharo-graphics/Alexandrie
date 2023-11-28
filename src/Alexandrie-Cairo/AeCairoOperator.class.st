@@ -47,7 +47,7 @@ Class {
 		'CAIRO_OPERATOR_SOURCE',
 		'CAIRO_OPERATOR_XOR'
 	],
-	#category : #'Alexandrie-Cairo-Enumerations'
+	#category : #'Alexandrie-Cairo-Context'
 }
 
 { #category : #'accessing enum' }

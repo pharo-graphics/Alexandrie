@@ -28,7 +28,7 @@ Class {
 	#classInstVars : [
 		'correspondingClassByValue'
 	],
-	#category : #'Alexandrie-Cairo-Enumerations'
+	#category : #'Alexandrie-Cairo-Context'
 }
 
 { #category : #'accessing enum' }

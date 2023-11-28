@@ -18,7 +18,7 @@ Class {
 		'CAIRO_COLOR_MODE_DEFAULT',
 		'CAIRO_COLOR_MODE_NO_COLOR'
 	],
-	#category : #'Alexandrie-Cairo-Enumerations'
+	#category : #'Alexandrie-Cairo-Context'
 }
 
 { #category : #'accessing enum' }

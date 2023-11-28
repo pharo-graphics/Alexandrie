@@ -21,7 +21,7 @@ Class {
 		'CAIRO_LINE_JOIN_MITER',
 		'CAIRO_LINE_JOIN_ROUND'
 	],
-	#category : #'Alexandrie-Cairo-Enumerations'
+	#category : #'Alexandrie-Cairo-Context'
 }
 
 { #category : #'accessing enum' }

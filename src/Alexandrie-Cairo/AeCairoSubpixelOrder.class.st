@@ -23,7 +23,7 @@ Class {
 		'CAIRO_SUBPIXEL_ORDER_VBGR',
 		'CAIRO_SUBPIXEL_ORDER_VRGB'
 	],
-	#category : #'Alexandrie-Cairo-Enumerations'
+	#category : #'Alexandrie-Cairo-Context'
 }
 
 { #category : #'accessing enum' }

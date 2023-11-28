@@ -27,7 +27,7 @@ Class {
 		'CAIRO_ANTIALIAS_NONE',
 		'CAIRO_ANTIALIAS_SUBPIXEL'
 	],
-	#category : #'Alexandrie-Cairo-Enumerations'
+	#category : #'Alexandrie-Cairo-Context'
 }
 
 { #category : #'accessing enum' }

@@ -23,7 +23,7 @@ Class {
 		'CAIRO_HINT_STYLE_NONE',
 		'CAIRO_HINT_STYLE_SLIGHT'
 	],
-	#category : #'Alexandrie-Cairo-Enumerations'
+	#category : #'Alexandrie-Cairo-Text'
 }
 
 { #category : #'accessing enum' }

@@ -10,7 +10,7 @@ Class {
 	#instVars : [
 		'status'
 	],
-	#category : #'Alexandrie-Cairo-Core'
+	#category : #'Alexandrie-Cairo-Context'
 }
 
 { #category : #'instance creation' }

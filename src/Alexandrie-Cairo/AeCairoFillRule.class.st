@@ -19,7 +19,7 @@ Class {
 		'CAIRO_FILL_RULE_EVEN_ODD',
 		'CAIRO_FILL_RULE_WINDING'
 	],
-	#category : #'Alexandrie-Cairo-Enumerations'
+	#category : #'Alexandrie-Cairo-Context'
 }
 
 { #category : #'accessing enum' }

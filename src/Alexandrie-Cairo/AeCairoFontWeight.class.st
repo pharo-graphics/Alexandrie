@@ -12,7 +12,7 @@ Class {
 		'CAIRO_FONT_WEIGHT_BOLD',
 		'CAIRO_FONT_WEIGHT_NORMAL'
 	],
-	#category : #'Alexandrie-Cairo-Enumerations'
+	#category : #'Alexandrie-Cairo-Text'
 }
 
 { #category : #'accessing enum' }

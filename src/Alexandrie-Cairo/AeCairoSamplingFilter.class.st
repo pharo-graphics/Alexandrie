@@ -16,7 +16,7 @@ Class {
 		'CAIRO_FILTER_GOOD',
 		'CAIRO_FILTER_NEAREST'
 	],
-	#category : #'Alexandrie-Cairo-Enumerations'
+	#category : #'Alexandrie-Cairo-Context'
 }
 
 { #category : #'accessing enum' }

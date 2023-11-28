@@ -13,7 +13,7 @@ Class {
 		'CAIRO_FONT_SLANT_NORMAL',
 		'CAIRO_FONT_SLANT_OBLIQUE'
 	],
-	#category : #'Alexandrie-Cairo-Enumerations'
+	#category : #'Alexandrie-Cairo-Text'
 }
 
 { #category : #'accessing enum' }

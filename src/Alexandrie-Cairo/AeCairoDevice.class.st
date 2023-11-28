@@ -10,5 +10,5 @@ Class {
 	#superclass : #FFIExternalObject,
 	#traits : 'AeTCairoLibrary',
 	#classTraits : 'AeTCairoLibrary classTrait',
-	#category : #'Alexandrie-Cairo-Structures'
+	#category : #'Alexandrie-Cairo-Surfaces'
 }

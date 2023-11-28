@@ -19,7 +19,7 @@ Class {
 		'CAIRO_CONTENT_COLOR',
 		'CAIRO_CONTENT_COLOR_ALPHA'
 	],
-	#category : #'Alexandrie-Cairo-Enumerations'
+	#category : #'Alexandrie-Cairo-Context'
 }
 
 { #category : #'accessing enum' }

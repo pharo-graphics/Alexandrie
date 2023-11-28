@@ -19,7 +19,7 @@ Class {
 		'CAIRO_LINE_CAP_ROUND',
 		'CAIRO_LINE_CAP_SQUARE'
 	],
-	#category : #'Alexandrie-Cairo-Enumerations'
+	#category : #'Alexandrie-Cairo-Context'
 }
 
 { #category : #'accessing enum' }

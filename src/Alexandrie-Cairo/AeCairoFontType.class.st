@@ -15,7 +15,7 @@ Class {
 		'CAIRO_FONT_TYPE_USER',
 		'CAIRO_FONT_TYPE_WIN32'
 	],
-	#category : #'Alexandrie-Cairo-Enumerations'
+	#category : #'Alexandrie-Cairo-Text'
 }
 
 { #category : #'accessing enum' }

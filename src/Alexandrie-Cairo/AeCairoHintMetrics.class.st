@@ -19,7 +19,7 @@ Class {
 		'CAIRO_HINT_METRICS_OFF',
 		'CAIRO_HINT_METRICS_ON'
 	],
-	#category : #'Alexandrie-Cairo-Enumerations'
+	#category : #'Alexandrie-Cairo-Text'
 }
 
 { #category : #'accessing enum' }
