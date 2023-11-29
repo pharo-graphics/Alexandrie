@@ -1,1 +1,1 @@
-Package { #name : #'Alexandrie-HarfbuzzVariableFonts' }
+Package { #name : 'Alexandrie-HarfbuzzVariableFonts' }
