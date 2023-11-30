@@ -66,3 +66,24 @@ AeHbLanguage class >> startUp: isResuming [
 	
 	isResuming ifTrue: [ self resetKnownInstances ]
 ]
+
+{ #category : 'printing' }
+AeHbLanguage >> printOn: aStream [
+
+	super printOn: aStream.
+	aStream
+		nextPut: $(;
+		print: self toString;
+		nextPut: $)
+]
+
+{ #category : 'converting' }
+AeHbLanguage >> toString [
+	"Answer a string representation.
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-language-to-string"
+
+	^ self ffiCall: #(
+		const char * hb_language_to_string ( self )
+	)
+]
