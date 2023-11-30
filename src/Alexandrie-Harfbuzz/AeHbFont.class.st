@@ -6,23 +6,25 @@ A font object represents a font face at a specific size and with certain other p
 See: https://harfbuzz.github.io/harfbuzz-hb-font.html
 "
 Class {
-	#name : #AeHbFont,
-	#superclass : #FFIExternalObject,
+	#name : 'AeHbFont',
+	#superclass : 'FFIExternalObject',
 	#traits : 'AeTHarfbuzzLibrary + AeTExternalFree',
 	#classTraits : 'AeTHarfbuzzLibrary classTrait + AeTExternalFree classTrait',
 	#pools : [
 		'AeHbTypes'
 	],
-	#category : #'Alexandrie-Harfbuzz-Core'
+	#category : 'Alexandrie-Harfbuzz-Core',
+	#package : 'Alexandrie-Harfbuzz',
+	#tag : 'Core'
 }
 
-{ #category : #finalization }
+{ #category : 'finalization' }
 AeHbFont class >> externallyFree: aHandle [
 
 	self ffiCall: #( void hb_font_destroy ( void * aHandle ) )
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbFont class >> newForFTFaceReferenced: ft_face [
 
 	^ (self unownedNewFTFaceReferenced: ft_face)
@@ -30,7 +32,7 @@ AeHbFont class >> newForFTFaceReferenced: ft_face [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbFont class >> newForHbFace: anHbFace [
 	"Answer a new font from the specified `AeHbFace` instance."
 
@@ -39,7 +41,7 @@ AeHbFont class >> newForHbFace: anHbFace [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbFont class >> unownedNewFTFaceReferenced: aFTFace [
 	"Answer a new instance from a `AeFTFace`.
 
@@ -53,7 +55,7 @@ AeHbFont class >> unownedNewFTFaceReferenced: aFTFace [
 	)
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbFont class >> unownedNewForHbFace: anHbFace [
 	"Answer a new font from the specified `AeHbFace` instance.
 	
@@ -65,7 +67,7 @@ AeHbFont class >> unownedNewForHbFace: anHbFace [
 		)
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AeHbFont >> allMetricsAsDictionary [
 
 	| result |
@@ -77,7 +79,7 @@ AeHbFont >> allMetricsAsDictionary [
 	^ result 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFont >> face [
 	"Answer my associated face.
 
@@ -86,7 +88,7 @@ AeHbFont >> face [
 	^ self ffiCall: #( AeHbFace hb_font_get_face ( self ) )
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFont >> getPointsPerEmIntoX: xAddress y: yAddress [
 	"Fetches the horizontal and vertical points-per-em (ppem) of this font.
 	
@@ -102,7 +104,7 @@ AeHbFont >> getPointsPerEmIntoX: xAddress y: yAddress [
 			uint *yAddress ) )
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AeHbFont >> getPositionWithFallback: metricsTag into: positionAddress [
 	"Fetches metrics value corresponding to a tag, and synthesizes a value if it the value is missing in this font.
 	
@@ -116,7 +118,7 @@ AeHbFont >> getPositionWithFallback: metricsTag into: positionAddress [
 			int32 * positionAddress ) )
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFont >> getScaleIntoX: xAddress y: yAddress [
 	"Fetches the horizontal and vertical scale of this font.
 	
@@ -130,14 +132,14 @@ AeHbFont >> getScaleIntoX: xAddress y: yAddress [
 			int *yAddress ) )
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFont >> italic [
 
 	^ self styleValueAt: AeHbStyleTag italic
 
 ]
 
-{ #category : #concurrency }
+{ #category : 'concurrency' }
 AeHbFont >> lock [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-ft.html#hb-ft-font-lock-face"
 	
@@ -146,14 +148,14 @@ AeHbFont >> lock [
 		hb_ft_font_lock_face ( self ) )
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFont >> opticalSize [
 
 	^ self styleValueAt: AeHbStyleTag opticalSize
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFont >> pointSize [
 	"Fetches the 'point size' of a font. Zero means unset value.
 	
@@ -162,7 +164,7 @@ AeHbFont >> pointSize [
 	^ self ffiCall: #( float hb_font_get_ptem ( self ) )
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFont >> pointSize: ptem [
 	"Sets the 'point size' of a font. Set to zero to unset.
 	
@@ -175,7 +177,7 @@ AeHbFont >> pointSize: ptem [
 			float ptem ) )
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFont >> pointsPerEm [
 	"Fetches the horizontal and vertical points-per-em (ppem) of this font.
 	
@@ -192,7 +194,7 @@ AeHbFont >> pointsPerEm [
 	^ (xAddress int32AtOffset: 0) @ (yAddress int32AtOffset: 0)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFont >> positionWithFallback: metricsTag [
 	"Fetches metrics value corresponding to a tag, and synthesizes a value if it the value is missing in this font.
 	
@@ -208,7 +210,7 @@ AeHbFont >> positionWithFallback: metricsTag [
 	^ (positionAddress int32AtOffset: 0) from26Dot6FractionalPoint
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 AeHbFont >> printOn: aStream [
 
 	| myFace |
@@ -227,7 +229,7 @@ AeHbFont >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
-{ #category : #refreshing }
+{ #category : 'refreshing' }
 AeHbFont >> refreshOnFTFontChanged [
 	"Refreshes the state of font when the underlying `FT_Face` has changed.
 	
@@ -240,7 +242,7 @@ AeHbFont >> refreshOnFTFontChanged [
 		hb_ft_font_changed ( self ) )
 ]
 
-{ #category : #refreshing }
+{ #category : 'refreshing' }
 AeHbFont >> refreshOnHbFontChanged [
 	"Refreshes the state of the underlying `FT_Face` of font when the `hb_font_t` font has changed. 
 
@@ -256,7 +258,7 @@ AeHbFont >> refreshOnHbFontChanged [
 		hb_ft_hb_font_changed ( self ) )
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFont >> scale [
 	"Answer the horizontal and vertical scale of this font.
 	
@@ -273,7 +275,7 @@ AeHbFont >> scale [
 		y: (yAddress int32AtOffset: 0)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFont >> scale: aPoint [
 	"Sets the horizontal and vertical scale of this font.
 
@@ -284,7 +286,7 @@ AeHbFont >> scale: aPoint [
 	self scaleX: aPoint x y: aPoint y
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFont >> scaleX: x y: y [
 	"Sets the horizontal and vertical scale of this font.
 
@@ -302,32 +304,32 @@ AeHbFont >> scaleX: x y: y [
 			int y ) )
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFont >> slantAngle [
 
 	^ self styleValueAt: AeHbStyleTag slantAngle
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFont >> slantRatio [
 
 	^ self styleValueAt: AeHbStyleTag slantRatio
 
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AeHbFont >> strikeoutOffset [
 
 	^ self positionWithFallback: AeHbOpenTypeMetricsTag strikeoutOffset
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AeHbFont >> strikeoutSize [
 
 	^ self positionWithFallback: AeHbOpenTypeMetricsTag strikeoutSize
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFont >> styleValueAt: styleTag [
 	"Answer style information from fonts.
 
@@ -340,19 +342,19 @@ AeHbFont >> styleValueAt: styleTag [
 			AeHbStyleTag styleTag) )
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AeHbFont >> underlineOffset [
 
 	^ self positionWithFallback: AeHbOpenTypeMetricsTag underlineOffset
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AeHbFont >> underlineSize [
 
 	^ self positionWithFallback: AeHbOpenTypeMetricsTag underlineSize
 ]
 
-{ #category : #concurrency }
+{ #category : 'concurrency' }
 AeHbFont >> unlock [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-ft.html#hb-ft-font-unlock-face"
 	
@@ -361,31 +363,31 @@ AeHbFont >> unlock [
 		hb_ft_font_unlock_face ( self ) )
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AeHbFont >> verticalAscender [
 
 	^ self positionWithFallback: AeHbOpenTypeMetricsTag verticalAscender
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AeHbFont >> verticalDescender [
 
 	^ self positionWithFallback: AeHbOpenTypeMetricsTag verticalDescender
 ]
 
-{ #category : #metrics }
+{ #category : 'metrics' }
 AeHbFont >> verticalLineGap [
 
 	^ self positionWithFallback: AeHbOpenTypeMetricsTag verticalLineGap
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFont >> weight [
 
 	^ self styleValueAt: AeHbStyleTag weight
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFont >> width [
 
 	^ self styleValueAt: AeHbStyleTag width

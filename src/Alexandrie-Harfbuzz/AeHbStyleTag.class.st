@@ -13,8 +13,8 @@ See: https://harfbuzz.github.io/harfbuzz-hb-style.html#hb-style-tag-t
 See: https://docs.microsoft.com/en-us/typography/opentype/spec/dvaraxisreg
 "
 Class {
-	#name : #AeHbStyleTag,
-	#superclass : #AeHbTagEnumeration,
+	#name : 'AeHbStyleTag',
+	#superclass : 'AeHbTagEnumeration',
 	#classVars : [
 		'HB_STYLE_TAG_ITALIC',
 		'HB_STYLE_TAG_OPTICAL_SIZE',
@@ -23,46 +23,48 @@ Class {
 		'HB_STYLE_TAG_WEIGHT',
 		'HB_STYLE_TAG_WIDTH'
 	],
-	#category : #'Alexandrie-Harfbuzz-Enumerations'
+	#category : 'Alexandrie-Harfbuzz-Enumerations',
+	#package : 'Alexandrie-Harfbuzz',
+	#tag : 'Enumerations'
 }
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbStyleTag class >> HB_STYLE_TAG_ITALIC [
 	"This method was automatically generated"
 	^ HB_STYLE_TAG_ITALIC
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbStyleTag class >> HB_STYLE_TAG_OPTICAL_SIZE [
 	"This method was automatically generated"
 	^ HB_STYLE_TAG_OPTICAL_SIZE
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbStyleTag class >> HB_STYLE_TAG_SLANT_ANGLE [
 	"This method was automatically generated"
 	^ HB_STYLE_TAG_SLANT_ANGLE
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbStyleTag class >> HB_STYLE_TAG_SLANT_RATIO [
 	"This method was automatically generated"
 	^ HB_STYLE_TAG_SLANT_RATIO
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbStyleTag class >> HB_STYLE_TAG_WEIGHT [
 	"This method was automatically generated"
 	^ HB_STYLE_TAG_WEIGHT
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbStyleTag class >> HB_STYLE_TAG_WIDTH [
 	"This method was automatically generated"
 	^ HB_STYLE_TAG_WIDTH
 ]
 
-{ #category : #'enum declaration' }
+{ #category : 'enum declaration' }
 AeHbStyleTag class >> enumDecl [
 
 	^ #(
@@ -75,7 +77,7 @@ AeHbStyleTag class >> enumDecl [
 )
 ]
 
-{ #category : #'enum declaration' }
+{ #category : 'enum declaration' }
 AeHbStyleTag class >> generateEnumDecl [
 	<script>
 	"Based on 'hb-style.h' (Harfbuzz 8.2.0)."
@@ -110,43 +112,43 @@ HB_STYLE_TAG_WEIGHT		  wght
 		self addClassVarNamed: a ].
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbStyleTag class >> italic [
 
 	^ self HB_STYLE_TAG_ITALIC
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbStyleTag class >> opticalSize [
 
 	^ self HB_STYLE_TAG_OPTICAL_SIZE
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbStyleTag class >> slantAngle [
 
 	^ self HB_STYLE_TAG_SLANT_ANGLE
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbStyleTag class >> slantRatio [
 
 	^ self HB_STYLE_TAG_SLANT_RATIO
 ]
 
-{ #category : #hook }
+{ #category : 'hook' }
 AeHbStyleTag class >> underlinedNamePrefix [
 	
 	^ 'HB_STYLE_TAG_'
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbStyleTag class >> weight [
 
 	^ self HB_STYLE_TAG_WEIGHT
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbStyleTag class >> width [
 
 	^ self HB_STYLE_TAG_WIDTH

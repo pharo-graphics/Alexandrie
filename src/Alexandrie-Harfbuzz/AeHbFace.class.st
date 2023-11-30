@@ -8,23 +8,25 @@ More precisely, a font face represents a single face in a binary font file. Font
 See: https://harfbuzz.github.io/harfbuzz-hb-face.html
 "
 Class {
-	#name : #AeHbFace,
-	#superclass : #FFIExternalObject,
+	#name : 'AeHbFace',
+	#superclass : 'FFIExternalObject',
 	#traits : 'AeTHarfbuzzLibrary + AeTExternalFree',
 	#classTraits : 'AeTHarfbuzzLibrary classTrait + AeTExternalFree classTrait',
 	#pools : [
 		'AeHbTypes'
 	],
-	#category : #'Alexandrie-Harfbuzz-Core'
+	#category : 'Alexandrie-Harfbuzz-Core',
+	#package : 'Alexandrie-Harfbuzz',
+	#tag : 'Core'
 }
 
-{ #category : #finalization }
+{ #category : 'finalization' }
 AeHbFace class >> externallyFree: aHandle [
 
 	self ffiCall: #( void hb_face_destroy ( void * aHandle ) )
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbFace class >> newForBlob: blob index: index [
 
 	^ (self unownedNewForBlob: blob index: index)
@@ -32,7 +34,7 @@ AeHbFace class >> newForBlob: blob index: index [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbFace class >> newForFTFaceCached: ft_face [
 
 	^ (self unownedNewForFTFaceCached: ft_face)
@@ -40,7 +42,7 @@ AeHbFace class >> newForFTFaceCached: ft_face [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbFace class >> newForFTFaceReferenced: ft_face [
 
 	^ (self unownedNewForFTFaceReferenced: ft_face)
@@ -48,7 +50,7 @@ AeHbFace class >> newForFTFaceReferenced: ft_face [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbFace class >> unownedNewForBlob: blob index: index [
 	"Constructs a new face object from the specified blob and a face index into that blob.
 
@@ -64,7 +66,7 @@ AeHbFace class >> unownedNewForBlob: blob index: index [
 		)
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbFace class >> unownedNewForFTFaceCached: ft_face [
 	"Creates an `hb_face_t` face object from the specified `FT_Face`.
 
@@ -81,7 +83,7 @@ AeHbFace class >> unownedNewForFTFaceCached: ft_face [
 		)
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbFace class >> unownedNewForFTFaceReferenced: ft_face [
 	"Creates an `hb_face_t` face object from the specified `FT_Face`.
 
@@ -95,7 +97,7 @@ AeHbFace class >> unownedNewForFTFaceReferenced: ft_face [
 		)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFace >> allOpenTypePredefinedNamesAsDictionary [
 
 	| result |
@@ -107,7 +109,7 @@ AeHbFace >> allOpenTypePredefinedNamesAsDictionary [
 	^ result 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFace >> getOpenTypeUtf8Name: nameId into: text num: textSize language: language [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-ot-name.html#hb-ot-name-get-utf8"
 
@@ -121,7 +123,7 @@ AeHbFace >> getOpenTypeUtf8Name: nameId into: text num: textSize language: langu
 			char *text) )
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFace >> glyphCount [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-face.html#hb-face-get-glyph-count"
 
@@ -130,7 +132,7 @@ AeHbFace >> glyphCount [
 		hb_face_get_glyph_count ( self ) )
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 AeHbFace >> hasColor [
 	"Answer whether this font can have colors.
 	
@@ -139,7 +141,7 @@ AeHbFace >> hasColor [
 	^ self hasPng or: [ self hasLayers or: [ self hasPaint ] ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 AeHbFace >> hasLayers [
 	"Answer whether this face includes a COLR table with data according to COLRv0.
 	
@@ -150,7 +152,7 @@ AeHbFace >> hasLayers [
 		hb_ot_color_has_layers ( self ) )
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 AeHbFace >> hasPaint [
 	"Answer whether this face includes a COLR table with data according to COLRv1.
 	
@@ -163,7 +165,7 @@ AeHbFace >> hasPaint [
 		hb_ot_color_has_paint ( self ) )
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 AeHbFace >> hasPng [
 	"Answer whether this face has PNG glyph images (either in CBDT or sbix tables).
 	
@@ -174,32 +176,32 @@ AeHbFace >> hasPng [
 		hb_ot_color_has_png ( self ) )
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbFace >> newHbFont [
 	"Answer a new `AeHbFont` from me"
 
 	^ AeHbFont newForHbFace: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFace >> openTypeFontFamily [
 
 	^ self openTypeName: AeHbOpenTypePredefinedNameId fontFamily
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFace >> openTypeFontSubfamily [
 
 	^ self openTypeName: AeHbOpenTypePredefinedNameId fontSubfamily
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFace >> openTypeFullName [
 	
 	^ self openTypeName: AeHbOpenTypePredefinedNameId fullName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFace >> openTypeName: nameId [
 
 	| textAddress textSizeAddress result len |
@@ -219,7 +221,7 @@ AeHbFace >> openTypeName: nameId [
 	^ result
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 AeHbFace >> printOn: aStream [
 
 	self isNull ifTrue: [ ^ super printOn: aStream ].
@@ -234,7 +236,7 @@ AeHbFace >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbFace >> unitsPerEm [
 	"Answer my units-per-em (UPEM) value.
 

@@ -6,17 +6,19 @@ Blobs wrap a chunk of binary data to handle lifecycle management of data while i
 See: https://harfbuzz.github.io/harfbuzz-hb-blob.html
 "
 Class {
-	#name : #AeHbBlob,
-	#superclass : #FFIExternalObject,
+	#name : 'AeHbBlob',
+	#superclass : 'FFIExternalObject',
 	#traits : 'AeTHarfbuzzLibrary + AeTExternalFree',
 	#classTraits : 'AeTHarfbuzzLibrary classTrait + AeTExternalFree classTrait',
 	#pools : [
 		'AeHbTypes'
 	],
-	#category : #'Alexandrie-Harfbuzz-Core'
+	#category : 'Alexandrie-Harfbuzz-Core',
+	#package : 'Alexandrie-Harfbuzz',
+	#tag : 'Core'
 }
 
-{ #category : #finalization }
+{ #category : 'finalization' }
 AeHbBlob class >> externallyFree: aHandle [
 	"Decreases the reference count on blob, and if it reaches zero, destroys blob, freeing all memory, possibly calling the destroy-callback the blob was created for if it has not been called already.
 
@@ -25,7 +27,7 @@ AeHbBlob class >> externallyFree: aHandle [
 	self ffiCall: #( void hb_blob_destroy ( void * aHandle ) )
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbBlob class >> newEmpty [
 	"Answer a new Pharo object whose handle is the singleton empty blob.
 
@@ -37,7 +39,7 @@ AeHbBlob class >> newEmpty [
 	)
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbBlob class >> newFrom: aByteArray [
 
 	^ self
@@ -46,7 +48,7 @@ AeHbBlob class >> newFrom: aByteArray [
 		ifFail: [ self error: 'Harfbuzz failed to read data' ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbBlob class >> newLocatedAt: aFileReference [
 
 	^ self
@@ -57,7 +59,7 @@ AeHbBlob class >> newLocatedAt: aFileReference [
 							aFileReference pathString ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbBlob class >> unownedNewFrom: aByteArray ifSuccess: successBlock ifFail: failedBlock [
 
 	| blob |
@@ -68,7 +70,7 @@ AeHbBlob class >> unownedNewFrom: aByteArray ifSuccess: successBlock ifFail: fai
 		ifTrue: [ failedBlock value ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbBlob class >> unownedNewFrom: data size: dataSize [
 	"Answer a new object wrapping data, or the empty singleton if failed. User must destroy the answer in former case.
 
@@ -84,7 +86,7 @@ AeHbBlob class >> unownedNewFrom: data size: dataSize [
 			nil ) )
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbBlob class >> unownedNewLocatedAt: aPathString [
 	"Creates a new blob containing the data from the specified binary font file.
 	Returns: An hb_blob_t pointer with the content of the file, or hb_blob_get_empty() if failed.
@@ -97,7 +99,7 @@ AeHbBlob class >> unownedNewLocatedAt: aPathString [
 	)
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbBlob class >> unownedNewLocatedAt: aFileReference ifSuccess: successBlock ifFail: failedBlock [
 
 	| blob |
@@ -108,7 +110,7 @@ AeHbBlob class >> unownedNewLocatedAt: aFileReference ifSuccess: successBlock if
 		ifTrue: [ failedBlock value ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbBlob class >> unownedNewLocatedAtOrFail: aPathString [
 	"Answer the address of a new blob containing the data from the specified binary font file.
 	Return NULL if failed.
@@ -121,7 +123,7 @@ AeHbBlob class >> unownedNewLocatedAtOrFail: aPathString [
 	)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbBlob >> faceCount [
 	"Answer the number of faces in this bloc.
 	
@@ -132,13 +134,13 @@ AeHbBlob >> faceCount [
 		hb_face_count ( self ) )
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 AeHbBlob >> isEmpty [
 	
 	^ self faceCount isZero
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbBlob >> length [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-blob.html#hb-blob-get-length"
 
@@ -147,20 +149,20 @@ AeHbBlob >> length [
 		hb_blob_get_length ( self ) )
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbBlob >> newHbFaceAtIndex: zeroBasedIndex [ 
 
 	^ AeHbFace newForBlob: self index: zeroBasedIndex
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHbBlob >> newHbFaces [
 
 	^ (0 to: self faceCount - 1)
 			collect: [ :i | self newHbFaceAtIndex: i ]
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 AeHbBlob >> printOn: aStream [
 
 	self isNull ifTrue: [ ^ super printOn: aStream ].

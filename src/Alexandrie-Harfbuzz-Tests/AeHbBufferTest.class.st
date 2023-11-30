@@ -2,12 +2,13 @@
 An AeHarfbuffLibraryTest is a test class for testing the behavior of AeHarfbuffLibrary
 "
 Class {
-	#name : #AeHbBufferTest,
-	#superclass : #TestCase,
-	#category : #'Alexandrie-Harfbuzz-Tests'
+	#name : 'AeHbBufferTest',
+	#superclass : 'TestCase',
+	#category : 'Alexandrie-Harfbuzz-Tests',
+	#package : 'Alexandrie-Harfbuzz-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbBufferTest >> testClearContents [
 
 	| buffer |
@@ -17,13 +18,29 @@ AeHbBufferTest >> testClearContents [
 		language: AeHbLanguage en;
 		yourself.
 
+	self assert: buffer length equals: 0.
 	buffer addString: 'ab'.
+	self assert: buffer length equals: 2.
 	buffer clearContents.
 	self assert: buffer length equals: 0.
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
+AeHbBufferTest >> testGuessSegmentProperties [
+
+	| buffer |
+	buffer := AeHbBuffer new
+		addString: 'Hello';
+		guessSegmentProperties;
+		yourself.
+		
+	self assert: buffer segmentProperties direction equals: AeHbDirection leftToRight.
+	self assert: buffer segmentProperties script equals: AeHbScript latin.
+	self assert: buffer segmentProperties language toString equals: 'utf-8'. "is it right?"
+]
+
+{ #category : 'tests' }
 AeHbBufferTest >> testMultipleAdd [
 
 	| buffer |
@@ -43,7 +60,7 @@ AeHbBufferTest >> testMultipleAdd [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbBufferTest >> testReset [
 
 	| buffer |
@@ -54,12 +71,13 @@ AeHbBufferTest >> testReset [
 		yourself.
 
 	buffer addString: 'ab'.
+	self assert: buffer length equals: 2.
 	buffer reset.
 	self assert: buffer length equals: 0.
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbBufferTest >> testSimpleExample [
 	"Adaptation of https://harfbuzz.github.io/a-simple-shaping-example.html"
 

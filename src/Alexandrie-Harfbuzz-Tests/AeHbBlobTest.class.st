@@ -2,24 +2,25 @@
 An AeHbBlobTest is a test class for testing the behavior of AeHbBlob
 "
 Class {
-	#name : #AeHbBlobTest,
-	#superclass : #TestCase,
-	#category : #'Alexandrie-Harfbuzz-Tests'
+	#name : 'AeHbBlobTest',
+	#superclass : 'TestCase',
+	#category : 'Alexandrie-Harfbuzz-Tests',
+	#package : 'Alexandrie-Harfbuzz-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 AeHbBlobTest >> inriaSerifRegularBlob [
 
 	^ AeHbBlob newLocatedAt: AeFilesystemResources inriaSerifRegularTTF
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 AeHbBlobTest >> sourceSansProBlob [
 
 	^ AeHbBlob newFrom: AeSourceSansPro_Regular fontContentsData
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbBlobTest >> testAsString [
 
 	self
@@ -27,7 +28,7 @@ AeHbBlobTest >> testAsString [
 		equals: 'an AeHbBlob(1 faces)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbBlobTest >> testFaceCount [
 
 	self
@@ -35,7 +36,7 @@ AeHbBlobTest >> testFaceCount [
 		equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbBlobTest >> testLength [
 
 	self
@@ -43,7 +44,7 @@ AeHbBlobTest >> testLength [
 		equals: AeFilesystemResources inriaSerifRegularTTF size
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbBlobTest >> testNewEmpty [
 
 	| aBlob |
@@ -53,7 +54,7 @@ AeHbBlobTest >> testNewEmpty [
 	self assert: AeHbBlob newEmpty getHandle equals: aBlob getHandle
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbBlobTest >> testNewHbFaces [
 
 	| faces |
@@ -63,7 +64,7 @@ AeHbBlobTest >> testNewHbFaces [
 	self assert: faces first class equals: AeHbFace
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbBlobTest >> testOpenFailure [
 
 	self
@@ -75,7 +76,7 @@ AeHbBlobTest >> testOpenFailure [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbBlobTest >> testOpenFromMemoryFailure [
 
 	self
@@ -87,13 +88,13 @@ AeHbBlobTest >> testOpenFromMemoryFailure [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbBlobTest >> testOpenFromMemorySuccess [
 
 	self assert: self sourceSansProBlob faceCount equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbBlobTest >> testOpenSuccess [
 
 	self deny: self inriaSerifRegularBlob isNull

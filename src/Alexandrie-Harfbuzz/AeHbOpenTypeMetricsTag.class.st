@@ -34,8 +34,8 @@ See: https://harfbuzz.github.io/harfbuzz-hb-ot-metrics.html#hb-ot-metrics-tag-t
 See: https://docs.microsoft.com/en-us/typography/opentype/spec/mvar#value-tags
 "
 Class {
-	#name : #AeHbOpenTypeMetricsTag,
-	#superclass : #AeHbTagEnumeration,
+	#name : 'AeHbOpenTypeMetricsTag',
+	#superclass : 'AeHbTagEnumeration',
 	#classVars : [
 		'HB_OT_METRICS_TAG_CAP_HEIGHT',
 		'HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER',
@@ -66,178 +66,180 @@ Class {
 		'HB_OT_METRICS_TAG_VERTICAL_LINE_GAP',
 		'HB_OT_METRICS_TAG_X_HEIGHT'
 	],
-	#category : #'Alexandrie-Harfbuzz-Enumerations'
+	#category : 'Alexandrie-Harfbuzz-Enumerations',
+	#package : 'Alexandrie-Harfbuzz',
+	#tag : 'Enumerations'
 }
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_CAP_HEIGHT [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_CAP_HEIGHT
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_HORIZONTAL_CARET_OFFSET [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_HORIZONTAL_CARET_OFFSET
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_HORIZONTAL_CARET_RUN [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_HORIZONTAL_CARET_RUN
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_STRIKEOUT_OFFSET [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_STRIKEOUT_OFFSET
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_STRIKEOUT_SIZE [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_STRIKEOUT_SIZE
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_OFFSET [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_OFFSET
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_SIZE [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_SIZE
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_OFFSET [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_OFFSET
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_SIZE [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_SIZE
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_OFFSET [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_OFFSET
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_SIZE [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_SIZE
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_OFFSET [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_OFFSET
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_SIZE [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_SIZE
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_UNDERLINE_OFFSET [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_UNDERLINE_OFFSET
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_UNDERLINE_SIZE [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_UNDERLINE_SIZE
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_VERTICAL_ASCENDER [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_VERTICAL_ASCENDER
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_VERTICAL_CARET_OFFSET [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_VERTICAL_CARET_OFFSET
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_VERTICAL_CARET_RISE [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_VERTICAL_CARET_RISE
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_VERTICAL_CARET_RUN [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_VERTICAL_CARET_RUN
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_VERTICAL_DESCENDER [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_VERTICAL_DESCENDER
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_VERTICAL_LINE_GAP [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_VERTICAL_LINE_GAP
 ]
 
-{ #category : #'accessing enum' }
+{ #category : 'accessing enum' }
 AeHbOpenTypeMetricsTag class >> HB_OT_METRICS_TAG_X_HEIGHT [
 	"This method was automatically generated"
 	^ HB_OT_METRICS_TAG_X_HEIGHT
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> allMetricTagsSelectors [
 	"Answer all camelCased selectors that can be sent to me to get my enum items.
 	
@@ -258,13 +260,13 @@ AeHbOpenTypeMetricsTag class >> allMetricTagsSelectors [
 	     #verticalLineGap #xHeight )
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> capHeight [
 
 	^ self HB_OT_METRICS_TAG_CAP_HEIGHT
 ]
 
-{ #category : #'enum declaration' }
+{ #category : 'enum declaration' }
 AeHbOpenTypeMetricsTag class >> enumDecl [
 
 	^ #(
@@ -299,7 +301,7 @@ AeHbOpenTypeMetricsTag class >> enumDecl [
 )
 ]
 
-{ #category : #'enum declaration' }
+{ #category : 'enum declaration' }
 AeHbOpenTypeMetricsTag class >> generateEnumDecl [
 	<script>
 	"Based on 'hb-ot-metrics.h' (Harfbuzz 8.2.0)."
@@ -356,169 +358,169 @@ HB_OT_METRICS_TAG_UNDERLINE_OFFSET		undo
 		self addClassVarNamed: a ].
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> horizontalAscender [
 
 	^ self HB_OT_METRICS_TAG_HORIZONTAL_ASCENDER
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> horizontalCaretOffset [
 
 	^ self HB_OT_METRICS_TAG_HORIZONTAL_CARET_OFFSET
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> horizontalCaretRise [
 
 	^ self HB_OT_METRICS_TAG_HORIZONTAL_CARET_RISE
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> horizontalCaretRun [
 
 	^ self HB_OT_METRICS_TAG_HORIZONTAL_CARET_RUN
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> horizontalClippingAscent [
 
 	^ self HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_ASCENT
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> horizontalClippingDescent [
 
 	^ self HB_OT_METRICS_TAG_HORIZONTAL_CLIPPING_DESCENT
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> horizontalDescender [
 
 	^ self HB_OT_METRICS_TAG_HORIZONTAL_DESCENDER
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> horizontalLineGap [
 
 	^ self HB_OT_METRICS_TAG_HORIZONTAL_LINE_GAP
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> strikeoutOffset [
 
 	^ self HB_OT_METRICS_TAG_STRIKEOUT_OFFSET
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> strikeoutSize [
 
 	^ self HB_OT_METRICS_TAG_STRIKEOUT_SIZE
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> subscriptEmXOffset [
 
 	^ self HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_OFFSET
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> subscriptEmXSize [
 
 	^ self HB_OT_METRICS_TAG_SUBSCRIPT_EM_X_SIZE
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> subscriptEmYOffset [
 
 	^ self HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_OFFSET
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> subscriptEmYSize [
 
 	^ self HB_OT_METRICS_TAG_SUBSCRIPT_EM_Y_SIZE
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> superscriptEmXOffset [
 
 	^ self HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_OFFSET
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> superscriptEmXSize [
 
 	^ self HB_OT_METRICS_TAG_SUPERSCRIPT_EM_X_SIZE
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> superscriptEmYOffset [
 
 	^ self HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_OFFSET
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> superscriptEmYSize [
 
 	^ self HB_OT_METRICS_TAG_SUPERSCRIPT_EM_Y_SIZE
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> underlineOffset [
 
 	^ self HB_OT_METRICS_TAG_UNDERLINE_OFFSET
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> underlineSize [
 
 	^ self HB_OT_METRICS_TAG_UNDERLINE_SIZE
 ]
 
-{ #category : #hook }
+{ #category : 'hook' }
 AeHbOpenTypeMetricsTag class >> underlinedNamePrefix [
 	
 	^ 'HB_OT_METRICS_TAG_'
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> verticalAscender [
 
 	^ self HB_OT_METRICS_TAG_VERTICAL_ASCENDER
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> verticalCaretOffset [
 
 	^ self HB_OT_METRICS_TAG_VERTICAL_CARET_OFFSET
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> verticalCaretRise [
 
 	^ self HB_OT_METRICS_TAG_VERTICAL_CARET_RISE
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> verticalCaretRun [
 
 	^ self HB_OT_METRICS_TAG_VERTICAL_CARET_RUN
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> verticalDescender [
 
 	^ self HB_OT_METRICS_TAG_VERTICAL_DESCENDER
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> verticalLineGap [
 
 	^ self HB_OT_METRICS_TAG_VERTICAL_LINE_GAP
 ]
 
-{ #category : #'accessing enum camelcased' }
+{ #category : 'accessing enum camelcased' }
 AeHbOpenTypeMetricsTag class >> xHeight [
 
 	^ self HB_OT_METRICS_TAG_X_HEIGHT

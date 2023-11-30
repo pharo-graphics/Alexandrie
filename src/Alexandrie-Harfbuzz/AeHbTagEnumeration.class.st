@@ -1,10 +1,12 @@
 Class {
-	#name : #AeHbTagEnumeration,
-	#superclass : #AeEnumeration,
-	#category : #'Alexandrie-Harfbuzz-Enumerations'
+	#name : 'AeHbTagEnumeration',
+	#superclass : 'AeEnumeration',
+	#category : 'Alexandrie-Harfbuzz-Enumerations',
+	#package : 'Alexandrie-Harfbuzz',
+	#tag : 'Enumerations'
 }
 
-{ #category : #printing }
+{ #category : 'printing' }
 AeHbTagEnumeration >> printOn: stream [
 
 	stream

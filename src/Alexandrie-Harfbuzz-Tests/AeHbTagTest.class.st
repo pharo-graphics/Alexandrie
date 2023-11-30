@@ -1,10 +1,11 @@
 Class {
-	#name : #AeHbTagTest,
-	#superclass : #TestCase,
-	#category : #'Alexandrie-Harfbuzz-Tests'
+	#name : 'AeHbTagTest',
+	#superclass : 'TestCase',
+	#category : 'Alexandrie-Harfbuzz-Tests',
+	#package : 'Alexandrie-Harfbuzz-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbTagTest >> testConversion [
 
 	self assert: 'Latn' asHbTagInteger equals: 1281455214.

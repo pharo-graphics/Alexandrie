@@ -2,12 +2,13 @@
 An AeHbLanguageTest is a test class for testing the behavior of AeHbLanguage
 "
 Class {
-	#name : #AeHbLanguageTest,
-	#superclass : #TestCase,
-	#category : #'Alexandrie-Harfbuzz-Tests'
+	#name : 'AeHbLanguageTest',
+	#superclass : 'TestCase',
+	#category : 'Alexandrie-Harfbuzz-Tests',
+	#package : 'Alexandrie-Harfbuzz-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbLanguageTest >> testBCP47Tag [
 
 	self

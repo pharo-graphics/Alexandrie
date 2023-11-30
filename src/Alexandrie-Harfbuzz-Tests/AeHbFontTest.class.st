@@ -2,17 +2,18 @@
 An AeHbFontTest is a test class for testing the behavior of AeHbFont
 "
 Class {
-	#name : #AeHbFontTest,
-	#superclass : #TestCase,
+	#name : 'AeHbFontTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'inriaSerifRegularBlob',
 		'inriaSerifRegularFace',
 		'inriaSerifRegularFont'
 	],
-	#category : #'Alexandrie-Harfbuzz-Tests'
+	#category : 'Alexandrie-Harfbuzz-Tests',
+	#package : 'Alexandrie-Harfbuzz-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 AeHbFontTest >> setUp [
 
 	super setUp.
@@ -22,7 +23,7 @@ AeHbFontTest >> setUp [
 	inriaSerifRegularFont := inriaSerifRegularFace newHbFont
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbFontTest >> testAsString [
 
 	self
@@ -30,7 +31,7 @@ AeHbFontTest >> testAsString [
 		equals: 'an AeHbFont(Inria Serif, Regular, (1000@1000))'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbFontTest >> testFace [
 
 	self
@@ -38,7 +39,7 @@ AeHbFontTest >> testFace [
 		equals: inriaSerifRegularFace getHandle
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 AeHbFontTest >> testItalic [
 
 	self
@@ -46,7 +47,7 @@ AeHbFontTest >> testItalic [
 		equals: 0.0
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 AeHbFontTest >> testOpticalSize [
 
 	self
@@ -54,7 +55,7 @@ AeHbFontTest >> testOpticalSize [
 		equals: 12.0.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbFontTest >> testPointSize [
 
 	self
@@ -68,7 +69,7 @@ AeHbFontTest >> testPointSize [
 		equals: 2.0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbFontTest >> testPointsPerEm [
 
 	self
@@ -76,7 +77,7 @@ AeHbFontTest >> testPointsPerEm [
 		equals: 0 @ 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeHbFontTest >> testScale [
 
 	self
@@ -94,7 +95,7 @@ AeHbFontTest >> testScale [
 		equals: 3000 @ 2000
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 AeHbFontTest >> testSlantAngle [
 
 	self
@@ -102,19 +103,19 @@ AeHbFontTest >> testSlantAngle [
 		equals: 0.0.
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 AeHbFontTest >> testSlantRatio [
 
 	self assert: inriaSerifRegularFont slantRatio equals: 0.0
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 AeHbFontTest >> testWeight [
 
 	self assert: inriaSerifRegularFont weight equals: 400.0
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 AeHbFontTest >> testWidth [
 
 	self assert: inriaSerifRegularFont width equals: 100.0

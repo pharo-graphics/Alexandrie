@@ -2,29 +2,30 @@
 I represent examples to compare usage of Harfbuzz library.
 "
 Class {
-	#name : #AeHarfbuzzRenderExample,
-	#superclass : #Object,
+	#name : 'AeHarfbuzzRenderExample',
+	#superclass : 'Object',
 	#instVars : [
 		'freetypeFace',
 		'string',
 		'fontHeight'
 	],
-	#category : #'Alexandrie-Harfbuzz-Tests'
+	#category : 'Alexandrie-Harfbuzz-Tests',
+	#package : 'Alexandrie-Harfbuzz-Tests'
 }
 
-{ #category : #examples }
+{ #category : 'examples' }
 AeHarfbuzzRenderExample class >> arrowsFontSize [
 
 	^ 22
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 AeHarfbuzzRenderExample class >> arrowsString [
 		
 	^ 'a := A->B->>C <= c|=>d~~>e.'
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 AeHarfbuzzRenderExample class >> example1SourceSansPro [
 
 	| aFTLibrary aFace |
@@ -38,7 +39,7 @@ AeHarfbuzzRenderExample class >> example1SourceSansPro [
 		newForm inspect
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 AeHarfbuzzRenderExample class >> example2InriaSerif [
 
 	| aFTLibrary aFace |
@@ -52,7 +53,7 @@ AeHarfbuzzRenderExample class >> example2InriaSerif [
 		newForm inspect
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 AeHarfbuzzRenderExample class >> example5CascadiaCode [
 
 	| aFTLibrary aFace |
@@ -69,7 +70,7 @@ AeHarfbuzzRenderExample class >> example5CascadiaCode [
 		newForm inspect
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 AeHarfbuzzRenderExample class >> example6Emoji [
 
 	| aFace aWideString aFTLibrary |
@@ -91,19 +92,19 @@ AeHarfbuzzRenderExample class >> example6Emoji [
 		newForm inspect
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 AeHarfbuzzRenderExample class >> ffFontSize [
 
 	^ 30
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 AeHarfbuzzRenderExample class >> ffString [
 
 	^ 'The special film starts after coffee et office... (AV.)'
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeHarfbuzzRenderExample class >> freetypeFace: aFace string: aWideString fontHeight: aNumber [
 
 	^ self new
@@ -113,19 +114,19 @@ AeHarfbuzzRenderExample class >> freetypeFace: aFace string: aWideString fontHei
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHarfbuzzRenderExample >> fontHeight: aNumber [
 
 	fontHeight := aNumber
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHarfbuzzRenderExample >> freetypeFace: aeFTFace [
 
 	freetypeFace := aeFTFace
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHarfbuzzRenderExample >> glyphArrayWithHarfbuzz [
 
 	^ AeHbBuffer new
@@ -138,13 +139,13 @@ AeHarfbuzzRenderExample >> glyphArrayWithHarfbuzz [
 		cairoGlyphArrayForFace: freetypeFace size: fontHeight
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHarfbuzzRenderExample >> glyphArrayWithoutHarfbuzz: cairoScaledFont [
 
 	^ cairoScaledFont glyphArrayForString: string
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHarfbuzzRenderExample >> newForm [
 
 	| aeCanvas cairoScaledFont |
@@ -173,7 +174,7 @@ AeHarfbuzzRenderExample >> newForm [
 	^ aeCanvas asForm
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHarfbuzzRenderExample >> string: aString [
 
 	string := aString
