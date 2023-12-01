@@ -151,6 +151,6 @@ AeHbBufferTest >> testSimpleExample [
 	#(75 52 55) withIndexDo: [ :each :index |
 		self assert: (infos at: index) codepoint equals: each ].
 	#(625 557 439) withIndexDo: [ :each :index |
-		self assert: (positions at: index) x_advance equals: each ].
+		self assert: (positions at: index) xAdvance equals: each ].
 
 ]

@@ -10,10 +10,10 @@ Class {
 	#superclass : 'FFIExternalStructure',
 	#classVars : [
 		'OFFSET_VAR',
-		'OFFSET_X_ADVANCE',
-		'OFFSET_X_OFFSET',
-		'OFFSET_Y_ADVANCE',
-		'OFFSET_Y_OFFSET'
+		'OFFSET_XADVANCE',
+		'OFFSET_XOFFSET',
+		'OFFSET_YADVANCE',
+		'OFFSET_YOFFSET'
 	],
 	#pools : [
 		'AeHbTypes'
@@ -30,11 +30,11 @@ AeHbGlyphPosition class >> fieldsDesc [
 	"
 
 	^ #(
-		hb_position_t  x_advance
-		hb_position_t  y_advance
-		hb_position_t  x_offset
-		hb_position_t  y_offset
-		uint32 var "<private> hb_var_int_t   var;"
+		hb_position_t  xAdvance "x_advance"
+		hb_position_t  yAdvance "y_advance"
+		hb_position_t  xOffset  "x_offset"
+		hb_position_t  yOffset  "y_offset"
+		hb_var_int_t var        "(private)"
 		)
 ]
 
@@ -42,7 +42,7 @@ AeHbGlyphPosition class >> fieldsDesc [
 AeHbGlyphPosition >> printOn: aStream [
 
 	super printOn: aStream.
-	#(x_advance y_advance x_offset y_offset) do: [ :each |
+	#(xAdvance yAdvance xOffset yOffset) do: [ :each |
 		aStream
 			space;
 			nextPutAll: each;
@@ -53,85 +53,73 @@ AeHbGlyphPosition >> printOn: aStream [
 ]
 
 { #category : 'accessing - structure variables' }
-AeHbGlyphPosition >> var [
+AeHbGlyphPosition >> xAdvance [
 	"This method was automatically generated"
-	^handle unsignedLongAt: OFFSET_VAR
+	^handle signedLongAt: OFFSET_XADVANCE
 ]
 
 { #category : 'accessing - structure variables' }
-AeHbGlyphPosition >> var: anObject [
+AeHbGlyphPosition >> xAdvance: anObject [
 	"This method was automatically generated"
-	handle unsignedLongAt: OFFSET_VAR put: anObject
+	handle signedLongAt: OFFSET_XADVANCE put: anObject
 ]
 
 { #category : 'accessing' }
 AeHbGlyphPosition >> xAdvanceFrom26Dot6 [
 
-	^ self x_advance from26Dot6FractionalPoint
+	^ self xAdvance from26Dot6FractionalPoint
+]
+
+{ #category : 'accessing - structure variables' }
+AeHbGlyphPosition >> xOffset [
+	"This method was automatically generated"
+	^handle signedLongAt: OFFSET_XOFFSET
+]
+
+{ #category : 'accessing - structure variables' }
+AeHbGlyphPosition >> xOffset: anObject [
+	"This method was automatically generated"
+	handle signedLongAt: OFFSET_XOFFSET put: anObject
 ]
 
 { #category : 'accessing' }
 AeHbGlyphPosition >> xOffsetFrom26Dot6 [
 
-	^ self x_offset from26Dot6FractionalPoint
+	^ self xOffset from26Dot6FractionalPoint
 ]
 
 { #category : 'accessing - structure variables' }
-AeHbGlyphPosition >> x_advance [
+AeHbGlyphPosition >> yAdvance [
 	"This method was automatically generated"
-	^handle signedLongAt: OFFSET_X_ADVANCE
+	^handle signedLongAt: OFFSET_YADVANCE
 ]
 
 { #category : 'accessing - structure variables' }
-AeHbGlyphPosition >> x_advance: anObject [
+AeHbGlyphPosition >> yAdvance: anObject [
 	"This method was automatically generated"
-	handle signedLongAt: OFFSET_X_ADVANCE put: anObject
-]
-
-{ #category : 'accessing - structure variables' }
-AeHbGlyphPosition >> x_offset [
-	"This method was automatically generated"
-	^handle signedLongAt: OFFSET_X_OFFSET
-]
-
-{ #category : 'accessing - structure variables' }
-AeHbGlyphPosition >> x_offset: anObject [
-	"This method was automatically generated"
-	handle signedLongAt: OFFSET_X_OFFSET put: anObject
+	handle signedLongAt: OFFSET_YADVANCE put: anObject
 ]
 
 { #category : 'accessing' }
 AeHbGlyphPosition >> yAdvanceFrom26Dot6 [
 
-	^ self y_advance from26Dot6FractionalPoint
+	^ self yAdvance from26Dot6FractionalPoint
+]
+
+{ #category : 'accessing - structure variables' }
+AeHbGlyphPosition >> yOffset [
+	"This method was automatically generated"
+	^handle signedLongAt: OFFSET_YOFFSET
+]
+
+{ #category : 'accessing - structure variables' }
+AeHbGlyphPosition >> yOffset: anObject [
+	"This method was automatically generated"
+	handle signedLongAt: OFFSET_YOFFSET put: anObject
 ]
 
 { #category : 'accessing' }
 AeHbGlyphPosition >> yOffsetFrom26Dot6 [
 
-	^ self y_offset from26Dot6FractionalPoint
-]
-
-{ #category : 'accessing - structure variables' }
-AeHbGlyphPosition >> y_advance [
-	"This method was automatically generated"
-	^handle signedLongAt: OFFSET_Y_ADVANCE
-]
-
-{ #category : 'accessing - structure variables' }
-AeHbGlyphPosition >> y_advance: anObject [
-	"This method was automatically generated"
-	handle signedLongAt: OFFSET_Y_ADVANCE put: anObject
-]
-
-{ #category : 'accessing - structure variables' }
-AeHbGlyphPosition >> y_offset [
-	"This method was automatically generated"
-	^handle signedLongAt: OFFSET_Y_OFFSET
-]
-
-{ #category : 'accessing - structure variables' }
-AeHbGlyphPosition >> y_offset: anObject [
-	"This method was automatically generated"
-	handle signedLongAt: OFFSET_Y_OFFSET put: anObject
+	^ self yOffset from26Dot6FractionalPoint
 ]
