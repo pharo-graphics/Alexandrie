@@ -97,7 +97,7 @@ AeHbBuffer >> cairoGlyphArray [
 
 	| length infos positions cairoGlyphsArray currentX currentY |
 	length := self length.
-	length = 0 ifTrue: [ ^ AeCairoGlyphArray newOf: 0 ].
+	length = 0 ifTrue: [ ^ AeCairoGlyphArray newEmpty ].
 
 	infos := AeHbGlyphInfoArray
 		  fromHandle: (self glyphInfosWritingSizeInto: ExternalAddress null)

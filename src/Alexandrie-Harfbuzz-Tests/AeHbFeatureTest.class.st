@@ -54,7 +54,7 @@ AeHbFeatureTest >> testParseInstanceInArray [
 	"This is the most convenient use for the Harfbuzz shaping API."
 
 	| featuresArray aFeature |
-	featuresArray := FFIExternalArray newType: AeHbFeature size: 3.
+	featuresArray := AeHbFeatureArray newOf: 3.
 	featuresArray first  readIntoSelf: '+kern[1:7]'.
 	featuresArray second readIntoSelf: '+smcp[5:11]'.
 	featuresArray third  readIntoSelf: '-liga[:17]'.

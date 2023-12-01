@@ -119,7 +119,7 @@ AeHbBufferTest >> testShapeWithFontFeatures [
 	aFace := aBlob newHbFaceAtIndex: 0.
 	aFont := aFace newHbFont.
 	
-	featuresArray := FFIExternalArray newType: AeHbFeature size: 2.
+	featuresArray := AeHbFeatureArray newOf: 2.
 	featuresArray first  readIntoSelf: '+liga[0:4]'.
 	featuresArray second readIntoSelf: '-liga[4:8]'.
 

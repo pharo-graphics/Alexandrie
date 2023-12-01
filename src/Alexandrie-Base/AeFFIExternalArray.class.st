@@ -2,23 +2,24 @@
 I'm an external array specialized for Alexandrie's FFI bindings.
 "
 Class {
-	#name : #AeFFIExternalArray,
-	#superclass : #FFIExternalArray,
+	#name : 'AeFFIExternalArray',
+	#superclass : 'FFIExternalArray',
 	#traits : 'AeTExternalFree',
 	#classTraits : 'AeTExternalFree classTrait',
 	#classInstVars : [
 		'resolvedType'
 	],
-	#category : #'Alexandrie-Base'
+	#category : 'Alexandrie-Base',
+	#package : 'Alexandrie-Base'
 }
 
-{ #category : #finalization }
+{ #category : 'finalization' }
 AeFFIExternalArray class >> externallyFree: aHandle [
 
 	aHandle free
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeFFIExternalArray class >> fromHandle: aHandle size: aNumber [
 
 	^ self basicNew
@@ -26,13 +27,19 @@ AeFFIExternalArray class >> fromHandle: aHandle size: aNumber [
 		yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 AeFFIExternalArray class >> isAbstract [
 
 	^ self == AeFFIExternalArray
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
+AeFFIExternalArray class >> newEmpty [
+
+	^ self newOf: 0
+]
+
+{ #category : 'instance creation' }
 AeFFIExternalArray class >> newFrom: anArrayedCollection [
 
 	| newInstance |
@@ -44,7 +51,7 @@ AeFFIExternalArray class >> newFrom: anArrayedCollection [
 	^ newInstance
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeFFIExternalArray class >> newOf: aSize [
 	"Answer a new instance of the specified size, with autoRelease."
 
@@ -53,7 +60,7 @@ AeFFIExternalArray class >> newOf: aSize [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 AeFFIExternalArray class >> unownedNewOf: aSize [
 	"Answer a new instance of the specified size. Sender is responsible of freeing handle."
 

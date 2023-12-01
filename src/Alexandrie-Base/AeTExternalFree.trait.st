@@ -2,17 +2,18 @@
 I'm a trait for all classes that represent bindings to Cairo library and need to be freed/destroyed.
 "
 Trait {
-	#name : #AeTExternalFree,
-	#category : #'Alexandrie-Base'
+	#name : 'AeTExternalFree',
+	#category : 'Alexandrie-Base',
+	#package : 'Alexandrie-Base'
 }
 
-{ #category : #finalization }
+{ #category : 'finalization' }
 AeTExternalFree classSide >> externallyFree: aHandle [
 	
 	self explicitRequirement
 ]
 
-{ #category : #finalization }
+{ #category : 'finalization' }
 AeTExternalFree classSide >> finalizeResourceData: aHandle [
 
 	aHandle isNull ifTrue: [ ^ self ].
@@ -20,14 +21,14 @@ AeTExternalFree classSide >> finalizeResourceData: aHandle [
 	aHandle beNull
 ]
 
-{ #category : #finalization }
+{ #category : 'finalization' }
 AeTExternalFree classSide >> new [
 	"Answer a new instance, that has an external resource associated."
 
 	^ self error: 'Create instances via specialized API'
 ]
 
-{ #category : #finalization }
+{ #category : 'finalization' }
 AeTExternalFree >> autoRelease [
 	"Add to finalization system so GC frees me when there are no more references.
 	
@@ -36,13 +37,13 @@ AeTExternalFree >> autoRelease [
 	FFIExternalResourceManager addResource: self
 ]
 
-{ #category : #finalization }
+{ #category : 'finalization' }
 AeTExternalFree >> externallyFree [
 
 	self class finalizeResourceData: self resourceData
 ]
 
-{ #category : #finalization }
+{ #category : 'finalization' }
 AeTExternalFree >> resourceData [
 	"Answer an object to be received in `finalizeResourceData:` to free external resources.
 	Such object will be stored in a finalization registry, so shouldn't point directly or indirectly to myself."

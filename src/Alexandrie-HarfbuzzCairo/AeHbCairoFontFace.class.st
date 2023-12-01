@@ -8,22 +8,23 @@ See: https://harfbuzz.github.io/harfbuzz-hb-cairo.html
 See: https://www.cairographics.org/manual/cairo-cairo-font-face-t.html
 "
 Class {
-	#name : #AeHbCairoFontFace,
-	#superclass : #AeCairoFontFace,
+	#name : 'AeHbCairoFontFace',
+	#superclass : 'AeCairoFontFace',
 	#instVars : [
 		'hbFaceOrFont'
 	],
-	#category : #'Alexandrie-HarfbuzzCairo'
+	#category : 'Alexandrie-HarfbuzzCairo',
+	#package : 'Alexandrie-HarfbuzzCairo'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbCairoFontFace >> hbFaceOrFont: aHarfbuzzFaceOrFont [
 	"Associate with either the Harfbuzz face or font that was used to create this object."
 
 	hbFaceOrFont := aHarfbuzzFaceOrFont
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 AeHbCairoFontFace >> printOn: aStream [
 
 	super printOn: aStream.
@@ -32,7 +33,7 @@ AeHbCairoFontFace >> printOn: aStream [
 		print: hbFaceOrFont
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbCairoFontFace >> scaleFactor [
 	"Answer the scale factor of this font face. Default scale factor is zero.
 	
@@ -45,7 +46,7 @@ AeHbCairoFontFace >> scaleFactor [
 		library: AeHarfbuzzCairoLibrary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 AeHbCairoFontFace >> scaleFactor: scaleFactor [
 	"Sets the scale factor of this font face. Default scale factor is zero.
 	
