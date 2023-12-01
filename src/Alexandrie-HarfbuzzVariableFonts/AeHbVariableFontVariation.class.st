@@ -86,7 +86,7 @@ AeHbVariableFontVariation >> tagString [
 AeHbVariableFontVariation >> tagString: aString [ 
 	"Set my tag with the integer representation of the received tag.
 	
-	See: See: https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-tag-t"
+	See: https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-tag-t"
 
 	self tag: aString asHbTagInteger
 ]

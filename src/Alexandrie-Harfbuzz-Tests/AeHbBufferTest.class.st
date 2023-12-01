@@ -78,6 +78,50 @@ AeHbBufferTest >> testReset [
 ]
 
 { #category : 'tests' }
+AeHbBufferTest >> testShapeExample [
+
+	| aBuffer aBlob aFace aFont |
+	aBuffer := AeHbBuffer new
+		addString: 'off';
+		guessSegmentProperties;
+		yourself.
+	aBlob := AeHbBlob newLocatedAt: AeFilesystemResources inriaSerifRegularTTF.
+	aFace := aBlob newHbFaceAtIndex: 0.
+	aFont := aFace newHbFont.
+	
+	aBuffer shapeWithFont: aFont.
+
+	self assert: aBuffer length equals: 2.
+	self assert: aBuffer glyphInfos size equals: 2.
+	self assert: aBuffer glyphPositions size equals: 2.
+]
+
+{ #category : 'tests' }
+AeHbBufferTest >> testShapeWithFontFeatures [
+	"By default, shape with this font replaces the ff sequence by a single glyph.
+	This test shows how to disable one of the possible replacements."
+
+	| aBuffer aBlob aFace aFont featuresArray aString |
+	aString := 'off;off;off;'.
+	aBuffer := AeHbBuffer new
+		addString: aString;
+		guessSegmentProperties;
+		yourself.
+
+	aBlob := AeHbBlob newLocatedAt: AeFilesystemResources inriaSerifRegularTTF.
+	aFace := aBlob newHbFaceAtIndex: 0.
+	aFont := aFace newHbFont.
+	
+	featuresArray := FFIExternalArray newType: AeHbFeature size: 2.
+	featuresArray first  readIntoSelf: '+liga[0:4]'.
+	featuresArray second readIntoSelf: '-liga[4:8]'.
+
+	aBuffer shapeWithFont: aFont features: featuresArray.
+	"if all ff occurences were replaced, it would be -3:"
+	self assert: aBuffer length equals: aString size - 2
+]
+
+{ #category : 'tests' }
 AeHbBufferTest >> testSimpleExample [
 	"Adaptation of https://harfbuzz.github.io/a-simple-shaping-example.html"
 

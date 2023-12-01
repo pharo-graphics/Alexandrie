@@ -385,6 +385,15 @@ AeHbBuffer >> shapeWithFont: font [
 ]
 
 { #category : 'shaping text' }
+AeHbBuffer >> shapeWithFont: font features: featuresArray [
+
+	^ self
+		  shapeWithFont: font
+		  features: featuresArray
+		  numberOfFeatures: featuresArray size
+]
+
+{ #category : 'shaping text' }
 AeHbBuffer >> shapeWithFont: font features: features numberOfFeatures: num_features [
 	"Shapes buffer using font turning its Unicode characters content to positioned glyphs. If features is not NULL, it will be used to control the features applied during shaping. If two features have the same tag but overlapping ranges the value of the feature with the higher index takes precedence.
 	
