@@ -35,9 +35,16 @@ AeHbBufferTest >> testGuessSegmentProperties [
 		guessSegmentProperties;
 		yourself.
 		
-	self assert: buffer segmentProperties direction equals: AeHbDirection leftToRight.
-	self assert: buffer segmentProperties script equals: AeHbScript latin.
-	self assert: buffer segmentProperties language toString equals: 'utf-8'. "is it right?"
+	self
+		assert: buffer segmentProperties direction
+		equals: AeHbDirection leftToRight.
+
+	self
+		assert: buffer segmentProperties script
+		equals: AeHbScript latin.
+
+	"CI showed different results depending on the platform: 'utf-8', 'c' and 'en-us'"
+	self deny: buffer segmentProperties language toString isEmpty
 ]
 
 { #category : 'tests' }
