@@ -1,6 +1,6 @@
-Extension { #name : #AeCairoOpaqueGlyphArray }
+Extension { #name : 'AeCairoOpaqueGlyphArray' }
 
-{ #category : #'*Alexandrie-NewTools' }
+{ #category : '*Alexandrie-NewTools' }
 AeCairoOpaqueGlyphArray >> inspectionOfGlyphs: aBuilder [
 	<inspectorPresentationOrder: 0 title: 'Glyphs'>
 

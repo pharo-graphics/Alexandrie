@@ -1,6 +1,6 @@
-Extension { #name : #AeCairoContext }
+Extension { #name : 'AeCairoContext' }
 
-{ #category : #'*Alexandrie-NewTools' }
+{ #category : '*Alexandrie-NewTools' }
 AeCairoContext >> clippingAreaAsForm [ 
 	
 	| clippingForm |
@@ -26,7 +26,7 @@ AeCairoContext >> clippingAreaAsForm [
 	^ clippingForm
 ]
 
-{ #category : #'*Alexandrie-NewTools' }
+{ #category : '*Alexandrie-NewTools' }
 AeCairoContext >> inspectionOfClippingArea: aBuilder [
 	<inspectorPresentationOrder: 1 title: 'Clipping Area'>
 
@@ -35,7 +35,7 @@ AeCairoContext >> inspectionOfClippingArea: aBuilder [
 		yourself
 ]
 
-{ #category : #'*Alexandrie-NewTools' }
+{ #category : '*Alexandrie-NewTools' }
 AeCairoContext >> inspectionOfSurfaceAsForm: aBuilder [
 	<inspectorPresentationOrder: 0 title: 'Surface'>
 
