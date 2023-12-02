@@ -12,7 +12,8 @@ Class {
 		'font',
 		'glyphArray',
 		'cairoFontFace',
-		'cairoScaledFont'
+		'cairoScaledFont',
+		'fontSize'
 	],
 	#category : 'Alexandrie-HarfbuzzCairo',
 	#package : 'Alexandrie-HarfbuzzCairo'
@@ -268,27 +269,22 @@ AeHbCairoExample >> drawUnderline [
 ]
 
 { #category : 'initialization' }
+AeHbCairoExample >> font: aHbFont [
+
+	font := aHbFont.
+	self prepareCairoTextObjects
+]
+
+{ #category : 'initialization' }
 AeHbCairoExample >> initializeWith: aString font: aHbFont fontSize: aFontSize cairoContext: aCairoContext [
 
-	| fontSize |
 	self initialize.
 	
 	string := aString.
 	fontSize := aFontSize.
 	cairoContext := aCairoContext.
 
-	font := aHbFont.
-	font scale: fontSize as26Dot6FractionalPoint asPoint.
-	cairoFontFace := font newCairoFontFace.
-
-	cairoContext fontFace: cairoFontFace.
-	cairoContext fontSize: fontSize.
-	cairoContext fontOptions: self newCairoFontOptions.
-	cairoScaledFont := cairoContext scaledFont.
-	glyphArray := cairoScaledFont glyphArrayForString: string.
-	glyphExtents := cairoScaledFont glyphExtentsOf: glyphArray.
-	fontExtents := cairoScaledFont fontExtents
-
+	self font: aHbFont
 ]
 
 { #category : 'debugging - new tools' }
@@ -305,6 +301,21 @@ AeHbCairoExample >> newCairoFontOptions [
 		hintMetrics: AeCairoHintMetrics off;
 		hintStyle: AeCairoHintStyle none;
 		yourself
+]
+
+{ #category : 'initialization' }
+AeHbCairoExample >> prepareCairoTextObjects [
+
+	font scale: fontSize as26Dot6FractionalPoint asPoint.
+	cairoFontFace := font newCairoFontFace.
+	cairoContext fontFace: cairoFontFace.
+	cairoContext fontSize: fontSize.
+	cairoContext fontOptions: self newCairoFontOptions.
+	cairoScaledFont := cairoContext scaledFont.
+	glyphArray := cairoScaledFont glyphArrayForString: string.
+	glyphExtents := cairoScaledFont glyphExtentsOf: glyphArray.
+	fontExtents := cairoScaledFont fontExtents
+
 ]
 
 { #category : 'drawing' }

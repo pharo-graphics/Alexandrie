@@ -26,3 +26,41 @@ AeHbCairoExample class >> exampleDrawVariableFont [
 		self exampleDraw: 'Variable Font' font: hbFont fontSize: 70 ].
 
 ]
+
+{ #category : '*Alexandrie-HarfbuzzVariableFonts' }
+AeHbCairoExample class >> exampleDrawVariableFontAnimated [
+
+	| fileReference hbBlob hbFace cairoSurface example |
+	fileReference := AeSourceCodeVFDownloadedFont new
+		downloadDirectory: AeFilesystemResources downloadedFontsDirectory;
+		ensureDownloaded;
+		fileReference.
+	hbBlob := AeHbBlob newLocatedAt: fileReference.
+	hbFace := hbBlob newHbFaceAtIndex: 0.
+
+	cairoSurface := AeCairoImageSurface
+		extent: 450 @ 100
+		format: AeCairoSurfaceFormat rgb24.
+	
+	example := self
+			newWith: 'Width Axis'
+			font: hbFace newHbFont
+			fontSize: 70
+			cairoContext: cairoSurface newContext.
+
+	cairoSurface inspect.
+	
+	[
+	3 timesRepeat: [| axis interval |
+		axis := hbFace axisInfos first.
+		interval := axis minValue to: axis maxValue by: 10.
+		interval, interval reversed do: [ :each |
+			example font:
+				(hbFace newHbFont
+					variationAtTagString: 'wght' put: each;
+					yourself).
+			example
+				clearSurface;
+				drawText.
+			10 milliSeconds wait ]] ] fork
+]
