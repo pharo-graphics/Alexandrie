@@ -46,7 +46,8 @@ AeHbFeatureTest >> testParseAfterInstanceCreation [
 	aFeature start: 5.
 	self assert: aFeature start equals: 5.
 	aFeature readIntoSelf: 'liga[3]'.
-	self assert: aFeature start equals: 3
+	self assert: aFeature zeroBasedStart equals: 3.
+	self assert: aFeature start equals: 4
 ]
 
 { #category : 'tests' }
@@ -62,20 +63,20 @@ AeHbFeatureTest >> testParseInstanceInArray [
 	aFeature := featuresArray first.
 	self assert: aFeature tagString equals: 'kern'.
 	self assert: aFeature value equals: 1.
-	self assert: aFeature start equals: 1.
-	self assert: aFeature end equals: 7.
+	self assert: aFeature zeroBasedStart equals: 1.
+	self assert: aFeature zeroBasedEnd equals: 7.
 
 	aFeature := featuresArray second.
 	self assert: aFeature tagString equals: 'smcp'.
 	self assert: aFeature value equals: 1.
-	self assert: aFeature start equals: 5.
-	self assert: aFeature end equals: 11.
+	self assert: aFeature zeroBasedStart equals: 5.
+	self assert: aFeature zeroBasedEnd equals: 11.
 
 	aFeature := featuresArray third.
 	self assert: aFeature tagString equals: 'liga'.
 	self assert: aFeature value equals: 0.
-	self assert: aFeature start equals: 0.
-	self assert: aFeature end equals: 17.
+	self assert: aFeature zeroBasedStart equals: 0.
+	self assert: aFeature zeroBasedEnd equals: 17.
 ]
 
 { #category : 'tests' }
@@ -85,8 +86,10 @@ AeHbFeatureTest >> testParseSecondAlternativeInRange [
 	aFeature := AeHbFeature readFrom: 'aalt[3:5]=2'.
 	self assert: aFeature tagString equals: 'aalt'.
 	self assert: aFeature value equals: 2.
-	self assert: aFeature start equals: 3.
-	self assert: aFeature end equals: 5
+	self assert: aFeature zeroBasedStart equals: 3.
+	self assert: aFeature zeroBasedEnd equals: 5.
+	self assert: aFeature start equals: 4.
+	self assert: aFeature end equals: 6
 ]
 
 { #category : 'tests' }
@@ -105,10 +108,8 @@ AeHbFeatureTest >> testParseTurnFeatureOnEndingAt [
 
 	| aFeature |
 	aFeature := AeHbFeature readFrom: 'kern[:5]'.
-	self assert: aFeature tagString equals: 'kern'.
-	self assert: aFeature value equals: 1.
-	self assert: aFeature start equals: 0.
-	self assert: aFeature end equals: 5
+	self assert: aFeature zeroBasedStart equals: 0.
+	self assert: aFeature zeroBasedEnd equals: 5
 ]
 
 { #category : 'tests' }
@@ -116,10 +117,8 @@ AeHbFeatureTest >> testParseTurnFeatureOnSingleCharacter [
 
 	| aFeature |
 	aFeature := AeHbFeature readFrom: 'kern[5]'.
-	self assert: aFeature tagString equals: 'kern'.
-	self assert: aFeature value equals: 1.
-	self assert: aFeature start equals: 5.
-	self assert: aFeature end equals: 6 "end is exclusive"
+	self assert: aFeature zeroBasedStart equals: 5.
+	self assert: aFeature zeroBasedEnd equals: 6 "end index is exclusive"
 ]
 
 { #category : 'tests' }
@@ -127,8 +126,6 @@ AeHbFeatureTest >> testParseTurnFeatureOnStartingAt [
 
 	| aFeature |
 	aFeature := AeHbFeature readFrom: 'kern[5:]'.
-	self assert: aFeature tagString equals: 'kern'.
-	self assert: aFeature value equals: 1.
-	self assert: aFeature start equals: 5.
+	self assert: aFeature zeroBasedStart equals: 5.
 	self assert: aFeature endsAtGlobalEnd.
 ]
