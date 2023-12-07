@@ -14,12 +14,31 @@ Class {
 	#category : #'Alexandrie-HarfbuzzCairo'
 }
 
+{ #category : #examples }
+AeHbCairoFeaturesExample class >> exampleDraw: aString binaryTag: aTagAsString font: aHbFont fontSize: fontSize [
+	
+	| aFeatureArray |
+	aFeatureArray := AeHbFeatureArray newOf: 2.
+	aFeatureArray first
+		readIntoSelf: ('{1}[:{2}]=0'
+			format: { aTagAsString. aString utf8Encoded size }).
+	aFeatureArray second
+		readIntoSelf: ('{1}[{2}:]=1'
+			format: { aTagAsString. aString utf8Encoded size }).
+
+	self
+		exampleDraw: aString, aString
+		features: aFeatureArray
+		font: aHbFont 
+		fontSize: fontSize
+]
+
 { #category : #'instance creation' }
 AeHbCairoFeaturesExample class >> exampleDraw: aString features: featuresExternalArray font: aHbFont fontSize: fontSize [
 
 	| cairoSurface instance |
 	cairoSurface := AeCairoImageSurface
-		extent: 400 @ (fontSize * 1.5)
+		extent: 400 @ (fontSize * 1.75)
 		format: AeCairoSurfaceFormat rgb24.
 	
 	cairoSurface status ensureIsSuccess.
@@ -33,43 +52,22 @@ AeHbCairoFeaturesExample class >> exampleDraw: aString features: featuresExterna
 	
 	instance
 		draw;
-		inspect
+		inspectWithLabel: featuresExternalArray asString
 ]
 
 { #category : #examples }
-AeHbCairoFeaturesExample class >> exampleDrawDistinct [
+AeHbCairoFeaturesExample class >> exampleDrawCascadiaArrows [
 
-
-	| aFeatureArray |
-	aFeatureArray := AeHbFeatureArray newOf: 3.
-	aFeatureArray first readIntoSelf: 'ss02[0:5]=1'.
-	aFeatureArray second readIntoSelf: 'zero[0:5]=1'.
-	aFeatureArray third readIntoSelf: 'ss19[0:5]'.
-	
 	self
-		exampleDraw: 'a~=0 a~=0'
-		features: aFeatureArray
+		exampleDraw: '<--> '
+		binaryTag: 'calt'
 		font: self newCascadiaFace newHbFont
 		fontSize: 70
+
 ]
 
 { #category : #examples }
-AeHbCairoFeaturesExample class >> exampleDrawFFLigature [
-
-	| aFeatureArray |
-	aFeatureArray := AeHbFeatureArray newOf: 2.
-	aFeatureArray first readIntoSelf: 'liga[0:6]=0'.
-	aFeatureArray second readIntoSelf: 'kern[0:6]=0'.
-
-	self
-		exampleDraw: 'coff  coff'
-		features: aFeatureArray
-		font: self newInriaFace newHbFont
-		fontSize: 90
-]
-
-{ #category : #examples }
-AeHbCairoFeaturesExample class >> exampleDrawFraction [
+AeHbCairoFeaturesExample class >> exampleDrawDiagonalFraction [
 
 	| aString aFeatureArray |
 	aString := '123/71 '.
@@ -85,39 +83,58 @@ AeHbCairoFeaturesExample class >> exampleDrawFraction [
 ]
 
 { #category : #examples }
-AeHbCairoFeaturesExample class >> exampleDrawSmallCaps [
-
-	| aString aFeatureArray |
-	aString := 'Title '.
-	
-	aFeatureArray := AeHbFeatureArray newOf: 1.
-	aFeatureArray first readIntoSelf: ('smcp[{1}:]' format: { aString utf8Encoded size }).
+AeHbCairoFeaturesExample class >> exampleDrawFFLigature [
 
 	self
-		exampleDraw: aString, ' ', aString
-		features: aFeatureArray
-		font: self newSourceSansProFace newHbFont
-		fontSize: 80
-]
-
-{ #category : #examples }
-AeHbCairoFeaturesExample class >> exampleDrawSubscript [
-
-	| aString aFeatureArray |
-	aString := 'a2'.
-	
-	aFeatureArray := AeHbFeatureArray newOf: 2.
-	aFeatureArray first  readIntoSelf: ('subs[1]').
-
-	self
-		exampleDraw: aString, '   ', aString
-		features: aFeatureArray
-		font: self newSourceSansProFace newHbFont
+		exampleDraw: 'coff '
+		binaryTag: 'liga'
+		font: self newInriaFace newHbFont
 		fontSize: 90
+
 ]
 
 { #category : #examples }
-AeHbCairoFeaturesExample class >> exampleDrawZero [
+AeHbCairoFeaturesExample class >> exampleDrawMultiCharacterEmoji [
+
+	self
+		exampleDraw: '👨‍👩‍👧‍👦 '
+		binaryTag: 'ccmp'
+		font: self newEmojiFace newHbFont
+		fontSize: 24
+]
+
+{ #category : #examples }
+AeHbCairoFeaturesExample class >> exampleDrawNotEquals [
+
+	self
+		exampleDraw: 'a~=b '
+		binaryTag: 'ss02'
+		font: self newCascadiaFace newHbFont
+		fontSize: 70
+]
+
+{ #category : #examples }
+AeHbCairoFeaturesExample class >> exampleDrawOldStyleNumbers [
+
+	self
+		exampleDraw: '234567890.png  '
+		binaryTag: 'onum'
+		font: self newSourceSansProFace newHbFont
+		fontSize: 28
+]
+
+{ #category : #examples }
+AeHbCairoFeaturesExample class >> exampleDrawOrdinal [
+
+	self
+		exampleDraw: '1st 2nd  '
+		binaryTag: 'ordn'
+		font: self newSourceSansProFace newHbFont
+		fontSize: 60
+]
+
+{ #category : #examples }
+AeHbCairoFeaturesExample class >> exampleDrawSlashedZero [
 
 	| aString aFeatureArray separator |
 	aString := '100'.
@@ -132,6 +149,42 @@ AeHbCairoFeaturesExample class >> exampleDrawZero [
 		features: aFeatureArray
 		font: self newCascadiaFace newHbFont
 		fontSize: 70
+]
+
+{ #category : #examples }
+AeHbCairoFeaturesExample class >> exampleDrawSmallCaps [
+
+	self
+		exampleDraw: 'Title '
+		binaryTag: 'smcp'
+		font: self newSourceSansProFace newHbFont
+		fontSize: 80
+]
+
+{ #category : #examples }
+AeHbCairoFeaturesExample class >> exampleDrawSubscript [
+
+	| aString aFeatureArray |
+	aString := 'a2'.
+	
+	aFeatureArray := AeHbFeatureArray newOf: 1.
+	aFeatureArray first  readIntoSelf: ('subs[1]').
+
+	self
+		exampleDraw: aString, '   ', aString
+		features: aFeatureArray
+		font: self newSourceSansProFace newHbFont
+		fontSize: 90
+]
+
+{ #category : #examples }
+AeHbCairoFeaturesExample class >> exampleDrawTabularNumbers [
+
+	self
+		exampleDraw: '111000 '
+		binaryTag: 'tnum'
+		font: self newInriaFace newHbFont
+		fontSize: 55
 ]
 
 { #category : #examples }
