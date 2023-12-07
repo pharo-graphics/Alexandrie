@@ -179,6 +179,9 @@ AeCairoScaledFont >> getGlyphExtentsOf: aGlyphArray size: num into: aTextExtents
 
 { #category : #API }
 AeCairoScaledFont >> getScaleMatrixInto: aeCairoMatrix [
+	"The scale matrix is product of the font matrix and the ctm associated with the scaled font, and hence is the matrix mapping from font space to device space.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-get-scale-matrix"
 
 	self ffiCall: #(
 		void
