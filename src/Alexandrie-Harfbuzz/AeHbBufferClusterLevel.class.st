@@ -12,50 +12,48 @@ In `HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS`, non-base characters are initia
 See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-cluster-level-t
 "
 Class {
-	#name : 'AeHbBufferClusterLevel',
-	#superclass : 'AeEnumeration',
+	#name : #AeHbBufferClusterLevel,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'HB_BUFFER_CLUSTER_LEVEL_CHARACTERS',
 		'HB_BUFFER_CLUSTER_LEVEL_DEFAULT',
 		'HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS',
 		'HB_BUFFER_CLUSTER_LEVEL_MONOTONE_GRAPHEMES'
 	],
-	#category : 'Alexandrie-Harfbuzz-Enumerations',
-	#package : 'Alexandrie-Harfbuzz',
-	#tag : 'Enumerations'
+	#category : #'Alexandrie-Harfbuzz-Enumerations'
 }
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbBufferClusterLevel class >> HB_BUFFER_CLUSTER_LEVEL_CHARACTERS [
 	"This method was automatically generated"
 	^ HB_BUFFER_CLUSTER_LEVEL_CHARACTERS
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbBufferClusterLevel class >> HB_BUFFER_CLUSTER_LEVEL_DEFAULT [
 	"This method was automatically generated"
 	^ HB_BUFFER_CLUSTER_LEVEL_DEFAULT
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbBufferClusterLevel class >> HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS [
 	"This method was automatically generated"
 	^ HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbBufferClusterLevel class >> HB_BUFFER_CLUSTER_LEVEL_MONOTONE_GRAPHEMES [
 	"This method was automatically generated"
 	^ HB_BUFFER_CLUSTER_LEVEL_MONOTONE_GRAPHEMES
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbBufferClusterLevel class >> default [
 
 	^ HB_BUFFER_CLUSTER_LEVEL_DEFAULT
 ]
 
-{ #category : 'enum declaration' }
+{ #category : #'enum declaration' }
 AeHbBufferClusterLevel class >> enumDecl [
 	"
 	self rebuildEnumAccessors
@@ -69,19 +67,19 @@ AeHbBufferClusterLevel class >> enumDecl [
 	)
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbBufferClusterLevel class >> monotoneCharacters [
 
 	^ HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbBufferClusterLevel class >> monotoneGraphemes [
 
 	^ HB_BUFFER_CLUSTER_LEVEL_MONOTONE_GRAPHEMES
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbBufferClusterLevel class >> recommended [
 	"Answer the recommended value. Harfbuzz documentation says:
 
@@ -93,7 +91,7 @@ AeHbBufferClusterLevel class >> recommended [
 	^ HB_BUFFER_CLUSTER_LEVEL_MONOTONE_CHARACTERS
 ]
 
-{ #category : 'hook' }
+{ #category : #hook }
 AeHbBufferClusterLevel class >> underlinedNamePrefix [
 	
 	^ 'HB_BUFFER_CLUSTER_LEVEL_'

@@ -2,13 +2,12 @@
 My subclasses are enums in Cairo API.
 "
 Class {
-	#name : 'AeEnumeration',
-	#superclass : 'FFIEnumeration',
-	#category : 'Alexandrie-Base',
-	#package : 'Alexandrie-Base'
+	#name : #AeEnumeration,
+	#superclass : #FFIEnumeration,
+	#category : #'Alexandrie-Base'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 AeEnumeration class >> allValues [
 
 	| allValues |
@@ -20,13 +19,13 @@ AeEnumeration class >> allValues [
 			ifTrue: [ ^ allValues asArray "done!" ] ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 AeEnumeration class >> initialize [
 
 	self allSubclassesDo: [ :each | each initializeEnumeration ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 AeEnumeration class >> underlineToCamelCaseDictionary [
 	"
 	Example of use:
@@ -53,7 +52,7 @@ AeEnumeration class >> underlineToCamelCaseDictionary [
 	^ result
 ]
 
-{ #category : 'hook' }
+{ #category : #hook }
 AeEnumeration class >> underlinedNamePrefix [
 	
 	^ self subclassResponsibility

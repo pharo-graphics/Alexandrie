@@ -2,13 +2,12 @@
 An AeHarfbuffLibraryTest is a test class for testing the behavior of AeHarfbuffLibrary
 "
 Class {
-	#name : 'AeHbBufferTest',
-	#superclass : 'TestCase',
-	#category : 'Alexandrie-Harfbuzz-Tests',
-	#package : 'Alexandrie-Harfbuzz-Tests'
+	#name : #AeHbBufferTest,
+	#superclass : #TestCase,
+	#category : #'Alexandrie-Harfbuzz-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbBufferTest >> testClearContents [
 
 	| buffer |
@@ -26,7 +25,7 @@ AeHbBufferTest >> testClearContents [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbBufferTest >> testGuessSegmentProperties [
 
 	| buffer |
@@ -47,7 +46,7 @@ AeHbBufferTest >> testGuessSegmentProperties [
 	self deny: buffer segmentProperties language toString isEmpty
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbBufferTest >> testMultipleAdd [
 
 	| buffer |
@@ -67,7 +66,7 @@ AeHbBufferTest >> testMultipleAdd [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbBufferTest >> testReset [
 
 	| buffer |
@@ -84,7 +83,7 @@ AeHbBufferTest >> testReset [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbBufferTest >> testShapeExample [
 
 	| aBuffer aBlob aFace aFont |
@@ -103,7 +102,7 @@ AeHbBufferTest >> testShapeExample [
 	self assert: aBuffer glyphPositions size equals: 2.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbBufferTest >> testShapeWithFontFeatures [
 	"By default, shape with this font replaces the ff sequence by a single glyph.
 	This test shows how to disable one of the possible replacements."
@@ -128,7 +127,7 @@ AeHbBufferTest >> testShapeWithFontFeatures [
 	self assert: aBuffer length equals: aString size - 2
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbBufferTest >> testSimpleExample [
 	"Adaptation of https://harfbuzz.github.io/a-simple-shaping-example.html"
 

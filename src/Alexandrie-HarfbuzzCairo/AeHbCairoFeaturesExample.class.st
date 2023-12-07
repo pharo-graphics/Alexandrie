@@ -2,8 +2,8 @@
 I'm useful to view text and font metrics.
 "
 Class {
-	#name : 'AeHbCairoFeaturesExample',
-	#superclass : 'Object',
+	#name : #AeHbCairoFeaturesExample,
+	#superclass : #Object,
 	#instVars : [
 		'cairoContext',
 		'string',
@@ -11,11 +11,10 @@ Class {
 		'features',
 		'fontSize'
 	],
-	#category : 'Alexandrie-HarfbuzzCairo',
-	#package : 'Alexandrie-HarfbuzzCairo'
+	#category : #'Alexandrie-HarfbuzzCairo'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 AeHbCairoFeaturesExample class >> exampleDraw: aString features: featuresExternalArray font: aHbFont fontSize: fontSize [
 
 	| cairoSurface instance |
@@ -37,7 +36,7 @@ AeHbCairoFeaturesExample class >> exampleDraw: aString features: featuresExterna
 		inspect
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoFeaturesExample class >> exampleDrawDistinct [
 
 
@@ -54,7 +53,7 @@ AeHbCairoFeaturesExample class >> exampleDrawDistinct [
 		fontSize: 70
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoFeaturesExample class >> exampleDrawFFLigature [
 
 	| aFeatureArray |
@@ -69,7 +68,7 @@ AeHbCairoFeaturesExample class >> exampleDrawFFLigature [
 		fontSize: 90
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoFeaturesExample class >> exampleDrawFraction [
 
 	| aString aFeatureArray |
@@ -85,7 +84,7 @@ AeHbCairoFeaturesExample class >> exampleDrawFraction [
 		fontSize: 70
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoFeaturesExample class >> exampleDrawSmallCaps [
 
 	| aString aFeatureArray |
@@ -101,7 +100,7 @@ AeHbCairoFeaturesExample class >> exampleDrawSmallCaps [
 		fontSize: 80
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoFeaturesExample class >> exampleDrawSubscript [
 
 	| aString aFeatureArray |
@@ -117,7 +116,7 @@ AeHbCairoFeaturesExample class >> exampleDrawSubscript [
 		fontSize: 90
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoFeaturesExample class >> exampleDrawZero [
 
 	| aString aFeatureArray separator |
@@ -135,7 +134,7 @@ AeHbCairoFeaturesExample class >> exampleDrawZero [
 		fontSize: 70
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoFeaturesExample class >> newCascadiaFace [
 
 	^ (AeHbBlob newLocatedAt:
@@ -143,7 +142,7 @@ AeHbCairoFeaturesExample class >> newCascadiaFace [
 				newHbFaceAtIndex: 0
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoFeaturesExample class >> newEmojiFace [
 
 	^ (AeHbBlob newLocatedAt:
@@ -151,7 +150,7 @@ AeHbCairoFeaturesExample class >> newEmojiFace [
 				newHbFaceAtIndex: 0
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoFeaturesExample class >> newInriaFace [
 
 	^ (AeHbBlob newLocatedAt:
@@ -159,7 +158,7 @@ AeHbCairoFeaturesExample class >> newInriaFace [
 				newHbFaceAtIndex: 0
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoFeaturesExample class >> newSourceSansProFace [
 
 	^ (AeHbBlob newFrom:
@@ -167,7 +166,7 @@ AeHbCairoFeaturesExample class >> newSourceSansProFace [
 				newHbFaceAtIndex: 0
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 AeHbCairoFeaturesExample class >> newWith: aString features: features font: aHbFont fontSize: aFontSize cairoContext: aCairoContext [
 
 	^ self basicNew
@@ -179,7 +178,7 @@ AeHbCairoFeaturesExample class >> newWith: aString features: features font: aHbF
 		  yourself
 ]
 
-{ #category : 'drawing' }
+{ #category : #drawing }
 AeHbCairoFeaturesExample >> draw [
 
 	| aBuffer cairoScaledFont glyphArray glyphExtents fontExtents |
@@ -211,7 +210,7 @@ AeHbCairoFeaturesExample >> draw [
 		showGlyphs: glyphArray
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 AeHbCairoFeaturesExample >> initializeWith: aString features: anExternalArray font: aHbFont fontSize: aFontSize cairoContext: aCairoContext [
 
 	self initialize.
@@ -225,14 +224,14 @@ AeHbCairoFeaturesExample >> initializeWith: aString features: anExternalArray fo
 	cairoContext := aCairoContext
 ]
 
-{ #category : 'debugging - new tools' }
+{ #category : #'debugging - new tools' }
 AeHbCairoFeaturesExample >> inspectionOfSurfaceAsForm: aBuilder [
 	<inspectorPresentationOrder: 0 title: 'Cairo context'>
 
 	^ cairoContext inspectionOfSurfaceAsForm: aBuilder
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 AeHbCairoFeaturesExample >> newCairoFontOptions [ 
 
 	^ AeCairoFontOptions new
@@ -241,6 +240,6 @@ AeHbCairoFeaturesExample >> newCairoFontOptions [
 		yourself
 ]
 
-{ #category : 'drawing' }
+{ #category : #drawing }
 AeHbCairoFeaturesExample >> seeClassSide [
 ]

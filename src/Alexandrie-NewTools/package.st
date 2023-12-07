@@ -1,1 +1,1 @@
-Package { #name : 'Alexandrie-NewTools' }
+Package { #name : #'Alexandrie-NewTools' }

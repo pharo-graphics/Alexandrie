@@ -6,8 +6,8 @@ Registered OpenType variation-axis tags are listed in OpenType Axis Tag Registry
 See: https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-variation-t
 "
 Class {
-	#name : 'AeHbVariableFontVariation',
-	#superclass : 'FFIExternalStructure',
+	#name : #AeHbVariableFontVariation,
+	#superclass : #FFIExternalStructure,
 	#traits : 'AeTHarfbuzzLibrary',
 	#classTraits : 'AeTHarfbuzzLibrary classTrait',
 	#classVars : [
@@ -17,11 +17,10 @@ Class {
 	#pools : [
 		'AeHbTypes'
 	],
-	#category : 'Alexandrie-HarfbuzzVariableFonts',
-	#package : 'Alexandrie-HarfbuzzVariableFonts'
+	#category : #'Alexandrie-HarfbuzzVariableFonts'
 }
 
-{ #category : 'field definition' }
+{ #category : #'field definition' }
 AeHbVariableFontVariation class >> fieldsDesc [
 	"
 	self rebuildFieldAccessors
@@ -33,7 +32,7 @@ AeHbVariableFontVariation class >> fieldsDesc [
 		)
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 AeHbVariableFontVariation >> printOn: aStream [
 
 	super printOn: aStream.
@@ -46,7 +45,7 @@ AeHbVariableFontVariation >> printOn: aStream [
 
 ]
 
-{ #category : 'parsing' }
+{ #category : #parsing }
 AeHbVariableFontVariation >> readFrom: stringByteArray size: stringByteArraySize into: anAddress [
 	"Parse variations from a string and set them in self. The answer indicates success.
 
@@ -64,25 +63,25 @@ AeHbVariableFontVariation >> readFrom: stringByteArray size: stringByteArraySize
 			void * anAddress) )
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbVariableFontVariation >> tag [
 	"This method was automatically generated"
 	^handle unsignedLongAt: OFFSET_TAG
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbVariableFontVariation >> tag: anObject [
 	"This method was automatically generated"
 	handle unsignedLongAt: OFFSET_TAG put: anObject
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbVariableFontVariation >> tagString [
 
 	^ self tag asHbTagString
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 AeHbVariableFontVariation >> tagString: aString [ 
 	"Set my tag with the integer representation of the received tag.
 	
@@ -91,7 +90,7 @@ AeHbVariableFontVariation >> tagString: aString [
 	self tag: aString asHbTagInteger
 ]
 
-{ #category : 'parsing' }
+{ #category : #parsing }
 AeHbVariableFontVariation >> updateFromString: aString [
 
 	| aByteArray |
@@ -103,13 +102,13 @@ AeHbVariableFontVariation >> updateFromString: aString [
 		into: self getHandle
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbVariableFontVariation >> value [
 	"This method was automatically generated"
 	^handle floatAt: OFFSET_VALUE
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbVariableFontVariation >> value: anObject [
 	"This method was automatically generated"
 	handle floatAt: OFFSET_VALUE put: anObject

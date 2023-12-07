@@ -1,6 +1,6 @@
-Extension { #name : 'AeCanvas' }
+Extension { #name : #AeCanvas }
 
-{ #category : '*Alexandrie-NewTools' }
+{ #category : #'*Alexandrie-NewTools' }
 AeCanvas >> inspectionOfSurface: aBuilder [
 	<inspectorPresentationOrder: 0 title: 'Surface'>
 

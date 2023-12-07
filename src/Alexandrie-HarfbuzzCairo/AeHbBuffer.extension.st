@@ -1,6 +1,6 @@
-Extension { #name : 'AeHbBuffer' }
+Extension { #name : #AeHbBuffer }
 
-{ #category : '*Alexandrie-HarfbuzzCairo' }
+{ #category : #'*Alexandrie-HarfbuzzCairo' }
 AeHbBuffer >> unownedGlyphsFrom: utf8 length: utf8Length xScaleFactor: xScaleFactor yScaleFactor: yScaleFactor intoGlyphs: glyphArrayAddress num: glyphArrayLengthAddress [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-cairo.html#hb-cairo-glyphs-from-buffer"
 

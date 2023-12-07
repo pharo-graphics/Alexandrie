@@ -1,6 +1,6 @@
-Extension { #name : 'Integer' }
+Extension { #name : #Integer }
 
-{ #category : '*Alexandrie-Harfbuzz' }
+{ #category : #'*Alexandrie-Harfbuzz' }
 Integer >> asHbTagString [
 	"Answer the string representation of this Harfbuzz tag.
 	

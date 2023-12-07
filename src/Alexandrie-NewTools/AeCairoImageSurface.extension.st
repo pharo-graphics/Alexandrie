@@ -1,6 +1,6 @@
-Extension { #name : 'AeCairoImageSurface' }
+Extension { #name : #AeCairoImageSurface }
 
-{ #category : '*Alexandrie-NewTools' }
+{ #category : #'*Alexandrie-NewTools' }
 AeCairoImageSurface >> inspectionAsForm: aBuilder [
 	<inspectorPresentationOrder: 1 title: 'Form'>
 	

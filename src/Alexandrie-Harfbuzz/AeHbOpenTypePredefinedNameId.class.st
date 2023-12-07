@@ -4,8 +4,8 @@ I represent FFI bindings to `hb_ot_name_id_predefined_t` enum: An integral type 
 See: https://harfbuzz.github.io/harfbuzz-hb-ot-name.html#hb-ot-name-id-predefined-t
 "
 Class {
-	#name : 'AeHbOpenTypePredefinedNameId',
-	#superclass : 'AeEnumeration',
+	#name : #AeHbOpenTypePredefinedNameId,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'HB_OT_NAME_ID_CID_FINDFONT_NAME',
 		'HB_OT_NAME_ID_COPYRIGHT',
@@ -33,198 +33,196 @@ Class {
 		'HB_OT_NAME_ID_WWS_FAMILY',
 		'HB_OT_NAME_ID_WWS_SUBFAMILY'
 	],
-	#category : 'Alexandrie-Harfbuzz-Enumerations',
-	#package : 'Alexandrie-Harfbuzz',
-	#tag : 'Enumerations'
+	#category : #'Alexandrie-Harfbuzz-Enumerations'
 }
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_CID_FINDFONT_NAME [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_CID_FINDFONT_NAME
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_COPYRIGHT [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_COPYRIGHT
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_DARK_BACKGROUND [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_DARK_BACKGROUND
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_DESCRIPTION [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_DESCRIPTION
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_DESIGNER [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_DESIGNER
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_DESIGNER_URL [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_DESIGNER_URL
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_FONT_FAMILY [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_FONT_FAMILY
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_FONT_SUBFAMILY [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_FONT_SUBFAMILY
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_FULL_NAME [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_FULL_NAME
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_LICENSE [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_LICENSE
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_LICENSE_URL [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_LICENSE_URL
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_LIGHT_BACKGROUND [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_LIGHT_BACKGROUND
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_MAC_FULL_NAME [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_MAC_FULL_NAME
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_MANUFACTURER [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_MANUFACTURER
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_POSTSCRIPT_NAME [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_POSTSCRIPT_NAME
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_SAMPLE_TEXT [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_SAMPLE_TEXT
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_TRADEMARK [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_TRADEMARK
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_TYPOGRAPHIC_FAMILY [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_TYPOGRAPHIC_FAMILY
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_TYPOGRAPHIC_SUBFAMILY [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_TYPOGRAPHIC_SUBFAMILY
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_UNIQUE_ID [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_UNIQUE_ID
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_VARIATIONS_PS_PREFIX [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_VARIATIONS_PS_PREFIX
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_VENDOR_URL [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_VENDOR_URL
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_VERSION_STRING [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_VERSION_STRING
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_WWS_FAMILY [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_WWS_FAMILY
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbOpenTypePredefinedNameId class >> HB_OT_NAME_ID_WWS_SUBFAMILY [
 	"This method was automatically generated"
 	^ HB_OT_NAME_ID_WWS_SUBFAMILY
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> cidFindfontName [
 
 	^ self HB_OT_NAME_ID_CID_FINDFONT_NAME
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> copyright [
 
 	^ self HB_OT_NAME_ID_COPYRIGHT
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> darkBackground [
 
 	^ self HB_OT_NAME_ID_DARK_BACKGROUND
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> description [
 
 	^ self HB_OT_NAME_ID_DESCRIPTION
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> designer [
 
 	^ self HB_OT_NAME_ID_DESIGNER
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> designerUrl [
 
 	^ self HB_OT_NAME_ID_DESIGNER_URL
 ]
 
-{ #category : 'enum declaration' }
+{ #category : #'enum declaration' }
 AeHbOpenTypePredefinedNameId class >> enumDecl [
 	"
 	self rebuildEnumAccessors
@@ -258,127 +256,127 @@ AeHbOpenTypePredefinedNameId class >> enumDecl [
   HB_OT_NAME_ID_VARIATIONS_PS_PREFIX	25)
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> fontFamily [
 
 	^ self HB_OT_NAME_ID_FONT_FAMILY
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> fontSubfamily [
 
 	^ self HB_OT_NAME_ID_FONT_SUBFAMILY
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> fullName [
 
 	^ self HB_OT_NAME_ID_FULL_NAME
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> license [
 
 	^ self HB_OT_NAME_ID_LICENSE
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> licenseUrl [
 
 	^ self HB_OT_NAME_ID_LICENSE_URL
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> lightBackground [
 
 	^ self HB_OT_NAME_ID_LIGHT_BACKGROUND
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> macFullName [
 
 	^ self HB_OT_NAME_ID_MAC_FULL_NAME
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> manufacturer [
 
 	^ self HB_OT_NAME_ID_MANUFACTURER
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> postscriptName [
 
 	^ self HB_OT_NAME_ID_POSTSCRIPT_NAME
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> sampleText [
 
 	^ self HB_OT_NAME_ID_SAMPLE_TEXT
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> trademark [
 
 	^ self HB_OT_NAME_ID_TRADEMARK
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> typographicFamily [
 
 	^ self HB_OT_NAME_ID_TYPOGRAPHIC_FAMILY
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> typographicSubfamily [
 
 	^ self HB_OT_NAME_ID_TYPOGRAPHIC_SUBFAMILY
 ]
 
-{ #category : 'hook' }
+{ #category : #hook }
 AeHbOpenTypePredefinedNameId class >> underlinedNamePrefix [
 	
 	^ 'HB_OT_NAME_ID_'
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> uniqueId [
 
 	^ self HB_OT_NAME_ID_UNIQUE_ID
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> variationsPsPrefix [
 
 	^ self HB_OT_NAME_ID_VARIATIONS_PS_PREFIX
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> vendorUrl [
 
 	^ self HB_OT_NAME_ID_VENDOR_URL
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> versionString [
 
 	^ self HB_OT_NAME_ID_VERSION_STRING
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> wwsFamily [
 
 	^ self HB_OT_NAME_ID_WWS_FAMILY
 ]
 
-{ #category : 'accessing enum camelcased' }
+{ #category : #'accessing enum camelcased' }
 AeHbOpenTypePredefinedNameId class >> wwsSubfamily [
 
 	^ self HB_OT_NAME_ID_WWS_SUBFAMILY
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 AeHbOpenTypePredefinedNameId >> asInteger [
 	^ self value
 ]

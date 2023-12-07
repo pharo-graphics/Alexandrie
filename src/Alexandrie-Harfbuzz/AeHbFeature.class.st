@@ -12,8 +12,8 @@ Members:
 See: https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-feature-t
 "
 Class {
-	#name : 'AeHbFeature',
-	#superclass : 'FFIExternalStructure',
+	#name : #AeHbFeature,
+	#superclass : #FFIExternalStructure,
 	#traits : 'AeTHarfbuzzLibrary',
 	#classTraits : 'AeTHarfbuzzLibrary classTrait',
 	#classVars : [
@@ -25,12 +25,10 @@ Class {
 	#pools : [
 		'AeHbTypes'
 	],
-	#category : 'Alexandrie-Harfbuzz-Structures',
-	#package : 'Alexandrie-Harfbuzz',
-	#tag : 'Structures'
+	#category : #'Alexandrie-Harfbuzz-Structures'
 }
 
-{ #category : 'field definition' }
+{ #category : #'field definition' }
 AeHbFeature class >> fieldsDesc [
 	"
 	self rebuildFieldAccessors
@@ -44,19 +42,19 @@ AeHbFeature class >> fieldsDesc [
 		)
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 AeHbFeature class >> globalEnd [
 
 	^ self zeroBasedGlobalEnd + 1
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 AeHbFeature class >> globalStart [
 
 	^ self zeroBasedGlobalStart + 1
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 AeHbFeature class >> readFrom: aString [
 
 	^ self new
@@ -64,7 +62,7 @@ AeHbFeature class >> readFrom: aString [
 		yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 AeHbFeature class >> zeroBasedGlobalEnd [
 	"Special setting to apply a feature up to the end of the buffer.
 	
@@ -75,7 +73,7 @@ AeHbFeature class >> zeroBasedGlobalEnd [
 	^ 16rffffffff
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 AeHbFeature class >> zeroBasedGlobalStart [
 	"Special setting to apply a feature from the end of the buffer.
 	
@@ -86,26 +84,26 @@ AeHbFeature class >> zeroBasedGlobalStart [
 	^ 0
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbFeature >> end [
 
 	^ self zeroBasedEnd + 1
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbFeature >> end: anInteger [
 	"Establish my end index, which is a one-based index."
 
 	self zeroBasedEnd: anInteger - 1
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbFeature >> endsAtGlobalEnd [
 
 	^ self zeroBasedEnd = self class zeroBasedGlobalEnd
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 AeHbFeature >> printOn: aStream [
 
 	super printOn: aStream.
@@ -116,7 +114,7 @@ AeHbFeature >> printOn: aStream [
 
 ]
 
-{ #category : 'parsing' }
+{ #category : #parsing }
 AeHbFeature >> readIntoSelf: aString [
 
 	| utf8Encoded |
@@ -125,7 +123,7 @@ AeHbFeature >> readIntoSelf: aString [
 	^ self readIntoSelf: utf8Encoded size: utf8Encoded size
 ]
 
-{ #category : 'parsing' }
+{ #category : #parsing }
 AeHbFeature >> readIntoSelf: string size: stringSize [
 	"Parses a string into myself. The boolean answer indicates success.
 	
@@ -140,56 +138,56 @@ AeHbFeature >> readIntoSelf: string size: stringSize [
 		)
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbFeature >> setGlobalEnd [
 
 	self zeroBasedEnd: self class zeroBasedGlobalEnd
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbFeature >> setGlobalStart [
 
 	self zeroBasedStart: self class zeroBasedGlobalStart
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbFeature >> start [
 	
 	^ self zeroBasedStart + 1
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbFeature >> start: anInteger [
 	"Establish my start index, which is a one-based index."
 
 	^ self zeroBasedStart: anInteger - 1
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbFeature >> startsAtGlobalStart [
 
 	^ self zeroBasedStart = self class zeroBasedGlobalStart
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbFeature >> tag [
 	"This method was automatically generated"
 	^handle unsignedLongAt: OFFSET_TAG
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbFeature >> tag: anObject [
 	"This method was automatically generated"
 	handle unsignedLongAt: OFFSET_TAG put: anObject
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbFeature >> tagString [
 
 	^ self tag asHbTagString
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 AeHbFeature >> tagString: aString [ 
 	"Set my tag with the integer representation of the received tag.
 	
@@ -198,37 +196,37 @@ AeHbFeature >> tagString: aString [
 	self tag: aString asHbTagInteger
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbFeature >> value [
 	"This method was automatically generated"
 	^handle unsignedLongAt: OFFSET_VALUE
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbFeature >> value: anObject [
 	"This method was automatically generated"
 	handle unsignedLongAt: OFFSET_VALUE put: anObject
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbFeature >> zeroBasedEnd [
 	"This method was automatically generated"
 	^handle unsignedLongAt: OFFSET_ZEROBASEDEND
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbFeature >> zeroBasedEnd: anObject [
 	"This method was automatically generated"
 	handle unsignedLongAt: OFFSET_ZEROBASEDEND put: anObject
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbFeature >> zeroBasedStart [
 	"This method was automatically generated"
 	^handle unsignedLongAt: OFFSET_ZEROBASEDSTART
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbFeature >> zeroBasedStart: anObject [
 	"This method was automatically generated"
 	handle unsignedLongAt: OFFSET_ZEROBASEDSTART put: anObject

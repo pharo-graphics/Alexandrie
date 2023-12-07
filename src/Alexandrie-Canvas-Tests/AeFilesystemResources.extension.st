@@ -1,7 +1,7 @@
 Extension { #name : #AeFilesystemResources }
 
 { #category : #'*Alexandrie-Canvas-Tests' }
-AeFilesystemResources classSide >> canvasDirectory [ 
+AeFilesystemResources class >> canvasDirectory [ 
 
 	^ self testsDirectory / 'canvas'
 ]

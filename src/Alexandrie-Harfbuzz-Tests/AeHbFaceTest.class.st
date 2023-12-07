@@ -2,19 +2,18 @@
 An AeHbFaceTest is a test class for testing the behavior of AeHbFace
 "
 Class {
-	#name : 'AeHbFaceTest',
-	#superclass : 'TestCase',
+	#name : #AeHbFaceTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'inriaSerifRegularFace',
 		'inriaSerifRegularBlob',
 		'emojiBlob',
 		'emojiFace'
 	],
-	#category : 'Alexandrie-Harfbuzz-Tests',
-	#package : 'Alexandrie-Harfbuzz-Tests'
+	#category : #'Alexandrie-Harfbuzz-Tests'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 AeHbFaceTest >> setUp [
 
 	super setUp.
@@ -25,7 +24,7 @@ AeHbFaceTest >> setUp [
 	emojiFace := emojiBlob newHbFaceAtIndex: 0.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbFaceTest >> testAsString [
 
 	self
@@ -33,7 +32,7 @@ AeHbFaceTest >> testAsString [
 		equals: 'an AeHbFace(Inria Serif, Regular)'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbFaceTest >> testGlyphCount [
 
 	self
@@ -41,7 +40,7 @@ AeHbFaceTest >> testGlyphCount [
 		equals: 597
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbFaceTest >> testHasColor [
 
 	self skip: 'This API requires Harfbuzz >= 7.0.0'.
@@ -50,14 +49,14 @@ AeHbFaceTest >> testHasColor [
 	self assert: emojiFace hasColor
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbFaceTest >> testHasLayers [
 
 	self deny: inriaSerifRegularFace hasLayers.
 	self deny: emojiFace hasLayers
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbFaceTest >> testHasPaint [
 
 	self skip: 'This API requires Harfbuzz >= 7.0.0'.
@@ -66,14 +65,14 @@ AeHbFaceTest >> testHasPaint [
 	self deny: emojiFace hasPaint
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbFaceTest >> testHasPng [
 
 	self deny: inriaSerifRegularFace hasPng.
 	self assert: emojiFace hasPng
 ]
 
-{ #category : 'test' }
+{ #category : #test }
 AeHbFaceTest >> testOpenTypeFontFamily [
 
 	self
@@ -84,7 +83,7 @@ AeHbFaceTest >> testOpenTypeFontFamily [
 		equals: 'Noto Color Emoji'
 ]
 
-{ #category : 'test' }
+{ #category : #test }
 AeHbFaceTest >> testOpenTypeFontSubfamily [
 
 	self
@@ -95,7 +94,7 @@ AeHbFaceTest >> testOpenTypeFontSubfamily [
 		equals: 'Regular'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbFaceTest >> testUnitsPerEm [
 
 	self

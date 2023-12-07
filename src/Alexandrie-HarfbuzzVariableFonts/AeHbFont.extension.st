@@ -1,6 +1,6 @@
-Extension { #name : 'AeHbFont' }
+Extension { #name : #AeHbFont }
 
-{ #category : '*Alexandrie-HarfbuzzVariableFonts' }
+{ #category : #'*Alexandrie-HarfbuzzVariableFonts' }
 AeHbFont >> getVariationCoordinatesWritingSizeInto: sizeAddress [ 
 
 	^ self ffiCall: #(
@@ -10,7 +10,7 @@ AeHbFont >> getVariationCoordinatesWritingSizeInto: sizeAddress [
 			uint *sizeAddress ) )
 ]
 
-{ #category : '*Alexandrie-HarfbuzzVariableFonts' }
+{ #category : #'*Alexandrie-HarfbuzzVariableFonts' }
 AeHbFont >> variationAtTagInteger: tagAsInteger put: valueAsFloat [
 	"Change the value of one variation axis on this font.
 
@@ -26,13 +26,13 @@ AeHbFont >> variationAtTagInteger: tagAsInteger put: valueAsFloat [
 			float valueAsFloat) )
 ]
 
-{ #category : '*Alexandrie-HarfbuzzVariableFonts' }
+{ #category : #'*Alexandrie-HarfbuzzVariableFonts' }
 AeHbFont >> variationAtTagString: tagAsString put: valueAsFloat [ 
 	
 	self variationAtTagInteger: tagAsString asHbTagInteger put: valueAsFloat
 ]
 
-{ #category : '*Alexandrie-HarfbuzzVariableFonts' }
+{ #category : #'*Alexandrie-HarfbuzzVariableFonts' }
 AeHbFont >> variationCoordinates [
 
 	| sizeAddress arrayAddress arraySize |
@@ -49,13 +49,13 @@ AeHbFont >> variationCoordinates [
 				size: arraySize ]
 ]
 
-{ #category : '*Alexandrie-HarfbuzzVariableFonts' }
+{ #category : #'*Alexandrie-HarfbuzzVariableFonts' }
 AeHbFont >> variations: variations [
 
 	self variations: variations size: variations size
 ]
 
-{ #category : '*Alexandrie-HarfbuzzVariableFonts' }
+{ #category : #'*Alexandrie-HarfbuzzVariableFonts' }
 AeHbFont >> variations: variations size: variationsSize [
 	"Applies a list of font-variation settings to this font.
 

@@ -1,15 +1,14 @@
 Class {
-	#name : 'AeHbVariableFontTest',
-	#superclass : 'TestCase',
+	#name : #AeHbVariableFontTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'hbFace',
 		'hbBlob'
 	],
-	#category : 'Alexandrie-HarfbuzzVariableFonts',
-	#package : 'Alexandrie-HarfbuzzVariableFonts'
+	#category : #'Alexandrie-HarfbuzzVariableFonts'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 AeHbVariableFontTest >> setUp [
 	| fileReference |
 	super setUp.
@@ -24,19 +23,19 @@ AeHbVariableFontTest >> setUp [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbVariableFontTest >> test01FaceHasVariableFontsData [
 
 	self assert: hbFace hasVariableFontsData
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbVariableFontTest >> test02FaceAxisCount [
 
 	self assert: hbFace variableFontAxisCount equals: 1
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbVariableFontTest >> test03FaceAxisInfos [
 
 	| axis |
@@ -54,7 +53,7 @@ AeHbVariableFontTest >> test03FaceAxisInfos [
 	self assert: axis flags equals: 0. "https://harfbuzz.github.io/harfbuzz-hb-ot-var.html#hb-ot-var-axis-flags-t"
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbVariableFontTest >> test04VariationCoordinatesAreEmptyByDefault [
 
 	| hbFont |
@@ -63,7 +62,7 @@ AeHbVariableFontTest >> test04VariationCoordinatesAreEmptyByDefault [
 	self assert: hbFont variationCoordinates isEmpty
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbVariableFontTest >> test05SetSingleVariation [
 
 	| hbFont |
@@ -74,7 +73,7 @@ AeHbVariableFontTest >> test05SetSingleVariation [
 	self assert: hbFont variationCoordinates asArray equals: #(678.0)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbVariableFontTest >> test06SetMultipleVariations [
 	"We assume that 'wght' is an axis in the testing font and 456.0 is a valid value in that axis."
 
@@ -92,7 +91,7 @@ AeHbVariableFontTest >> test06SetMultipleVariations [
 	self assert: hbFont variationCoordinates asArray equals: #(456.0)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbVariableFontTest >> test07ReadVariationFromString [
 	"We assume that 'wght' is an axis in the testing font and 345.0 is a valid value in that axis."
 

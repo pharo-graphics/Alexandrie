@@ -2,13 +2,12 @@
 An AeHbFeatureTest is a test class for testing the behavior of AeHbFeature
 "
 Class {
-	#name : 'AeHbFeatureTest',
-	#superclass : 'TestCase',
-	#category : 'Alexandrie-Harfbuzz-Tests',
-	#package : 'Alexandrie-Harfbuzz-Tests'
+	#name : #AeHbFeatureTest,
+	#superclass : #TestCase,
+	#category : #'Alexandrie-Harfbuzz-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbFeatureTest >> testAccessors [
 
 	| aFeature |
@@ -38,7 +37,7 @@ AeHbFeatureTest >> testAccessors [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbFeatureTest >> testParseAfterInstanceCreation [
 
 	| aFeature |
@@ -50,7 +49,7 @@ AeHbFeatureTest >> testParseAfterInstanceCreation [
 	self assert: aFeature start equals: 4
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbFeatureTest >> testParseInstanceInArray [
 	"This is the most convenient use for the Harfbuzz shaping API."
 
@@ -79,7 +78,7 @@ AeHbFeatureTest >> testParseInstanceInArray [
 	self assert: aFeature zeroBasedEnd equals: 17.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbFeatureTest >> testParseSecondAlternativeInRange [
 
 	| aFeature |
@@ -92,7 +91,7 @@ AeHbFeatureTest >> testParseSecondAlternativeInRange [
 	self assert: aFeature end equals: 6
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbFeatureTest >> testParseTurnFeatureOn [
 
 	| aFeature |
@@ -103,7 +102,7 @@ AeHbFeatureTest >> testParseTurnFeatureOn [
 	self assert: aFeature endsAtGlobalEnd
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbFeatureTest >> testParseTurnFeatureOnEndingAt [
 
 	| aFeature |
@@ -112,7 +111,7 @@ AeHbFeatureTest >> testParseTurnFeatureOnEndingAt [
 	self assert: aFeature zeroBasedEnd equals: 5
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbFeatureTest >> testParseTurnFeatureOnSingleCharacter [
 
 	| aFeature |
@@ -121,7 +120,7 @@ AeHbFeatureTest >> testParseTurnFeatureOnSingleCharacter [
 	self assert: aFeature zeroBasedEnd equals: 6 "end index is exclusive"
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeHbFeatureTest >> testParseTurnFeatureOnStartingAt [
 
 	| aFeature |

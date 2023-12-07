@@ -2,8 +2,8 @@
 I have common type substitutions for Harfbuzz FFI bindings.
 "
 Class {
-	#name : 'AeHbTypes',
-	#superclass : 'SharedPool',
+	#name : #AeHbTypes,
+	#superclass : #SharedPool,
 	#classVars : [
 		'hb_blob_t',
 		'hb_bool_t',
@@ -26,12 +26,10 @@ Class {
 		'int32_t',
 		'uint32_t'
 	],
-	#category : 'Alexandrie-Harfbuzz-Library',
-	#package : 'Alexandrie-Harfbuzz',
-	#tag : 'Library'
+	#category : #'Alexandrie-Harfbuzz-Library'
 }
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 AeHbTypes class >> initialize [
 
 	hb_bool_t := 'bool'.

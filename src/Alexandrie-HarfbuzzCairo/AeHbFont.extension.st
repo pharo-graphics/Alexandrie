@@ -1,6 +1,6 @@
-Extension { #name : 'AeHbFont' }
+Extension { #name : #AeHbFont }
 
-{ #category : '*Alexandrie-HarfbuzzCairo' }
+{ #category : #'*Alexandrie-HarfbuzzCairo' }
 AeHbFont >> newCairoFontFace [
 	"Answer a new `AeHbCairoFontFace` for rendering text according to this font.
 
@@ -12,7 +12,7 @@ AeHbFont >> newCairoFontFace [
 		yourself
 ]
 
-{ #category : '*Alexandrie-HarfbuzzCairo' }
+{ #category : #'*Alexandrie-HarfbuzzCairo' }
 AeHbFont >> unownedNewCairoFontFace [
 	"Answer a new `AeHbCairoFontFace` for rendering text according to this font.
 

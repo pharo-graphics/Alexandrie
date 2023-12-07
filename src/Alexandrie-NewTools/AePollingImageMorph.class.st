@@ -5,17 +5,16 @@ I can be useful to watch changes on an object that can be converted to `Form`.
  
 "
 Class {
-	#name : 'AePollingImageMorph',
-	#superclass : 'ImageMorph',
+	#name : #AePollingImageMorph,
+	#superclass : #ImageMorph,
 	#instVars : [
 		'model',
 		'stepTime'
 	],
-	#category : 'Alexandrie-NewTools',
-	#package : 'Alexandrie-NewTools'
+	#category : #'Alexandrie-NewTools'
 }
 
-{ #category : 'stepping' }
+{ #category : #stepping }
 AePollingImageMorph >> initialize [
 
 	super initialize.
@@ -23,39 +22,39 @@ AePollingImageMorph >> initialize [
 	stepTime := 50
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 AePollingImageMorph >> model: anObjectThatRespondsToAsForm [
 	
 	model := anObjectThatRespondsToAsForm.
 	self refreshForm.
 ]
 
-{ #category : 'stepping' }
+{ #category : #stepping }
 AePollingImageMorph >> refreshForm [
 	
 	model ifNil: [ ^self ].
 	self form: model asForm
 ]
 
-{ #category : 'stepping' }
+{ #category : #stepping }
 AePollingImageMorph >> step [
 
 	self refreshForm
 ]
 
-{ #category : 'stepping' }
+{ #category : #stepping }
 AePollingImageMorph >> stepTime [
 
 	^ stepTime
 ]
 
-{ #category : 'stepping' }
+{ #category : #stepping }
 AePollingImageMorph >> stepTime: aNumberOfMilliseconds [
 
 	stepTime := aNumberOfMilliseconds
 ]
 
-{ #category : 'stepping' }
+{ #category : #stepping }
 AePollingImageMorph >> wantsSteps [
 
 	^ true

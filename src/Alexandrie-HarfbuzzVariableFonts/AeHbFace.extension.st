@@ -1,6 +1,6 @@
-Extension { #name : 'AeHbFace' }
+Extension { #name : #AeHbFace }
 
-{ #category : '*Alexandrie-HarfbuzzVariableFonts' }
+{ #category : #'*Alexandrie-HarfbuzzVariableFonts' }
 AeHbFace >> axisInfos [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-ot-var.html#hb-ot-var-get-axis-infos"
 
@@ -15,7 +15,7 @@ AeHbFace >> axisInfos [
 	^ infosArray
 ]
 
-{ #category : '*Alexandrie-HarfbuzzVariableFonts' }
+{ #category : #'*Alexandrie-HarfbuzzVariableFonts' }
 AeHbFace >> getAxisInfosInto: axisArray size: axisCountAddress [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-ot-var.html#hb-ot-var-get-axis-infos"
 
@@ -28,7 +28,7 @@ AeHbFace >> getAxisInfosInto: axisArray size: axisCountAddress [
 			FFIExternalArray axisArray ) )
 ]
 
-{ #category : '*Alexandrie-HarfbuzzVariableFonts' }
+{ #category : #'*Alexandrie-HarfbuzzVariableFonts' }
 AeHbFace >> hasVariableFontsData [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-ot-var.html#hb-ot-var-has-data"
 
@@ -37,7 +37,7 @@ AeHbFace >> hasVariableFontsData [
 		hb_ot_var_has_data ( self ) )
 ]
 
-{ #category : '*Alexandrie-HarfbuzzVariableFonts' }
+{ #category : #'*Alexandrie-HarfbuzzVariableFonts' }
 AeHbFace >> variableFontAxisCount [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-ot-var.html#hb-ot-var-get-axis-count"
 

@@ -2,8 +2,8 @@
 I'm useful to view text and font metrics.
 "
 Class {
-	#name : 'AeHbCairoExample',
-	#superclass : 'Object',
+	#name : #AeHbCairoExample,
+	#superclass : #Object,
 	#instVars : [
 		'cairoContext',
 		'string',
@@ -15,17 +15,16 @@ Class {
 		'cairoScaledFont',
 		'fontSize'
 	],
-	#category : 'Alexandrie-HarfbuzzCairo',
-	#package : 'Alexandrie-HarfbuzzCairo'
+	#category : #'Alexandrie-HarfbuzzCairo'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 AeHbCairoExample class >> exampleDraw: aString face: aHbFace [
 
 	self exampleDraw: aString font: aHbFace newHbFont fontSize: 100
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 AeHbCairoExample class >> exampleDraw: aString font: aHbFont fontSize: fontSize [
 
 	| cairoSurface instance |
@@ -63,19 +62,19 @@ AeHbCairoExample class >> exampleDraw: aString font: aHbFont fontSize: fontSize 
 		inspect
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoExample class >> exampleDrawFFLigature [
 
 	self exampleDraw: 'Officey' face: self newInriaFace
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoExample class >> exampleDrawLigature [
 
 	self exampleDraw: 'a->>g' face: self newCascadiaFace
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoExample class >> exampleDrawLoremIpsum [
 
 	self
@@ -84,13 +83,13 @@ AeHbCairoExample class >> exampleDrawLoremIpsum [
 		fontSize: 20
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoExample class >> exampleEmoji [
 
 	self exampleDraw: '😁' face: self newEmojiFace
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoExample class >> exampleZWJEmoji [
 
 	| string |
@@ -102,7 +101,7 @@ AeHbCairoExample class >> exampleZWJEmoji [
 	self exampleDraw: string face: self newEmojiFace
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoExample class >> newCascadiaFace [
 
 	^ (AeHbBlob newLocatedAt:
@@ -110,7 +109,7 @@ AeHbCairoExample class >> newCascadiaFace [
 				newHbFaceAtIndex: 0
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoExample class >> newEmojiFace [
 
 	^ (AeHbBlob newLocatedAt:
@@ -118,7 +117,7 @@ AeHbCairoExample class >> newEmojiFace [
 				newHbFaceAtIndex: 0
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoExample class >> newInriaFace [
 
 	^ (AeHbBlob newLocatedAt:
@@ -126,7 +125,7 @@ AeHbCairoExample class >> newInriaFace [
 				newHbFaceAtIndex: 0
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 AeHbCairoExample class >> newSourceSansProFace [
 
 	^ (AeHbBlob newFrom:
@@ -134,7 +133,7 @@ AeHbCairoExample class >> newSourceSansProFace [
 				newHbFaceAtIndex: 0
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 AeHbCairoExample class >> newWith: aString face: aHbFace fontSize: aFontSize [
 
 	| cairoSurface |
@@ -159,7 +158,7 @@ AeHbCairoExample class >> newWith: aString face: aHbFace fontSize: aFontSize [
 	^ self newWith: aString font: aHbFace fontSize: aFontSize cairoContext: cairoSurface newContext
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 AeHbCairoExample class >> newWith: aString font: aHbFont fontSize: aFontSize cairoContext: aCairoContext [
 
 	^ self basicNew
@@ -170,7 +169,7 @@ AeHbCairoExample class >> newWith: aString font: aHbFont fontSize: aFontSize cai
 		  yourself
 ]
 
-{ #category : 'drawing' }
+{ #category : #drawing }
 AeHbCairoExample >> clearSurface [
 
 	cairoContext restoreStateAfter: [
@@ -179,7 +178,7 @@ AeHbCairoExample >> clearSurface [
 			paint ]
 ]
 
-{ #category : 'drawing' }
+{ #category : #drawing }
 AeHbCairoExample >> drawBaseline [
 
 	self
@@ -190,7 +189,7 @@ AeHbCairoExample >> drawBaseline [
 		color: Color blue
 ]
 
-{ #category : 'drawing' }
+{ #category : #drawing }
 AeHbCairoExample >> drawDottedHLineCenteredAt: centerY thickness: thickness left: left right: right color: aColor [
 
 	cairoContext restoreStateAfter: [
@@ -208,7 +207,7 @@ AeHbCairoExample >> drawDottedHLineCenteredAt: centerY thickness: thickness left
 			stroke ]
 ]
 
-{ #category : 'drawing' }
+{ #category : #drawing }
 AeHbCairoExample >> drawHighlighting [
 
 	cairoContext restoreStateAfter: [
@@ -222,7 +221,7 @@ AeHbCairoExample >> drawHighlighting [
 
 ]
 
-{ #category : 'drawing' }
+{ #category : #drawing }
 AeHbCairoExample >> drawSolidHLineCenteredAt: centerY thickness: thickness left: left width: width color: aColor [
 
 	cairoContext restoreStateAfter: [
@@ -236,7 +235,7 @@ AeHbCairoExample >> drawSolidHLineCenteredAt: centerY thickness: thickness left:
 			fill ]
 ]
 
-{ #category : 'drawing' }
+{ #category : #drawing }
 AeHbCairoExample >> drawStrikeout [
 
 	self
@@ -247,7 +246,7 @@ AeHbCairoExample >> drawStrikeout [
 		color: Color green
 ]
 
-{ #category : 'drawing' }
+{ #category : #drawing }
 AeHbCairoExample >> drawText [
 
 	cairoContext restoreStateAfter: [
@@ -257,7 +256,7 @@ AeHbCairoExample >> drawText [
 			showGlyphs: glyphArray ]
 ]
 
-{ #category : 'drawing' }
+{ #category : #drawing }
 AeHbCairoExample >> drawUnderline [
 
 	self
@@ -268,14 +267,14 @@ AeHbCairoExample >> drawUnderline [
 		color: Color red
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 AeHbCairoExample >> font: aHbFont [
 
 	font := aHbFont.
 	self prepareCairoTextObjects
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 AeHbCairoExample >> initializeWith: aString font: aHbFont fontSize: aFontSize cairoContext: aCairoContext [
 
 	self initialize.
@@ -287,14 +286,14 @@ AeHbCairoExample >> initializeWith: aString font: aHbFont fontSize: aFontSize ca
 	self font: aHbFont
 ]
 
-{ #category : 'debugging - new tools' }
+{ #category : #'debugging - new tools' }
 AeHbCairoExample >> inspectionOfSurfaceAsForm: aBuilder [
 	<inspectorPresentationOrder: 0 title: 'Cairo context'>
 
 	^ cairoContext inspectionOfSurfaceAsForm: aBuilder
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 AeHbCairoExample >> newCairoFontOptions [ 
 
 	^ AeCairoFontOptions new
@@ -303,7 +302,7 @@ AeHbCairoExample >> newCairoFontOptions [
 		yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 AeHbCairoExample >> prepareCairoTextObjects [
 
 	font scale: fontSize as26Dot6FractionalPoint asPoint.
@@ -318,6 +317,6 @@ AeHbCairoExample >> prepareCairoTextObjects [
 
 ]
 
-{ #category : 'drawing' }
+{ #category : #drawing }
 AeHbCairoExample >> seeClassSide [
 ]

@@ -11,8 +11,8 @@ Members:
 See: https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-direction-t
 "
 Class {
-	#name : 'AeHbDirection',
-	#superclass : 'AeEnumeration',
+	#name : #AeHbDirection,
+	#superclass : #AeEnumeration,
 	#classVars : [
 		'HB_DIRECTION_BTT',
 		'HB_DIRECTION_INVALID',
@@ -20,48 +20,46 @@ Class {
 		'HB_DIRECTION_RTL',
 		'HB_DIRECTION_TTB'
 	],
-	#category : 'Alexandrie-Harfbuzz-Enumerations',
-	#package : 'Alexandrie-Harfbuzz',
-	#tag : 'Enumerations'
+	#category : #'Alexandrie-Harfbuzz-Enumerations'
 }
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbDirection class >> HB_DIRECTION_BTT [
 	"This method was automatically generated"
 	^ HB_DIRECTION_BTT
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbDirection class >> HB_DIRECTION_INVALID [
 	"This method was automatically generated"
 	^ HB_DIRECTION_INVALID
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbDirection class >> HB_DIRECTION_LTR [
 	"This method was automatically generated"
 	^ HB_DIRECTION_LTR
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbDirection class >> HB_DIRECTION_RTL [
 	"This method was automatically generated"
 	^ HB_DIRECTION_RTL
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbDirection class >> HB_DIRECTION_TTB [
 	"This method was automatically generated"
 	^ HB_DIRECTION_TTB
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbDirection class >> bottomToTop [
 
 	^ self HB_DIRECTION_BTT
 ]
 
-{ #category : 'enum declaration' }
+{ #category : #'enum declaration' }
 AeHbDirection class >> enumDecl [
 	"
 	self rebuildEnumAccessors
@@ -76,31 +74,31 @@ AeHbDirection class >> enumDecl [
 	)
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbDirection class >> invalid [
 
 	^ self HB_DIRECTION_INVALID
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbDirection class >> leftToRight [
 
 	^ self HB_DIRECTION_LTR
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbDirection class >> rightToLeft [
 
 	^ self HB_DIRECTION_RTL
 ]
 
-{ #category : 'accessing enum' }
+{ #category : #'accessing enum' }
 AeHbDirection class >> topToBottom [
 
 	^ self HB_DIRECTION_TTB
 ]
 
-{ #category : 'hook' }
+{ #category : #hook }
 AeHbDirection class >> underlinedNamePrefix [
 	
 	^ 'HB_DIRECTION_'

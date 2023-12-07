@@ -1,6 +1,6 @@
-Extension { #name : 'AeHbCairoExample' }
+Extension { #name : #AeHbCairoExample }
 
-{ #category : '*Alexandrie-HarfbuzzVariableFonts' }
+{ #category : #'*Alexandrie-HarfbuzzVariableFonts' }
 AeHbCairoExample class >> exampleDrawVariableFont [
 
 	| fileReference hbBlob hbFace hbFont variations |
@@ -27,7 +27,7 @@ AeHbCairoExample class >> exampleDrawVariableFont [
 
 ]
 
-{ #category : '*Alexandrie-HarfbuzzVariableFonts' }
+{ #category : #'*Alexandrie-HarfbuzzVariableFonts' }
 AeHbCairoExample class >> exampleDrawVariableFontAnimated [
 
 	| fileReference hbBlob hbFace cairoSurface example |

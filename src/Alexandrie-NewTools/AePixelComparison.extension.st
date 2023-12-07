@@ -1,6 +1,6 @@
-Extension { #name : 'AePixelComparison' }
+Extension { #name : #AePixelComparison }
 
-{ #category : '*Alexandrie-NewTools' }
+{ #category : #'*Alexandrie-NewTools' }
 AePixelComparison >> inspectionActualVsExpected: aBuilder [
 	<inspectorPresentationOrder: 1 title: 'Actual/Expected'>
 
@@ -10,7 +10,7 @@ AePixelComparison >> inspectionActualVsExpected: aBuilder [
 		yourself
 ]
 
-{ #category : '*Alexandrie-NewTools' }
+{ #category : #'*Alexandrie-NewTools' }
 AePixelComparison >> inspectionActualVsExpectedDiff: aBuilder [
 	<inspectorPresentationOrder: 2 title: 'Actual/Expected Diff'>
 
@@ -20,7 +20,7 @@ AePixelComparison >> inspectionActualVsExpectedDiff: aBuilder [
 		  yourself
 ]
 
-{ #category : '*Alexandrie-NewTools' }
+{ #category : #'*Alexandrie-NewTools' }
 AePixelComparison >> inspectionMagnification [
 
 	^ 2

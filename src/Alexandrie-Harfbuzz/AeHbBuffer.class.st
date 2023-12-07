@@ -6,19 +6,17 @@ Buffers serve a dual role in HarfBuzz; before shaping, they hold the input chara
 See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html
 "
 Class {
-	#name : 'AeHbBuffer',
-	#superclass : 'FFIExternalObject',
+	#name : #AeHbBuffer,
+	#superclass : #FFIExternalObject,
 	#traits : 'AeTHarfbuzzLibrary + AeTExternalFree',
 	#classTraits : 'AeTHarfbuzzLibrary classTrait + AeTExternalFree classTrait',
 	#pools : [
 		'AeHbTypes'
 	],
-	#category : 'Alexandrie-Harfbuzz-Core',
-	#package : 'Alexandrie-Harfbuzz',
-	#tag : 'Core'
+	#category : #'Alexandrie-Harfbuzz-Core'
 }
 
-{ #category : 'convenience' }
+{ #category : #convenience }
 AeHbBuffer class >> defaultCairoGlyphArrayFor: aString face: aeFTFace size: fontSize [ 
 	"Answer a Cairo glyph array for a String, with the following parameters: 
 	* left-to-right direction
@@ -36,13 +34,13 @@ AeHbBuffer class >> defaultCairoGlyphArrayFor: aString face: aeFTFace size: font
 		cairoGlyphArrayForFace: aeFTFace size: fontSize
 ]
 
-{ #category : 'finalization' }
+{ #category : #finalization }
 AeHbBuffer class >> externallyFree: aHandle [
 
 	self ffiCall: #( void hb_buffer_destroy ( void * aHandle ) )
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 AeHbBuffer class >> new [
 
 	^ self unownedNew
@@ -51,7 +49,7 @@ AeHbBuffer class >> new [
 
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 AeHbBuffer class >> unownedNew [
 
 	^ self ffiCall: #(
@@ -60,13 +58,13 @@ AeHbBuffer class >> unownedNew [
 	)
 ]
 
-{ #category : 'accessing - input' }
+{ #category : #'accessing - input' }
 AeHbBuffer >> addString: aString [
 
 	self addUtf8ByteArray: aString utf8Encoded
 ]
 
-{ #category : 'accessing - input' }
+{ #category : #'accessing - input' }
 AeHbBuffer >> addUtf8ByteArray: encoded [
 
 	self
@@ -76,7 +74,7 @@ AeHbBuffer >> addUtf8ByteArray: encoded [
 		itemLength: encoded size
 ]
 
-{ #category : 'accessing - input' }
+{ #category : #'accessing - input' }
 AeHbBuffer >> addUtf8ByteArray: text length: text_length itemOffset: item_offset itemLength: item_length [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-add-utf8"
 
@@ -91,7 +89,7 @@ AeHbBuffer >> addUtf8ByteArray: text length: text_length itemOffset: item_offset
 	)
 ]
 
-{ #category : 'convenience' }
+{ #category : #convenience }
 AeHbBuffer >> cairoGlyphArray [
 	"Based on: https://github.com/harfbuzz/harfbuzz-tutorial/blob/master/hello-harfbuzz-freetype.c"
 
@@ -122,7 +120,7 @@ AeHbBuffer >> cairoGlyphArray [
 	^ cairoGlyphsArray
 ]
 
-{ #category : 'convenience' }
+{ #category : #convenience }
 AeHbBuffer >> cairoGlyphArrayForFace: freetypeFace size: fontSize [
 	"Based on: https://github.com/harfbuzz/harfbuzz-tutorial/blob/master/hello-harfbuzz-freetype.c"
 
@@ -133,7 +131,7 @@ AeHbBuffer >> cairoGlyphArrayForFace: freetypeFace size: fontSize [
 	^ self cairoGlyphArray
 ]
 
-{ #category : 'accessing - output' }
+{ #category : #'accessing - output' }
 AeHbBuffer >> clearContents [
 	"Similar to `hb_buffer_reset()`, but does not clear the Unicode functions and the replacement code point.
 
@@ -145,7 +143,7 @@ AeHbBuffer >> clearContents [
 		)
 ]
 
-{ #category : 'accessing - input' }
+{ #category : #'accessing - input' }
 AeHbBuffer >> clusterLevel: cluster_level [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-cluster-level"
 
@@ -157,7 +155,7 @@ AeHbBuffer >> clusterLevel: cluster_level [
 	)
 ]
 
-{ #category : 'accessing - input' }
+{ #category : #'accessing - input' }
 AeHbBuffer >> direction: direction [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-direction"
 
@@ -169,7 +167,7 @@ AeHbBuffer >> direction: direction [
 	)
 ]
 
-{ #category : 'accessing - input' }
+{ #category : #'accessing - input' }
 AeHbBuffer >> flags: flags [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-flags"
 
@@ -181,7 +179,7 @@ AeHbBuffer >> flags: flags [
 	)
 ]
 
-{ #category : 'accessing - input' }
+{ #category : #'accessing - input' }
 AeHbBuffer >> getSegmentPropertiesInto: propertiesAddress [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-get-segment-properties"
 
@@ -193,7 +191,7 @@ AeHbBuffer >> getSegmentPropertiesInto: propertiesAddress [
 	)
 ]
 
-{ #category : 'cairo integration' }
+{ #category : #'cairo integration' }
 AeHbBuffer >> glyphArrayForString: aString scaleFactor: aPoint [
 
 	^ self
@@ -201,7 +199,7 @@ AeHbBuffer >> glyphArrayForString: aString scaleFactor: aPoint [
 		scaleFactor: aPoint
 ]
 
-{ #category : 'cairo integration' }
+{ #category : #'cairo integration' }
 AeHbBuffer >> glyphArrayForUtf8Array: aUtf8EncodedByteArray scaleFactor: aPoint [
 
 	| glyphsAddress glyphCountAddress glyphCount aGlyphsArray |
@@ -230,7 +228,7 @@ AeHbBuffer >> glyphArrayForUtf8Array: aUtf8EncodedByteArray scaleFactor: aPoint 
 	^ aGlyphsArray
 ]
 
-{ #category : 'accessing - output' }
+{ #category : #'accessing - output' }
 AeHbBuffer >> glyphInfos [
 	"Answer an array of `AeHbGlyphInfo` that indicate information of each glyph of this buffer.
 	Library has responsability to free it."
@@ -244,7 +242,7 @@ AeHbBuffer >> glyphInfos [
 		  size: (lengthPointer unsignedLongAt: 1)
 ]
 
-{ #category : 'accessing - output' }
+{ #category : #'accessing - output' }
 AeHbBuffer >> glyphInfosWritingSizeInto: aPointer [
 	"Returns a collection of `AeHbGlyphInfo` with glyph information. Returned pointer is valid as long as buffer contents are not modified.
 
@@ -258,7 +256,7 @@ AeHbBuffer >> glyphInfosWritingSizeInto: aPointer [
 		)
 ]
 
-{ #category : 'accessing - output' }
+{ #category : #'accessing - output' }
 AeHbBuffer >> glyphPositions [
 	"Answer an array of `AeHbGlyphPosition` that indicate the position of each glyph of this buffer.
 	Library has responsability to free it."
@@ -272,7 +270,7 @@ AeHbBuffer >> glyphPositions [
 		  size: (lengthPointer unsignedLongAt: 1)
 ]
 
-{ #category : 'accessing - output' }
+{ #category : #'accessing - output' }
 AeHbBuffer >> glyphPositionsWritingSizeInto: aPointer [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-get-glyph-positions"
 
@@ -284,7 +282,7 @@ AeHbBuffer >> glyphPositionsWritingSizeInto: aPointer [
 		)
 ]
 
-{ #category : 'accessing - input' }
+{ #category : #'accessing - input' }
 AeHbBuffer >> guessSegmentProperties [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-guess-segment-properties"
 
@@ -294,7 +292,7 @@ AeHbBuffer >> guessSegmentProperties [
 		)
 ]
 
-{ #category : 'accessing - input' }
+{ #category : #'accessing - input' }
 AeHbBuffer >> invisibleGlyph: invisible [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-invisible-glyph"
 
@@ -306,7 +304,7 @@ AeHbBuffer >> invisibleGlyph: invisible [
 	)
 ]
 
-{ #category : 'accessing - input' }
+{ #category : #'accessing - input' }
 AeHbBuffer >> language: aHbLanguage [
 	"Establish the received `AeHbLanguage` as language.
 	
@@ -320,7 +318,7 @@ AeHbBuffer >> language: aHbLanguage [
 	)
 ]
 
-{ #category : 'accessing - output' }
+{ #category : #'accessing - output' }
 AeHbBuffer >> length [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-get-length"
 
@@ -330,7 +328,7 @@ AeHbBuffer >> length [
 		)
 ]
 
-{ #category : 'accessing - output' }
+{ #category : #'accessing - output' }
 AeHbBuffer >> reset [
 	"Resets the buffer to its initial status, as if it was just newly created with `hb_buffer_create()`.
 
@@ -342,7 +340,7 @@ AeHbBuffer >> reset [
 		)
 ]
 
-{ #category : 'accessing - input' }
+{ #category : #'accessing - input' }
 AeHbBuffer >> script: script [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-script"
 
@@ -354,7 +352,7 @@ AeHbBuffer >> script: script [
 	)
 ]
 
-{ #category : 'accessing - input' }
+{ #category : #'accessing - input' }
 AeHbBuffer >> segmentProperties [
 
 	| properties |
@@ -363,7 +361,7 @@ AeHbBuffer >> segmentProperties [
 	^ properties
 ]
 
-{ #category : 'accessing - input' }
+{ #category : #'accessing - input' }
 AeHbBuffer >> segmentProperties: properties [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-buffer-set-segment-properties"
 
@@ -375,7 +373,7 @@ AeHbBuffer >> segmentProperties: properties [
 	)
 ]
 
-{ #category : 'shaping text' }
+{ #category : #'shaping text' }
 AeHbBuffer >> shapeWithFont: font [
 
 	^ self
@@ -384,7 +382,7 @@ AeHbBuffer >> shapeWithFont: font [
 		  numberOfFeatures: 0
 ]
 
-{ #category : 'shaping text' }
+{ #category : #'shaping text' }
 AeHbBuffer >> shapeWithFont: font features: featuresArray [
 
 	^ self
@@ -393,7 +391,7 @@ AeHbBuffer >> shapeWithFont: font features: featuresArray [
 		  numberOfFeatures: featuresArray size
 ]
 
-{ #category : 'shaping text' }
+{ #category : #'shaping text' }
 AeHbBuffer >> shapeWithFont: font features: features numberOfFeatures: num_features [
 	"Shapes buffer using font turning its Unicode characters content to positioned glyphs. If features is not NULL, it will be used to control the features applied during shaping. If two features have the same tag but overlapping ranges the value of the feature with the higher index takes precedence.
 	

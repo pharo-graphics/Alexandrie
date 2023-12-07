@@ -11,8 +11,8 @@ The relevant values are:
 See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-glyph-info-t
 "
 Class {
-	#name : 'AeHbGlyphInfo',
-	#superclass : 'FFIExternalStructure',
+	#name : #AeHbGlyphInfo,
+	#superclass : #FFIExternalStructure,
 	#classVars : [
 		'OFFSET_CLUSTER',
 		'OFFSET_CODEPOINT',
@@ -23,12 +23,10 @@ Class {
 	#pools : [
 		'AeHbTypes'
 	],
-	#category : 'Alexandrie-Harfbuzz-Structures',
-	#package : 'Alexandrie-Harfbuzz',
-	#tag : 'Structures'
+	#category : #'Alexandrie-Harfbuzz-Structures'
 }
 
-{ #category : 'field definition' }
+{ #category : #'field definition' }
 AeHbGlyphInfo class >> fieldsDesc [
 	"
 	self rebuildFieldAccessors
@@ -43,31 +41,31 @@ AeHbGlyphInfo class >> fieldsDesc [
 		)
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbGlyphInfo >> cluster [
 	"This method was automatically generated"
 	^handle unsignedLongAt: OFFSET_CLUSTER
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbGlyphInfo >> cluster: anObject [
 	"This method was automatically generated"
 	handle unsignedLongAt: OFFSET_CLUSTER put: anObject
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbGlyphInfo >> codepoint [
 	"This method was automatically generated"
 	^handle unsignedLongAt: OFFSET_CODEPOINT
 ]
 
-{ #category : 'accessing - structure variables' }
+{ #category : #'accessing - structure variables' }
 AeHbGlyphInfo >> codepoint: anObject [
 	"This method was automatically generated"
 	handle unsignedLongAt: OFFSET_CODEPOINT put: anObject
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 AeHbGlyphInfo >> printOn: aStream [
 
 	super printOn: aStream.

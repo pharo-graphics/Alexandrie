@@ -6,8 +6,8 @@ Each `hb_language_t` corresponds to a BCP 47 language tag.
 See: https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-language-t
 "
 Class {
-	#name : 'AeHbLanguage',
-	#superclass : 'FFIExternalObject',
+	#name : #AeHbLanguage,
+	#superclass : #FFIExternalObject,
 	#traits : 'AeTHarfbuzzLibrary',
 	#classTraits : 'AeTHarfbuzzLibrary classTrait',
 	#classVars : [
@@ -16,18 +16,16 @@ Class {
 	#pools : [
 		'AeHbTypes'
 	],
-	#category : 'Alexandrie-Harfbuzz-Core',
-	#package : 'Alexandrie-Harfbuzz',
-	#tag : 'Core'
+	#category : #'Alexandrie-Harfbuzz-Core'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 AeHbLanguage class >> en [
 
 	^ EN ifNil: [ EN := self fromBCP47Tag: 'en' ]
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 AeHbLanguage class >> fromBCP47ByteArray: str length: len [
 	"Converts str representing a BCP 47 language tag. Library-owned, don't free manually.
 	
@@ -41,7 +39,7 @@ AeHbLanguage class >> fromBCP47ByteArray: str length: len [
 	)
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 AeHbLanguage class >> fromBCP47Tag: aString [
 
 	| encoded |
@@ -49,25 +47,25 @@ AeHbLanguage class >> fromBCP47Tag: aString [
 	^ self fromBCP47ByteArray: encoded length: encoded size
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 AeHbLanguage class >> initialize [
 
 	SessionManager default registerSystemClassNamed: self name
 ]
 
-{ #category : 'system startup' }
+{ #category : #'system startup' }
 AeHbLanguage class >> resetKnownInstances [
 
 	EN := nil.
 ]
 
-{ #category : 'system startup' }
+{ #category : #'system startup' }
 AeHbLanguage class >> startUp: isResuming [
 	
 	isResuming ifTrue: [ self resetKnownInstances ]
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 AeHbLanguage >> printOn: aStream [
 
 	super printOn: aStream.
@@ -77,7 +75,7 @@ AeHbLanguage >> printOn: aStream [
 		nextPut: $)
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 AeHbLanguage >> toString [
 	"Answer a string representation.
 	
