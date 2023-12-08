@@ -40,6 +40,26 @@ AeCairoMatrixTest >> testBeMultiplicationOfBy [
 ]
 
 { #category : #tests }
+AeCairoMatrixTest >> testCopy [
+
+	| aCopy |
+	matrix := AeCairoMatrix newX: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
+	aCopy := matrix copy.
+
+	"Check independent change"
+	matrix x: 17.
+	aCopy  x: 23.
+	self assert: matrix x equals: 17.
+	self assert: aCopy x  equals: 23.
+
+	"Other factors match"
+	self assert: matrix sx  equals: 0.3.
+	self assert: matrix sy  equals: 0.4.
+	self assert: matrix shx equals: 0.5.
+	self assert: matrix shy equals: 0.6
+]
+
+{ #category : #tests }
 AeCairoMatrixTest >> testCreation [ 
 
 	matrix := AeCairoMatrix newX: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
@@ -69,6 +89,26 @@ AeCairoMatrixTest >> testIsIdentity [
 	
 	self deny: matrix isIdentity.
 
+]
+
+{ #category : #tests }
+AeCairoMatrixTest >> testNewFrom [
+
+	| aCopy |
+	matrix := AeCairoMatrix newX: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
+	aCopy := AeCairoMatrix newFrom: matrix.
+
+	"Check independent change"
+	matrix x: 17.
+	aCopy  x: 23.
+	self assert: matrix x equals: 17.
+	self assert: aCopy x  equals: 23.
+
+	"Other factors match"
+	self assert: matrix sx  equals: 0.3.
+	self assert: matrix sy  equals: 0.4.
+	self assert: matrix shx equals: 0.5.
+	self assert: matrix shy equals: 0.6
 ]
 
 { #category : #test }

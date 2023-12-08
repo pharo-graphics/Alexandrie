@@ -58,6 +58,18 @@ AeCairoMatrix class >> multiply: a by: b into: result [
 ]
 
 { #category : #'instance creation' }
+AeCairoMatrix class >> newFrom: aSimilarObject [
+
+	^ self
+		  newX: aSimilarObject x
+		  y: aSimilarObject y
+		  sx: aSimilarObject sx
+		  sy: aSimilarObject sy
+		  shx: aSimilarObject shx
+		  shy: aSimilarObject shy
+]
+
+{ #category : #'instance creation' }
 AeCairoMatrix class >> newIdentity [
 
 	^ self new
@@ -233,6 +245,12 @@ AeCairoMatrix >> closeTo: anotherMatrix precision: num [
 				and: [ (self sy closeTo: anotherMatrix sy precision: num)
 					and: [ (self x closeTo: anotherMatrix x precision: num)
 						and: [ self y closeTo: anotherMatrix y precision: num ] ] ] ] ]
+]
+
+{ #category : #copying }
+AeCairoMatrix >> copy [
+
+	^ self class newFrom: self
 ]
 
 { #category : #comparing }
