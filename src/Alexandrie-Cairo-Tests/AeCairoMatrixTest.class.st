@@ -79,6 +79,29 @@ AeCairoMatrixTest >> testCreation [
 ]
 
 { #category : #tests }
+AeCairoMatrixTest >> testInverted [
+
+	| aMatrix invertedMatrix |
+	"The inverse of identity matrix is an identity matrix, but different handle."
+	aMatrix := AeCairoMatrix newIdentity.
+	invertedMatrix := aMatrix inverted.
+	self deny: aMatrix getHandle equals: invertedMatrix getHandle.
+	self assert: invertedMatrix isIdentity.
+
+	"Test with a non trivial matrix. Assert on String as simplification."
+	aMatrix := AeCairoMatrix newX: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
+	invertedMatrix := aMatrix inverted.
+	self
+		assert: invertedMatrix asString
+		equals: 'an AeCairoMatrix(-2.2222 3.3333 | 2.7778 -1.6667 | -0.3333 0.0000)'.
+
+	"Not all matrices have inverse"
+	self
+		should: [ AeCairoMatrix new inverted ]
+		raise: AeCairoStatusError
+]
+
+{ #category : #tests }
 AeCairoMatrixTest >> testIsIdentity [
 
 	matrix := AeCairoMatrix newIdentity.

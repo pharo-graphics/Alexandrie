@@ -273,6 +273,17 @@ AeCairoMatrix >> invert [
 	^ self ffiCall: #( AeCairoStatus cairo_matrix_invert ( self ) )
 ]
 
+{ #category : #factory }
+AeCairoMatrix >> inverted [
+	"Answer an inverted copy of this matrix, or signal an error if there is no inverse matrix."
+
+	| aStatus anotherMatrix |
+	anotherMatrix := self copy.
+	aStatus := anotherMatrix invert.
+	aStatus ensureIsSuccess.
+	^ anotherMatrix
+]
+
 { #category : #testing }
 AeCairoMatrix >> isIdentity [
 
