@@ -27,6 +27,15 @@ AthensAeCairoMatrix >> loadIdentity [
 	cairoMatrix beIdentity 
 ]
 
+{ #category : #'as yet unclassified' }
+AthensAeCairoMatrix >> loadInvertedOnPattern: aPattern [
+
+	aPattern matrix:
+		(cairoMatrix isIdentity
+			ifTrue: [ cairoMatrix ]
+			ifFalse: [ cairoMatrix inverted ])
+]
+
 { #category : #transformations }
 AthensAeCairoMatrix >> restoreAfter: aBlock [
 

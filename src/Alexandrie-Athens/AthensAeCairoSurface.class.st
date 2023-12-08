@@ -69,6 +69,15 @@ AthensAeCairoSurface >> clear: clearPaint [
 				drawShape: (0@0 extent: self extent) ] ]
 ]
 
+{ #category : #paints }
+AthensAeCairoSurface >> createLinearGradient: aColorRamp start: aStartPoint stop: aStopPoint [
+
+	^ AeCairoLinearGradientPattern
+		from: aStartPoint
+		to: aStopPoint
+		addStopsFrom: aColorRamp
+]
+
 { #category : #paths }
 AthensAeCairoSurface >> createPath: aPathCreatingBlock [
 

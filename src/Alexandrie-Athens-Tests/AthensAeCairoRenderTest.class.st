@@ -162,3 +162,25 @@ AthensAeCairoRenderTest >> surfaceWith05RepeatCurvedPath [
 
 	^ surface
 ]
+
+{ #category : #tests }
+AthensAeCairoRenderTest >> surfaceWith06LinearGradientFill [
+
+	| surface gradientPaint |
+	surface := AthensAeCairoSurface extent: 100 @ 200.
+
+	gradientPaint := surface
+		createLinearGradient: { 0->Color red. 1->Color green }
+		start: 0@0
+		stop: 50@50.
+
+	surface drawDuring: [ :canvas |
+		canvas setPaint: gradientPaint.
+		canvas drawShape: (0@0 corner: 50@50).
+		canvas pathTransform
+			translateX: 50 Y: 50;
+			rotateByDegrees: 30.
+		canvas drawShape: (0@0 corner: 50@50) ].
+
+	^ surface
+]
