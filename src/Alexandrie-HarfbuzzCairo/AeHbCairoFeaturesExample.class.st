@@ -16,15 +16,28 @@ Class {
 
 { #category : #examples }
 AeHbCairoFeaturesExample class >> exampleDraw: aString binaryTag: aTagAsString font: aHbFont fontSize: fontSize [
+
+	self
+		exampleDraw: aString
+		binaryTags: { aTagAsString }
+		font: aHbFont
+		fontSize: fontSize
+]
+
+{ #category : #examples }
+AeHbCairoFeaturesExample class >> exampleDraw: aString binaryTags: aTagAsStringCollection font: aHbFont fontSize: fontSize [
 	
-	| aFeatureArray |
-	aFeatureArray := AeHbFeatureArray newOf: 2.
-	aFeatureArray first
-		readIntoSelf: ('{1}[:{2}]=0'
-			format: { aTagAsString. aString utf8Encoded size }).
-	aFeatureArray second
-		readIntoSelf: ('{1}[{2}:]=1'
-			format: { aTagAsString. aString utf8Encoded size }).
+	| aFeatureArray utf8Size |
+	utf8Size := aString utf8Encoded size.
+	aFeatureArray := AeHbFeatureArray newOf: 2 * aTagAsStringCollection size.
+
+	aTagAsStringCollection withIndexDo: [ :each :index |
+		(aFeatureArray at: index)
+			readIntoSelf: ('{1}[:{2}]=0'
+				format: { each. utf8Size }).
+		(aFeatureArray at: index + aTagAsStringCollection size)
+			readIntoSelf: ('{1}[{2}:]=1'
+				format: { each. utf8Size }) ].
 
 	self
 		exampleDraw: aString, aString
@@ -157,6 +170,16 @@ AeHbCairoFeaturesExample class >> exampleDrawSmallCaps [
 	self
 		exampleDraw: 'Title '
 		binaryTag: 'smcp'
+		font: self newSourceSansProFace newHbFont
+		fontSize: 80
+]
+
+{ #category : #examples }
+AeHbCairoFeaturesExample class >> exampleDrawSmallCapsAll [
+
+	self
+		exampleDraw: 'Title '
+		binaryTags: #('smcp' 'c2sc')
 		font: self newSourceSansProFace newHbFont
 		fontSize: 80
 ]
