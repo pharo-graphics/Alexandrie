@@ -85,6 +85,12 @@ AthensAeCairoCanvas >> prepareToDraw [
 ]
 
 { #category : #drawing }
+AthensAeCairoCanvas >> rectangle: aRectangle [
+
+	cairoContext rectangle: aRectangle
+]
+
+{ #category : #drawing }
 AthensAeCairoCanvas >> rectangleX: x y: y width: aWidth height: aHeight [
 
 	cairoContext

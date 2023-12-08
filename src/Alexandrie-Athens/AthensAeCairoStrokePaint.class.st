@@ -27,10 +27,7 @@ AthensAeCairoStrokePaint >> athensFillRectangle: aRectangle on: aCanvas [
 
 	aCanvas
 		newPath;
-		rectangleX: aRectangle left
-			y: aRectangle right
-			width: aRectangle width
-			height: aRectangle height;
+		rectangle: aRectangle;
 		stroke
 ]
 

@@ -32,8 +32,7 @@ AthensAeCairoMatrix >> restoreAfter: aBlock [
 
 	| aMatrix |
 	aMatrix := cairoMatrix copy.
-	aBlock ensure: [
-		cairoMatrix := aMatrix ]
+	aBlock ensure: [ cairoMatrix := aMatrix ]
 ]
 
 { #category : #transformations }
