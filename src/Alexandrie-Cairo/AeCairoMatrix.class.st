@@ -292,6 +292,59 @@ AeCairoMatrix >> isIdentity [
 			self shx = 0.0 and: [ self shy = 0.0 ] ] ] ] ]
 ]
 
+{ #category : #testing }
+AeCairoMatrix >> isIdentity2 [
+
+	^ (self x closeTo: 0.0) and: [ (self y closeTo: 0.0) and: [ 
+		(self sx closeTo: 1.0) and: [ (self sy closeTo: 1.0) and: [
+			(self shx closeTo: 0.0) and: [ self shy closeTo: 0.0 ] ] ] ] ]
+]
+
+{ #category : #testing }
+AeCairoMatrix >> isIdentity3 [
+
+	{  OFFSET_SY. 1.0.
+		OFFSET_Y. 0.0.
+		OFFSET_SHX. 0.0.
+		OFFSET_SX. 1.0.
+		OFFSET_X. 0.0.
+		OFFSET_SHY. 0.0 } pairsDo: [ :offset :value |
+			(handle doubleAt: offset) = value ifFalse: [ ^ false ] ].
+	^ true
+]
+
+{ #category : #testing }
+AeCairoMatrix >> isIdentity4 [
+
+	{ OFFSET_SX. OFFSET_SY } do: [ :offset |
+		(handle doubleAt: offset) = 1.0 ifFalse: [ ^ false ] ].
+	{ OFFSET_Y. OFFSET_SHX. OFFSET_X. OFFSET_SHY } do: [ :offset |
+		(handle doubleAt: offset) = 0.0 ifFalse: [ ^ false ] ].
+	^ true
+]
+
+{ #category : #testing }
+AeCairoMatrix >> isIdentity5 [
+
+	{ OFFSET_SX. OFFSET_SY } do: [ :offset |
+		(handle unsignedLongLongAt: offset) = 4607182418800017408 ifFalse: [ ^ false ] ].
+	{ OFFSET_Y. OFFSET_SHX. OFFSET_X. OFFSET_SHY } do: [ :offset |
+		(handle unsignedLongLongAt: offset) = 0 ifFalse: [ ^ false ] ].
+	^ true
+]
+
+{ #category : #testing }
+AeCairoMatrix >> isIdentity6 [
+
+	(handle doubleAt: OFFSET_SX) = 1.0 ifFalse: [ ^ false ].
+	(handle doubleAt: OFFSET_SY) = 1.0 ifFalse: [ ^ false ].
+	(handle doubleAt: OFFSET_X) = 0.0 ifFalse: [ ^ false ].
+	(handle doubleAt: OFFSET_Y) = 0.0 ifFalse: [ ^ false ].
+	(handle doubleAt: OFFSET_SHX) = 0.0 ifFalse: [ ^ false ].
+	(handle doubleAt: OFFSET_SHX) = 0.0 ifFalse: [ ^ false ].
+	^ true
+]
+
 { #category : #'API - transformations' }
 AeCairoMatrix >> postMultiply: aMatrix [
 
