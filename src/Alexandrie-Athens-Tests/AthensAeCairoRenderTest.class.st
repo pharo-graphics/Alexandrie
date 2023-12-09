@@ -187,3 +187,28 @@ AthensAeCairoRenderTest >> surfaceWith06LinearGradient [
 
 	^ surface
 ]
+
+{ #category : #tests }
+AthensAeCairoRenderTest >> surfaceWith07RadialGradient [
+
+	| surface gradientPaint stroke |
+	surface := AthensAeCairoSurface extent: 100 @ 100.
+
+	gradientPaint := surface
+		createRadialGradient: { 0->Color red. 1->Color green }
+		center: 50@50
+		radius: 100.
+
+	surface drawDuring: [ :canvas |
+		canvas setPaint: gradientPaint.
+		canvas drawShape: (0@0 corner: 50@50).
+
+		canvas pathTransform
+			translateX: 50 Y: 50;
+			rotateByDegrees: 45.
+		stroke := canvas setStrokePaint: gradientPaint.
+		stroke width: 20.
+		canvas drawShape: (0@0 corner: 30@30) ].
+
+	^ surface
+]

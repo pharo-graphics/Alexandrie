@@ -85,6 +85,17 @@ AthensAeCairoSurface >> createPath: aPathCreatingBlock [
 ]
 
 { #category : #paints }
+AthensAeCairoSurface >> createRadialGradient: colorRamp center: aCenter radius: aRadius focalPoint: fp [
+
+	^ AeCairoRadialGradientPattern
+		innerCenter: fp
+		innerRadius: 0.0
+		outerCenter: aCenter
+		outerRadius: aRadius
+		addStopsFrom: colorRamp
+]
+
+{ #category : #paints }
 AthensAeCairoSurface >> createStrokePaintFor: aPaint [
 
 	^ AthensAeCairoStrokePaint new
