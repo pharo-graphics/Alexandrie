@@ -23,3 +23,9 @@ AeCairoPattern >> loadOnCairoCanvas: aCanvas [
 		ifTrue:[ aCanvas cairoContext source: self ]
 		ifFalse:[ aCanvas setSourceR: 1.0 g: 0.0 b: 0.0 a: 1.0 ]
 ]
+
+{ #category : #'*Alexandrie-Athens' }
+AeCairoPattern >> repeat [
+	
+	self extend: AeCairoExtendMode repeat
+]

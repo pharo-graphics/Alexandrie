@@ -70,6 +70,15 @@ AthensAeCairoSurface >> clear: clearPaint [
 ]
 
 { #category : #paints }
+AthensAeCairoSurface >> createFormPaint: aForm [
+
+	| newSurface |
+	newSurface := AeCairoImageSurface fromForm: (aForm asFormOfDepth: 32).
+
+	^ newSurface asAthensPaintOn: canvas
+]
+
+{ #category : #paints }
 AthensAeCairoSurface >> createLinearGradient: aColorRamp start: aStartPoint stop: aStopPoint [
 
 	^ AeCairoLinearGradientPattern

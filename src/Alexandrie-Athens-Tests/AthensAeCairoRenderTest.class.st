@@ -212,3 +212,29 @@ AthensAeCairoRenderTest >> surfaceWith07RadialGradient [
 
 	^ surface
 ]
+
+{ #category : #tests }
+AthensAeCairoRenderTest >> surfaceWith08FormPaint [
+
+	| surface stroke form formPaint |
+	surface := AthensAeCairoSurface extent: 100 @ 100.
+
+	form := Form extent: 8@6 depth: 32.
+	form getCanvas fillRectangle: (0@0 corner: 4@3) color: Color red.
+	form getCanvas fillRectangle: (4@3 corner: 8@6) color: Color green.
+	formPaint := surface createFormPaint: form.
+	formPaint repeat.
+	
+	surface drawDuring: [ :canvas |
+		canvas setPaint: formPaint.
+		canvas drawShape: (0@0 corner: 50@50).
+
+		canvas pathTransform
+			translateX: 50 Y: 50;
+			rotateByDegrees: 45.
+		stroke := canvas setStrokePaint: formPaint.
+		stroke width: 20.
+		canvas drawShape: (0@0 corner: 30@30) ].
+
+	^ surface
+]
