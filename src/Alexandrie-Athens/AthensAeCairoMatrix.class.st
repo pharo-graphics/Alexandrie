@@ -72,6 +72,22 @@ AthensAeCairoMatrix >> scaleX: fx Y: fy [
 	cairoMatrix scaleByX: fx y: fy
 ]
 
+{ #category : #accessing }
+AthensAeCairoMatrix >> transform: aPoint [
+
+	^ cairoMatrix value: aPoint
+]
+
+{ #category : #transformations }
+AthensAeCairoMatrix >> transformRectangle: aRectangle [
+
+	^ Rectangle encompassing: {
+		self transform: aRectangle bottomLeft.
+		self transform: aRectangle bottomRight.
+		self transform: aRectangle topLeft.
+		self transform: aRectangle topRight }
+]
+
 { #category : #transforming }
 AthensAeCairoMatrix >> translateBy: aPoint [
 

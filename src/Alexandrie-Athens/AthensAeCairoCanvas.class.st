@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'cairoContext',
 		'pathTransform',
-		'paintTransform'
+		'paintTransform',
+		'currentClipRect'
 	],
 	#category : #'Alexandrie-Athens'
 }
@@ -21,6 +22,32 @@ AthensAeCairoCanvas class >> on: aSurface [
 AthensAeCairoCanvas >> cairoContext [
 
 	^ cairoContext
+]
+
+{ #category : #clipping }
+AthensAeCairoCanvas >> clipBy: aRectangle during: aBlock [
+	"Set a clipping rectangle during drawing operations performed in aBlock.
+	Note that the clipping rectangle is intersected with the currently active clipping rectangle"
+
+	| oldClip transformedClipRectangle newClip |
+	oldClip := currentClipRect.
+	transformedClipRectangle := pathTransform transformRectangle: aRectangle.
+	newClip := oldClip
+		ifNil: [ transformedClipRectangle ]
+		ifNotNil: [
+			oldClip
+				intersect: transformedClipRectangle
+				ifNone:[ ^ self ] ].
+
+	self setPathMatrix.
+	cairoContext saveState.
+	self pushClipRect: aRectangle.
+
+	currentClipRect := newClip.
+
+	aBlock ensure: [
+		cairoContext restoreState.
+		currentClipRect := oldClip ]
 ]
 
 { #category : #drawing }
@@ -82,6 +109,15 @@ AthensAeCairoCanvas >> prepareToDraw [
 	pathTransform loadIdentity.
 	paintTransform loadIdentity.
 	paintMode over
+]
+
+{ #category : #clipping }
+AthensAeCairoCanvas >> pushClipRect: aRectangle [
+
+	self
+		newPath;
+		rectangle: aRectangle.
+	cairoContext clip
 ]
 
 { #category : #drawing }

@@ -238,3 +238,32 @@ AthensAeCairoRenderTest >> surfaceWith08FormPaint [
 
 	^ surface
 ]
+
+{ #category : #tests }
+AthensAeCairoRenderTest >> surfaceWith09Clip [
+
+	| surface |
+	surface := AthensAeCairoSurface extent: 80 @ 80.
+
+	surface drawDuring: [ :canvas |
+		surface clear.
+		canvas pathTransform loadIdentity.
+		canvas setPaint: Color blue.
+		canvas drawShape: (0@0 corner: 100@ 100).
+
+		canvas pathTransform translateX: -10 Y: -10.
+		canvas clipBy: (20@20 corner: 80@80) during: [
+			canvas pathTransform
+				translateX: 20 Y: 20;
+				rotateByDegrees: -20.
+			canvas setPaint: Color red.
+			canvas drawShape: (0@0 corner: 100@100).
+		
+			canvas clipBy: (20@20 corner: 80@80) during: [
+				canvas pathTransform translateX: 20 Y: 20.
+				canvas setPaint: Color green.
+				canvas drawShape: (0@0 corner: 100@ 100) ] ]
+		].
+
+	^ surface
+]
