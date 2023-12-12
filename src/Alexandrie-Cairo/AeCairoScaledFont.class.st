@@ -39,6 +39,7 @@ AeCairoScaledFont class >> fontFace: aCairoFontFace fontMatrix: aFontMatrix user
 		   fontMatrix: aFontMatrix
 		   userToDeviceMatrix: aUserToDeviceCairoMatrix
 		   options: theFontOptions)
+		  fontFace: aCairoFontFace;
 		  autoRelease;
 		  yourself
 ]
@@ -91,6 +92,13 @@ AeCairoScaledFont >> fontExtents [
 		extents := AeCairoFontExtents new.
 		self getFontExtentsInto: extents.
 		extents ]
+]
+
+{ #category : #accessing }
+AeCairoScaledFont >> fontFace: aCairoFontFace [
+	"Set the fonce face associated with myself."
+
+	fontFace := aCairoFontFace
 ]
 
 { #category : #API }
@@ -235,13 +243,21 @@ AeCairoScaledFont >> glyphArrayForString: aString [
 { #category : #API }
 AeCairoScaledFont >> glyphArrayForUtf8Array: aUtf8EncodedByteArray [
 
+	^ self
+		  glyphArrayForUtf8Array: aUtf8EncodedByteArray
+		  size: aUtf8EncodedByteArray size
+]
+
+{ #category : #API }
+AeCairoScaledFont >> glyphArrayForUtf8Array: aUtf8EncodedByteArray size: size [
+
 	| glyphsAddress glyphCountAddress aStatus glyphCount glyphs |
 	glyphsAddress := ExternalAddress new.
 	glyphCountAddress := FFIInt32 newBuffer.
 
 	aStatus := self
 		glyphsFrom: aUtf8EncodedByteArray
-		size: aUtf8EncodedByteArray size
+		size: size
 		intoGlyphs: glyphsAddress
 		size: glyphCountAddress.
 	aStatus ensureIsSuccess.

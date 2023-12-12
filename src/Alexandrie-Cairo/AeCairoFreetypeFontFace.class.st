@@ -46,7 +46,7 @@ AeCairoFreetypeFontFace >> freetypeFace [
 
 { #category : #accessing }
 AeCairoFreetypeFontFace >> freetypeFace: aFTFace [
-	"Set the aFTFace associated with this font face. This should avoid it to be garbage collection before me."
+	"Set the `AeFTFace` instance associated with this font face. This should avoid it to be garbage collection before me."
 
 	freetypeFace := aFTFace
 ]
