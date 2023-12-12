@@ -90,8 +90,14 @@ AeUTF8Converter >> bufferLength [
 { #category : #converting }
 AeUTF8Converter >> convert: aString [
 
+	self convert: aString from: 1 to: aString size
+]
+
+{ #category : #converting }
+AeUTF8Converter >> convert: aString from: start to: end [
+
 	| length |
-	length := aString size.
+	length := end - start + 1.
 
 	length > stringSizeLimit
 		ifTrue: [ 
@@ -103,10 +109,9 @@ AeUTF8Converter >> convert: aString [
 	
 	encoder
 		next: length
-		putAll: aString 
-		startingAt: 1
-		toStream: bufferStream.
-
+		putAll: aString
+		startingAt: start
+		toStream: bufferStream
 ]
 
 { #category : #initialization }
