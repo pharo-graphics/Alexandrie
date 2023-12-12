@@ -448,8 +448,8 @@ AeCairoMatrix >> value: aPoint [
 	"Answer aPoint transformed by self."
 
 	| x y |
-	x := ByteArray new: 8.
-	y := ByteArray new: 8.
+	x := FFIFloat64 newBuffer.
+	y := FFIFloat64 newBuffer.
 	x doubleAt: 1 put: aPoint x.
 	y doubleAt: 1 put: aPoint y.
 	self valueOnX: x onY: y.
