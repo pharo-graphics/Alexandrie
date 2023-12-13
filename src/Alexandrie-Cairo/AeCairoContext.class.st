@@ -468,7 +468,13 @@ AeCairoContext >> curveVia: point1 via: point2 to: point3 [
 
 { #category : #'API - path' }
 AeCairoContext >> curveViaX: x1 y: y1 viaX: x2 y: y2 toX: x3 y: y3 [
-	"See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-curve-to"	
+	"Add a cubic Bézier spline to the path from the current point to position (x3 @ y3) in user-space coordinates, using (x1 @ y1) and (x2 @ y2) as the control points. 
+
+	After this call the current point will be (x3 @ y3).
+
+	If there is no current point before, this function will behave as if preceded by a move to (x1 @ y1).
+
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-curve-to"	
 
 	self ffiCall: #(
 		void
