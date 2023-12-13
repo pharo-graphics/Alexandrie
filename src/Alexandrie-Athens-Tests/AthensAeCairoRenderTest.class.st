@@ -54,7 +54,7 @@ AthensAeCairoRenderTest >> surfaceWith02RectanglePath [
 	| surface path |
 	surface := AthensAeCairoSurface extent: 40 asPoint. 
 
-	path :=  surface createRectanglePath: (0@ 0 corner: 20@ 20).
+	path := surface createRectanglePath: (0@ 0 corner: 20@ 20).
 	
 	surface drawDuring: [ :canvas |
 		surface clear: Color white.
@@ -85,9 +85,10 @@ AthensAeCairoRenderTest >> surfaceWith03Lines [
 			(canvas createPath: [ :path |
 				path
 					absolute;
-					lineTo: 50@0;
-					lineTo: 50@50;
-					lineTo: 0@100 ]) ].
+					lineTo:  50 @ 0;
+					lineTo:  50 @ 50;
+					relative;
+					lineTo: -50 @ 50 ]) ].
 
 	^ surface
 ]
