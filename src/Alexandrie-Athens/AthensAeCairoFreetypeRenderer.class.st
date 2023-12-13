@@ -25,13 +25,13 @@ AthensAeCairoFreetypeRenderer class >> on: aCanvas [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 AthensAeCairoFreetypeRenderer >> advance: aPoint [
 
 	advance := aPoint
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AthensAeCairoFreetypeRenderer >> cairoScaledFontFor: aFont ftFace: ftFace [
 
 	^ AthensAeCairoBackendCache soleInstance
@@ -44,7 +44,7 @@ AthensAeCairoFreetypeRenderer >> cairoScaledFontFor: aFont ftFace: ftFace [
 				options: fontOptions ]
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 AthensAeCairoFreetypeRenderer >> freetypeFontForLogicalFont: aFont [
 
 	aFont familyNames do: [ :eachFamilyName |
@@ -100,7 +100,7 @@ AthensAeCairoFreetypeRenderer >> initializeOn: aCanvas [
 	fontOptions := AeCairoFontOptions new
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 AthensAeCairoFreetypeRenderer >> logicalFont: aFont [
 
 	originalFont := aFont.
