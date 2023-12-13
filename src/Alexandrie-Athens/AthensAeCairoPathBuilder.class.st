@@ -77,6 +77,15 @@ AthensAeCairoPathBuilder >> curveVia: p1 to: aPoint [
 	cairoContext quadraticCurveFrom: pt0 controlPoint: pt1 to: endPoint
 ]
 
+{ #category : #'builder commands' }
+AthensAeCairoPathBuilder >> hLineTo: x [
+
+	^ self lineTo:
+		(absolute
+			ifTrue: [ x @ endPoint y ]
+			ifFalse: [ x @ 0 ])
+]
+
 { #category : #initialization }
 AthensAeCairoPathBuilder >> initializeOn: aCairoContext [
 
@@ -125,4 +134,13 @@ AthensAeCairoPathBuilder >> relative [
 AthensAeCairoPathBuilder >> toAbsolute: aPoint [
 
 	^ absolute ifTrue: [ aPoint ] ifFalse: [ endPoint + aPoint ]
+]
+
+{ #category : #'builder commands' }
+AthensAeCairoPathBuilder >> vLineTo: y [
+
+	^ self lineTo:
+		(absolute
+			ifTrue: [ endPoint x @ y ]
+			ifFalse: [ 0 @ y ])
 ]

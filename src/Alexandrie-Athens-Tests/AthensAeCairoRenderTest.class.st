@@ -73,22 +73,24 @@ AthensAeCairoRenderTest >> surfaceWith02RectanglePath [
 ]
 
 { #category : #tests }
-AthensAeCairoRenderTest >> surfaceWith03Lines [
+AthensAeCairoRenderTest >> surfaceWith03StrightLines [
 
 	| surface |
-	surface := AthensAeCairoSurface extent: 110 asPoint. 
+	surface := AthensAeCairoSurface extent: 55 @ 110. 
 
 	surface drawDuring: [ :canvas |
+		surface clear: Color orange.
 		canvas setPaint: Color blue.
 
 		canvas drawShape:
 			(canvas createPath: [ :path |
 				path
 					absolute;
-					lineTo:  50 @ 0;
-					lineTo:  50 @ 50;
+					moveTo: 5@5;
+					hLineTo: 50;
+					vLineTo: 50;
 					relative;
-					lineTo: -50 @ 50 ]) ].
+					lineTo: -45 @ 50 ]) ].
 
 	^ surface
 ]
@@ -116,8 +118,8 @@ AthensAeCairoRenderTest >> surfaceWith04HollowRectangle [
 					lineTo: 50@0;
 					lineTo: 50@50;
 					lineTo: 0@50;
-					moveTo: 10@10;
-					lineTo: 10@40;
+					moveTo: 5@10;
+					lineTo: 5@40;
 					lineTo: 40@40;
 					lineTo: 40@10
 			]) ].
