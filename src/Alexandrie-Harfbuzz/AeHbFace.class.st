@@ -108,6 +108,23 @@ AeHbFace >> allOpenTypePredefinedNamesAsDictionary [
 ]
 
 { #category : #accessing }
+AeHbFace >> getOpenTypeFeatureTagsAt: tag offset: offset into: featuresAddress size: featureSizeAddress [
+	"Fetches a list of all feature tags in the given face's GSUB or GPOS table. Note that there might be duplicate feature tags, belonging to different script/language-system pairs of the table.
+	
+	See: https://harfbuzz.github.io/harfbuzz-hb-ot-layout.html#hb-ot-layout-table-get-feature-tags"
+
+	^ self ffiCall: #(
+		uint
+		hb_ot_layout_table_get_feature_tags (
+			self,
+			hb_tag_t tag,
+			uint offset,
+			uint * featureSizeAddress,
+			void * featuresAddress )
+		)
+]
+
+{ #category : #accessing }
 AeHbFace >> getOpenTypeUtf8Name: nameId into: text num: textSize language: language [
 	"See: https://harfbuzz.github.io/harfbuzz-hb-ot-name.html#hb-ot-name-get-utf8"
 
@@ -179,6 +196,41 @@ AeHbFace >> newHbFont [
 	"Answer a new `AeHbFont` from me"
 
 	^ AeHbFont newForHbFace: self
+]
+
+{ #category : #accessing }
+AeHbFace >> openTypeFeatureTags [
+
+	| featureTags featureTagsSize features |
+	self flag: #todo. "Iteration does not work well (try reducing the array's size)"
+	featureTags := FFIExternalArray newType: FFIUInt32 size: 5000.
+	featureTagsSize := FFIUInt32 newBuffer.
+	featureTagsSize unsignedLongAt: 1 put: featureTags size.
+	features := OrderedCollection new.
+	
+	#('GSUB' 'GPOS') do: [ :eachTag |
+		| actualSize offset atEnd |
+		offset := 0.
+		[	actualSize :=
+				self
+					getOpenTypeFeatureTagsAt: eachTag asHbTagInteger
+					offset: offset
+					into: featureTags getHandle
+					size: featureTagsSize.
+
+			featureTags size + offset >= actualSize
+				ifTrue: [
+					atEnd := true.
+					1 to: actualSize - offset do: [ :i |
+						features add: (featureTags at: i) ] ]
+				ifFalse: [ 
+					atEnd := false.
+					features addAll: featureTags.
+					offset := offset + featureTags size ]
+
+		] doWhileFalse: [ atEnd ] ].
+
+	^ features collect: #asHbTagString
 ]
 
 { #category : #accessing }

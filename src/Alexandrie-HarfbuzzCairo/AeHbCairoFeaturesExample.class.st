@@ -69,6 +69,19 @@ AeHbCairoFeaturesExample class >> exampleDraw: aString features: featuresExterna
 ]
 
 { #category : #examples }
+AeHbCairoFeaturesExample class >> exampleDrawAllFeaturesInFace [
+
+	self newCascadiaFace openTypeFeatureTags asSet asArray sorted do: [ :each |
+		self
+			exampleDraw: 'Office''s->1.9/234'
+			binaryTag: each
+			font: self newInriaFace newHbFont
+			fontSize: 20 ].
+
+		
+]
+
+{ #category : #examples }
 AeHbCairoFeaturesExample class >> exampleDrawCascadiaArrows [
 
 	self
