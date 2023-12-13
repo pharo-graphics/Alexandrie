@@ -146,7 +146,7 @@ AePixelMatchTest >> fileReferenceToExpectedPNG [
 AePixelMatchTest >> formBehavior [
 	"Answer the class or trait that defines the `formSelector`."
 
-	^ self subclassResponsibility
+	^ self
 ]
 
 { #category : #debugging }

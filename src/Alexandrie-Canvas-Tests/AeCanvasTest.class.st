@@ -55,12 +55,6 @@ AeCanvasTest >> expectedFormsDirectory [
 	^ AeFilesystemResources canvasDirectory
 ]
 
-{ #category : #hooks }
-AeCanvasTest >> formBehavior [
-
-	^ self
-]
-
 { #category : #tests }
 AeCanvasTest >> renderArbitraryFigure [
 

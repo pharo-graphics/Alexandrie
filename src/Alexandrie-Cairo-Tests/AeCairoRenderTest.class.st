@@ -21,9 +21,3 @@ AeCairoRenderTest >> expectedFormsDirectory [
 
 	^ AeFilesystemResources cairoDirectory
 ]
-
-{ #category : #hooks }
-AeCairoRenderTest >> formBehavior [
-
-	^ self
-]
