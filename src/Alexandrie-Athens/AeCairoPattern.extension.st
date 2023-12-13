@@ -7,6 +7,23 @@ AeCairoPattern >> asAthensPaintOn: aCanvas [
 ]
 
 { #category : #'*Alexandrie-Athens' }
+AeCairoPattern >> asStrokePaintOn: aCanvas [
+
+	^ aCanvas surface createStrokePaintFor: self
+]
+
+{ #category : #'*Alexandrie-Athens' }
+AeCairoPattern >> athensFillPath: aCairoPath on: aCanvas [ 
+
+	aCanvas
+		newPath;
+		loadPath: aCairoPath.
+	aCanvas paintTransform loadInvertedOnPattern: self.
+	self loadOnCairoCanvas: aCanvas.
+	aCanvas fill
+]
+
+{ #category : #'*Alexandrie-Athens' }
 AeCairoPattern >> athensFillRectangle: aRectangle on: aCanvas [
 
 	aCanvas rectangle: aRectangle.

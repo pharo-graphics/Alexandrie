@@ -21,12 +21,6 @@ AeCairoPattern class >> externallyFree: aHandle [
 	self ffiCall: #( void cairo_pattern_destroy ( void * aHandle ) )
 ]
 
-{ #category : #converting }
-AeCairoPattern >> asStrokePaintOn: aCanvas [
-
-	^ aCanvas surface createStrokePaintFor: self
-]
-
 { #category : #API }
 AeCairoPattern >> extend: anExtendMode [
 	"Sets the mode to be used for drawing outside the area of a pattern. See cairo_extend_t for details on the semantics of each extend strategy.

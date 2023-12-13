@@ -43,6 +43,12 @@ AthensAeCairoStrokePaint >> joinBevel [
 	joinStyle := AeCairoJoinStyle bevel
 ]
 
+{ #category : #'setting - join styles' }
+AthensAeCairoStrokePaint >> joinMiter [
+	
+	joinStyle := AeCairoJoinStyle miter
+]
+
 { #category : #private }
 AthensAeCairoStrokePaint >> prepareForDrawingOn: aCanvas [
 

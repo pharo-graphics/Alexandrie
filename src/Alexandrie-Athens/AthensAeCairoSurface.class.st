@@ -106,6 +106,12 @@ AthensAeCairoSurface >> createRadialGradient: colorRamp center: aCenter radius: 
 ]
 
 { #category : #paints }
+AthensAeCairoSurface >> createSolidColorPaint: aColor [
+
+	^ AeCairoColorPattern newFrom: aColor
+]
+
+{ #category : #paints }
 AthensAeCairoSurface >> createStrokePaintFor: aPaint [
 
 	^ AthensAeCairoStrokePaint new

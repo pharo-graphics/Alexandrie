@@ -299,3 +299,14 @@ AthensAeCairoRenderTest >> surfaceWith10Text [
 
 	^ surface
 ]
+
+{ #category : #tests }
+AthensAeCairoRenderTest >> surfaceWith11Tiger [
+
+	| surface |
+	surface := AthensAeCairoSurface extent: 300 asPoint.
+
+	(AthensTiger on: surface) draw.
+
+	^ surface
+]

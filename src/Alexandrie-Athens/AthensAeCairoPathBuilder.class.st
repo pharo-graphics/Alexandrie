@@ -24,6 +24,12 @@ AthensAeCairoPathBuilder >> absolute [
 	absolute := true
 ]
 
+{ #category : #'path commands' }
+AthensAeCairoPathBuilder >> close [
+
+	cairoContext closePath
+]
+
 { #category : #'creating path' }
 AthensAeCairoPathBuilder >> createPath: aBlock [
 
@@ -37,6 +43,23 @@ AthensAeCairoPathBuilder >> createPath: aBlock [
 	aBlock value: self.
 
 	^ cairoContext currentPath
+]
+
+{ #category : #'path commands' }
+AthensAeCairoPathBuilder >> curveVia: p1 and: p2 to: aPoint [
+
+	| pt1 |
+	pt1 := self toAbsolute: p1.
+	lastControlPoint := self toAbsolute: p2.
+	endPoint := self toAbsolute: aPoint.
+
+	cairoContext
+		curveViaX: pt1 x
+		y: pt1 y
+		viaX: lastControlPoint x
+		y: lastControlPoint y
+		toX: endPoint x
+		y: endPoint y
 ]
 
 { #category : #'path commands' }
@@ -71,6 +94,12 @@ AthensAeCairoPathBuilder >> lineTo: aPoint [
 	cairoContext lineTo: endPoint
 ]
 
+{ #category : #private }
+AthensAeCairoPathBuilder >> lineToX: x Y: y [
+	
+	cairoContext lineToX: x y: y
+]
+
 { #category : #'path commands' }
 AthensAeCairoPathBuilder >> moveTo: aPoint [ 
 
@@ -78,6 +107,12 @@ AthensAeCairoPathBuilder >> moveTo: aPoint [
 	lastControlPoint := nil.
 
 	cairoContext moveTo: endPoint
+]
+
+{ #category : #drawing }
+AthensAeCairoPathBuilder >> moveToX: x Y: y [
+
+	cairoContext moveToX: x y: y
 ]
 
 { #category : #'path commands' }
