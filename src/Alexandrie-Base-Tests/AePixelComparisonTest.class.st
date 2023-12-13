@@ -8,6 +8,27 @@ Class {
 }
 
 { #category : #tests }
+AePixelComparisonTest >> testEmptyExpectedForm [
+	"This happens when the pixel match tests doesn't find the file."
+
+	| actual expected aPixelComparison |
+	actual := Form extent: 10 @ 10 depth: 32.
+	expected := Form extent: 0 @ 0 depth: 32.
+	aPixelComparison := AePixelComparison
+		expectedForm: expected
+		actualForm: actual
+		label: 'test'.
+
+	self
+		assert: aPixelComparison numberOfMismatchingPixels
+		equals: 100.
+
+	self
+		assert: aPixelComparison mismatchingPixelRatio
+		closeTo: 1.0
+]
+
+{ #category : #tests }
 AePixelComparisonTest >> testIsMatch [
 	
 	| commonExtent actual expected aPixelComparison |

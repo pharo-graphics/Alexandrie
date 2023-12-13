@@ -48,8 +48,8 @@ AePixelComparison >> actualVsExpectedMergedDiffForm [
 	expectedDiffForm := Form extent: expectedForm extent depth: expectedForm depth.
 	
 	self mismatchingPixelsDo: [ :currentPoint :actualColor :expectedColor |
-		actualDiffForm colorAt: currentPoint put: actualColor.
-		expectedDiffForm colorAt: currentPoint put: expectedColor ].
+		actualDiffForm colorAt: currentPoint put: Color black.
+		expectedDiffForm colorAt: currentPoint put: Color black ].
 	
 	^ self concatenatedForm: actualDiffForm and: expectedDiffForm
 ]
@@ -58,6 +58,18 @@ AePixelComparison >> actualVsExpectedMergedDiffForm [
 AePixelComparison >> actualVsExpectedMergedForm [
 
 	^ self concatenatedForm: actualForm and: expectedForm
+]
+
+{ #category : #'accessing diff' }
+AePixelComparison >> comparableHeight [
+
+	^ actualForm height max: expectedForm height
+]
+
+{ #category : #'accessing diff' }
+AePixelComparison >> comparableWidth [
+
+	^ actualForm width max: expectedForm width
 ]
 
 { #category : #private }
@@ -83,18 +95,6 @@ AePixelComparison >> expectedForm [
 AePixelComparison >> expectedForm: aForm [
 
 	expectedForm := aForm
-]
-
-{ #category : #'accessing diff' }
-AePixelComparison >> intersectionHeight [
-
-	^ actualForm height min: expectedForm height
-]
-
-{ #category : #'accessing diff' }
-AePixelComparison >> intersectionWidth [
-
-	^ actualForm width min: expectedForm width
 ]
 
 { #category : #testing }
@@ -139,8 +139,12 @@ AePixelComparison >> mismatchingAverage [
 { #category : #'accessing diff' }
 AePixelComparison >> mismatchingPixelRatio [
 
-	^ self numberOfMismatchingPixels /
-		(self intersectionWidth * self intersectionHeight)
+	| total |
+	total := self comparableWidth * self comparableHeight.
+
+	^ total isZero
+		ifFalse: [ self numberOfMismatchingPixels / total ]
+		ifTrue: [ 0 ]
 ]
 
 { #category : #'accessing diff' }
@@ -160,20 +164,24 @@ AePixelComparison >> mismatchingPixels [
 
 { #category : #'accessing diff' }
 AePixelComparison >> mismatchingPixelsDo: aBlock [
-	"For each mismatching pixel (in the intersecting area), evaluate a block with the following arguments:
+	"For each mismatching pixel, evaluate a block with the following arguments:
 		* 0-indexed points Note: forms are 0-indexed
 		* the actual color
 		* the expected color" 
-	
-	0 to: self intersectionWidth - 1 do: [ :x |
-		0 to: self intersectionHeight - 1 do: [ :y |
+
+	0 to: self comparableWidth - 1 do: [ :x |
+		0 to: self comparableHeight - 1 do: [ :y |
 
 			| currentPoint actualColor expectedColor |
-			currentPoint := x@y. 
+			currentPoint := x@y.
+			"Note: #colorAt: answers transparent when the
+			argument exceeds extent."
 			actualColor := actualForm colorAt: currentPoint.
 			expectedColor := expectedForm colorAt: currentPoint.
 
-			actualColor = expectedColor ifFalse: [
+			((currentPoint < actualForm extent) and: [ 
+			 (currentPoint < expectedForm extent) and: [
+			 actualColor = expectedColor ]]) ifFalse: [
 				aBlock
 					cull: currentPoint
 					cull: actualColor
