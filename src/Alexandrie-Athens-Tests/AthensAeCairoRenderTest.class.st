@@ -25,6 +25,12 @@ AthensAeCairoRenderTest class >> inspectMismatches [
 	super inspectMismatches
 ]
 
+{ #category : #hooks }
+AthensAeCairoRenderTest >> expectedFormsDirectory [
+
+	^ AeFilesystemResources testsDirectory / 'athens' / 'basic'
+]
+
 { #category : #tests }
 AthensAeCairoRenderTest >> surfaceWith01Rectangle [
 

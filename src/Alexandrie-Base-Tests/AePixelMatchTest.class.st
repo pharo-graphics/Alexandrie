@@ -51,6 +51,7 @@ AePixelMatchTest class >> exportAll [
 
 	| directory |
 	directory := self new expectedFormsDirectory.
+	directory ensureCreateDirectory.
 	directory deleteAllChildren.
 
 	self allFormSelectors do: [ :each |

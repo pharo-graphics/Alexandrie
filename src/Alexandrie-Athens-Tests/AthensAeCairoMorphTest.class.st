@@ -25,6 +25,12 @@ AthensAeCairoMorphTest class >> inspectMismatches [
 	super inspectMismatches
 ]
 
+{ #category : #hooks }
+AthensAeCairoMorphTest >> expectedFormsDirectory [
+
+	^ AeFilesystemResources testsDirectory / 'athens' / 'morphic'
+]
+
 { #category : #private }
 AthensAeCairoMorphTest >> newSurfaceForMorph: aMorph [
 
