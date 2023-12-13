@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'cairoSurface',
 		'canvas',
-		'pathBuilder'
+		'pathBuilder',
+		'freetypeRenderer'
 	],
 	#category : #'Alexandrie-Athens'
 }
@@ -149,6 +150,15 @@ AthensAeCairoSurface >> flush [
 	cairoSurface flush
 ]
 
+{ #category : #'text support' }
+AthensAeCairoSurface >> getFreetypeFontRendererFor: aFreeTypeFont [
+
+	^ freetypeRenderer
+		  font: aFreeTypeFont;
+		  advance: 0 @ 0;
+		  yourself
+]
+
 { #category : #initialization }
 AthensAeCairoSurface >> initializeOn: aCairoSurface [
 
@@ -156,7 +166,8 @@ AthensAeCairoSurface >> initializeOn: aCairoSurface [
 	
 	cairoSurface := aCairoSurface.
 	canvas := self newCanvas.
-	pathBuilder := AthensAeCairoPathBuilder on: canvas cairoContext
+	pathBuilder := AthensAeCairoPathBuilder on: canvas cairoContext.
+	freetypeRenderer := AthensAeCairoFreetypeRenderer on: canvas.
 ]
 
 { #category : #'debugging - new tools' }

@@ -5,7 +5,8 @@ Class {
 		'cairoContext',
 		'pathTransform',
 		'paintTransform',
-		'currentClipRect'
+		'currentClipRect',
+		'freetypeRenderer'
 	],
 	#category : #'Alexandrie-Athens'
 }
@@ -63,6 +64,22 @@ AthensAeCairoCanvas >> draw [
 AthensAeCairoCanvas >> fill [
 	
 	cairoContext fill
+]
+
+{ #category : #accessing }
+AthensAeCairoCanvas >> fontRendererForLogicalFont: aFont [ 
+	
+	^ self freetypeRenderer
+		  logicalFont: aFont;
+		  advance: 0 @ 0;
+		  yourself
+]
+
+{ #category : #accessing }
+AthensAeCairoCanvas >> freetypeRenderer [
+
+	^ freetypeRenderer ifNil: [
+		freetypeRenderer := AthensAeCairoFreetypeRenderer on: self ]
 ]
 
 { #category : #initialization }
@@ -142,11 +159,29 @@ AthensAeCairoCanvas >> resetDash [
 	cairoContext dashDisable
 ]
 
+{ #category : #'drawing text' }
+AthensAeCairoCanvas >> setFont: aFont [
+
+	currentFontRenderer := aFont athensAeCairoFontRendererFor: self
+]
+
+{ #category : #initialization }
+AthensAeCairoCanvas >> setFontSize: aNumber [ 
+
+	cairoContext fontSize: aNumber
+]
+
 { #category : #drawing }
 AthensAeCairoCanvas >> setPathMatrix [
 
 	cairoContext matrix: pathTransform cairoMatrix
 
+]
+
+{ #category : #'drawing text' }
+AthensAeCairoCanvas >> setScaledFont: aCairoScaledFont [
+	
+	cairoContext scaledFont: aCairoScaledFont
 ]
 
 { #category : #drawing }

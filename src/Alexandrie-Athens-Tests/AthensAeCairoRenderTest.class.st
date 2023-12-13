@@ -267,3 +267,34 @@ AthensAeCairoRenderTest >> surfaceWith09Clip [
 
 	^ surface
 ]
+
+{ #category : #tests }
+AthensAeCairoRenderTest >> surfaceWith10Text [
+
+	| aString font surface |
+	aString := 'Hello Athens!'.
+
+	font := LogicalFont
+		familyName: StandardFonts codeFont familyName
+		pointSize: 30.
+
+	surface := AthensAeCairoSurface
+		extent: (font widthOfString: aString) @ (font ascent + font descent).
+
+	surface drawDuring: [ :canvas |
+		surface clear: Color white.
+
+		canvas
+			setFont: font;
+			setPaint: Color blue.
+
+		"Translate by font's ascent, otherwise
+		we will see only things below baseline."
+		canvas pathTransform
+			translateX: 0
+			Y: font getPreciseAscent.
+
+		canvas drawString: aString ].
+
+	^ surface
+]
