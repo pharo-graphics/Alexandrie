@@ -1,8 +1,14 @@
 Class {
 	#name : #AthensAeCairoRenderTest,
-	#superclass : #AeCairoRenderTest,
+	#superclass : #AePixelMatchTest,
 	#category : #'Alexandrie-Athens-Tests'
 }
+
+{ #category : #hooks }
+AthensAeCairoRenderTest class >> allFormSelectors [
+
+	^ self selectors select: [ :each | each beginsWith: 'surface' ]
+]
 
 { #category : #convenience }
 AthensAeCairoRenderTest class >> exportAll [
@@ -32,7 +38,7 @@ AthensAeCairoRenderTest >> expectedFormsDirectory [
 ]
 
 { #category : #tests }
-AthensAeCairoRenderTest >> surfaceWith01Rectangle [
+AthensAeCairoRenderTest >> surface01Rectangle [
 
 	| surface |
 	surface := AthensAeCairoSurface extent: 100 asPoint. 
@@ -55,7 +61,7 @@ AthensAeCairoRenderTest >> surfaceWith01Rectangle [
 ]
 
 { #category : #tests }
-AthensAeCairoRenderTest >> surfaceWith02RectanglePath [
+AthensAeCairoRenderTest >> surface02RectanglePath [
 
 	| surface path |
 	surface := AthensAeCairoSurface extent: 40 asPoint. 
@@ -79,7 +85,7 @@ AthensAeCairoRenderTest >> surfaceWith02RectanglePath [
 ]
 
 { #category : #tests }
-AthensAeCairoRenderTest >> surfaceWith03StrightLines [
+AthensAeCairoRenderTest >> surface03StrightLines [
 
 	| surface |
 	surface := AthensAeCairoSurface extent: 55 @ 110. 
@@ -102,7 +108,7 @@ AthensAeCairoRenderTest >> surfaceWith03StrightLines [
 ]
 
 { #category : #tests }
-AthensAeCairoRenderTest >> surfaceWith04HollowRectangle [
+AthensAeCairoRenderTest >> surface04HollowRectangle [
 	"Draw a hollow rectangle (frame) using lineTo/moveTo commands,
  	 with path, consisting of two contours: outer and inner one.
 
@@ -134,7 +140,7 @@ AthensAeCairoRenderTest >> surfaceWith04HollowRectangle [
 ]
 
 { #category : #tests }
-AthensAeCairoRenderTest >> surfaceWith05RepeatCurvedPath [
+AthensAeCairoRenderTest >> surface05RepeatCurvedPath [
 
 	| steps extent surface colorWheel path |
 	steps := 1000.
@@ -173,7 +179,7 @@ AthensAeCairoRenderTest >> surfaceWith05RepeatCurvedPath [
 ]
 
 { #category : #tests }
-AthensAeCairoRenderTest >> surfaceWith06LinearGradient [
+AthensAeCairoRenderTest >> surface06LinearGradient [
 
 	| surface gradientPaint stroke |
 	surface := AthensAeCairoSurface extent: 100 @ 150.
@@ -198,7 +204,7 @@ AthensAeCairoRenderTest >> surfaceWith06LinearGradient [
 ]
 
 { #category : #tests }
-AthensAeCairoRenderTest >> surfaceWith07RadialGradient [
+AthensAeCairoRenderTest >> surface07RadialGradient [
 
 	| surface gradientPaint stroke |
 	surface := AthensAeCairoSurface extent: 100 @ 100.
@@ -223,7 +229,7 @@ AthensAeCairoRenderTest >> surfaceWith07RadialGradient [
 ]
 
 { #category : #tests }
-AthensAeCairoRenderTest >> surfaceWith08FormPaint [
+AthensAeCairoRenderTest >> surface08FormPaint [
 
 	| surface stroke form formPaint |
 	surface := AthensAeCairoSurface extent: 100 @ 100.
@@ -249,7 +255,7 @@ AthensAeCairoRenderTest >> surfaceWith08FormPaint [
 ]
 
 { #category : #tests }
-AthensAeCairoRenderTest >> surfaceWith09Clip [
+AthensAeCairoRenderTest >> surface09Clip [
 
 	| surface |
 	surface := AthensAeCairoSurface extent: 80 @ 80.
@@ -278,15 +284,19 @@ AthensAeCairoRenderTest >> surfaceWith09Clip [
 ]
 
 { #category : #tests }
-AthensAeCairoRenderTest >> surfaceWith10Text [
+AthensAeCairoRenderTest >> surface10Text [
 
 	| aString font surface |
 	aString := 'Hello Athens!'.
 
 	font := LogicalFont
-		familyName: StandardFonts codeFont familyName
+		familyName: 'Source Code Pro'
 		pointSize: 30.
 
+	"We assume Source Code Pro family is embedded"
+	AeFontManager resetGlobalInstance.
+	AeFontManager globalInstance scanEmbeddedFonts.
+	
 	surface := AthensAeCairoSurface
 		extent: (font widthOfString: aString) @ (font ascent + font descent).
 
@@ -309,7 +319,7 @@ AthensAeCairoRenderTest >> surfaceWith10Text [
 ]
 
 { #category : #tests }
-AthensAeCairoRenderTest >> surfaceWith11Tiger [
+AthensAeCairoRenderTest >> surface11Tiger [
 
 	| surface |
 	surface := AthensAeCairoSurface extent: 300 asPoint.

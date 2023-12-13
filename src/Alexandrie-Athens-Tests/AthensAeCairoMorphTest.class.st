@@ -1,8 +1,14 @@
 Class {
 	#name : #AthensAeCairoMorphTest,
-	#superclass : #AeCairoRenderTest,
+	#superclass : #AePixelMatchTest,
 	#category : #'Alexandrie-Athens-Tests'
 }
+
+{ #category : #hooks }
+AthensAeCairoMorphTest class >> allFormSelectors [
+
+	^ self selectors select: [ :each | each beginsWith: 'surface' ]
+]
 
 { #category : #convenience }
 AthensAeCairoMorphTest class >> exportAll [
@@ -43,7 +49,7 @@ AthensAeCairoMorphTest >> newSurfaceForMorph: aMorph [
 ]
 
 { #category : #tests }
-AthensAeCairoMorphTest >> surfaceWith01PlainMorph [
+AthensAeCairoMorphTest >> surface01PlainMorph [
 
 	^ self newSurfaceForMorph:
 		(Morph new
@@ -53,13 +59,13 @@ AthensAeCairoMorphTest >> surfaceWith01PlainMorph [
 ]
 
 { #category : #tests }
-AthensAeCairoMorphTest >> surfaceWith02StringMorph [
+AthensAeCairoMorphTest >> surface02StringMorph [
 
 	^ self newSurfaceForMorph: 'Hola' asStringMorph
 ]
 
 { #category : #tests }
-AthensAeCairoMorphTest >> surfaceWith03EllipseMorph [
+AthensAeCairoMorphTest >> surface03EllipseMorph [
 
 	^ self newSurfaceForMorph:
 		(EllipseMorph new
