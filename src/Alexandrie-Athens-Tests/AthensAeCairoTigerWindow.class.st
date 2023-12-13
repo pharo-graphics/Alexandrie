@@ -1,8 +1,15 @@
 Class {
 	#name : #AthensAeCairoTigerWindow,
 	#superclass : #AthensTigerWindow,
-	#category : #'Alexandrie-Athens-Examples'
+	#category : #'Alexandrie-Athens-Tests'
 }
+
+{ #category : #running }
+AthensAeCairoTigerWindow class >> openAnimated [
+	<script: 'self openAnimated'>.
+	
+	super openAnimated.
+]
 
 { #category : #initialization }
 AthensAeCairoTigerWindow >> initialize [
