@@ -24,6 +24,12 @@ AthensAeCairoPathBuilder >> absolute [
 	absolute := true
 ]
 
+{ #category : #private }
+AthensAeCairoPathBuilder >> arcCenterX: xc centerY: yc radius: radius startAngle: angle1 endAngle: angle2 [
+
+	cairoContext arcCenterX: xc centerY: yc radius: radius startAngle: angle1 endAngle: angle2
+]
+
 { #category : #'path commands' }
 AthensAeCairoPathBuilder >> close [
 

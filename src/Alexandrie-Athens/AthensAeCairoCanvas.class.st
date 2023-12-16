@@ -66,6 +66,18 @@ AthensAeCairoCanvas >> fill [
 	cairoContext fill
 ]
 
+{ #category : #drawing }
+AthensAeCairoCanvas >> fillRuleEvenOdd [
+
+	cairoContext useFillRuleEvenOdd
+]
+
+{ #category : #accessing }
+AthensAeCairoCanvas >> fillRuleWinding [
+	
+	cairoContext useFillRuleWinding
+]
+
 { #category : #accessing }
 AthensAeCairoCanvas >> fontRendererForLogicalFont: aFont [ 
 	

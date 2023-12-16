@@ -328,3 +328,45 @@ AthensAeCairoRenderTest >> surface11Tiger [
 
 	^ surface
 ]
+
+{ #category : #tests }
+AthensAeCairoRenderTest >> surface12FillRule [
+
+	| surface |
+	surface := AthensAeCairoSurface extent: 120 @ 60.
+
+	surface drawDuring: [ :canvas |
+		| path |
+		canvas pathTransform translateBy: 30 asPoint.
+
+		canvas fillRuleEvenOdd.
+		path := canvas createPath: [ :builder |
+			builder
+				absolute;
+				moveTo: 30@0;
+				arcCenterX: 0
+					centerY: 0
+					radius: 30
+					startAngle: 0
+					endAngle: Float twoPi;
+				moveTo: 20@0;
+				arcCenterX: 0
+					centerY: 0
+					radius: 20
+					startAngle: 0
+					endAngle: Float twoPi;
+				close ].
+		canvas setPaint: Color blue.
+		canvas drawShape: path.
+		canvas setStrokePaint: Color red.
+		canvas drawShape: path.
+
+		canvas pathTransform translateBy: 60 @ 0.
+		canvas fillRuleWinding.
+		canvas setPaint: Color blue.
+		canvas drawShape: path.
+		canvas setStrokePaint: Color red.
+		canvas drawShape: path ].
+
+	^ surface
+]
