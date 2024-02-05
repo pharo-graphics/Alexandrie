@@ -1,14 +1,15 @@
 Class {
-	#name : #AeCairoPatternSourceConvertedTest,
-	#superclass : #TestCase,
+	#name : 'AeCairoPatternSourceConvertedTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'surface',
 		'context'
 	],
-	#category : #'Alexandrie-Cairo-Tests'
+	#category : 'Alexandrie-Cairo-Tests',
+	#package : 'Alexandrie-Cairo-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeCairoPatternSourceConvertedTest >> testLinearGradient [
 
 	| aLinearGradient |
@@ -26,7 +27,7 @@ AeCairoPatternSourceConvertedTest >> testLinearGradient [
 		equals: AeCairoLinearGradientPattern
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeCairoPatternSourceConvertedTest >> testMesh [
 
 	| meshPattern |
@@ -41,7 +42,7 @@ AeCairoPatternSourceConvertedTest >> testMesh [
 		equals: AeCairoMeshPattern
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeCairoPatternSourceConvertedTest >> testRadialGradient [
 
 	| aRadialGradient |
@@ -61,7 +62,7 @@ AeCairoPatternSourceConvertedTest >> testRadialGradient [
 		equals: AeCairoRadialGradientPattern
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeCairoPatternSourceConvertedTest >> testSolid [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
@@ -72,7 +73,7 @@ AeCairoPatternSourceConvertedTest >> testSolid [
 		equals: AeCairoColorPattern
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeCairoPatternSourceConvertedTest >> testSurface [
 
 	| tmpSurface |

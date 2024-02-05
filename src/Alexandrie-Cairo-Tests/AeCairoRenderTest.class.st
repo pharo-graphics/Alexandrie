@@ -1,22 +1,23 @@
 Class {
-	#name : #AeCairoRenderTest,
-	#superclass : #AePixelMatchTest,
-	#category : #'Alexandrie-Cairo-Tests'
+	#name : 'AeCairoRenderTest',
+	#superclass : 'AePixelMatchTest',
+	#category : 'Alexandrie-Cairo-Tests',
+	#package : 'Alexandrie-Cairo-Tests'
 }
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 AeCairoRenderTest class >> allFormSelectors [
 
 	^ self selectors select: [ :each | each beginsWith: 'surfaceWith' ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 AeCairoRenderTest class >> isAbstract [
 		
 	^ self == AeCairoRenderTest
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 AeCairoRenderTest >> expectedFormsDirectory [
 
 	^ AeFilesystemResources cairoDirectory

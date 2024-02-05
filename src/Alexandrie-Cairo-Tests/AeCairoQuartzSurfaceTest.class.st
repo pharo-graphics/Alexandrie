@@ -2,12 +2,13 @@
 An AeCairoQuartzSurfaceTest is a test class for testing the behavior of AeCairoQuartzSurface
 "
 Class {
-	#name : #AeCairoQuartzSurfaceTest,
-	#superclass : #TestCase,
-	#category : #'Alexandrie-Cairo-Tests'
+	#name : 'AeCairoQuartzSurfaceTest',
+	#superclass : 'TestCase',
+	#category : 'Alexandrie-Cairo-Tests',
+	#package : 'Alexandrie-Cairo-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeCairoQuartzSurfaceTest >> testItIsNotCurrentlySupported [
 
 	| aSurface |

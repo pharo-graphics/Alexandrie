@@ -2,12 +2,13 @@
 An AeCairoStatusTest is a test class for testing the behavior of AeCairoStatus
 "
 Class {
-	#name : #AeCairoStatusTest,
-	#superclass : #TestCase,
-	#category : #'Alexandrie-Cairo-Tests'
+	#name : 'AeCairoStatusTest',
+	#superclass : 'TestCase',
+	#category : 'Alexandrie-Cairo-Tests',
+	#package : 'Alexandrie-Cairo-Tests'
 }
 
-{ #category : #test }
+{ #category : 'test' }
 AeCairoStatusTest >> testSuccess [
 
 	| aSurface |
@@ -25,7 +26,7 @@ AeCairoStatusTest >> testSuccess [
 		equals: 'no error has occurred'
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 AeCairoStatusTest >> testUnsuccessfulCreation [
 
 	| anInvalidSurface anInvalidContext expectedStatusDescription |

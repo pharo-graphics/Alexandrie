@@ -1,20 +1,21 @@
 Class {
-	#name : #AeUTF8ConverterTest,
-	#superclass : #TestCase,
+	#name : 'AeUTF8ConverterTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'converter'
 	],
-	#category : #'Alexandrie-Cairo-Tests'
+	#category : 'Alexandrie-Cairo-Tests',
+	#package : 'Alexandrie-Cairo-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 AeUTF8ConverterTest >> setUp [
 
 	super setUp.
 	converter := AeUTF8Converter new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeUTF8ConverterTest >> testConvertByteString [
 
 	converter convert: 'aßc'.
@@ -35,7 +36,7 @@ AeUTF8ConverterTest >> testConvertByteString [
 	self assert: (converter buffer first: 3) equals: #[195 159 99]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeUTF8ConverterTest >> testConvertWideString [
 	"Test encoding with a Greek delta letter.
 	This one: https://en.wikipedia.org/wiki/Delta_(letter)"
@@ -60,7 +61,7 @@ AeUTF8ConverterTest >> testConvertWideString [
 	self assert: (converter buffer first: 3) equals: #[206 148 99]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeUTF8ConverterTest >> testReuse [
 
 	converter convert: 'ßa'.

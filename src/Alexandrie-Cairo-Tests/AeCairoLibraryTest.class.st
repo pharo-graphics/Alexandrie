@@ -1,10 +1,11 @@
 Class {
-	#name : #AeCairoLibraryTest,
-	#superclass : #TestCase,
-	#category : #'Alexandrie-Cairo-Tests'
+	#name : 'AeCairoLibraryTest',
+	#superclass : 'TestCase',
+	#category : 'Alexandrie-Cairo-Tests',
+	#package : 'Alexandrie-Cairo-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 AeCairoLibraryTest >> testVersionString [
 
 	self
