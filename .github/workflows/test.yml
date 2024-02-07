@@ -35,7 +35,7 @@ jobs:
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
-          name: Logs-${{ matrix.smalltalk }}-${{ matrix.os }}
+          name: Logs_${{ matrix.smalltalk }}_${{ matrix.os }}
           path: |
             *.fuel
             PharoDebug.log
