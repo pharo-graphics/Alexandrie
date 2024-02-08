@@ -668,7 +668,7 @@ AeCairoExamplesRenderTest >> surfaceWithText [
 { #category : #'tests - text' }
 AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
 
-	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aFontFace glyphArray |
+	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aFontFace glyphArray debugScaledFont |
 
 	fontSize := 25.
 	string := 'Hola'.
@@ -700,6 +700,23 @@ AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
 		lineWidth: 1.5;
 		stroke.
 
+
+
+	"Debugging a random failure..."
+	Stdio stdout
+		<< #surfaceWithTextAsPath; lf;
+		<< (aContext glyphExtentsOf: glyphArray) asString; lf.
+	debugScaledFont := aFontFace 
+		newScaledFontWithFontMatrix: (AeCairoMatrix newScalingBy: fontSize asPoint)
+		userToDeviceMatrix: AeCairoMatrix newIdentity
+		options: AeCairoFontOptions new.
+	Stdio stdout << (debugScaledFont glyphExtentsOf: glyphArray) asString; lf.
+	glyphArray := debugScaledFont glyphArrayForString: string.
+	Stdio stdout << (debugScaledFont glyphExtentsOf: glyphArray) asString; lf.
+	
+	
+	
+	
 	^ aSurface
 ]
 
