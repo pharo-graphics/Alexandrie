@@ -680,6 +680,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
 
 	"Set up"
 	aFTLibrary := AeFTLibrary newInitialized.
+	50 milliSeconds wait.
 	aFTFace := AeSourceSansPro_Bold firstFaceUsing: aFTLibrary.
 	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
 	aContext
