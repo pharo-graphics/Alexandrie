@@ -2,16 +2,15 @@
 An AeCairoMatrixTest is a test class for testing the behavior of AeCairoMatrix
 "
 Class {
-	#name : 'AeCairoMatrixTest',
-	#superclass : 'TestCase',
+	#name : #AeCairoMatrixTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'matrix'
 	],
-	#category : 'Alexandrie-Cairo-Tests',
-	#package : 'Alexandrie-Cairo-Tests'
+	#category : #'Alexandrie-Cairo-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMatrixTest >> testBeMultiplicationOfBy [
 
 	| x y |
@@ -40,7 +39,7 @@ AeCairoMatrixTest >> testBeMultiplicationOfBy [
 		closeTo: (AeCairoMatrix newX: 0.2 y: 0.6 sx: 0.6 sy: 1.2 shx: 1.0 shy: 1.8)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMatrixTest >> testCopy [
 
 	| aCopy |
@@ -60,7 +59,7 @@ AeCairoMatrixTest >> testCopy [
 	self assert: matrix shy equals: 0.6
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMatrixTest >> testCreation [ 
 
 	matrix := AeCairoMatrix newX: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
@@ -79,7 +78,7 @@ AeCairoMatrixTest >> testCreation [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMatrixTest >> testInverted [
 
 	| aMatrix invertedMatrix |
@@ -102,7 +101,7 @@ AeCairoMatrixTest >> testInverted [
 		raise: AeCairoStatusError
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMatrixTest >> testIsIdentity [
 
 	matrix := AeCairoMatrix newIdentity.
@@ -115,7 +114,7 @@ AeCairoMatrixTest >> testIsIdentity [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMatrixTest >> testNewFrom [
 
 	| aCopy |
@@ -135,7 +134,7 @@ AeCairoMatrixTest >> testNewFrom [
 	self assert: matrix shy equals: 0.6
 ]
 
-{ #category : 'test' }
+{ #category : #test }
 AeCairoMatrixTest >> testNewRotationByRadians [
 
 	| radians |
@@ -151,7 +150,7 @@ AeCairoMatrixTest >> testNewRotationByRadians [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMatrixTest >> testNewScalingBy [
 
 	matrix := AeCairoMatrix newScalingBy: 2@3.
@@ -165,7 +164,7 @@ AeCairoMatrixTest >> testNewScalingBy [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMatrixTest >> testNewTranslationBy [
 
 	matrix := AeCairoMatrix newTranslationBy: 2@3.
@@ -179,7 +178,7 @@ AeCairoMatrixTest >> testNewTranslationBy [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMatrixTest >> testPostMultiply [
 
 	| y |
@@ -192,7 +191,7 @@ AeCairoMatrixTest >> testPostMultiply [
 		closeTo: (AeCairoMatrix newX: 0.1000 y: 0.2000 sx: 0.5828 sy: -0.2888 shx: 0.0177 shy: 0.6608)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMatrixTest >> testPreMultiply [
 
 	| y |
@@ -205,7 +204,7 @@ AeCairoMatrixTest >> testPreMultiply [
 		closeTo: (AeCairoMatrix newX: -0.1143 y: 0.1922 sx: -0.3428 sy: 0.6369 shx: -0.0664 shy: 0.5766)
 ]
 
-{ #category : 'test' }
+{ #category : #test }
 AeCairoMatrixTest >> testRotateByRadians [
 
 	| radians |
@@ -222,7 +221,7 @@ AeCairoMatrixTest >> testRotateByRadians [
 
 ]
 
-{ #category : 'test' }
+{ #category : #test }
 AeCairoMatrixTest >> testRotateTwice [
 
 	| radians |
@@ -239,7 +238,7 @@ AeCairoMatrixTest >> testRotateTwice [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMatrixTest >> testScaleBy [
 
 	matrix := AeCairoMatrix newIdentity.
@@ -254,7 +253,7 @@ AeCairoMatrixTest >> testScaleBy [
 
 ]
 
-{ #category : 'test' }
+{ #category : #test }
 AeCairoMatrixTest >> testScaleTwice [
 
 	matrix := AeCairoMatrix newScalingBy: 2@3.
@@ -269,7 +268,7 @@ AeCairoMatrixTest >> testScaleTwice [
 
 ]
 
-{ #category : 'test' }
+{ #category : #test }
 AeCairoMatrixTest >> testTranslateBy [
 
 	matrix := AeCairoMatrix newIdentity.
@@ -284,7 +283,7 @@ AeCairoMatrixTest >> testTranslateBy [
 
 ]
 
-{ #category : 'test' }
+{ #category : #test }
 AeCairoMatrixTest >> testTranslateTwice [
 
 	matrix := AeCairoMatrix newTranslationBy: 2@3.
@@ -299,7 +298,7 @@ AeCairoMatrixTest >> testTranslateTwice [
 
 ]
 
-{ #category : 'test' }
+{ #category : #test }
 AeCairoMatrixTest >> testValue [
 	"Formulas adapted from documentation.
 	See: https://www.cairographics.org/manual/cairo-cairo-matrix-t.html"

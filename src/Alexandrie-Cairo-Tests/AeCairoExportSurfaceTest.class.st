@@ -1,21 +1,20 @@
 Class {
-	#name : 'AeCairoExportSurfaceTest',
-	#superclass : 'TestCase',
+	#name : #AeCairoExportSurfaceTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'surface',
 		'target'
 	],
-	#category : 'Alexandrie-Cairo-Tests',
-	#package : 'Alexandrie-Cairo-Tests'
+	#category : #'Alexandrie-Cairo-Tests'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 AeCairoExportSurfaceTest class >> isAbstract [
 		
 	^ self == AeCairoExportSurfaceTest
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoExportSurfaceTest >> assertExportsToTarget [
 
 	| aContext |
@@ -48,7 +47,7 @@ AeCairoExportSurfaceTest >> assertExportsToTarget [
 	self assert: target size > 400 "Good enough as smoke test"
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 AeCairoExportSurfaceTest >> ensureDeletePossibleTargets [
 
 	self targetInSubdirectory parent ensureDeleteAll.
@@ -57,38 +56,38 @@ AeCairoExportSurfaceTest >> ensureDeletePossibleTargets [
 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 AeCairoExportSurfaceTest >> fileName [
 
 	^ self subclassResponsibility
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 AeCairoExportSurfaceTest >> setUp [
 
 	super setUp.
 	self ensureDeletePossibleTargets
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 AeCairoExportSurfaceTest >> surfaceClass [
 
 	^ self subclassResponsibility
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 AeCairoExportSurfaceTest >> targetInCurrentWorkingDirectory [
 
 	^ FileSystem workingDirectory / self fileName
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 AeCairoExportSurfaceTest >> targetInSubdirectory [
 
 	^ FileSystem workingDirectory / self utf8String / self fileName
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 AeCairoExportSurfaceTest >> tearDown [
 
 	surface ifNotNil: #finish.
@@ -96,7 +95,7 @@ AeCairoExportSurfaceTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoExportSurfaceTest >> testExportInCurrentWorkingDirectory [
 
 	target := self targetInCurrentWorkingDirectory.
@@ -104,7 +103,7 @@ AeCairoExportSurfaceTest >> testExportInCurrentWorkingDirectory [
 	self assertExportsToTarget
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoExportSurfaceTest >> testExportInSubdirectory [
 
 	target := self targetInSubdirectory.
@@ -113,7 +112,7 @@ AeCairoExportSurfaceTest >> testExportInSubdirectory [
 	self assertExportsToTarget
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoExportSurfaceTest >> testExportInUnexistentSubdirectoryFails [
 
 	target := self targetInSubdirectory.
@@ -124,7 +123,7 @@ AeCairoExportSurfaceTest >> testExportInUnexistentSubdirectoryFails [
 		description: 'AeCairoStatusError: CAIRO_STATUS_WRITE_ERROR (error while writing to output stream)'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoExportSurfaceTest >> testHasDevice [
 	"This kind of cairo surfaces don't have a device."
 
@@ -135,7 +134,7 @@ AeCairoExportSurfaceTest >> testHasDevice [
 	self deny: surface hasDevice
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 AeCairoExportSurfaceTest >> utf8String [
 	"Answer a filename (or directory name) that requires utf-8 encoding, to challenge the FFI bindings."
 

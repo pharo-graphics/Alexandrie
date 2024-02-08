@@ -1,6 +1,6 @@
 Class {
-	#name : 'AeCairoFreetypeTest',
-	#superclass : 'TestCase',
+	#name : #AeCairoFreetypeTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'aScaledFont',
 		'aFontFace',
@@ -10,11 +10,10 @@ Class {
 		'cairoSurface',
 		'cairoContext'
 	],
-	#category : 'Alexandrie-Cairo-Tests',
-	#package : 'Alexandrie-Cairo-Tests'
+	#category : #'Alexandrie-Cairo-Tests'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 AeCairoFreetypeTest >> setUp [
 	super setUp.
 
@@ -32,7 +31,7 @@ AeCairoFreetypeTest >> setUp [
 
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 AeCairoFreetypeTest >> tearDown [
 
 	{ aScaledFont. aFontFace. aFTFace. aFTLibrary } do: #externallyFree.
@@ -40,7 +39,7 @@ AeCairoFreetypeTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoFreetypeTest >> testFontMatrix [
 
 	| retrievedScaledFont |
@@ -54,7 +53,7 @@ AeCairoFreetypeTest >> testFontMatrix [
 		equals: aFontMatrix
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoFreetypeTest >> testScaleMatrix [
 
 	| retrievedScaledFont |
@@ -68,7 +67,7 @@ AeCairoFreetypeTest >> testScaleMatrix [
 		equals: aFontMatrix
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoFreetypeTest >> testSetFontMatrix [
 
 	| retrievedScaledFont |
@@ -88,7 +87,7 @@ AeCairoFreetypeTest >> testSetFontMatrix [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoFreetypeTest >> testSetFontSize [
 
 	| retrievedScaledFont |
@@ -107,7 +106,7 @@ AeCairoFreetypeTest >> testSetFontSize [
 		equals: aFontMatrix
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoFreetypeTest >> testUserToDeviceMatrix [
 
 	| retrievedScaledFont |

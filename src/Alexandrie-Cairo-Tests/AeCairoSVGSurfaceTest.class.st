@@ -1,17 +1,16 @@
 Class {
-	#name : 'AeCairoSVGSurfaceTest',
-	#superclass : 'AeCairoExportSurfaceTest',
-	#category : 'Alexandrie-Cairo-Tests',
-	#package : 'Alexandrie-Cairo-Tests'
+	#name : #AeCairoSVGSurfaceTest,
+	#superclass : #AeCairoExportSurfaceTest,
+	#category : #'Alexandrie-Cairo-Tests'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 AeCairoSVGSurfaceTest >> fileName [
 
 	^ self utf8String, '.svg'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 AeCairoSVGSurfaceTest >> surfaceClass [
 
 	^ AeCairoSVGSurface

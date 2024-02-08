@@ -1,32 +1,31 @@
 Class {
-	#name : 'AeCairoExamplesRenderTest',
-	#superclass : 'AeCairoRenderTest',
-	#category : 'Alexandrie-Cairo-Tests',
-	#package : 'Alexandrie-Cairo-Tests'
+	#name : #AeCairoExamplesRenderTest,
+	#superclass : #AeCairoRenderTest,
+	#category : #'Alexandrie-Cairo-Tests'
 }
 
-{ #category : 'convenience' }
+{ #category : #convenience }
 AeCairoExamplesRenderTest class >> exportAll [
 	<script: 'self exportAll' >
 
 	super exportAll
 ]
 
-{ #category : 'convenience' }
+{ #category : #convenience }
 AeCairoExamplesRenderTest class >> inspectAll [
 	<script: 'super inspectAll'>
 	
 	super inspectAll
 ]
 
-{ #category : 'convenience' }
+{ #category : #convenience }
 AeCairoExamplesRenderTest class >> inspectMismatches [
 	<script: 'super inspectMismatches'>
 	
 	super inspectMismatches
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithAllOperators [
 	"Catalog of cairo's compositing operators.
 
@@ -85,7 +84,7 @@ AeCairoExamplesRenderTest >> surfaceWithAllOperators [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithColoredIcons [
 
 	| inputForm inputSurface outputColors outputSurface outputContext |
@@ -114,7 +113,7 @@ AeCairoExamplesRenderTest >> surfaceWithColoredIcons [
 	^ outputSurface
 ]
 
-{ #category : 'tests - mesh gradient' }
+{ #category : #'tests - mesh gradient' }
 AeCairoExamplesRenderTest >> surfaceWithCoonsPatch [
 	"See: https://blogs.igalia.com/dpino/2020/06/11/renderization-of-conic-gradients/"
 
@@ -147,7 +146,7 @@ AeCairoExamplesRenderTest >> surfaceWithCoonsPatch [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithDeviceOffset [
 
 	| aSurface aSquare offsetPoint surfaceWidth surfaceHeight |
@@ -185,7 +184,7 @@ AeCairoExamplesRenderTest >> surfaceWithDeviceOffset [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithDeviceScale [
 
 	| aSurface aSquare scalePoint surfaceWidth surfaceHeight |
@@ -224,7 +223,7 @@ AeCairoExamplesRenderTest >> surfaceWithDeviceScale [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 	"Cairo allows drawing strokes with dotted borders (either with circular dots, or squared dots).
 	The trick is setting dash segments of length 0.0, followed by a non-zero segment.
@@ -291,7 +290,7 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithEmulatedRadialGradient [
 
 	| aSurface context aPattern |
@@ -316,7 +315,7 @@ AeCairoExamplesRenderTest >> surfaceWithEmulatedRadialGradient [
 	^ aSurface
 ]
 
-{ #category : 'tests - mesh gradient' }
+{ #category : #'tests - mesh gradient' }
 AeCairoExamplesRenderTest >> surfaceWithGouraudBasedTriangle [
 
 	| aSurface aContext aMeshPattern |
@@ -344,7 +343,7 @@ AeCairoExamplesRenderTest >> surfaceWithGouraudBasedTriangle [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithPixelatedIcon [
 
 	| iconForm iconSurface iconPattern scale aSurface aContext |
@@ -383,7 +382,7 @@ AeCairoExamplesRenderTest >> surfaceWithPixelatedIcon [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithRoundedRectangle [
 
 	| extent aSurface aContext aRectangle |
@@ -418,7 +417,7 @@ AeCairoExamplesRenderTest >> surfaceWithRoundedRectangle [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedBuffered [
 	"Emulate a Gaussian shadow on a circle using a radial gradient, using an intermediate surface."
 
@@ -479,7 +478,7 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedBuffered [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedDirect [
 	"Emulate a Gaussian shadow on a circle using a radial gradient."
 
@@ -528,7 +527,7 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedDirect [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithSphere [
 	"Emulate a sphere with a radial gradient, using an inner center different than the outer center."
 
@@ -564,7 +563,7 @@ AeCairoExamplesRenderTest >> surfaceWithSphere [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithStraightEdgesCurve [
 	"Edges of the curve are straight.
 	Reference: https://github.com/memononen/nanovg/issues/650"
@@ -596,7 +595,7 @@ AeCairoExamplesRenderTest >> surfaceWithStraightEdgesCurve [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithStretchedIcon [
 
 	| aSurface aContext iconForm iconSurface iconPattern horizontalScale verticalScale |
@@ -629,7 +628,7 @@ AeCairoExamplesRenderTest >> surfaceWithStretchedIcon [
 	^ aSurface
 ]
 
-{ #category : 'tests - text' }
+{ #category : #'tests - text' }
 AeCairoExamplesRenderTest >> surfaceWithText [
 
 	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aScaledFont |
@@ -666,7 +665,7 @@ AeCairoExamplesRenderTest >> surfaceWithText [
 	^ aSurface
 ]
 
-{ #category : 'tests - text' }
+{ #category : #'tests - text' }
 AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
 
 	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aFontFace glyphArray |
@@ -704,7 +703,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
 	^ aSurface
 ]
 
-{ #category : 'tests - text' }
+{ #category : #'tests - text' }
 AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 	"The trick is: 
 	- Create special font options with full hinting and without anti-aliasing
@@ -759,7 +758,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 	^ aSurface
 ]
 
-{ #category : 'tests - text' }
+{ #category : #'tests - text' }
 AeCairoExamplesRenderTest >> surfaceWithToyAPISelectFontSlantWeight [
 	"Use `AeCairoContext>>selectFont:slant:weight:`, which cairo documentation considers 'toy API'."
 
@@ -789,7 +788,7 @@ AeCairoExamplesRenderTest >> surfaceWithToyAPISelectFontSlantWeight [
 	^ aSurface
 ]
 
-{ #category : 'tests - text' }
+{ #category : #'tests - text' }
 AeCairoExamplesRenderTest >> surfaceWithToyAPIShowText [
 	"Use `AeCairoContext>>#showText:`, which cairo documentation considers 'toy API'."
 

@@ -1,11 +1,10 @@
 Class {
-	#name : 'AeCairoConvertTest',
-	#superclass : 'AeCairoRenderTest',
-	#category : 'Alexandrie-Cairo-Tests',
-	#package : 'Alexandrie-Cairo-Tests'
+	#name : #AeCairoConvertTest,
+	#superclass : #AeCairoRenderTest,
+	#category : #'Alexandrie-Cairo-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoConvertTest >> surfaceWithDeviceScaleAsARGB32ImageSurface [
 
 	| radius center extent scale aSurface aContext |
@@ -30,7 +29,7 @@ AeCairoConvertTest >> surfaceWithDeviceScaleAsARGB32ImageSurface [
 	^ aSurface asARGB32ImageSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoConvertTest >> surfaceWithDeviceScaleAsAlphaChannelGrayscaleImage [
 
 	| radius center extent scale aSurface aContext |

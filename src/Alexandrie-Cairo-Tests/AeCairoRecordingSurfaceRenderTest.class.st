@@ -1,32 +1,31 @@
 Class {
-	#name : 'AeCairoRecordingSurfaceRenderTest',
-	#superclass : 'AeCairoRenderTest',
-	#category : 'Alexandrie-Cairo-Tests',
-	#package : 'Alexandrie-Cairo-Tests'
+	#name : #AeCairoRecordingSurfaceRenderTest,
+	#superclass : #AeCairoRenderTest,
+	#category : #'Alexandrie-Cairo-Tests'
 }
 
-{ #category : 'convenience' }
+{ #category : #convenience }
 AeCairoRecordingSurfaceRenderTest class >> exportAll [
 	<script: 'super exportAll' >
 
 	super exportAll
 ]
 
-{ #category : 'convenience' }
+{ #category : #convenience }
 AeCairoRecordingSurfaceRenderTest class >> inspectAll [
 	<script: 'super inspectAll'>
 	
 	super inspectAll
 ]
 
-{ #category : 'convenience' }
+{ #category : #convenience }
 AeCairoRecordingSurfaceRenderTest class >> inspectMismatches [
 	<script: 'super inspectMismatches'>
 	
 	super inspectMismatches
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoRecordingSurfaceRenderTest >> surfaceWithBounds [
 
 	| aRectangle aRecordingSurface targetSurface |
@@ -72,7 +71,7 @@ AeCairoRecordingSurfaceRenderTest >> surfaceWithBounds [
 	^ targetSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoRecordingSurfaceRenderTest >> surfaceWithNoBounds [
 
 	| aRectangle aRecordingSurface targetSurface |

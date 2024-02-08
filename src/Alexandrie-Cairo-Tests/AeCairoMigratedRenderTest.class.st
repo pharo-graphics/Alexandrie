@@ -11,34 +11,33 @@ Each test has a link on its comment, to trace the original source.
 
 "
 Class {
-	#name : 'AeCairoMigratedRenderTest',
-	#superclass : 'AeCairoRenderTest',
-	#category : 'Alexandrie-Cairo-Tests',
-	#package : 'Alexandrie-Cairo-Tests'
+	#name : #AeCairoMigratedRenderTest,
+	#superclass : #AeCairoRenderTest,
+	#category : #'Alexandrie-Cairo-Tests'
 }
 
-{ #category : 'convenience' }
+{ #category : #convenience }
 AeCairoMigratedRenderTest class >> exportAll [
 	<script: 'super exportAll' >
 
 	super exportAll
 ]
 
-{ #category : 'convenience' }
+{ #category : #convenience }
 AeCairoMigratedRenderTest class >> inspectAll [
 	<script: 'super inspectAll'>
 	
 	super inspectAll
 ]
 
-{ #category : 'convenience' }
+{ #category : #convenience }
 AeCairoMigratedRenderTest class >> inspectMismatches [
 	<script: 'super inspectMismatches'>
 	
 	super inspectMismatches
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 AeCairoMigratedRenderTest >> drawTestPaintCheckeredOn: aContext [
 	"Based on the cairo_test_paint_checkered function, defined in cairo-test.c"
 
@@ -57,7 +56,7 @@ AeCairoMigratedRenderTest >> drawTestPaintCheckeredOn: aContext [
 		]
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 AeCairoMigratedRenderTest >> newCheckSurfaceExtent: aPoint [
 	"Based on the _draw_check function, defined in cairo-test.c"
 	
@@ -89,7 +88,7 @@ AeCairoMigratedRenderTest >> newCheckSurfaceExtent: aPoint [
 	^ aSurface
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 AeCairoMigratedRenderTest >> newSurfaceExtent: aPoint [
 
 	^ AeCairoImageSurface
@@ -97,7 +96,7 @@ AeCairoMigratedRenderTest >> newSurfaceExtent: aPoint [
 		  format: AeCairoSurfaceFormat argb32
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithFillAndStroke [
 	"Tests using cairo_fill_preserve/cairo_stroke to fill/stroke the same path.
 	
@@ -131,7 +130,7 @@ AeCairoMigratedRenderTest >> surfaceWithFillAndStroke [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithFillAndStrokeAlpha [
 	"Use a group to fill/stroke a path then blend the result with alpha onto the destination.
 	
@@ -186,7 +185,7 @@ AeCairoMigratedRenderTest >> surfaceWithFillAndStrokeAlpha [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithFillAndStrokeAlphaAdd [
 	"Use a group to fill/stroke a path (each with different alpha) using DEST_OUT and ADD to combine.
 	
@@ -251,7 +250,7 @@ AeCairoMigratedRenderTest >> surfaceWithFillAndStrokeAlphaAdd [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithFillDisjoint [
 	"Tests filling unsorted rectangles.
 	
@@ -287,7 +286,7 @@ AeCairoMigratedRenderTest >> surfaceWithFillDisjoint [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithFillEmpty [
 	"Test filling with an empty path.
 	
@@ -323,7 +322,7 @@ AeCairoMigratedRenderTest >> surfaceWithFillEmpty [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithFillMissedStop [
 	"Tests that the tessellator doesn't miss stop events when generating trapezoids.
 	
@@ -369,7 +368,7 @@ AeCairoMigratedRenderTest >> surfaceWithFillMissedStop [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithGradientAlpha [
 	"Tests drawing of a gradient with various alpha values in the color stops.
 	
@@ -393,7 +392,7 @@ AeCairoMigratedRenderTest >> surfaceWithGradientAlpha [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithGradientConstantAlpha [
 	"Tests drawing of a gradient with constant alpha values in the color stops.
 	
@@ -418,7 +417,7 @@ AeCairoMigratedRenderTest >> surfaceWithGradientConstantAlpha [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithGradientZeroStops [
 	"Verifies that gradients with no stops don't cause problems.
 	
@@ -450,7 +449,7 @@ AeCairoMigratedRenderTest >> surfaceWithGradientZeroStops [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithGradientZeroStopsMask [
 	"Verifies that gradients with no stops are considered clear.
 	
@@ -480,7 +479,7 @@ AeCairoMigratedRenderTest >> surfaceWithGradientZeroStopsMask [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithGroupClip [
 	"Test preserving paths across groups.
 	
@@ -514,7 +513,7 @@ AeCairoMigratedRenderTest >> surfaceWithGroupClip [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithGroupPaint [
 	"Based on: group-paint.c"
 
@@ -537,7 +536,7 @@ AeCairoMigratedRenderTest >> surfaceWithGroupPaint [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithGroupUnaligned [
 	"Based on: group-unaligned.c"
 
@@ -566,7 +565,7 @@ AeCairoMigratedRenderTest >> surfaceWithGroupUnaligned [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithInvertedClip [
 	"Clip + InvertedClip should be opaque.
 	
@@ -602,7 +601,7 @@ AeCairoMigratedRenderTest >> surfaceWithInvertedClip [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithMeshPatternConical [
 	"Paint a conical pattern using a mesh pattern.
 	
@@ -675,7 +674,7 @@ AeCairoMigratedRenderTest >> surfaceWithMeshPatternConical [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithMeshPatternOverlap [
 	"Paint a mesh pattern with a simple fold.
 	
@@ -716,7 +715,7 @@ AeCairoMigratedRenderTest >> surfaceWithMeshPatternOverlap [
 	^ aSurface
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoMigratedRenderTest >> surfaceWithOutsideClipping [
 	"Clipping outside a region.
 	

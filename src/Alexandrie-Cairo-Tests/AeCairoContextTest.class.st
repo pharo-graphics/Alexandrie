@@ -1,15 +1,14 @@
 Class {
-	#name : 'AeCairoContextTest',
-	#superclass : 'TestCase',
+	#name : #AeCairoContextTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'surface',
 		'context'
 	],
-	#category : 'Alexandrie-Cairo-Tests',
-	#package : 'Alexandrie-Cairo-Tests'
+	#category : #'Alexandrie-Cairo-Tests'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 AeCairoContextTest >> newSourceSansProRegularFontFace [
 
 	| aFTLibrary aFTFace |
@@ -18,7 +17,7 @@ AeCairoContextTest >> newSourceSansProRegularFontFace [
 	^ AeCairoFreetypeFontFace newForFace: aFTFace
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoContextTest >> testClipExtents [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
@@ -63,7 +62,7 @@ AeCairoContextTest >> testClipExtents [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoContextTest >> testCurrentPoint [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
@@ -93,7 +92,7 @@ AeCairoContextTest >> testCurrentPoint [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoContextTest >> testCurrentTarget [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
@@ -111,7 +110,7 @@ AeCairoContextTest >> testCurrentTarget [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoContextTest >> testFillRule [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
@@ -129,7 +128,7 @@ AeCairoContextTest >> testFillRule [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoContextTest >> testFontExtents [
 
 	| aSurface aContext aFontFace aScaledFont aFontExtents |
@@ -169,7 +168,7 @@ AeCairoContextTest >> testFontExtents [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoContextTest >> testGlyphExtentsOf [
 
 	| aSurface aContext string aScaledFont aGlyphArray aTextExtents aFontFace |
@@ -208,7 +207,7 @@ AeCairoContextTest >> testGlyphExtentsOf [
 	self assert: aTextExtents advance closeTo: 34@0
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoContextTest >> testOperator [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
@@ -226,7 +225,7 @@ AeCairoContextTest >> testOperator [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoContextTest >> testPathExtents [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
@@ -264,7 +263,7 @@ AeCairoContextTest >> testPathExtents [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoContextTest >> testScaledFont [
 
 	| aSurface aContext aFontFace scaledFont17 scaledFont71 scaledFont17b |
@@ -320,7 +319,7 @@ AeCairoContextTest >> testScaledFont [
 		equals: scaledFont71 getHandle
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoContextTest >> testStrokeExtents [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.

@@ -1,11 +1,10 @@
 Class {
-	#name : 'AeCairoRecordingSurfaceTest',
-	#superclass : 'TestCase',
-	#category : 'Alexandrie-Cairo-Tests',
-	#package : 'Alexandrie-Cairo-Tests'
+	#name : #AeCairoRecordingSurfaceTest,
+	#superclass : #TestCase,
+	#category : #'Alexandrie-Cairo-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoRecordingSurfaceTest >> testInkExtentsInBoundedSurface [
 
 	| aRectangle aRecordingSurface |
@@ -27,7 +26,7 @@ AeCairoRecordingSurfaceTest >> testInkExtentsInBoundedSurface [
 		equals: aRectangle "Stroke was clipped"
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoRecordingSurfaceTest >> testInkExtentsInUnboundedSurface [
 
 	| aRectangle aRecordingSurface |

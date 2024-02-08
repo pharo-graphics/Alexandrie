@@ -1,6 +1,6 @@
-Extension { #name : 'AeFilesystemResources' }
+Extension { #name : #AeFilesystemResources }
 
-{ #category : '*Alexandrie-Cairo-Tests' }
+{ #category : #'*Alexandrie-Cairo-Tests' }
 AeFilesystemResources class >> cairoDirectory [ 
 
 	^ self testsDirectory / 'cairo'

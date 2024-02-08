@@ -1,14 +1,13 @@
 Class {
-	#name : 'AeCairoImageSurfaceTest',
-	#superclass : 'TestCase',
+	#name : #AeCairoImageSurfaceTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'surface'
 	],
-	#category : 'Alexandrie-Cairo-Tests',
-	#package : 'Alexandrie-Cairo-Tests'
+	#category : #'Alexandrie-Cairo-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testConvertZeroWidthAsFormARGB32 [
 
 	| aSurface aForm |
@@ -20,7 +19,7 @@ AeCairoImageSurfaceTest >> testConvertZeroWidthAsFormARGB32 [
 	self assert: aForm extent equals: aSurface extent.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testExtent [
 
 	surface := AeCairoImageSurface extent: 100 @ 50.
@@ -28,7 +27,7 @@ AeCairoImageSurfaceTest >> testExtent [
 	self assert: surface extent equals: 100 @ 50
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testExtentFormat [
 
 	surface := AeCairoImageSurface
@@ -38,7 +37,7 @@ AeCairoImageSurfaceTest >> testExtentFormat [
 	self assert: surface extent equals: 100 @ 50
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testFromForm [
 
 	| aForm |
@@ -48,7 +47,7 @@ AeCairoImageSurfaceTest >> testFromForm [
 	self assert: surface extent equals: aForm extent
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testHasDevice [
 
 	surface := AeCairoImageSurface extent: 1 @ 1.
@@ -56,7 +55,7 @@ AeCairoImageSurfaceTest >> testHasDevice [
 	self deny: surface hasDevice
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testHeight [
 
 	surface := AeCairoImageSurface extent: 100 @ 50.
@@ -64,7 +63,7 @@ AeCairoImageSurfaceTest >> testHeight [
 	self assert: surface height equals: 50
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testNewForByteArray [
 
 	| extent format stride byteArray |
@@ -89,7 +88,7 @@ AeCairoImageSurfaceTest >> testNewForByteArray [
 			surface externallyFree ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testNewForFFIExternalArray [
 
 	| extent format stride buffer |
@@ -114,7 +113,7 @@ AeCairoImageSurfaceTest >> testNewForFFIExternalArray [
 			buffer free ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testNewSimilarImageFormatWidthHeight [
 
 	| aSimilarSurface |
@@ -135,7 +134,7 @@ AeCairoImageSurfaceTest >> testNewSimilarImageFormatWidthHeight [
 	self assert: aSimilarSurface status isSuccess.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testPremultipliedAlphaCanLooseInformation [
 	"The purpose of this test is showing that pixels with little alpha loose information due to Cairo's premultiplied-alpha."
 
@@ -162,7 +161,7 @@ AeCairoImageSurfaceTest >> testPremultipliedAlphaCanLooseInformation [
 	self assert: (pixelValue byteAt: 4) equals: 1. "alpha"
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testPremultipliedAlphaConversionAsForm [
 	"Cairo uses premultiplied-alpha while Form uses straight-alpha"
 
@@ -201,7 +200,7 @@ AeCairoImageSurfaceTest >> testPremultipliedAlphaConversionAsForm [
 		equals: aSurfaceBytes
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testPremultipliedAlphaConversionFromForm [
 	"Cairo uses premultiplied-alpha while Form uses straight-alpha"
 
@@ -220,7 +219,7 @@ AeCairoImageSurfaceTest >> testPremultipliedAlphaConversionFromForm [
 		equals: aColor
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testReadNonASCIIFilenamePNG [
 
 	surface := AeCairoImageSurface newFromPngFileAt: AeFilesystemResources testsDirectory / 'import' / 'utf8-logō.png'.
@@ -228,7 +227,7 @@ AeCairoImageSurfaceTest >> testReadNonASCIIFilenamePNG [
 	self assert: surface extent equals: 100 @ 34
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testStrideForWidthFormat [
 
 	self
@@ -245,7 +244,7 @@ AeCairoImageSurfaceTest >> testStrideForWidthFormat [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testWidth [
 
 	surface := AeCairoImageSurface extent: 100 @ 50.
@@ -253,7 +252,7 @@ AeCairoImageSurfaceTest >> testWidth [
 	self assert: surface width equals: 100
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testWriteNonASCIIFilenamePNG [
 
 	| aPNGFileReference |
