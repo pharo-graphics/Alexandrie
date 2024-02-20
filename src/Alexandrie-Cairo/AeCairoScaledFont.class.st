@@ -311,6 +311,7 @@ AeCairoScaledFont >> glyphsFrom: bytes size: byteCount intoGlyphs: glyphs size: 
 			nil,
 			nil,
 			nil ) )
+		options: #( - optStrict )
 ]
 
 { #category : #API }

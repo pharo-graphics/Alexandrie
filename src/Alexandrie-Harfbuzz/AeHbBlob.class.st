@@ -74,14 +74,16 @@ AeHbBlob class >> unownedNewFrom: data size: dataSize [
 
 	See: https://harfbuzz.github.io/harfbuzz-hb-blob.html#hb-blob-create"
 
-	^ self ffiCall: #(
-		hb_blob_t *
-		hb_blob_create (
-			const char *data,
-			int dataSize,
-			1, "HB_MEMORY_MODE_READONLY"
-			nil,
-			nil ) )
+	^ self
+		ffiCall: #(
+			hb_blob_t *
+			hb_blob_create (
+				const char *data,
+				int dataSize,
+				1, "HB_MEMORY_MODE_READONLY"
+				nil,
+				nil ) )
+		options: #( - optStrict )
 ]
 
 { #category : #'instance creation' }
