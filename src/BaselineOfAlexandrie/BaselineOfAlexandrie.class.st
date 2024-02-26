@@ -65,13 +65,12 @@ BaselineOfAlexandrie >> downloadTestFonts [
 	"Do this class name trick to avoid loading warnings such as: 
 	NewUndeclaredWarning: BaselineOfAlexandrie>>downloadTestFonts (AeFilesystemResources is Undeclared)"
 
-	aeDownloadedFont := #AeDownloadedFont asClassInEnvironment: self class environment.
-	aeFilesystemResources := #AeFilesystemResources asClassInEnvironment: self class environment.
-	aeFontManager := #AeFontManager asClassInEnvironment: self class environment.
+	aeDownloadedFont := self class environment at: #AeDownloadedFont.
+	aeFilesystemResources := self class environment at: #AeFilesystemResources.
+	aeFontManager := self class environment at: #AeFontManager.
 	
 	aeDownloadedFont ensureAllDownloadedAt: aeFilesystemResources downloadedFontsDirectory.
-	aeFontManager globalInstance scanDirectory: aeFilesystemResources fontsDirectory.
-
+	aeFontManager globalInstance scanDirectory: aeFilesystemResources fontsDirectory
 ]
 
 { #category : #actions }
@@ -83,11 +82,11 @@ BaselineOfAlexandrie >> postload: loader package: packageSpec [
 	"Re-initialize enumerations as they is executed before the subclasses
 	are loaded since they are packaged separately.
 	Additionally: reference the class indirectly to avoid NewUndeclaredWarning."
-	(#AeEnumeration asClassInEnvironment: self class environment) initialize.
+	(self class environment at: #AeEnumeration) initialize.
 
 	self downloadTestFonts; stdoutLibraryVersions.
 
-	Initialized := true.
+	Initialized := true
 ]
 
 { #category : #actions }
@@ -97,24 +96,30 @@ BaselineOfAlexandrie >> stdoutLibraryVersions [
 	"Do this class name trick to avoid loading warnings such as: 
 	NewUndeclaredWarning: BaselineOfAlexandrie>>stdoutLibraryVersions (AeCairoLibrary is Undeclared)"
 
-	aeCairoLibrary := #AeCairoLibrary asClassInEnvironment: self class environment.
-	aeFTLibrary := #AeFTLibrary asClassInEnvironment: self class environment.
-	aeHarfbuzzLibrary := #AeHarfbuzzLibrary asClassInEnvironment: self class environment.
+	aeCairoLibrary := self class environment at: #AeCairoLibrary.
+	aeFTLibrary := self class environment at: #AeFTLibrary.
+	aeHarfbuzzLibrary := self class environment at: #AeHarfbuzzLibrary.
 	
 	Stdio stdout
 		<< '-----------------------------'; lf;
 		<< 'Main graphic library versions'; lf;
 		<< '-----------------------------'; lf.
 
-	{	'Cairo: 		'. {[aeCairoLibrary uniqueInstance versionString]. [aeCairoLibrary uniqueInstance libraryName]}.
-		'Freetype: 	'. {[aeFTLibrary newInitialized versionString]. [aeFTLibrary ffiLibrary uniqueInstance libraryName ]}.
-		'Harfbuzz: 	'. {[aeHarfbuzzLibrary uniqueInstance versionString]. [aeHarfbuzzLibrary uniqueInstance libraryName]}.
-		'SDL: 		'. {[SDL2 version versionString]. [SDL2 findSDL2 asFFILibrary libraryName]}.
+	{	'Cairo:    '. {
+			[aeCairoLibrary uniqueInstance versionString].
+			[aeCairoLibrary uniqueInstance libraryName]}.
+		'Freetype: '. {
+			[aeFTLibrary newInitialized versionString].
+			[aeFTLibrary ffiLibrary uniqueInstance libraryName ]}.
+		'Harfbuzz: '. {
+			[aeHarfbuzzLibrary uniqueInstance versionString].
+			[aeHarfbuzzLibrary uniqueInstance libraryName]}.
+		'SDL2:     '. {
+			[SDL2 version versionString].
+			[SDL2 findSDL2 asFFILibrary libraryName]}.
+
 	} 	pairsDo: [ :label :blockArray |
 		Stdio stdout << label.
-		blockArray do: [ :each |
-			Stdio stdout << (each onErrorDo: [ '---' ]); << ' 	' ].
+		blockArray do: [ :each | Stdio stdout << (each onErrorDo: [ '---' ]); << ' 	' ].
 		Stdio stdout lf ]
-
-
 ]
