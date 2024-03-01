@@ -95,6 +95,13 @@ AeCairoScaledFont >> fontExtents [
 ]
 
 { #category : #accessing }
+AeCairoScaledFont >> fontFace [
+
+	^ fontFace ifNil: [
+		fontFace := self genericFontFace ]
+]
+
+{ #category : #accessing }
 AeCairoScaledFont >> fontFace: aCairoFontFace [
 	"Set the fonce face associated with myself."
 
@@ -108,6 +115,18 @@ AeCairoScaledFont >> fontMatrix [
 	aCairoMatrix := AeCairoMatrix new.
 	self getFontMatrixInto: aCairoMatrix.
 	^ aCairoMatrix
+]
+
+{ #category : #API }
+AeCairoScaledFont >> genericFontFace [
+	"Gets the font face that this scaled font uses. This might be the font face passed on creation, but this does not hold true for all possible cases.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-get-font-face"
+
+	^ self ffiCall: #(
+		AeCairoFontFace
+		cairo_scaled_font_get_font_face (
+			self ))
 ]
 
 { #category : #API }
