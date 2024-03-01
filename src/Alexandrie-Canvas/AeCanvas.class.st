@@ -619,11 +619,11 @@ AeCanvas >> restoreContextOnlyIfClipAfterwards: aBlock [
 ]
 
 { #category : #'API - text' }
-AeCanvas >> scaledFontForFace: aFTFace size: pointSize [
+AeCanvas >> scaledFontForFace: aFace size: pointSize [
 	"Answer a `AeCairoScaledFont` that corresponds to the provided face and point size."
 
  	| aCairoFontFace aFontMatrix |
-	aCairoFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
+	aCairoFontFace := aFace newCairoFontFace.
 	aFontMatrix := AeCairoMatrix newScalingByX: pointSize y: pointSize.
 	
 	^ aCairoFontFace 
