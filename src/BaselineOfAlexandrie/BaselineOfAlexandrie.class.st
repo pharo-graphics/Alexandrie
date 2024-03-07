@@ -20,16 +20,16 @@ BaselineOfAlexandrie >> baseline: spec [
 				package: 'Alexandrie-Base';
 				package: 'Alexandrie-Base-Tests';
 
-				package: 'Alexandrie-Cairo'
-					with: [ spec requires: #('Alexandrie-Base') ];
-				package: 'Alexandrie-Cairo-Tests'
-					with: [ spec requires: #('Alexandrie-Cairo' 'Alexandrie-Base-Tests') ];
-					
 				package: 'Alexandrie-FreeType'
 					with: [ spec requires: #('Alexandrie-Base') ];
 				package: 'Alexandrie-FreeType-Tests'
 					with: [ spec requires: #('Alexandrie-FreeType' 'Alexandrie-Base-Tests') ];
 
+				package: 'Alexandrie-Cairo'
+					with: [ spec requires: #('Alexandrie-FreeType') ];
+				package: 'Alexandrie-Cairo-Tests'
+					with: [ spec requires: #('Alexandrie-Cairo' 'Alexandrie-FreeType-Tests') ];
+					
 				package: 'Alexandrie-FontManager'
 					with: [ spec requires: #('Alexandrie-FreeType') ];
 				package: 'Alexandrie-FontManager-Tests'
