@@ -1319,7 +1319,9 @@ AeCairoContext >> rectangleTo: extentPoint [
 
 { #category : #'API - path' }
 AeCairoContext >> rectangleX: aX y: aY width: aWidth height: aHeight [
-	"Note: aWidth and aHeight can be negative"
+	"Note: aWidth and aHeight can be negative.
+	
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-rectangle"
 
 	self ffiCall: #(
 		void
