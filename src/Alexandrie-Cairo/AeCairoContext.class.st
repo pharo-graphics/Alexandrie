@@ -998,6 +998,17 @@ AeCairoContext >> lineToX: x y: y [
 ]
 
 { #category : #'API - painting settings' }
+AeCairoContext >> lineWidth [
+	"Gets the current line width within the cairo context.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-line-width"
+
+	^ self ffiCall: #(
+		double
+		cairo_get_line_width ( self ) )
+]
+
+{ #category : #'API - painting settings' }
 AeCairoContext >> lineWidth: aNumber [
 	"Sets the current line width within the cairo context. The line width value specifies the diameter of a pen that is circular in user space, (though device-space pen may be an ellipse in general due to scaling/shear/rotation of the CTM).
 	

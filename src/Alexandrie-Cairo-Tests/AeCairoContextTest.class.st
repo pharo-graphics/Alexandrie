@@ -208,6 +208,21 @@ AeCairoContextTest >> testGlyphExtentsOf [
 ]
 
 { #category : #tests }
+AeCairoContextTest >> testLineWidth [
+
+	surface := AeCairoImageSurface extent: 1@1.
+	context := surface newContext.
+	
+	"Assert on default value"
+	self assert: context lineWidth equals: 2.0. 
+	
+	context lineWidth: 7.
+	
+	"Assert on new value"
+	self assert: context lineWidth equals: 7.0
+]
+
+{ #category : #tests }
 AeCairoContextTest >> testOperator [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
