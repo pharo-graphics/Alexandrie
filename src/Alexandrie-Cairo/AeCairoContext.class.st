@@ -978,7 +978,7 @@ AeCairoContext >> lineJoin: aCairoJoinStyle [
 { #category : #'API - path' }
 AeCairoContext >> lineTo: aPoint [
 
-	^ self lineToX: aPoint x asFloat y: aPoint y asFloat
+	^ self lineToX: aPoint x y: aPoint y
 ]
 
 { #category : #'API - path' }
@@ -1094,7 +1094,7 @@ AeCairoContext >> miterLimit: aNumber [
 { #category : #'API - path' }
 AeCairoContext >> moveTo: aPoint [
 
-	self moveToX: aPoint x asFloat y: aPoint y asFloat
+	self moveToX: aPoint x y: aPoint y
 ]
 
 { #category : #'API - path' }
@@ -1335,7 +1335,7 @@ AeCairoContext >> rectangleX: aX y: aY width: aWidth height: aHeight [
 AeCairoContext >> relativeLineTo: deltaPoint [
 	"Relative-coordinate version of `#lineTo:`"
 
-	^ self relativeLineToX: deltaPoint x asFloat y: deltaPoint y asFloat
+	^ self relativeLineToX: deltaPoint x y: deltaPoint y
 ]
 
 { #category : #'API - path' }
@@ -1356,7 +1356,7 @@ AeCairoContext >> relativeLineToX: dx y: dy [
 AeCairoContext >> relativeMoveTo: aPoint [
 	"Begin a new sub-path. After this call the current point will offset by aPoint."
 
-	self relativeMoveToX: aPoint x asFloat y: aPoint y asFloat
+	self relativeMoveToX: aPoint x y: aPoint y
 ]
 
 { #category : #'API - path' }
