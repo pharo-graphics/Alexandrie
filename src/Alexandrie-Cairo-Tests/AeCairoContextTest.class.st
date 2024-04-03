@@ -17,6 +17,12 @@ AeCairoContextTest >> newSourceSansProRegularFontFace [
 	^ AeCairoFreetypeFontFace newForFace: aFTFace
 ]
 
+{ #category : #accessing }
+AeCairoContextTest >> resources [
+
+	^ { AeFTLibraryResource }
+]
+
 { #category : #tests }
 AeCairoContextTest >> testClipExtents [
 
@@ -136,7 +142,7 @@ AeCairoContextTest >> testFontExtents [
 	aContext := aSurface newContext.
 	
 	"Set up scaled font in the context"
-	aFontFace := self newSourceSansProRegularFontFace.
+	aFontFace := AeFTLibraryResource current sourceSansProRegularFTFace newCairoFontFace.
 	aContext
 		fontFace: aFontFace;
 		fontSize: 17.
@@ -177,7 +183,7 @@ AeCairoContextTest >> testGlyphExtentsOf [
 	string := 'Hola'.
 	
 	"Set up scaled font in the context"
-	aFontFace := self newSourceSansProRegularFontFace.
+	aFontFace := AeFTLibraryResource current sourceSansProRegularFTFace newCairoFontFace.
 	aContext
 		fontFace: aFontFace;
 		fontSize: 17.

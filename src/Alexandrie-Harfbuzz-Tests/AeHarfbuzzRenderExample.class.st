@@ -27,9 +27,8 @@ AeHarfbuzzRenderExample class >> arrowsString [
 { #category : #examples }
 AeHarfbuzzRenderExample class >> example1SourceSansPro [
 
-	| aFTLibrary aFace |
-	aFTLibrary := AeFTLibrary newInitialized.
-	aFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
+	| aFace |
+	aFace := AeFTLibraryResource current sourceSansProRegularFTFace.
 
 	(self
 		freetypeFace: aFace

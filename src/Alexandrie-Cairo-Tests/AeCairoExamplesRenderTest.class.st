@@ -25,13 +25,19 @@ AeCairoExamplesRenderTest class >> inspectMismatches [
 	super inspectMismatches
 ]
 
+{ #category : #accessing }
+AeCairoExamplesRenderTest >> resources [
+
+	^ { AeFTLibraryResource }
+]
+
 { #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithAllOperators [
 	"Catalog of cairo's compositing operators.
 
 	See: https://www.cairographics.org/operators/"
 
-	| operators fontSize rectangleExtent rectangleOffset margin rowHeight aSurface aContext aFTLibrary aFTFace aFontFace |
+	| operators fontSize rectangleExtent rectangleOffset margin rowHeight aSurface aContext aFTFace aFontFace |
 	operators := AeCairoOperator allValues.
 	margin := 3.
 	fontSize := 8.
@@ -45,9 +51,8 @@ AeCairoExamplesRenderTest >> surfaceWithAllOperators [
 	aContext := aSurface newContext.
 
 	"Set up text"
-	aFTLibrary := AeFTLibrary newInitialized.
-	aFTFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
-	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
+	aFTFace := AeFTLibraryResource current sourceSansProRegularFTFace.
+	aFontFace := aFTFace newCairoFontFace.
 	aContext
 		fontFace: aFontFace;
 		fontSize: fontSize.
@@ -631,7 +636,7 @@ AeCairoExamplesRenderTest >> surfaceWithStretchedIcon [
 { #category : #'tests - text' }
 AeCairoExamplesRenderTest >> surfaceWithText [
 
-	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aScaledFont |
+	| fontSize string surfaceSize aSurface aContext aFTFace aScaledFont |
 	fontSize := 12.
 	"Get Lorem Ipsum without last cr character"
 	string := (String loremIpsum: 28) allButLast.
@@ -647,8 +652,7 @@ AeCairoExamplesRenderTest >> surfaceWithText [
 		paint.
 	
 	"Set up scaled font in the context"
-	aFTLibrary := AeFTLibrary newInitialized.
-	aFTFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
+	aFTFace := AeFTLibraryResource current sourceSansProRegularFTFace.
 	aContext
 		fontFace: (AeCairoFreetypeFontFace newForFace: aFTFace);
 		fontSize: fontSize.
@@ -668,7 +672,7 @@ AeCairoExamplesRenderTest >> surfaceWithText [
 { #category : #'tests - text' }
 AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
 
-	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aFontFace glyphArray debugScaledFont |
+	| fontSize string surfaceSize aSurface aContext aFTFace aFontFace glyphArray |
 
 	fontSize := 25.
 	string := 'Hola'.
@@ -679,9 +683,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
 	aContext := aSurface newContext.
 
 	"Set up"
-	aFTLibrary := AeFTLibrary newInitialized.
-	50 milliSeconds wait.
-	aFTFace := AeSourceSansPro_Bold firstFaceUsing: aFTLibrary.
+	aFTFace := AeFTLibraryResource current sourceSansProBoldFTFace.
 	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
 	aContext
 		sourceColor: Color paleGreen;
@@ -700,23 +702,6 @@ AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
 		dash: (AeFFIDoubleArray newFrom: { 7. 1 }) offset: 3;
 		lineWidth: 1.5;
 		stroke.
-
-
-
-	"Debugging a random failure..."
-	Stdio stdout
-		<< #surfaceWithTextAsPath; lf;
-		<< (aContext glyphExtentsOf: glyphArray) asString; lf.
-	debugScaledFont := aFontFace 
-		newScaledFontWithFontMatrix: (AeCairoMatrix newScalingBy: fontSize asPoint)
-		userToDeviceMatrix: AeCairoMatrix newIdentity
-		options: AeCairoFontOptions new.
-	Stdio stdout << (debugScaledFont glyphExtentsOf: glyphArray) asString; lf.
-	glyphArray := debugScaledFont glyphArrayForString: string.
-	Stdio stdout << (debugScaledFont glyphExtentsOf: glyphArray) asString; lf.
-	
-	
-	
 	
 	^ aSurface
 ]
@@ -729,7 +714,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 	- Convert the group to a pattern, to customize its filter and matrix
 	- Finally, paint the pattern on the surface"
 
-	| zoom fontSize surfaceSize string aSurface aContext aFTLibrary aFTFace aScaledFont aGlyphArray aFontOptions aFontFace aPattern |
+	| zoom fontSize surfaceSize string aSurface aContext aFTFace aScaledFont aGlyphArray aFontOptions aFontFace aPattern |
 	fontSize := 17.
 	zoom := 2.
 	string := 'aeiou'.
@@ -740,8 +725,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 	aContext := aSurface newContext.
 
 	"Set up aScaleFont"
-	aFTLibrary := AeFTLibrary newInitialized.
-	aFTFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
+	aFTFace := AeFTLibraryResource current sourceSansProRegularFTFace.
 	aFontOptions := AeCairoFontOptions new
 		antialias: AeCairoAntialias none;
 		hintStyle: AeCairoHintStyle full;
@@ -810,7 +794,7 @@ AeCairoExamplesRenderTest >> surfaceWithToyAPISelectFontSlantWeight [
 AeCairoExamplesRenderTest >> surfaceWithToyAPIShowText [
 	"Use `AeCairoContext>>#showText:`, which cairo documentation considers 'toy API'."
 
-	| string fontSize aSurface aContext aFTLibrary aFTFace aFontFace |
+	| string fontSize aSurface aContext aFTFace aFontFace |
 	string := 'Hï'.
 	fontSize := 25.
 	aSurface := AeCairoImageSurface
@@ -819,8 +803,7 @@ AeCairoExamplesRenderTest >> surfaceWithToyAPIShowText [
 	aContext := aSurface newContext.
 
 	"Set up a font"
-	aFTLibrary := AeFTLibrary newInitialized.
-	aFTFace := AeSourceSansPro_Bold firstFaceUsing: aFTLibrary.
+	aFTFace := AeFTLibraryResource current sourceSansProBoldFTFace.
 	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
 
 	aContext

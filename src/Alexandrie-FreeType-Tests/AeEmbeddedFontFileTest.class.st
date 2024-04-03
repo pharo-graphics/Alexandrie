@@ -11,16 +11,16 @@ Class {
 AeEmbeddedFontFileTest >> testAllFaces [
 
 	| lib |
-	lib := AeFTLibrary newInitialized.
-
-	self denyEmpty: (AeSourceCodePro_Regular allFacesUsing: lib)
+	lib := AeFTLibraryResource current library.
+	
+	self denyEmpty: (AeSourceSansPro_Regular allFacesUsing: lib)
 ]
 
 { #category : #tests }
 AeEmbeddedFontFileTest >> testFirstFace [
 
 	| lib allFaces |
-	lib := AeFTLibrary newInitialized.
+	lib := AeFTLibraryResource current library.
 
 	allFaces := Array streamContents: [ :stream |
 		AeEmbeddedFontFile allSubclassesDo: [ :each | 
