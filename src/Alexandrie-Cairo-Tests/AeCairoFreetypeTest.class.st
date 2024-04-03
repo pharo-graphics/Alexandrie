@@ -13,15 +13,20 @@ Class {
 	#category : #'Alexandrie-Cairo-Tests'
 }
 
+{ #category : #accessing }
+AeCairoFreetypeTest >> resources [
+
+	^ { AeFTLibraryResource }
+]
+
 { #category : #running }
 AeCairoFreetypeTest >> setUp [
 	super setUp.
 
 	cairoSurface := AeCairoImageSurface extent: 100 @ 20.
 	cairoContext := cairoSurface newContext.
-		
-	aFTLibrary := AeFTLibrary newInitialized.
-	aFTFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
+
+	aFTFace := AeFTLibraryResource current sourceSansProRegularFTFace.
 	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
 	aFontMatrix := AeCairoMatrix newScalingByX: 10 y: 15.
 	aScaledFont := aFontFace 
@@ -29,14 +34,6 @@ AeCairoFreetypeTest >> setUp [
 		userToDeviceMatrix: AeCairoMatrix newIdentity
 		options: AeCairoFontOptions new.
 
-]
-
-{ #category : #running }
-AeCairoFreetypeTest >> tearDown [
-
-	{ aScaledFont. aFontFace. aFTFace. aFTLibrary } do: #externallyFree.
-	
-	super tearDown
 ]
 
 { #category : #tests }
