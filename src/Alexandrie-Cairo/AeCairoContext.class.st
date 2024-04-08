@@ -153,24 +153,34 @@ AeCairoContext >> arcCenter: aPoint radius: aRadius startAngle: aStartAngleInRad
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> arcCenter: aCenter radius: aRadius startAngle: startAngleInRadians sweep: sweepAngleInRadians [
-	"Draw and arc that may be positive or negative according to the specified sweep angle."
+AeCairoContext >> arcCenter: aCenter radius: aRadius startAngle: startAngleInRadians endAngle: endAngleInRadians cw: isClockwise [
+	"Draw and arc that may be positive or negative according to isClockwise."
 
-	| endAngle |
-	endAngle := startAngleInRadians + sweepAngleInRadians.
-	sweepAngleInRadians positive
+	isClockwise
 		ifTrue: [
 			self
 				arcCenter: aCenter
 				radius: aRadius
 				startAngle: startAngleInRadians
-				endAngle: endAngle ]
+				endAngle: endAngleInRadians ]
 		ifFalse: [
 			self
 				arcNegativeCenter: aCenter
 				radius: aRadius
 				startAngle: startAngleInRadians
-				endAngle: endAngle ]
+				endAngle: endAngleInRadians ]
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> arcCenter: aCenter radius: aRadius startAngle: startAngleInRadians sweep: sweepAngleInRadians [
+	"Draw an arc that may be positive or negative (clockwise or counter-clockwise) according to the sign of the specified sweep angle."
+	
+	self
+		arcCenter: aCenter
+		radius: aRadius
+		startAngle: startAngleInRadians
+		endAngle: startAngleInRadians + sweepAngleInRadians
+		cw: sweepAngleInRadians positive
 ]
 
 { #category : #'API - path' }
