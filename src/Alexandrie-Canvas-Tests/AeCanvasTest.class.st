@@ -328,10 +328,10 @@ AeCanvasTest >> renderEmoji [
 AeCanvasTest >> renderForm [
 
 	| aeCanvas aForm |
-	aeCanvas := AeCanvas extent: 50@75.
+	aeCanvas := AeCanvas extent: 60@20.
 	aeCanvas clear: Color paleGreen.
 	
-	aForm := Smalltalk ui icons iconNamed: #pharoBig.
+	aForm := Form fromFileNamed: AeFilesystemResources removeIconPNG.
 
 	aeCanvas pathScale: (aeCanvas extent / aForm extent) asFloatPoint.
 	aeCanvas pathFactory: [ :cairoContext |

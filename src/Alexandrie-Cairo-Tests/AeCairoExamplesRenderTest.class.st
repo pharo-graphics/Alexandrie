@@ -93,7 +93,7 @@ AeCairoExamplesRenderTest >> surfaceWithAllOperators [
 AeCairoExamplesRenderTest >> surfaceWithColoredIcons [
 
 	| inputForm inputSurface outputColors outputSurface outputContext |
-	inputForm := self iconNamed: #windowClose.
+	inputForm := Form fromFileNamed: AeFilesystemResources removeIconPNG.
 	inputSurface := AeCairoImageSurface fromForm: inputForm.
 
 	outputColors := Color wheel: 7.
@@ -352,7 +352,7 @@ AeCairoExamplesRenderTest >> surfaceWithGouraudBasedTriangle [
 AeCairoExamplesRenderTest >> surfaceWithPixelatedIcon [
 
 	| iconForm iconSurface iconPattern scale aSurface aContext |
-	iconForm := Smalltalk ui icons iconNamed: #removeIcon.
+	iconForm := Form fromFileNamed: AeFilesystemResources removeIconPNG.
 	iconSurface := AeCairoImageSurface fromForm: iconForm.
 	iconPattern := AeCairoSurfacePattern surface: iconSurface.
 	scale := 5.0.
@@ -604,10 +604,9 @@ AeCairoExamplesRenderTest >> surfaceWithStraightEdgesCurve [
 AeCairoExamplesRenderTest >> surfaceWithStretchedIcon [
 
 	| aSurface aContext iconForm iconSurface iconPattern horizontalScale verticalScale |
-	iconForm := Smalltalk ui icons iconNamed: #classIcon.
-	self assert: iconForm extent = (16@16).
+	iconForm := Form fromFileNamed: AeFilesystemResources removeIconPNG.
 	horizontalScale := 0.5.
-	verticalScale := 4.0.
+	verticalScale := 2.0.
 
 	iconSurface := AeCairoImageSurface fromForm: iconForm.
 	iconPattern := AeCairoSurfacePattern surface: iconSurface.
