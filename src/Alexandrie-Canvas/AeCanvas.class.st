@@ -69,6 +69,14 @@ AeCanvas class >> newFor: aeCairoSurface [
 		  yourself
 ]
 
+{ #category : #'API - text' }
+AeCanvas >> appendGlyphsPath: aeGlyphArray font: aScaledFont [
+
+	cairoContext
+		scaledFont: aScaledFont;
+		appendGlyphsPath: aeGlyphArray
+]
+
 { #category : #converting }
 AeCanvas >> asForm [
 
@@ -326,6 +334,14 @@ AeCanvas >> drawFigureWithExplicitBorderOutsideAndNoBackground [
 	cairoContext clip
 ]
 
+{ #category : #'API - text' }
+AeCanvas >> drawGlyphs: aeGlyphArray font: aScaledFont [
+
+	cairoContext
+		scaledFont: aScaledFont;
+		showGlyphs: aeGlyphArray
+]
+
 { #category : #private }
 AeCanvas >> drawNothingButMayClip [
 
@@ -337,10 +353,13 @@ AeCanvas >> drawNothingButMayClip [
 
 { #category : #'API - text' }
 AeCanvas >> drawText: aeGlyphArray font: aScaledFont [
+	self
+		deprecated: 'Use #drawGlyphs:font: instead'
+		transformWith:
+			'`@receiver drawText:   `@arg1 font: `@arg2' ->
+			'`@receiver drawGlyphs: `@arg1 font: `@arg2'.
 
-	cairoContext
-		scaledFont: aScaledFont;
-		showGlyphs: aeGlyphArray
+	self drawGlyphs: aeGlyphArray font: aScaledFont
 ]
 
 { #category : #accessing }

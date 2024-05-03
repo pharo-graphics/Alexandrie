@@ -166,7 +166,7 @@ AeHarfbuzzRenderExample >> newForm [
 	aeCanvas pathTranslate: 0 @ (fontHeight*1.1).
 	aeCanvas setSourceColor: Color green muchDarker.
 	aeCanvas
-		drawText: self glyphArrayWithHarfbuzz
+		drawGlyphs: self glyphArrayWithHarfbuzz
 		font: cairoScaledFont.
 
 	^ aeCanvas asForm

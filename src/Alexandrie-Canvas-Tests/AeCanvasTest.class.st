@@ -353,7 +353,10 @@ AeCanvasTest >> renderGlyphs: aCairoGlyphsArray scaledFont: aCairoScaledFont on:
 	| metrics baseline |
 
 	"Calculate text metrics"
-	metrics := aeCanvas metricsFor: aCairoGlyphsArray font: aCairoScaledFont.
+	metrics :=
+		aeCanvas
+			metricsFor: aCairoGlyphsArray
+			font: aCairoScaledFont.
 	baseline := metrics bearingX @ metrics ascent negated.
 
 	"Draw baseline"
@@ -376,9 +379,8 @@ AeCanvasTest >> renderGlyphs: aCairoGlyphsArray scaledFont: aCairoScaledFont on:
 	aeCanvas
 		setSourceColor: Color orange;
 		pathTranslate: baseline;
-		drawText: aCairoGlyphsArray
-			font: aCairoScaledFont.
-
+		drawGlyphs: aCairoGlyphsArray
+			font: aCairoScaledFont
 ]
 
 { #category : #tests }
