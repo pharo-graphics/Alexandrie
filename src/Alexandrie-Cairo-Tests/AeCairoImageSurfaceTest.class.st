@@ -41,7 +41,7 @@ AeCairoImageSurfaceTest >> testExtentFormat [
 AeCairoImageSurfaceTest >> testFromForm [
 
 	| aForm |
-	aForm := Smalltalk ui icons iconNamed: #classIcon.
+	aForm := Form fromFileNamed: AeFilesystemResources removeIconPNG.
 	surface := AeCairoImageSurface fromForm: aForm.
 
 	self assert: surface extent equals: aForm extent

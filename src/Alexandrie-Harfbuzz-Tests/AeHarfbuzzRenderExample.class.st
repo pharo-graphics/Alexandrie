@@ -27,9 +27,8 @@ AeHarfbuzzRenderExample class >> arrowsString [
 { #category : #examples }
 AeHarfbuzzRenderExample class >> example1SourceSansPro [
 
-	| aFTLibrary aFace |
-	aFTLibrary := AeFTLibrary newInitialized.
-	aFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
+	| aFace |
+	aFace := AeFTLibraryResource current sourceSansProRegularFTFace.
 
 	(self
 		freetypeFace: aFace
@@ -160,14 +159,14 @@ AeHarfbuzzRenderExample >> newForm [
 	aeCanvas pathTranslate: 0 @ (fontHeight*1.1).
 	aeCanvas setSourceColor: Color red muchDarker.
 	aeCanvas
-		drawText: (self glyphArrayWithoutHarfbuzz: cairoScaledFont)
+		drawGlyphs: (self glyphArrayWithoutHarfbuzz: cairoScaledFont)
 		font: cairoScaledFont.
 
 	"Draw text with Harfbuzz:"
 	aeCanvas pathTranslate: 0 @ (fontHeight*1.1).
 	aeCanvas setSourceColor: Color green muchDarker.
 	aeCanvas
-		drawText: self glyphArrayWithHarfbuzz
+		drawGlyphs: self glyphArrayWithHarfbuzz
 		font: cairoScaledFont.
 
 	^ aeCanvas asForm

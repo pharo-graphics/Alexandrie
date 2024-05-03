@@ -153,24 +153,34 @@ AeCairoContext >> arcCenter: aPoint radius: aRadius startAngle: aStartAngleInRad
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> arcCenter: aCenter radius: aRadius startAngle: startAngleInRadians sweep: sweepAngleInRadians [
-	"Draw and arc that may be positive or negative according to the specified sweep angle."
+AeCairoContext >> arcCenter: aCenter radius: aRadius startAngle: startAngleInRadians endAngle: endAngleInRadians cw: isClockwise [
+	"Draw and arc that may be positive or negative according to isClockwise."
 
-	| endAngle |
-	endAngle := startAngleInRadians + sweepAngleInRadians.
-	sweepAngleInRadians positive
+	isClockwise
 		ifTrue: [
 			self
 				arcCenter: aCenter
 				radius: aRadius
 				startAngle: startAngleInRadians
-				endAngle: endAngle ]
+				endAngle: endAngleInRadians ]
 		ifFalse: [
 			self
 				arcNegativeCenter: aCenter
 				radius: aRadius
 				startAngle: startAngleInRadians
-				endAngle: endAngle ]
+				endAngle: endAngleInRadians ]
+]
+
+{ #category : #'API - path' }
+AeCairoContext >> arcCenter: aCenter radius: aRadius startAngle: startAngleInRadians sweep: sweepAngleInRadians [
+	"Draw an arc that may be positive or negative (clockwise or counter-clockwise) according to the sign of the specified sweep angle."
+	
+	self
+		arcCenter: aCenter
+		radius: aRadius
+		startAngle: startAngleInRadians
+		endAngle: startAngleInRadians + sweepAngleInRadians
+		cw: sweepAngleInRadians positive
 ]
 
 { #category : #'API - path' }
@@ -978,7 +988,7 @@ AeCairoContext >> lineJoin: aCairoJoinStyle [
 { #category : #'API - path' }
 AeCairoContext >> lineTo: aPoint [
 
-	^ self lineToX: aPoint x asFloat y: aPoint y asFloat
+	^ self lineToX: aPoint x y: aPoint y
 ]
 
 { #category : #'API - path' }
@@ -995,6 +1005,17 @@ AeCairoContext >> lineToX: x y: y [
 			self,
 			double x,
 			double y ) )
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> lineWidth [
+	"Gets the current line width within the cairo context.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-line-width"
+
+	^ self ffiCall: #(
+		double
+		cairo_get_line_width ( self ) )
 ]
 
 { #category : #'API - painting settings' }
@@ -1094,7 +1115,7 @@ AeCairoContext >> miterLimit: aNumber [
 { #category : #'API - path' }
 AeCairoContext >> moveTo: aPoint [
 
-	self moveToX: aPoint x asFloat y: aPoint y asFloat
+	self moveToX: aPoint x y: aPoint y
 ]
 
 { #category : #'API - path' }
@@ -1319,7 +1340,9 @@ AeCairoContext >> rectangleTo: extentPoint [
 
 { #category : #'API - path' }
 AeCairoContext >> rectangleX: aX y: aY width: aWidth height: aHeight [
-	"Note: aWidth and aHeight can be negative"
+	"Note: aWidth and aHeight can be negative.
+	
+	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-rectangle"
 
 	self ffiCall: #(
 		void
@@ -1335,7 +1358,7 @@ AeCairoContext >> rectangleX: aX y: aY width: aWidth height: aHeight [
 AeCairoContext >> relativeLineTo: deltaPoint [
 	"Relative-coordinate version of `#lineTo:`"
 
-	^ self relativeLineToX: deltaPoint x asFloat y: deltaPoint y asFloat
+	^ self relativeLineToX: deltaPoint x y: deltaPoint y
 ]
 
 { #category : #'API - path' }
@@ -1356,7 +1379,7 @@ AeCairoContext >> relativeLineToX: dx y: dy [
 AeCairoContext >> relativeMoveTo: aPoint [
 	"Begin a new sub-path. After this call the current point will offset by aPoint."
 
-	self relativeMoveToX: aPoint x asFloat y: aPoint y asFloat
+	self relativeMoveToX: aPoint x y: aPoint y
 ]
 
 { #category : #'API - path' }

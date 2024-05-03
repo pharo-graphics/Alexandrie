@@ -10,9 +10,8 @@ Class {
 { #category : #tests }
 AeFTFaceTest >> testSfnt [
 
-	| aLibrary aFace table |
-	aLibrary := AeFTLibrary newInitialized.
-	aFace := AeSourceSansPro_Regular firstFaceUsing: aLibrary.
+	| aFace table |
+	aFace := AeFTLibraryResource current sourceSansProRegularFTFace.
 	
 	self assert: aFace isSfnt.
 	table := aFace sfntOS2Table.

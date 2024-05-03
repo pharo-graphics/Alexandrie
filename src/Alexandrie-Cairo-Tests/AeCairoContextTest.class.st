@@ -17,6 +17,12 @@ AeCairoContextTest >> newSourceSansProRegularFontFace [
 	^ AeCairoFreetypeFontFace newForFace: aFTFace
 ]
 
+{ #category : #accessing }
+AeCairoContextTest >> resources [
+
+	^ { AeFTLibraryResource }
+]
+
 { #category : #tests }
 AeCairoContextTest >> testClipExtents [
 
@@ -136,7 +142,7 @@ AeCairoContextTest >> testFontExtents [
 	aContext := aSurface newContext.
 	
 	"Set up scaled font in the context"
-	aFontFace := self newSourceSansProRegularFontFace.
+	aFontFace := AeFTLibraryResource current sourceSansProRegularFTFace newCairoFontFace.
 	aContext
 		fontFace: aFontFace;
 		fontSize: 17.
@@ -177,7 +183,7 @@ AeCairoContextTest >> testGlyphExtentsOf [
 	string := 'Hola'.
 	
 	"Set up scaled font in the context"
-	aFontFace := self newSourceSansProRegularFontFace.
+	aFontFace := AeFTLibraryResource current sourceSansProRegularFTFace newCairoFontFace.
 	aContext
 		fontFace: aFontFace;
 		fontSize: 17.
@@ -205,6 +211,21 @@ AeCairoContextTest >> testGlyphExtentsOf [
 	self assert: aTextExtents extent closeTo: 33@13.
 	self assert: aTextExtents bearing closeTo: 1@ -13.
 	self assert: aTextExtents advance closeTo: 34@0
+]
+
+{ #category : #tests }
+AeCairoContextTest >> testLineWidth [
+
+	surface := AeCairoImageSurface extent: 1@1.
+	context := surface newContext.
+	
+	"Assert on default value"
+	self assert: context lineWidth equals: 2.0. 
+	
+	context lineWidth: 7.
+	
+	"Assert on new value"
+	self assert: context lineWidth equals: 7.0
 ]
 
 { #category : #tests }

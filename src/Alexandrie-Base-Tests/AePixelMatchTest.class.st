@@ -33,10 +33,22 @@ AePixelMatchTest class >> allPixelComparisons [
 { #category : #'building suites' }
 AePixelMatchTest class >> buildSuite [
 
+	^ self buildSuiteForAll: self allFormSelectors
+]
+
+{ #category : #'building suites' }
+AePixelMatchTest class >> buildSuiteFor: aFormSelector [
+
+	^ self buildSuiteForAll: { aFormSelector }
+]
+
+{ #category : #'building suites' }
+AePixelMatchTest class >> buildSuiteForAll: formSelectors [
+
 	| suite |
 	suite := self suiteClass named: self name.
-	
-	self allFormSelectors do: [ :each |
+
+	formSelectors do: [ :each |
 		| tmpSuite |
 		tmpSuite := self buildSuiteFromSelectors.
 		tmpSuite tests do: [ :aTest | aTest formSelector: each ].

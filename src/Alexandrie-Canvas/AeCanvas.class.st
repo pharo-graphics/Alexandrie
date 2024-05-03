@@ -70,6 +70,14 @@ AeCanvas class >> newFor: aeCairoSurface [
 		  yourself
 ]
 
+{ #category : #'API - text' }
+AeCanvas >> appendGlyphsPath: aeGlyphArray font: aScaledFont [
+
+	cairoContext
+		scaledFont: aScaledFont;
+		appendGlyphsPath: aeGlyphArray
+]
+
 { #category : #converting }
 AeCanvas >> asForm [
 
@@ -327,6 +335,13 @@ AeCanvas >> drawFigureWithExplicitBorderOutsideAndNoBackground [
 	cairoContext clip
 ]
 
+{ #category : #'API - text' }
+AeCanvas >> drawGlyphs: aeGlyphArray font: aScaledFont [
+
+	self ensureSetScaledFont: aScaledFont.
+	cairoContext showGlyphs: aeGlyphArray
+]
+
 { #category : #private }
 AeCanvas >> drawNothingButMayClip [
 
@@ -338,9 +353,14 @@ AeCanvas >> drawNothingButMayClip [
 
 { #category : #'API - text' }
 AeCanvas >> drawText: aeGlyphArray font: aScaledFont [
+	self
+		deprecated: 'Use #drawGlyphs:font: instead'
+		transformWith:
+			'`@receiver drawText:   `@arg1 font: `@arg2' ->
+			'`@receiver drawGlyphs: `@arg1 font: `@arg2'.
 
-	self ensureSetScaledFont: aScaledFont.
-	cairoContext showGlyphs: aeGlyphArray
+  	self drawGlyphs: aeGlyphArray font: aScaledFont
+
 ]
 
 { #category : #'API - text' }
@@ -619,6 +639,20 @@ AeCanvas >> restoreContextAfter: aBlock [
 	cairoContext restoreStateAfter: aBlock
 ]
 
+{ #category : #'API - state' }
+AeCanvas >> restoreContextAfterPaintAlpha: opacity with: aBlock [
+	"Evaluate a block to paint with certain opacity (a value in 0.0 to 1.0 interval).
+	* When opacity is translucent (less than 1.0), then the paint operation in the block
+	closure will be performed into a 'Cairo group' (a kind of temporary surface) that
+	will be finally painted with such opacity.
+	* When opacity is 1.0, then do it more efficiently: paint directly on the target surface,
+	using Cairo save and restore to keep the Cairo context state untouched on return."
+
+	opacity < 1.0
+		ifTrue: [ self paintGroupWith: aBlock alpha: opacity ]
+		ifFalse: [ self restoreContextAfter: aBlock ]
+]
+
 { #category : #private }
 AeCanvas >> restoreContextOnlyIfClipAfterwards: aBlock [
 
@@ -758,11 +792,10 @@ AeCanvas >> setHighQualityOptions [
 		fontOptions:
 			(AeCairoFontOptions new
 				antialias: antialiasOption;
-				hintMetrics: AeCairoHintMetrics on;
+				hintMetrics: AeCairoHintMetrics off;
 				hintStyle: AeCairoHintStyle slight;
 				subpixelOrder: AeCairoSubpixelOrder default;
 				yourself)
-
 ]
 
 { #category : #'API - transformations' }

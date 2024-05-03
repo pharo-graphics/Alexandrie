@@ -6,8 +6,7 @@ Class {
 	#superclass : #AePixelMatchTest,
 	#instVars : [
 		'emojiFTFace',
-		'freetypeLibrary',
-		'sansFace'
+		'ffLigatureFTFace'
 	],
 	#category : #'Alexandrie-Canvas-Tests-Base'
 }
@@ -308,6 +307,8 @@ AeCanvasTest >> renderEmoji [
 	fontHeight := 25.
 	aeCanvas := AeCanvas extent: fontHeight * 1.3 asPoint.
 	aeCanvas clear: Color paleYellow.
+
+	emojiFTFace := AeFTLibraryResource current emojiFTFace.
 	cairoScaledFont :=
 		aeCanvas
 			scaledFontForFace: emojiFTFace
@@ -327,10 +328,10 @@ AeCanvasTest >> renderEmoji [
 AeCanvasTest >> renderForm [
 
 	| aeCanvas aForm |
-	aeCanvas := AeCanvas extent: 50@75.
+	aeCanvas := AeCanvas extent: 60@20.
 	aeCanvas clear: Color paleGreen.
 	
-	aForm := Smalltalk ui icons iconNamed: #pharoBig.
+	aForm := Form fromFileNamed: AeFilesystemResources removeIconPNG.
 
 	aeCanvas pathScale: (aeCanvas extent / aForm extent) asFloatPoint.
 	aeCanvas pathFactory: [ :cairoContext |
@@ -352,7 +353,10 @@ AeCanvasTest >> renderGlyphs: aCairoGlyphsArray scaledFont: aCairoScaledFont on:
 	| metrics baseline |
 
 	"Calculate text metrics"
-	metrics := aeCanvas metricsFor: aCairoGlyphsArray font: aCairoScaledFont.
+	metrics :=
+		aeCanvas
+			metricsFor: aCairoGlyphsArray
+			font: aCairoScaledFont.
 	baseline := metrics bearingX @ metrics ascent negated.
 
 	"Draw baseline"
@@ -375,9 +379,8 @@ AeCanvasTest >> renderGlyphs: aCairoGlyphsArray scaledFont: aCairoScaledFont on:
 	aeCanvas
 		setSourceColor: Color orange;
 		pathTranslate: baseline;
-		drawText: aCairoGlyphsArray
-			font: aCairoScaledFont.
-
+		drawGlyphs: aCairoGlyphsArray
+			font: aCairoScaledFont
 ]
 
 { #category : #tests }
@@ -391,13 +394,15 @@ AeCanvasTest >> renderLigatureTextWithHarfbuzz [
 	fontSize := 19.
 	aeCanvas := AeCanvas extent: 50 @ 25.
 	aeCanvas clear: Color paleBlue.
+
 	"We do know this typeface defines a glyph for ff"
-	cairoScaledFont := aeCanvas scaledFontForFace: sansFace size: fontSize.
+	ffLigatureFTFace := AeFTLibraryResource current sourceSansProRegularFTFace.
+	cairoScaledFont := aeCanvas scaledFontForFace: ffLigatureFTFace size: fontSize.
 
 	"This is the key message send of this test"
 	cairoGlyphsArray := AeHbBuffer
 		defaultCairoGlyphArrayFor: aString
-		face: sansFace
+		face: ffLigatureFTFace
 		size: fontSize.
 
 	"The output of Harfbuzz has a single glyph for the 'ff' pair"
@@ -420,8 +425,10 @@ AeCanvasTest >> renderLigatureTextWithoutHarfbuzz [
 	fontSize := 19.
 	aeCanvas := AeCanvas extent: 50 @ 25.
 	aeCanvas clear: Color paleBlue.
+
 	"We do know this typeface defines a glyph for ff"
-	cairoScaledFont := aeCanvas scaledFontForFace: sansFace size: fontSize.
+	ffLigatureFTFace := AeFTLibraryResource current sourceSansProRegularFTFace.
+	cairoScaledFont := aeCanvas scaledFontForFace: ffLigatureFTFace size: fontSize.
 
 	"We know that cairo ignores the ff ligature (that'd be provided by Harfbuzz)"
 	cairoGlyphsArray := cairoScaledFont glyphArrayForString: aString.
@@ -478,6 +485,8 @@ AeCanvasTest >> renderZWJEmojiWithHarfbuzz [
 	fontHeight := 24.
 	aeCanvas := AeCanvas extent: 200 @ (fontHeight * 2).
 	aeCanvas clear: Color white.
+
+	emojiFTFace := AeFTLibraryResource current emojiFTFace.
 	cairoScaledFont :=
 		aeCanvas
 			scaledFontForFace: emojiFTFace
@@ -510,6 +519,8 @@ AeCanvasTest >> renderZWJEmojiWithoutHarfbuzz [
 	fontHeight := 21.
 	aeCanvas := AeCanvas extent: (fontHeight * 5.5) @ (fontHeight * 1.2).
 	aeCanvas clear: Color white.
+
+	emojiFTFace := AeFTLibraryResource current emojiFTFace.
 	cairoScaledFont :=
 		aeCanvas
 			scaledFontForFace: emojiFTFace
@@ -529,17 +540,8 @@ AeCanvasTest >> renderZWJEmojiWithoutHarfbuzz [
 	^ aeCanvas
 ]
 
-{ #category : #running }
-AeCanvasTest >> setUp [
-	super setUp.
-	
-	freetypeLibrary := AeFTLibrary newInitialized.
-	
-	sansFace := AeSourceSansPro_Regular firstFaceUsing: freetypeLibrary.
-		
-	emojiFTFace := AeNotoColorEmojiDownloadedFont new 
-		downloadDirectory: AeFilesystemResources downloadedFontsDirectory;
-		ensureDownloaded;
-		firstFaceUsing: freetypeLibrary.
+{ #category : #accessing }
+AeCanvasTest >> resources [
 
+	^ { AeFTLibraryResource }
 ]
