@@ -13,6 +13,20 @@ Class {
 	#category : #'Alexandrie-FreeType-Tests-Resource'
 }
 
+{ #category : #'class initialization' }
+AeFTLibraryResource class >> initialize [
+
+	SessionManager default registerUserClassNamed: self name
+]
+
+{ #category : #'system startup' }
+AeFTLibraryResource class >> startUp: isImageStarting [
+	"Pharo is starting up. If this platform requires specific initialization, this is a great place to put it."
+
+	super startUp: isImageStarting.
+	isImageStarting ifTrue: [ self reset ]
+]
+
 { #category : #accessing }
 AeFTLibraryResource >> emojiFTFace [
 
