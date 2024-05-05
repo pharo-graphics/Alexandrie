@@ -303,7 +303,7 @@ AeCanvasTest >> renderEmoji [
 	| fontHeight aeCanvas cairoScaledFont cairoGlyphsArray |
 
 	self skip. "Randomly fails. We suspect we need a more recent version of cairo (it introduced improvements in this area)."
-	
+
 	fontHeight := 25.
 	aeCanvas := AeCanvas extent: fontHeight * 1.3 asPoint.
 	aeCanvas clear: Color paleYellow.
@@ -388,8 +388,6 @@ AeCanvasTest >> renderLigatureTextWithHarfbuzz [
 	"Test Harfbuzz converting a 'ff' pair of letters into a single glyph."
 
 	| aString fontSize aeCanvas cairoScaledFont cairoGlyphsArray |
-	self skip.
-	
 	aString := 'Office'.
 	fontSize := 19.
 	aeCanvas := AeCanvas extent: 50 @ 25.
@@ -480,8 +478,9 @@ AeCanvasTest >> renderOpenFigure [
 AeCanvasTest >> renderZWJEmojiWithHarfbuzz [
 
 	| fontHeight aeCanvas cairoScaledFont cairoGlyphsArray |
+
 	self skip. "Randomly fails. We suspect we need a more recent version of cairo (it introduced improvements in this area)."
-	
+
 	fontHeight := 24.
 	aeCanvas := AeCanvas extent: 200 @ (fontHeight * 2).
 	aeCanvas clear: Color white.
@@ -514,6 +513,7 @@ AeCanvasTest >> renderZWJEmojiWithHarfbuzz [
 AeCanvasTest >> renderZWJEmojiWithoutHarfbuzz [
 
 	| fontHeight aeCanvas cairoScaledFont cairoGlyphsArray |
+
 	self skip. "Randomly fails. We suspect we need a more recent version of cairo (it introduced improvements in this area)."
 
 	fontHeight := 21.
