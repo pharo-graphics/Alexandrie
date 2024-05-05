@@ -172,6 +172,17 @@ AeFTFace >> flags [
 	^ AeFTFaceFlag bitFlagsAt: self faceFlags
 ]
 
+{ #category : #finalization }
+AeFTFace >> increaseReferenceCount [
+	"A counter gets initialized to 1 at the time an instance is created. This function increments the counter. `FT_Done_Face` then only destroys a face if the counter is 1, otherwise it simply decrements the counter.
+
+	This function helps in managing life-cycles of structures that reference FT_Face objects.
+
+	See: https://freetype.org/freetype2/docs/reference/ft2-face_creation.html#ft_reference_face"
+
+	^ self ffiCall: #(int FT_Reference_Face (self))
+]
+
 { #category : #testing }
 AeFTFace >> isBold [
 
