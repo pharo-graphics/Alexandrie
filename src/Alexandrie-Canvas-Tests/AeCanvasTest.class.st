@@ -76,51 +76,11 @@ AeCanvasTest >> renderArbitraryFigure [
 { #category : #tests }
 AeCanvasTest >> renderBackgroundAlpha: backgroundAlpha hasBorder: hasBorder outskirtsSelector: outskirtsSelector [
 
-	| aeCanvas drawFigureBlock referenceExtent |
-	referenceExtent := 50 asPoint.
-	aeCanvas := AeCanvas extent: referenceExtent.
-	aeCanvas clear: Color yellow.
-
-	drawFigureBlock := [ :depth |
-
-		aeCanvas restoreContextAfter: [ 
-
-			aeCanvas
-				pathTranslate: referenceExtent / -10;
-				pathScale: 0.75 asPoint.
-
-			aeCanvas pathFactory: [ :cairoContext |
-				cairoContext circleRadius: referenceExtent x / 2 ].
-
-			aeCanvas
-				setBackgroundWith: [
-					aeCanvas setSourceColor: 
-						(depth odd
-							ifTrue: [ Color green ]
-							ifFalse: [ Color red ]) ]
-				alpha: backgroundAlpha.
-
-			hasBorder
-				ifTrue: [ 
-					aeCanvas setBorderBlock: [
-						aeCanvas
-							setSourceColor: Color black;
-							"setCapButt; setJoinRound;
-								--> Redundant: both are defaults"
-							setBorderWidth: referenceExtent x / 10 ].
-					aeCanvas perform: outskirtsSelector ]
-				ifFalse: [ aeCanvas setBorderOff ].
-
-			aeCanvas drawFigureAndPrepareToClip: depth odd.
-				
-			depth > 0 ifTrue: [
-				drawFigureBlock value: depth-1 ] ] ].
-
-	"Move to initial position and draw with depth=2"
-	aeCanvas pathTranslate: referenceExtent / 4.
-	drawFigureBlock value: 2.
-
-	^ aeCanvas
+	^ AeTestRecursiveFiguresBuilder new
+		backgroundAlpha: backgroundAlpha;
+		hasBorder: hasBorder;
+		outskirtsSelector: outskirtsSelector;
+		newCanvas
 ]
 
 { #category : #tests }
