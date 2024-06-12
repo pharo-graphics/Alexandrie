@@ -1319,6 +1319,35 @@ AeCairoContext >> quadraticCurveFrom: startPoint controlPoint: qp1 to: endPoint 
 ]
 
 { #category : #'API - path' }
+AeCairoContext >> quadraticCurveFromCurrentPoint: qp0 via: qp1 to: qp2 [
+	"Quadratic bezier curve. First argument is the current position.
+
+	Fundaments:
+
+	Any quadratic spline can be expressed as a cubic (where the cubic term is zero). The end points of the cubic will be the same as the quadratic's.
+
+		CP0 = QP0
+		CP3 = QP2
+
+	The two control points for the cubic are:
+
+		CP1 = QP0 + 2/3 *(QP1-QP0)
+		CP2 = QP2 + 2/3 *(QP1-QP2)
+		
+	Based on AthensCairoPathBuilder>>#curveVia:to:
+
+	Also read:
+	* https://cairo.cairographics.narkive.com/cO6AV80M/howto-draw-quadratic-curves-with
+	* https://cairo.cairographics.narkive.com/cg4pzFhO/a-quadratic-bezier-curve
+	"
+
+	self
+		curveVia: qp0 + (0.6666666666666666 * (qp1 - qp0))
+		     via: qp2 + (0.6666666666666666 * (qp1 - qp2))
+		      to: qp2
+]
+
+{ #category : #'API - path' }
 AeCairoContext >> rectangle: aRectangle [
 
 	self
