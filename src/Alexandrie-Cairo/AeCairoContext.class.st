@@ -1293,23 +1293,11 @@ AeCairoContext >> pushGroupWithContent: content [
 
 { #category : #'API - path' }
 AeCairoContext >> quadraticCurveFrom: startPoint controlPoint: qp1 to: endPoint [
-	"Quadratic bezier curve.
-
-	Fundaments:
-
-	Any quadratic spline can be expressed as a cubic (where the cubic term is zero). The end points of the cubic will be the same as the quadratic's.
-
-		CP0 = QP0
-		CP3 = QP2
-
-	The two control points for the cubic are:
-
-		CP1 = QP0 + 2/3 *(QP1-QP0)
-		CP2 = QP2 + 2/3 *(QP1-QP2)
-		
-	Based on AthensCairoPathBuilder>>#curveVia:to:"
+	"Quadratic bezier curve. Old API."
 
 	| cp1 cp2 |
+	self deprecated: 'Plase use #quadraticCurveFromCurrentPoint:via:to:, more correct API'.
+	
 	cp1 := (qp1 - startPoint) * 0.6666666666666666 + startPoint.
 	cp2 := (qp1 - endPoint)   * 0.6666666666666666 + endPoint.
 
