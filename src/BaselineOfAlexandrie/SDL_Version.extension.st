@@ -1,6 +1,6 @@
 Extension { #name : #'SDL_Version' }
 
-{ #category : #'*Alexandrie-Canvas' }
+{ #category : #'*BaselineOfAlexandrie' }
 SDL_Version >> versionString [
 
 	^ String streamContents: [ :aStream | self printAsSemanticVersioningOn: aStream ]
