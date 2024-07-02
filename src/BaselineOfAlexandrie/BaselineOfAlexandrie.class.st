@@ -67,7 +67,10 @@ BaselineOfAlexandrie >> downloadTestFonts [
 	
 	Tolerate potentially missing packages and dynamic libraries."
 
-	aeFilesystemResources := self class environment at: #AeFilesystemResources.
+	aeFilesystemResources :=
+		self class environment
+			at: #AeFilesystemResources
+			ifAbsent: [ ^ self ].
 
 	self class environment
 		at: #AeDownloadedFont
