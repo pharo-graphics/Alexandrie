@@ -1,0 +1,26 @@
+name: Test ffi-minimal baseline group
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 8 * * 1"   # Run every Monday at 08:00
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        smalltalk: [ Pharo64-12 ]
+        os: [ ubuntu-latest ]
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup smalltalkCI
+        uses: hpi-swa/setup-smalltalkCI@v1
+        with:
+          smalltalk-image: ${{ matrix.smalltalk }}
+      - name: Load in new image
+        run: smalltalkci -s ${{ matrix.smalltalk }} .ci.ffi-minimal.ston
+        shell: bash

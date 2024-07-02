@@ -1,0 +1,14 @@
+SmalltalkCISpec {
+  #preLoading: 'scripts/ciPreLoading.st',
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'Alexandrie',
+      #directory : 'src',
+      #platforms : [ #pharo ],
+      #load : [ 'ffi-minimal' ]
+    }
+  ],
+  #testing : {
+    #failOnZeroTests : false
+  }
+}
