@@ -17,10 +17,12 @@ jobs:
     name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Setup smalltalkCI
         uses: hpi-swa/setup-smalltalkCI@v1
         with:
           smalltalk-image: ${{ matrix.smalltalk }}
-      - name: Load in new image
+      - name: Load baseline
         run: smalltalkci -s ${{ matrix.smalltalk }} .ci.ffi-minimal.ston
         shell: bash
