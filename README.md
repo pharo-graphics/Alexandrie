@@ -2,6 +2,7 @@
 
 [![License](https://img.shields.io/github/license/pharo-graphics/Alexandrie.svg)](./LICENSE)
 [![Tests](https://github.com/pharo-graphics/Alexandrie/actions/workflows/test.yml/badge.svg)](https://github.com/pharo-graphics/Alexandrie/actions/workflows/test.yml)
+[![Test ffi-minimal baseline group](https://github.com/pharo-graphics/Alexandrie/actions/workflows/test.ffi-minimal.yml/badge.svg)](https://github.com/pharo-graphics/Alexandrie/actions/workflows/test.ffi-minimal.yml)
 
 This repository includes:
 - [Pharo](https://pharo.org/) FFI bindings to [Cairo](https://www.cairographics.org), [FreeType](https://freetype.org/) and [Harfbuzz](https://harfbuzz.github.io/).
