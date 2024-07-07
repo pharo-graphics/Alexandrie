@@ -1,3 +1,5 @@
+# Why writing new Cairo bindings?
+
 This project includes FFI bindings to Cairo and FreeType that do not depend on the bindings that exist in Pharo. 
 
 Why rewriting the bindings to libraries that already exist in Pharo 12? What's different?

@@ -1,3 +1,5 @@
+# Dependencies
+
 The dynamic libraries provided by the Pharo VM satisfy the project needs in all major platforms (Mac, Linux and Windows). This is true after [this release of Pharo VM](https://github.com/pharo-project/pharo-vm/releases/tag/v9.0.21). These are the versions:
 - Cairo: 1.17.4
 - FreeType: 2.12.1

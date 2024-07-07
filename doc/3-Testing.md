@@ -1,3 +1,5 @@
+# Regression Testing
+
 The project counts with test packages that pixel-compare the actual output of the render with PNGs previously exported in the 'tests/' directory of this repo. 
 If any pixel doesn't match with the expected output, the test fails. Browse `AeCanvasTest` to see it. 
 

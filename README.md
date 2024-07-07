@@ -9,7 +9,15 @@ This repository includes:
 - A font manager that can scan filesystem for fonts files, and provide a simple selection API (extracted from Pharo's FT2 bindings)
 - A 2D canvas (unstable) for drawing figures and text providing an abstraction layer on top of Cairo. It was born as an alternative for rendering [Bloc](https://github.com/pharo-graphics/Bloc) elements, but it is independent from Bloc.
 
-Please check our [wiki](../../wiki) for more information.
+For more details, please refer to our [doc/](doc/). This can be done either following the link in your web browser, or in Pharo IDE -> World Menu -> Help -> Documentation Browser -> Alexandrie/doc (after loading the project).
+
+## Install
+
+The project can be loaded as usual via Metacello, using the `BaselineOfAlexandrie` specification. To copy/paste a loading script, see the [wiki page](../../wiki).
+
+## Contribution workflow & branch convention
+
+We describe this project's contribution workflow & branch name convention in [this wiki page](../../wiki/Branches-and-versions).
 
 ## License
 
