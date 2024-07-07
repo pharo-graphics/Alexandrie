@@ -19,8 +19,3 @@ Metacello new
         repository: 'github://pharo-graphics/Alexandrie:dev/src';
         load: 'ffi-minimal'.
 ```
-
----
-
-🚨 This wiki doesn't end here 🚨 See more pages on the Side Bar 👉 👉 👉
-

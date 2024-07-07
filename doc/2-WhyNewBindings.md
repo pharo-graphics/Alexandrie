@@ -1,6 +1,6 @@
 This project includes FFI bindings to Cairo and FreeType that do not depend on the bindings that exist in Pharo. 
 
-Why rewriting the bindings? What's different?
+Why rewriting the bindings to libraries that already exist in Pharo 12? What's different?
 
 - Document Pharo code to ease a developer to link with the C API counterpart. 
 - Offer direct access to the raw C API of the bound libraries. (See note below)

@@ -30,10 +30,10 @@ Harfbuzz and FreeType:
 They provide documentation in https://harfbuzz.github.io/ and https://freetype.org/
 
 In general, downloading and browsing other user projects is a good source of examples of use:
-- Pango: https://gitlab.gnome.org/GNOME/pango
-- Harfbuzz CLI tools: https://harfbuzz.github.io/utilities.html#utilities-command-line-tools
-- Mozilla's gecko-dev: https://github.com/mozilla/gecko-dev
-- WebKit: https://github.com/WebKit/WebKit
-- inkscape: https://gitlab.com/inkscape/inkscape
-- GTK: https://gitlab.gnome.org/GNOME/gtk
-- SDL_ttf: https://github.com/libsdl-org/SDL_ttf (Harfbuzz, FreeType, SDL)
+- `Pango`: https://gitlab.gnome.org/GNOME/pango
+- `Harfbuzz CLI tools`: https://harfbuzz.github.io/utilities.html#utilities-command-line-tools
+- `Mozilla's gecko-dev`: https://github.com/mozilla/gecko-dev
+- `WebKit`: https://github.com/WebKit/WebKit
+- `inkscape`: https://gitlab.com/inkscape/inkscape
+- `GTK`: https://gitlab.gnome.org/GNOME/gtk
+- `SDL_ttf`: https://github.com/libsdl-org/SDL_ttf (Harfbuzz, FreeType, SDL)
