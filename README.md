@@ -12,7 +12,7 @@ This repository includes:
 For more details, please refer to our documentation:
 
 * [User Guide](doc/1-UserGuide.md)
-* [Code Convention](doc/2-CodeConvention.md)
+* [FFI Code Convention](doc/2-CodeConvention.md)
 * [Regression Testing](doc/3-Testing.md)
 * [External C dependencies](doc/4-Dependencies.md)
 * [Why writing new Cairo bindings?](doc/5-WhyNewBindings.md)
@@ -23,9 +23,9 @@ These pages can be browsed via  Pharo IDE -> World Menu -> Help -> Documentation
 
 The project can be loaded as usual via Metacello, using the `BaselineOfAlexandrie` specification. To copy/paste a loading script, see the [wiki page](../../wiki/Install).
 
-## Contribution workflow & branch convention
+## Branches & Contributions
 
-We describe this project's contribution workflow & branch name convention in [this wiki page](../../wiki/Branches-and-versions).
+We describe our contribution workflow & branch name convention in [this wiki page](../../wiki/Branches-and-versions).
 
 ## License
 
