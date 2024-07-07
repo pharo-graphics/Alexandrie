@@ -1,6 +1,5 @@
-Welcome to the Alexandrie wiki!
 
-To load `master` branch:
+Script to load the full project (`master` branch), do:
 
 ```smalltalk
 Metacello new
