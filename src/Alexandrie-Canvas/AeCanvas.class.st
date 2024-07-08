@@ -37,14 +37,15 @@ Class {
 		'backgroundSourceBlock',
 		'pathBlock',
 		'cairoContext',
-		'fontOptions',
 		'identityMatrix',
 		'textExtents',
 		'borderBlock',
 		'figureBlock',
 		'dashesCache',
 		'borderPathBlock',
-		'clipAfterwards'
+		'clipAfterwards',
+		'lastScaledFont',
+		'lastFontFace'
 	],
 	#category : #'Alexandrie-Canvas-Base'
 }
@@ -337,9 +338,8 @@ AeCanvas >> drawFigureWithExplicitBorderOutsideAndNoBackground [
 { #category : #'API - text' }
 AeCanvas >> drawGlyphs: aeGlyphArray font: aScaledFont [
 
-	cairoContext
-		scaledFont: aScaledFont;
-		showGlyphs: aeGlyphArray
+	self ensureSetScaledFont: aScaledFont.
+	cairoContext showGlyphs: aeGlyphArray
 ]
 
 { #category : #private }
@@ -359,7 +359,18 @@ AeCanvas >> drawText: aeGlyphArray font: aScaledFont [
 			'`@receiver drawText:   `@arg1 font: `@arg2' ->
 			'`@receiver drawGlyphs: `@arg1 font: `@arg2'.
 
-	self drawGlyphs: aeGlyphArray font: aScaledFont
+  	self drawGlyphs: aeGlyphArray font: aScaledFont
+
+]
+
+{ #category : #'API - text' }
+AeCanvas >> ensureSetScaledFont: aScaledFont [
+
+	(lastScaledFont = aScaledFont) ifTrue: [ ^self ].
+
+	cairoContext scaledFont: aScaledFont.
+	lastScaledFont := aScaledFont.
+	lastFontFace := aScaledFont fontFace
 ]
 
 { #category : #accessing }
@@ -652,17 +663,26 @@ AeCanvas >> restoreContextOnlyIfClipAfterwards: aBlock [
 ]
 
 { #category : #'API - text' }
+AeCanvas >> scaledFontForCairoFontFace: aCairoFontFace size: pointSize [
+	"Answer a `AeCairoScaledFont` that corresponds to the provided face and point size."
+
+	lastFontFace = aCairoFontFace ifFalse: [
+	 	cairoContext fontFace: aCairoFontFace ].
+
+ 	cairoContext fontSize: pointSize.
+	lastScaledFont := cairoContext scaledFont.
+	lastFontFace := aCairoFontFace.
+	
+	^ lastScaledFont
+]
+
+{ #category : #'API - text' }
 AeCanvas >> scaledFontForFace: aFace size: pointSize [
 	"Answer a `AeCairoScaledFont` that corresponds to the provided face and point size."
 
- 	| aCairoFontFace aFontMatrix |
-	aCairoFontFace := aFace newCairoFontFace.
-	aFontMatrix := AeCairoMatrix newScalingByX: pointSize y: pointSize.
-	
-	^ aCairoFontFace 
-		newScaledFontWithFontMatrix: aFontMatrix
-		userToDeviceMatrix: identityMatrix
-		options: fontOptions
+	^ self
+		scaledFontForCairoFontFace: aFace newCairoFontFace
+		size: pointSize
 ]
 
 { #category : #'API - background' }
@@ -768,15 +788,14 @@ AeCanvas >> setHighQualityOptions [
 
 	cairoContext
 		tolerance: 0.2;
-		antialias: antialiasOption.
-
-	fontOptions := AeCairoFontOptions new
 		antialias: antialiasOption;
-		hintMetrics: AeCairoHintMetrics off;
-		hintStyle: AeCairoHintStyle slight;
-		subpixelOrder: AeCairoSubpixelOrder default;
-		yourself
-
+		fontOptions:
+			(AeCairoFontOptions new
+				antialias: antialiasOption;
+				hintMetrics: AeCairoHintMetrics off;
+				hintStyle: AeCairoHintStyle slight;
+				subpixelOrder: AeCairoSubpixelOrder default;
+				yourself)
 ]
 
 { #category : #'API - transformations' }
@@ -815,14 +834,14 @@ AeCanvas >> setLowQualityOptions [
 
 	cairoContext
 		tolerance: 0.5;
-		antialias: AeCairoAntialias none.
-
-	fontOptions := AeCairoFontOptions new
-		antialias: AeCairoAntialias fast;
-		hintMetrics: AeCairoHintMetrics off;
-		hintStyle: AeCairoHintStyle none;
-		subpixelOrder: AeCairoSubpixelOrder default;
-		yourself
+		antialias: AeCairoAntialias none;
+		fontOptions:
+			(AeCairoFontOptions new
+				antialias: AeCairoAntialias fast;
+				hintMetrics: AeCairoHintMetrics off;
+				hintStyle: AeCairoHintStyle none;
+				subpixelOrder: AeCairoSubpixelOrder default;
+				yourself)
 
 ]
 
@@ -949,8 +968,9 @@ AeCanvas >> textExtentsFor: aeGlyphsArray scaledFont: aeScaledFont do: aUnaryBlo
 	Nota: Sender must assume the AeCairoTextExtents instance is valid ONLY during
 	the execution of the block closure."
 	
+	self ensureSetScaledFont: aeScaledFont.
+
 	cairoContext
-		scaledFont: aeScaledFont;
 		getGlyphExtentsOf: aeGlyphsArray
 			size: aeGlyphsArray size
 			into: textExtents.
