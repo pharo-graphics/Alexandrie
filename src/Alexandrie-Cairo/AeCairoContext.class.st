@@ -844,19 +844,6 @@ AeCairoContext >> getStrokeExtentsIntoLeft: x1 top: y1 right: x2 bottom: y2 [
 ]
 
 { #category : #'API - text' }
-AeCairoContext >> getTextExtents: utf8String into: aTextExtents [
-
-	self
-		deprecated: 'Renamed selector'
-		transformWith:
-			'`@rcv getTextExtents: `@arg1 into: `@arg2' ->
-			'`@rcv getTextExtentsOf: `@arg1 into: `@arg2'.
-
-	self getTextExtentsOf: utf8String into: aTextExtents
-
-]
-
-{ #category : #'API - text' }
 AeCairoContext >> getTextExtentsOf: utf8String into: aTextExtents [
 	"See: https://www.cairographics.org/manual/cairo-text.html#cairo-text-extents"
 
@@ -1289,21 +1276,6 @@ AeCairoContext >> pushGroupWithContent: content [
 		cairo_push_group_with_content (
 			self,
 			AeCairoContent content ) )
-]
-
-{ #category : #'API - path' }
-AeCairoContext >> quadraticCurveFrom: startPoint controlPoint: qp1 to: endPoint [
-	"Quadratic bezier curve. Old API."
-
-	| cp1 cp2 |
-	self deprecated: 'Plase use #quadraticCurveFromCurrentPoint:via:to:, more correct API'.
-	
-	cp1 := (qp1 - startPoint) * 0.6666666666666666 + startPoint.
-	cp2 := (qp1 - endPoint)   * 0.6666666666666666 + endPoint.
-
-	self
-		moveTo: startPoint;
-		curveVia: cp1 via: cp2 to: endPoint
 ]
 
 { #category : #'API - path' }
@@ -1762,30 +1734,6 @@ AeCairoContext >> sourceColorR: aRed g: aGreen b: aBlue a: anAlpha [
 			double aGreen,
 			double aBlue,
 			double anAlpha ) )
-]
-
-{ #category : #'API - source' }
-AeCairoContext >> sourceColorRGB: aColor [
-
-	self
-		deprecated: 'Please use #sourceColor: instead'
-		transformWith:
-			'`@receiver sourceColorRGB: `@arg' ->
-			'`@receiver sourceColor: `@arg'.
-
-	self sourceColor: aColor
-]
-
-{ #category : #'API - source' }
-AeCairoContext >> sourceColorRGBA: aColor [
-
-	self
-		deprecated: 'Please use #sourceColor: instead'
-		transformWith:
-			'`@receiver sourceColorRGBA: `@arg' ->
-			'`@receiver sourceColor: `@arg'.
-
-	self sourceColor: aColor
 ]
 
 { #category : #'API - source' }
