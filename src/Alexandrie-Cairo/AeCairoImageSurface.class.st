@@ -384,26 +384,3 @@ AeCairoImageSurface >> writePngToPathString: path [
 			self,
 			const char *path ) )
 ]
-
-{ #category : #API }
-AeCairoImageSurface >> writeToPngAtFileReference: aFileReference [
-
-	self
-		deprecated: 'Use #writePngTo:'
-		transformWith:
-			'`@rcv writeToPngAtFileReference: `@arg'
-			-> '`@rcv writePngTo: `@arg'.
-
-	^ self writePngTo: aFileReference
-]
-
-{ #category : #API }
-AeCairoImageSurface >> writeToPngAtUtf8EncodedPath: filename [
-
-	self
-		deprecated: 'Use writePngToPathString:'
-		transformWith: '`@rcv writeToPngAtUtf8EncodedPath: `@arg'
-			-> '`@rcv writePngToPathString: `@arg'.
-
-	^ self writePngToPathString: filename
-]

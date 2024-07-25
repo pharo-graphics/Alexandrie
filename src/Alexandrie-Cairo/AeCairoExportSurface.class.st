@@ -24,18 +24,6 @@ Class {
 }
 
 { #category : #'instance creation' }
-AeCairoExportSurface class >> extent: aPoint fileName: fileName [
-
-	self
-		deprecated: 'Please use extent:toPathString: instead.'
-		transformWith:
-			'`@receiver extent: `@arg1 fileName: `@arg2'
-				-> '`@receiver extent: `@arg1 toPathString: `@arg2'.
-
-	^ self extent: aPoint toPathString: fileName
-]
-
-{ #category : #'instance creation' }
 AeCairoExportSurface class >> extent: aPoint to: aFileReference [
 	"Answer a new PDF surface of the specified size in points (1 point == 1/72.0 inch) to be written to the specified file."
 

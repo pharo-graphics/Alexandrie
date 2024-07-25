@@ -351,17 +351,6 @@ AeCanvas >> drawNothingButMayClip [
 	cairoContext clip
 ]
 
-{ #category : #'API - text' }
-AeCanvas >> drawText: aeGlyphArray font: aScaledFont [
-	self
-		deprecated: 'Use #drawGlyphs:font: instead'
-		transformWith:
-			'`@receiver drawText:   `@arg1 font: `@arg2' ->
-			'`@receiver drawGlyphs: `@arg1 font: `@arg2'.
-
-	self drawGlyphs: aeGlyphArray font: aScaledFont
-]
-
 { #category : #accessing }
 AeCanvas >> extent [
 

@@ -76,16 +76,6 @@ AeCairoScaledFont >> currentTransformationMatrix [
 ]
 
 { #category : #API }
-AeCairoScaledFont >> extents [
-
-	self
-		deprecated: 'Renamed to a more explicit selector'
-		transformWith: '`@receiver extents' -> '`@receiver fontExtents'.
-
-	^ self fontExtents
-]
-
-{ #category : #API }
 AeCairoScaledFont >> fontExtents [
 
 	^ extents ifNil: [
@@ -118,16 +108,6 @@ AeCairoScaledFont >> getCurrentTransformationMatrixInto: aeCairoMatrix [
 		cairo_scaled_font_get_ctm (
 			self,
 			AeCairoMatrix *aeCairoMatrix ))
-]
-
-{ #category : #API }
-AeCairoScaledFont >> getExtentsInto: aFontExtents [
-
-	self
-		deprecated: 'Renamed to a more explicit selector'
-		transformWith: '`@receiver getExtentsInto: `@arg' -> '`@receiver getFontExtentsInto: `@arg'.
-
-	^ self getFontExtentsInto: aFontExtents
 ]
 
 { #category : #API }
