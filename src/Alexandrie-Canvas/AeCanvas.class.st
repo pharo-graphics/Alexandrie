@@ -32,6 +32,7 @@ Class {
 		'hasBackground',
 		'borderWidth',
 		'formToCairoSurfaceCache',
+		'formSetToCairoSurfaceCache',
 		'backgroundAlpha',
 		'cairoSurface',
 		'backgroundSourceBlock',
@@ -414,6 +415,15 @@ AeCanvas >> initializeCaches [
 		factory: [ :form | AeCairoImageSurface fromForm: form ];
 		yourself.
 
+	formSetToCairoSurfaceCache := LRUCache new
+		maximumWeight: 400;
+		factory: [ :formSet |
+			| scale |
+			scale := self deviceScale max rounded.
+			(AeCairoImageSurface fromForm: (formSet asFormAtScale: scale))
+				deviceScale: scale asPoint;
+				yourself ];
+		yourself.
 ]
 
 { #category : #initialization }
@@ -691,6 +701,17 @@ AeCanvas >> setBackgroundWithForm: aForm alpha: aDouble [
 			cairoContext sourceSurface: aCairoSurface x: 0.0 y: 0.0 ]
  		alpha: aDouble
 
+]
+
+{ #category : #'API - background' }
+AeCanvas >> setBackgroundWithFormSet: aFormSet alpha: aDouble [
+
+	self
+		setBackgroundWith: [ 
+			| aCairoSurface |
+			aCairoSurface := formSetToCairoSurfaceCache at: aFormSet.
+			cairoContext sourceSurface: aCairoSurface x: 0.0 y: 0.0 ]
+ 		alpha: aDouble
 ]
 
 { #category : #'API - border' }

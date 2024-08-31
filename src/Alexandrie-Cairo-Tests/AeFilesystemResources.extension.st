@@ -13,6 +13,12 @@ AeFilesystemResources class >> imagesDirectory [
 ]
 
 { #category : #'*Alexandrie-Cairo-Tests' }
+AeFilesystemResources class >> removeIcon2xPNG [
+
+	^ self imagesDirectory / 'removeIcon-2x.png'
+]
+
+{ #category : #'*Alexandrie-Cairo-Tests' }
 AeFilesystemResources class >> removeIconPNG [
 
 	^ self imagesDirectory / 'removeIcon.png'
