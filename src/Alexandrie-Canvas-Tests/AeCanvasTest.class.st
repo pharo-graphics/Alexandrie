@@ -307,6 +307,33 @@ AeCanvasTest >> renderForm [
 	^ aeCanvas
 ]
 
+{ #category : #tests }
+AeCanvasTest >> renderFormSet [
+
+	| aeCanvas aForm aFormSet |
+
+	SystemVersion current major >= 12 ifFalse: [ self skip ]. "Earlier versions do not have FormSet"
+
+	aeCanvas := AeCanvas newFor: ((AeCairoImageSurface extent: (60@20) * 2) deviceScale: 2 asPoint; yourself).
+	aeCanvas clear: Color paleGreen.
+	
+	aForm := Form fromFileNamed: AeFilesystemResources removeIcon2xPNG.
+	aFormSet := FormSet extent: aForm extent // 2 depth: aForm depth forms: { aForm }.
+
+	aeCanvas pathScale: ((aeCanvas extent / aeCanvas deviceScale) / aFormSet extent) asFloatPoint.
+	aeCanvas pathFactory: [ :cairoContext |
+		"Tip: Use another path to clip the form"
+		cairoContext rectangleTo: aFormSet extent ].
+
+	aeCanvas
+		setBackgroundWithFormSet: aFormSet
+		alpha: 1.0.
+	aeCanvas setBorderOff.
+	aeCanvas drawFigure.
+
+	^ aeCanvas
+]
+
 { #category : #private }
 AeCanvasTest >> renderGlyphs: aCairoGlyphsArray scaledFont: aCairoScaledFont on: aeCanvas [
 
