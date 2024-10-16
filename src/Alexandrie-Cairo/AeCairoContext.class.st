@@ -1435,6 +1435,19 @@ AeCairoContext >> rotateByRadians: angle [
 			double angle ) )
 ]
 
+{ #category : #'API - matrix' }
+AeCairoContext >> rotateByRadians: angle aboutX: centerX y: centerY [
+	"Modifies the current transformation matrix (CTM) by rotating the user-space axes by angle radians about a center received as argument.
+	
+	See: https://www.cairographics.org/cookbook/transform_about_point/
+	See: https://www.cairographics.org/cookbook/matrix_conventions/"
+
+	self
+		translateByX: centerX y: centerY;
+		rotateByRadians: angle;
+		translateByX: centerX negated y: centerY negated
+]
+
 { #category : #'API - path' }
 AeCairoContext >> roundedRectangleLeft: l top: t right: r bottom: b tl: tlR tr: trR br: brR bl: blR [
 	"Append the path of a rounded rectangle.
