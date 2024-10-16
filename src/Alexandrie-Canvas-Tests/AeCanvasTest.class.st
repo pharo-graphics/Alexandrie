@@ -462,6 +462,48 @@ AeCanvasTest >> renderOpenFigure [
 ]
 
 { #category : #tests }
+AeCanvasTest >> renderWithRotation [
+
+	| aeCanvas extent |
+	extent := 40 @ 30.
+	aeCanvas := AeCanvas extent: extent.
+
+	aeCanvas pathRotateByRadians: 15 degreesToRadians.
+
+	aeCanvas pathFactory: [ :cairoContext |
+		cairoContext rectangleTo: extent / 2 ].
+
+	aeCanvas setBackgroundWith: [
+		aeCanvas setSourceColor: Color purple ].
+	aeCanvas setBorderOff.
+	aeCanvas drawFigure.
+
+	^ aeCanvas
+]
+
+{ #category : #tests }
+AeCanvasTest >> renderWithRotationAboutCenter [
+
+	| aeCanvas extent |
+	extent := 40 @ 30.
+	aeCanvas := AeCanvas extent: extent.
+
+	aeCanvas
+		pathRotateByRadians: 45 degreesToRadians
+		about: extent / 2.
+
+	aeCanvas pathFactory: [ :cairoContext |
+		cairoContext rectangleTo: extent ].
+
+	aeCanvas setBackgroundWith: [
+		aeCanvas setSourceColor: Color cyan ].
+	aeCanvas setBorderOff.
+	aeCanvas drawFigure.
+
+	^ aeCanvas
+]
+
+{ #category : #tests }
 AeCanvasTest >> renderZWJEmojiWithHarfbuzz [
 
 	| fontHeight aeCanvas cairoScaledFont cairoGlyphsArray |

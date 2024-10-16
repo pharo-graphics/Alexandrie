@@ -553,6 +553,20 @@ AeCanvas >> pathFactory: aUnaryBlock [
 ]
 
 { #category : #'API - transformations' }
+AeCanvas >> pathRotateByRadians: angle [
+	"Rotate by an angle, expressed in radians, about 0@0."
+
+	cairoContext rotateByRadians: angle
+]
+
+{ #category : #'API - transformations' }
+AeCanvas >> pathRotateByRadians: angle about: aPoint [
+	"Rotate by an angle, expressed in radians, about aPoint."
+
+	cairoContext rotateByRadians: angle aboutX: aPoint x y: aPoint y
+]
+
+{ #category : #'API - transformations' }
 AeCanvas >> pathScale: aPoint [
 
 	cairoContext scaleBy: aPoint
