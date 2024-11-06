@@ -435,6 +435,18 @@ AeCairoMatrix >> scaleByX: sx y: sy [
 ]
 
 { #category : #'accessing - structure variables' }
+AeCairoMatrix >> scaleFactors [
+
+	^ self sx @ self sy
+]
+
+{ #category : #'accessing - structure variables' }
+AeCairoMatrix >> shearFactors [
+
+	^ self shx @ self shy
+]
+
+{ #category : #'accessing - structure variables' }
 AeCairoMatrix >> shx [
 	"This method was automatically generated"
 	^handle doubleAt: OFFSET_SHX
@@ -516,6 +528,12 @@ AeCairoMatrix >> translateByX: tx y: ty [
 			double tx,
 			double ty ) )
 
+]
+
+{ #category : #'accessing - structure variables' }
+AeCairoMatrix >> translationFactors [
+
+	^ self x @ self y
 ]
 
 { #category : #'API - query' }

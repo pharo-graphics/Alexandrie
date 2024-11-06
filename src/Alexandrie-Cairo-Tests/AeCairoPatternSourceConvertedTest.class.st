@@ -86,6 +86,7 @@ AeCairoPatternSourceConvertedTest >> testSurface [
 		assert: context sourceConverted class
 		equals: AeCairoSurfacePattern.
 	
-	self assert: context sourceConverted matrix x equals: -7.
-	self assert: context sourceConverted matrix y equals: -11.
+	self
+		assert: context sourceConverted matrix translationFactors
+		equals: -7 @ -11
 ]

@@ -67,15 +67,17 @@ AeCairoMatrixTest >> testCreation [
 	"Translation factors"
 	self assert: matrix x   equals: 0.1.
 	self assert: matrix y   equals: 0.2.
+	self assert: matrix translationFactors equals: 0.1 @ 0.2.
 
 	"Scale factors"
 	self assert: matrix sx  equals: 0.3.
 	self assert: matrix sy  equals: 0.4.
-
+	self assert: matrix scaleFactors equals: 0.3 @ 0.4.
+	
 	"Shear factors"
 	self assert: matrix shx equals: 0.5.
 	self assert: matrix shy equals: 0.6.
-
+	self assert: matrix shearFactors equals: 0.5 @ 0.6
 ]
 
 { #category : #tests }
@@ -265,6 +267,7 @@ AeCairoMatrixTest >> testScaleBy [
 	self assert: matrix shx equals: 0.0.
 	self assert: matrix shy equals: 0.0.
 
+	self assert: matrix scaleFactors equals: 2 @ 3
 ]
 
 { #category : #test }
@@ -292,7 +295,7 @@ AeCairoMatrixTest >> testStoreString [
 		equals: '(AeCairoMatrix newX: 0.1000 y: 0.2000 sx: 0.3000 sy: 0.4000 shx: 0.5000 shy: 0.6000)'
 ]
 
-{ #category : #test }
+{ #category : #tests }
 AeCairoMatrixTest >> testTranslateBy [
 
 	matrix := AeCairoMatrix newIdentity.
@@ -305,6 +308,7 @@ AeCairoMatrixTest >> testTranslateBy [
 	self assert: matrix shx equals: 0.0.
 	self assert: matrix shy equals: 0.0.
 
+	self assert: matrix translationFactors equals: 2 @ 3
 ]
 
 { #category : #test }
