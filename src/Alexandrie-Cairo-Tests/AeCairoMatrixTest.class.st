@@ -91,9 +91,13 @@ AeCairoMatrixTest >> testInverted [
 	"Test with a non trivial matrix. Assert on String as simplification."
 	aMatrix := AeCairoMatrix newX: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
 	invertedMatrix := aMatrix inverted.
-	self
-		assert: invertedMatrix asString
-		equals: 'an AeCairoMatrix(-2.2222 3.3333 | 2.7778 -1.6667 | -0.3333 0.0000)'.
+
+	self assert: invertedMatrix x   closeTo: -0.3333.
+	self assert: invertedMatrix y   closeTo: 0.0.
+	self assert: invertedMatrix sx  closeTo: -2.2222.
+	self assert: invertedMatrix sy  closeTo: -1.6666.
+	self assert: invertedMatrix shx closeTo: 2.7777.
+	self assert: invertedMatrix shy closeTo: 3.3333.
 
 	"Not all matrices have inverse"
 	self
