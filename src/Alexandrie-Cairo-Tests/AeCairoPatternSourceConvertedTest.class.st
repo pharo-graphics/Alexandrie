@@ -80,10 +80,12 @@ AeCairoPatternSourceConvertedTest >> testSurface [
 	context := surface newContext.
 	
 	tmpSurface := AeCairoImageSurface extent: 100 @ 100.
-	context sourceSurface: tmpSurface x: 0 y: 0.
+	context sourceSurface: tmpSurface x: 7 y: 11.
 	
 	self
 		assert: context sourceConverted class
 		equals: AeCairoSurfacePattern.
-
+	
+	self assert: context sourceConverted matrix x equals: -7.
+	self assert: context sourceConverted matrix y equals: -11.
 ]

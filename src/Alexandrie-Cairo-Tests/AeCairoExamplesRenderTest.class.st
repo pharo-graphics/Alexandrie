@@ -346,7 +346,7 @@ AeCairoExamplesRenderTest >> surfaceWithFlippedText [
 			extent: extent * 2
 			format: AeCairoSurfaceFormat argb32.
 	mainContext := mainSurface newContext.
-	mainContext sourceSurface: textSurface x: 0.0 y: 0.0.
+	mainContext sourceSurface: textSurface.
 	mainContext paint.
 
 	m := AeCairoMatrix newIdentity.

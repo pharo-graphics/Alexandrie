@@ -170,9 +170,7 @@ AeCairoImageSurface >> asARGB32ImageSurface [
 	aSurface deviceScale: self deviceScale.
 
 	aSurface newContext
-		sourceSurface: self
-			x: 0.0
-			y: 0.0;
+		sourceSurface: self;
 		paint.
 
 	^ aSurface

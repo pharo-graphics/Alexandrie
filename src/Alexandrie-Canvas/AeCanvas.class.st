@@ -712,7 +712,7 @@ AeCanvas >> setBackgroundWithForm: aForm alpha: aDouble [
 		setBackgroundWith: [ 
 			| aCairoSurface |
 			aCairoSurface := formToCairoSurfaceCache at: aForm.
-			cairoContext sourceSurface: aCairoSurface x: 0.0 y: 0.0 ]
+			cairoContext sourceSurface: aCairoSurface ]
  		alpha: aDouble
 
 ]
@@ -724,7 +724,7 @@ AeCanvas >> setBackgroundWithFormSet: aFormSet alpha: aDouble [
 		setBackgroundWith: [ 
 			| aCairoSurface |
 			aCairoSurface := formSetToCairoSurfaceCache at: aFormSet.
-			cairoContext sourceSurface: aCairoSurface x: 0.0 y: 0.0 ]
+			cairoContext sourceSurface: aCairoSurface ]
  		alpha: aDouble
 ]
 

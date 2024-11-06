@@ -56,9 +56,7 @@ AeCairoRecordingSurfaceRenderTest >> surfaceWithBounds [
 		paint;
 
 		"Draw a rectangle with the recorded surface"
-		sourceSurface: aRecordingSurface
-			x: 0
-			y: 0;
+		sourceSurface: aRecordingSurface;
 		rectangle: aRectangle;
 		fill;
 
@@ -101,9 +99,7 @@ AeCairoRecordingSurfaceRenderTest >> surfaceWithNoBounds [
 
 		"Draw a rectangle with the recorded surface.
 		The fill operation clips the source by the path."
-		sourceSurface: aRecordingSurface
-			x: 0
-			y: 0;
+		sourceSurface: aRecordingSurface;
 		rectangle: aRectangle;
 		fill;
 
