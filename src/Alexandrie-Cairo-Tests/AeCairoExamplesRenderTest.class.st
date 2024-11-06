@@ -92,9 +92,8 @@ AeCairoExamplesRenderTest >> surfaceWithAllOperators [
 { #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithColoredIcons [
 
-	| inputForm inputSurface outputColors outputSurface outputContext |
-	inputForm := Form fromFileNamed: AeFilesystemResources removeIconPNG.
-	inputSurface := AeCairoImageSurface fromForm: inputForm.
+	| inputSurface outputColors outputSurface outputContext |
+	inputSurface := AeCairoImageSurface newFromPngFileAt: AeFilesystemResources removeIconPNG.
 
 	outputColors := Color wheel: 7.
 
@@ -351,16 +350,15 @@ AeCairoExamplesRenderTest >> surfaceWithGouraudBasedTriangle [
 { #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithPixelatedIcon [
 
-	| iconForm iconSurface iconPattern scale aSurface aContext |
-	iconForm := Form fromFileNamed: AeFilesystemResources removeIconPNG.
-	iconSurface := AeCairoImageSurface fromForm: iconForm.
+	| iconSurface iconPattern scale aSurface aContext |
+	iconSurface := AeCairoImageSurface newFromPngFileAt: AeFilesystemResources removeIconPNG.
 	iconPattern := AeCairoSurfacePattern surface: iconSurface.
 	scale := 5.0.
 
 	"Create a surface with yellow background"
 	aSurface := AeCairoImageSurface
-		            extent: (iconForm width * scale) asInteger * 2
-							@ (iconForm height * scale) asInteger
+		            extent: (iconSurface width * scale) asInteger * 2
+							@ (iconSurface height * scale) asInteger
 		            format: AeCairoSurfaceFormat rgb24.
 	aContext := aSurface newContext.
 	aContext
@@ -372,16 +370,16 @@ AeCairoExamplesRenderTest >> surfaceWithPixelatedIcon [
 	aContext
 		scaleByX: scale y: scale;
 		source: iconPattern;
-		rectangleTo: iconForm extent * scale;
+		rectangleTo: iconSurface extent * scale;
 		fill.
 
 	"Draw a blurred icon"
 	iconPattern
 		filter: AeCairoSamplingFilter bilinear;
-		matrix: (AeCairoMatrix newTranslationByX: iconForm width negated y: 0).
+		matrix: (AeCairoMatrix newTranslationByX: iconSurface width negated y: 0).
 	aContext
-		translateByX: iconForm width y: 0;
-		rectangleTo: iconForm extent;
+		translateByX: iconSurface width y: 0;
+		rectangleTo: iconSurface extent;
 		fill.
 
 	^ aSurface
@@ -603,19 +601,18 @@ AeCairoExamplesRenderTest >> surfaceWithStraightEdgesCurve [
 { #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithStretchedIcon [
 
-	| aSurface aContext iconForm iconSurface iconPattern horizontalScale verticalScale |
-	iconForm := Form fromFileNamed: AeFilesystemResources removeIconPNG.
+	| aSurface aContext iconSurface iconPattern horizontalScale verticalScale |
 	horizontalScale := 0.5.
 	verticalScale := 2.0.
 
-	iconSurface := AeCairoImageSurface fromForm: iconForm.
+	iconSurface := AeCairoImageSurface newFromPngFileAt: AeFilesystemResources removeIconPNG.
 	iconPattern := AeCairoSurfacePattern surface: iconSurface.
 	"See Cairo API doc: https://www.cairographics.org/manual/cairo-cairo-pattern-t.html#cairo-pattern-set-matrix"
 	iconPattern matrix: (AeCairoMatrix newScalingByX: 1 / horizontalScale y: 1 / verticalScale).
 
 	"Create a surface"
 	aSurface := AeCairoImageSurface
-		extent: (iconForm width * horizontalScale) asInteger @ (iconForm height * verticalScale) asInteger
+		extent: (iconSurface width * horizontalScale) asInteger @ (iconSurface height * verticalScale) asInteger
 		format: AeCairoSurfaceFormat rgb24.
 	aContext := aSurface newContext.
 	
