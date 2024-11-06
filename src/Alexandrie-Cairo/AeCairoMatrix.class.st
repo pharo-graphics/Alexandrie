@@ -145,6 +145,80 @@ AeCairoMatrix >> = anObject [
 ]
 
 { #category : #'API - initialize' }
+AeCairoMatrix >> beFlipBothAround: aPoint [
+	"Mutate myself to a transformation that flips horizontally and vertically around a center.
+	
+	For example:
+	```
+	m := AeCairoMatrix new.
+	m beFlipBothAround: 4@4.
+	```
+	is equivalent to:
+	```
+	m := AeCairoMatrix newIdentity.
+	m translateBy: 4 asPoint.
+	m scaleBy: -1 asPoint.
+	m translateBy: -4 asPoint.
+	```
+	"
+
+	self beFlipBothAroundX: aPoint x y: aPoint y
+]
+
+{ #category : #'API - initialize' }
+AeCairoMatrix >> beFlipBothAroundX: x y: y [
+	"Mutate myself to a transformation that flips horizontally and vertically around a center.
+	
+	For example:
+	```
+	m := AeCairoMatrix new.
+	m beFlipBothAroundX: 4 y: 4.
+	```
+	is equivalent to:
+	```
+	m := AeCairoMatrix newIdentity.
+	m translateByX: 4 y: 4.
+	m scaleByX: -1 y: -1.
+	m translateByX: -4 y: -4.
+	```
+	"
+
+	self
+		beX: x * 2
+		y: y * 2
+		sx: -1.0
+		sy: -1.0
+		shx: 0.0
+		shy: 0.0
+]
+
+{ #category : #'API - initialize' }
+AeCairoMatrix >> beFlipHorizontallyAround: x [
+	"Mutate myself to a transformation that flips horizontally around a center."
+
+	self
+		beX: x * 2
+		y: 0.0
+		sx: -1.0
+		sy: 1.0
+		shx: 0.0
+		shy: 0.0
+]
+
+{ #category : #'API - initialize' }
+AeCairoMatrix >> beFlipVerticallyAround: y [
+	"Mutate myself to a transformation that flips vertically around a center."
+
+	self
+		beX: 0.0
+		y: y * 2
+		sx: 1.0
+		sy: -1.0
+		shx: 0.0
+		shy: 0.0
+]
+
+{ #category : #'API - initialize' }
 AeCairoMatrix >> beIdentity [
 	"Mutate myself to be an identity transformation.
 	

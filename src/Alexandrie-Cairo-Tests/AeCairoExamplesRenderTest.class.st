@@ -319,6 +319,55 @@ AeCairoExamplesRenderTest >> surfaceWithEmulatedRadialGradient [
 	^ aSurface
 ]
 
+{ #category : #'tests - text' }
+AeCairoExamplesRenderTest >> surfaceWithFlippedText [
+
+	| extent center textSurface textContext aFontFace mainSurface mainContext m |
+	extent := 34 @ 16.
+	center := extent / 2.0.
+
+	"Prepare a surface to use as pattern"
+	textSurface :=
+		AeCairoImageSurface
+			extent: extent
+			format: AeCairoSurfaceFormat argb32.
+	textContext := textSurface newContext.
+	aFontFace := AeFTLibraryResource current
+		sourceSansProRegularFTFace newCairoFontFace.
+	textContext
+		fontFace: aFontFace;
+		fontSize: extent y;
+		translateByX: 0 y: extent y;
+		showText: 'Cairo'.
+
+	"Paint the text surface 4 times"
+	mainSurface :=
+		AeCairoImageSurface
+			extent: extent * 2
+			format: AeCairoSurfaceFormat argb32.
+	mainContext := mainSurface newContext.
+	mainContext sourceSurface: textSurface x: 0.0 y: 0.0.
+	mainContext paint.
+
+	m := AeCairoMatrix newIdentity.
+	m beFlipHorizontallyAround: center x.
+	m translateBy: extent x negated @ 0.
+	mainContext source matrix: m.
+	mainContext paint.
+
+	m beFlipVerticallyAround: center y.
+	m translateBy: 0 @ extent y negated.
+	mainContext source matrix: m.
+	mainContext paint.
+
+	m beFlipBothAround: center.
+	m translateBy: extent negated.
+	mainContext source matrix: m.
+	mainContext paint.
+
+	^ mainSurface
+]
+
 { #category : #'tests - mesh gradient' }
 AeCairoExamplesRenderTest >> surfaceWithGouraudBasedTriangle [
 
