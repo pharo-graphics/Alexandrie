@@ -268,6 +268,16 @@ AeCairoMatrixTest >> testScaleTwice [
 
 ]
 
+{ #category : #tests }
+AeCairoMatrixTest >> testStoreString [
+
+	matrix := AeCairoMatrix newX: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
+
+	self
+		assert: matrix storeString
+		equals: '(AeCairoMatrix newX: 0.1000 y: 0.2000 sx: 0.3000 sy: 0.4000 shx: 0.5000 shy: 0.6000)'
+]
+
 { #category : #test }
 AeCairoMatrixTest >> testTranslateBy [
 
