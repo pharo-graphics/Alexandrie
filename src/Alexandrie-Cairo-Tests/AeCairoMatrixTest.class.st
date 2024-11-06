@@ -208,6 +208,16 @@ AeCairoMatrixTest >> testPreMultiply [
 		closeTo: (AeCairoMatrix newX: -0.1143 y: 0.1922 sx: -0.3428 sy: 0.6369 shx: -0.0664 shy: 0.5766)
 ]
 
+{ #category : #tests }
+AeCairoMatrixTest >> testPrintString [
+
+	matrix := AeCairoMatrix newX: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
+
+	self
+		assert: matrix printString
+		equals: 'an AeCairoMatrix(x: 0.1000 y: 0.2000 sx: 0.3000 sy: 0.4000 shx: 0.5000 shy: 0.6000)'
+]
+
 { #category : #test }
 AeCairoMatrixTest >> testRotateByRadians [
 

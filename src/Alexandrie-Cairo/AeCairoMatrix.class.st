@@ -313,19 +313,18 @@ AeCairoMatrix >> printOn: aStream [
 
 	aStream nextPut: $(.
 
-	{	{ self sx . self shy. }.
-		{ self shx. self sy . }.
-		{ self x  . self y    } }
-			do: [ :eachRow |
-				eachRow
-					do: [ :eachValue |
-						aStream nextPutAll:
-							(eachValue printShowingDecimalPlaces: 4) ] 
-					separatedBy: [ aStream space ] ]
-			separatedBy: [ aStream nextPutAll: ' | ' ].
+	#(x y sx sy shx shy)
+		do: [ :each |
+			aStream
+				nextPutAll: each;
+				nextPut: $:;
+				space.
+			((self perform: each)
+				printOn: aStream
+				showingDecimalPlaces: 4) ]
+		separatedBy: [ aStream space ].
 
-	aStream nextPut: $).
-
+	aStream nextPut: $)
 ]
 
 { #category : #'API - transformations' }
