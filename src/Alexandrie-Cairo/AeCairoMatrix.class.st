@@ -4,6 +4,8 @@ I am a Cairo FFI binding for `cairo_matrix_t`.
 `cairo_matrix_t` is used throughout cairo to convert between different coordinate spaces. A `cairo_matrix_t` holds an affine transformation, such as a scale, rotation, shear, or a combination of these.
 
 See: https://www.cairographics.org/manual/cairo-cairo-matrix-t.html
+See: https://www.cairographics.org/cookbook/matrix_transform/
+See: https://www.cairographics.org/cookbook/matrix_conventions/
 "
 Class {
 	#name : #AeCairoMatrix,
