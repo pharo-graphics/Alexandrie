@@ -26,7 +26,7 @@ AeCairoGradientShadowFilter >> colorRampFor: aColor radius: aRadius [
 ]
 
 { #category : #'API - painting' }
-AeCairoGradientShadowFilter >> paintFor: shape blurRadius: radius color: aColor on: aContext [
+AeCairoGradientShadowFilter >> paintFor: rectangle blurRadius: radius color: aColor on: aContext [
 
 	| aRect colorRamp aGradient aGradientMatrix |
 	radius isZero ifTrue: [ ^ self ].
@@ -34,9 +34,9 @@ AeCairoGradientShadowFilter >> paintFor: shape blurRadius: radius color: aColor 
 	colorRamp := self colorRampFor: aColor radius: radius.
 	aGradient := 
 		AeCairoRadialGradientPattern 
-			innerCenter: shape topLeft
+			innerCenter: rectangle topLeft
 			innerRadius: 0.0
-			outerCenter: shape topLeft
+			outerCenter: rectangle topLeft
 			outerRadius: radius
 			addStopsFrom: colorRamp.
 	aGradientMatrix := AeCairoMatrix newIdentity.
@@ -46,25 +46,25 @@ AeCairoGradientShadowFilter >> paintFor: shape blurRadius: radius color: aColor 
 		aContext source: aGradient.			
 
 		" top left"
-		aRect := shape topLeft - radius asPoint extent: radius asPoint.
+		aRect := rectangle topLeft - radius asPoint extent: radius asPoint.
 		"fs's matrix has 0@0 translation, initially"
 		aContext rectangle: aRect; fill.
 
 		" top right"
-		aRect := shape topRight rectangle: shape topRight + (radius @ radius negated).
-		aGradientMatrix translateByX: shape width negated y: 0.0.
+		aRect := rectangle topRight rectangle: rectangle topRight + (radius @ radius negated).
+		aGradientMatrix translateByX: rectangle width negated y: 0.0.
 		aGradient matrix: aGradientMatrix.
 		aContext rectangle: aRect; fill.
 
 		" bottom right"
-		aRect := shape bottomRight rectangle: shape bottomRight + radius.
-		aGradientMatrix translateByX: 0.0 y: shape height negated.
+		aRect := rectangle bottomRight rectangle: rectangle bottomRight + radius.
+		aGradientMatrix translateByX: 0.0 y: rectangle height negated.
 		aGradient matrix: aGradientMatrix.
 		aContext rectangle: aRect; fill.
 
 		" bottom left"
-		aRect := shape bottomLeft - (radius @ 0) extent: radius @ radius.
-		aGradientMatrix translateByX: shape width y: 0.0.
+		aRect := rectangle bottomLeft - (radius @ 0) extent: radius @ radius.
+		aGradientMatrix translateByX: rectangle width y: 0.0.
 		aGradient matrix: aGradientMatrix.
 		aContext rectangle: aRect; fill.
 		].	
@@ -72,7 +72,7 @@ AeCairoGradientShadowFilter >> paintFor: shape blurRadius: radius color: aColor 
 	" borders drawing"	
 
 	" top "
-	aRect := shape topLeft - (0 @ radius) extent: shape width @ radius.
+	aRect := rectangle topLeft - (0 @ radius) extent: rectangle width @ radius.
 	aGradient := AeCairoLinearGradientPattern
 		from: aRect bottomLeft
 		to: aRect bottomLeft - (0 @ radius)
@@ -80,7 +80,7 @@ AeCairoGradientShadowFilter >> paintFor: shape blurRadius: radius color: aColor 
 	aContext source: aGradient; rectangle: aRect; fill.
 
 	" bottom "
-	aRect := shape bottomLeft extent: shape width @ radius.
+	aRect := rectangle bottomLeft extent: rectangle width @ radius.
 	aGradient := AeCairoLinearGradientPattern
 		from: aRect topLeft
 		to: aRect topLeft + (0 @ radius)
@@ -88,25 +88,25 @@ AeCairoGradientShadowFilter >> paintFor: shape blurRadius: radius color: aColor 
 	aContext source: aGradient; rectangle: aRect; fill.
 
 	" right "
-	aRect := 0 @ 0 extent: radius @ shape height.
+	aRect := 0 @ 0 extent: radius @ rectangle height.
 	aGradient := AeCairoLinearGradientPattern
 		from: 0 @ 0
 		to: radius @ 0
 		addStopsFrom: colorRamp.
 	aContext source: aGradient.
-	aGradientMatrix := AeCairoMatrix newTranslationBy: shape topRight negated.
+	aGradientMatrix := AeCairoMatrix newTranslationBy: rectangle topRight negated.
 	aGradient matrix: aGradientMatrix.
 	aContext restoreStateAfter: [
 		aContext
-			translateBy: shape topRight;
+			translateBy: rectangle topRight;
 			rectangle: aRect;
 			fill ].	
 
 	" left "
-	aRect := ((shape left - radius) @ shape top) extent: radius @ shape height.
+	aRect := ((rectangle left - radius) @ rectangle top) extent: radius @ rectangle height.
 	aGradientMatrix := AeCairoMatrix newIdentity.
 	aGradientMatrix rotateByRadians: Float pi.
-	aGradientMatrix translateBy: shape bottomLeft negated.
+	aGradientMatrix translateBy: rectangle bottomLeft negated.
 	aGradient matrix: aGradientMatrix.
 
 	aContext
