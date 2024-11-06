@@ -435,6 +435,88 @@ AeCairoExamplesRenderTest >> surfaceWithPixelatedIcon [
 ]
 
 { #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithRotationByQuadrantsOnContext [
+
+	| extent mainSurface mainContext m |
+	extent := 10 asPoint.
+
+	mainSurface :=
+		AeCairoImageSurface
+			extent: extent * 2
+			format: AeCairoSurfaceFormat rgb24.
+	mainContext := mainSurface newContext.
+
+	m := AeCairoMatrix newIdentity.
+	m beRotationByQuadrants: 1 around: extent.
+	mainContext
+		matrix: m;	
+		sourceColor: Color red;
+		rectangleTo: extent;
+		fill.
+
+	m beRotationByQuadrants: 2 around: extent.
+	mainContext
+		matrix: m;
+		sourceColor: Color green;
+		rectangleTo: extent;
+		fill.
+
+	m beRotationByQuadrants: 3 around: extent.
+	mainContext
+		matrix: m;
+		sourceColor: Color blue;
+		rectangleTo: extent;
+		fill.
+
+	m beRotationByQuadrants: 4 around: extent.
+	mainContext
+		matrix: m;
+		sourceColor: Color yellow;
+		rectangleTo: extent;
+		fill.
+
+	^ mainSurface
+]
+
+{ #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithRotationByQuadrantsOnSource [
+
+	| aSurface pivot mainSurface mainContext m |
+	aSurface := AeCairoImageSurface newFromPngFileAt: AeFilesystemResources removeIconPNG.
+	pivot := aSurface extent*1.1.
+
+	"Paint the text surface 4 times"
+	mainSurface :=
+		AeCairoImageSurface
+			extent: pivot * 2
+			format: AeCairoSurfaceFormat argb32.
+	mainContext := mainSurface newContext.
+	mainContext sourceColor: Color paleYellow; paint.
+
+	"Shared by all quadrants"
+	mainContext sourceSurface: aSurface x: 0.0 y: 0.0.
+	m := AeCairoMatrix newIdentity.
+
+	m beRotationByQuadrants: 0 around: pivot.
+	mainContext source matrix: m.
+	mainContext paint.
+
+	m beRotationByQuadrants: 1 around: pivot.
+	mainContext source matrix: m.
+	mainContext paintWithAlpha: 0.8.
+
+	m beRotationByQuadrants: 2 around: pivot.
+	mainContext source matrix: m.
+	mainContext paintWithAlpha: 0.6.
+
+	m beRotationByQuadrants: 3 around: pivot.
+	mainContext source matrix: m.
+	mainContext paintWithAlpha: 0.4.
+
+	^ mainSurface
+]
+
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithRoundedRectangle [
 
 	| extent aSurface aContext aRectangle |

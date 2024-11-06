@@ -234,6 +234,78 @@ AeCairoMatrix >> beMultiplicationOf: a by: b [
 ]
 
 { #category : #'API - initialize' }
+AeCairoMatrix >> beRotationByQuadrants: aCount around: aPoint [
+	"Mutate myself to be a transformation that rotates around a center by a number of quadrants.
+	Rotation by 0 quadrants is equivalent to be the identity matrix.
+
+	For example:
+	```
+	m := AeCairoMatrix new.
+	m beRotationByQuadrants: 3 around: 4@5
+	```
+	is equivalent to:
+	```
+	m := AeCairoMatrix newIdentity.
+	m translateBy: 4 @ 5.
+	m rotateByRadians: (Float pi / 2) * 3.
+	m translateBy: -4 @ -5.
+	```
+	"
+	self beRotationByQuadrants: aCount aroundX: aPoint x y: aPoint y
+]
+
+{ #category : #'API - initialize' }
+AeCairoMatrix >> beRotationByQuadrants: aCount aroundX: x y: y [
+	"Mutate myself to be a transformation that rotates around a center by a number of quadrants.
+	Rotation by 0 quadrants is equivalent to be the identity matrix.
+
+	For example:
+	```
+	m := AeCairoMatrix new.
+	m beRotationByQuadrants: 3 aroundX: 4 y: 5
+	```
+	is equivalent to:
+	```
+	m := AeCairoMatrix newIdentity.
+	m translateByX: 4 y: 5.
+	m rotateByRadians: (Float pi / 2) * 3.
+	m translateByX: -4 y: -5.
+	```
+	"
+
+	| mod |
+	mod := aCount \\ 4.
+
+	mod = 0 ifTrue: [ ^ self beIdentity ].
+
+	mod = 1 ifTrue: [
+		^ self
+			beX: x + y
+			y: y - x
+			sx: 0.0
+			sy: 0.0
+			shx: -1.0
+			shy: 1.0 ].
+
+	mod = 2 ifTrue: [
+		^ self
+			beX: x + x
+			y: y + y
+			sx: -1.0
+			sy: -1.0
+			shx: 0.0
+			shy: 0.0 ].
+
+	^ self
+		beX: x - y
+		y: y + x
+		sx: 0.0
+		sy: 0.0
+		shx: 1.0
+		shy: -1.0
+]
+
+{ #category : #'API - initialize' }
 AeCairoMatrix >> beRotationByRadians: angle [
 	"Mutate myself to be a transformation that rotates.
 

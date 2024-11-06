@@ -40,6 +40,77 @@ AeCairoMatrixTest >> testBeMultiplicationOfBy [
 ]
 
 { #category : #tests }
+AeCairoMatrixTest >> testBeRotationByQuadrantsAround [
+
+	matrix := AeCairoMatrix new.
+
+	matrix beRotationByQuadrants: 3 around: 7 @ 11.
+	self
+		assert: matrix
+ 		closeTo:
+			(AeCairoMatrix newIdentity
+				translateBy: 7 @ 11;
+				rotateByRadians: (3 * 90) degreesToRadians;
+				translateBy: -7 @ -11;
+				yourself).
+
+	"Typical quadrants"
+	matrix beRotationByQuadrants: 1 around: 0@0.
+	self
+		assert: matrix
+		closeTo: (AeCairoMatrix newRotationByRadians: 90 degreesToRadians).
+
+	matrix beRotationByQuadrants: 2 around: 0@0.
+	self
+		assert: matrix
+		closeTo: (AeCairoMatrix newRotationByRadians: 180 degreesToRadians).
+
+	matrix beRotationByQuadrants: 3 around: 0@0.
+	self
+		assert: matrix
+		closeTo: (AeCairoMatrix newRotationByRadians: 270 degreesToRadians).
+
+	matrix beRotationByQuadrants: 4 around: 0@0.
+	self
+		assert: matrix
+		closeTo: AeCairoMatrix newIdentity.
+
+	"Quadrants over 4"
+	matrix beRotationByQuadrants: 5 around: 0@0.
+	self
+		assert: matrix
+		closeTo: (AeCairoMatrix new beRotationByQuadrants: 1 around: 0@0; yourself).
+
+	"Negative quadrants"
+	matrix beRotationByQuadrants: -1 around: 0@0.
+	self
+		assert: matrix
+		closeTo: (AeCairoMatrix new beRotationByQuadrants: 3 around: 0@0; yourself).
+
+	matrix beRotationByQuadrants: -2 around: 0@0.
+	self
+		assert: matrix
+		closeTo: (AeCairoMatrix new beRotationByQuadrants: 2 around: 0@0; yourself).
+
+	matrix beRotationByQuadrants: -3 around: 0@0.
+	self
+		assert: matrix
+		closeTo: (AeCairoMatrix new beRotationByQuadrants: 1 around: 0@0; yourself).
+
+	matrix beRotationByQuadrants: -4 around: 0@0.
+	self
+		assert: matrix
+		closeTo: AeCairoMatrix newIdentity.
+
+	"Negative quadrants below -4"
+	matrix beRotationByQuadrants: -5 around: 0@0.
+	self
+		assert: matrix
+		closeTo: (AeCairoMatrix new beRotationByQuadrants: 3 around: 0@0; yourself).
+
+]
+
+{ #category : #tests }
 AeCairoMatrixTest >> testCopy [
 
 	| aCopy |
