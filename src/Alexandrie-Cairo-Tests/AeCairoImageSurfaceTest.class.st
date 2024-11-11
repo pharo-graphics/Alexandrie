@@ -20,6 +20,14 @@ AeCairoImageSurfaceTest >> testConvertZeroWidthAsFormARGB32 [
 ]
 
 { #category : #tests }
+AeCairoImageSurfaceTest >> testErrorReadingPNG [
+
+	self
+		should: [ AeCairoImageSurface newFromPngFileAt: 'unexisting_png' asFileReference ]
+		raise: AeCairoStatusError
+]
+
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testExtent [
 
 	surface := AeCairoImageSurface extent: 100 @ 50.

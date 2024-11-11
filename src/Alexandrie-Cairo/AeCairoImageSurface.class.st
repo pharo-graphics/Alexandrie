@@ -82,6 +82,7 @@ AeCairoImageSurface class >> newForData: aData extent: aPoint stride: stride for
 
 { #category : #'instance creation' }
 AeCairoImageSurface class >> newFromPngFileAt: aFileReference [
+	"Answer a new image surface with the contents of a PNG file. Raise `AeCairoStatusError` on failure."
 
 	| encodedPath newInstance |
 	encodedPath := aFileReference pathString nullTerminatedEncodeWith: #utf8.
