@@ -74,23 +74,22 @@ AeCairoImageSurfaceTest >> testHeight [
 { #category : #tests }
 AeCairoImageSurfaceTest >> testNewForByteArray [
 
-	| extent format stride byteArray |
-	extent := 200 @ 150.
+	| width height format stride byteArray |
+	width := 200.
+	height := 150.
 	format := AeCairoSurfaceFormat argb32.
-	stride := AeCairoImageSurface strideForWidth: extent x format: format.
+	stride := AeCairoImageSurface strideForWidth: width format: format.
+	byteArray := ByteArray new: stride * width.
 
-	byteArray := ByteArray new: stride * extent y.
+	surface :=
+		AeCairoImageSurface 
+			newForData: byteArray asExternalPointer
+			format: format
+			width: width
+			height: height
+			stride: stride.
 
-	surface := AeCairoImageSurface 
-		newForData: byteArray asExternalPointer
-		extent: extent
-		stride: stride
-		format: format.
-
-	[	surface newContext
-			sourceColor: Color blue;
-			circleRadius: extent min / 2;
-			fill.
+	[	surface newContext sourceColor: Color blue; paint.
 		surface flush ] ensure: [
 			"The buffer must be destroyed after the surface."
 			surface externallyFree ]
@@ -99,22 +98,22 @@ AeCairoImageSurfaceTest >> testNewForByteArray [
 { #category : #tests }
 AeCairoImageSurfaceTest >> testNewForFFIExternalArray [
 
-	| extent format stride buffer |
-	extent := 200 @ 150.
+	| width height format stride buffer |
+	width := 200.
+	height := 150.
 	format := AeCairoSurfaceFormat argb32.
-	stride := AeCairoImageSurface strideForWidth: extent x format: format.
-	buffer := AeFFIUInt8Array unownedNewOf: stride * extent y.
+	stride := AeCairoImageSurface strideForWidth: width format: format.
+	buffer := AeFFIUInt8Array unownedNewOf: stride * height.
 
-	surface := AeCairoImageSurface 
-		newForData: buffer
-		extent: extent
-		stride: stride
-		format: format.
+	surface :=
+		AeCairoImageSurface 
+			newForData: buffer
+			format: format
+			width: width
+			height: height
+			stride: stride.
 
-	[	surface newContext
-			sourceColor: Color blue;
-			circleRadius: extent min / 2;
-			fill.
+	[	surface newContext sourceColor: Color blue; paint.
 		surface flush ] ensure: [
 			"The buffer must be destroyed after the surface."
 			surface externallyFree.

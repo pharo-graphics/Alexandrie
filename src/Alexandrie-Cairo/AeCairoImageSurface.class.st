@@ -11,6 +11,7 @@ Class {
 
 { #category : #'instance creation' }
 AeCairoImageSurface class >> extent: aPoint [
+	"Answer a new image surface with ARGB32 format and the specified extent."
 
 	^ self
 		  extent: aPoint
@@ -18,14 +19,10 @@ AeCairoImageSurface class >> extent: aPoint [
 ]
 
 { #category : #'instance creation' }
-AeCairoImageSurface class >> extent: anExtent format: aSurfaceFormat [
+AeCairoImageSurface class >> extent: anExtent format: aFormat [
+	"Answer a new image surface with the specified format and extent."
 
-	^ (self
-		   unownedNewWithFormat: aSurfaceFormat
-		   width: anExtent x
-		   height: anExtent y)
-		  autoRelease;
-		  yourself
+	^ self newWithFormat: aFormat width: anExtent x height: anExtent y
 ]
 
 { #category : #'instance creation' }
@@ -68,14 +65,27 @@ AeCairoImageSurface class >> fromForm: aForm [
 ]
 
 { #category : #'instance creation' }
-AeCairoImageSurface class >> newForData: aData extent: aPoint stride: stride format: aSurfaceFormat [
+AeCairoImageSurface class >> newForData: aData extent: aPoint stride: aString format: aFormat [
+	"Answer a new image surface with the specified format and extent."
+
+	^ self
+		  newForData: aData
+		  format: aFormat
+		  width: aPoint x
+		  height: aPoint y
+		  stride: aString
+]
+
+{ #category : #'instance creation' }
+AeCairoImageSurface class >> newForData: aData format: aFormat width: aWidth height: aHeight stride: aStride [
+	"Answer a new image surface of the specified format and extent."
 
 	^ (self
 		   unownedNewForData: aData
-		   width: aPoint x
-		   height: aPoint y
-		   stride: stride
-		   format: aSurfaceFormat)
+		   format: aFormat
+		   width: aWidth
+		   height: aHeight
+		   stride: aStride)
 		  autoRelease;
 		  yourself
 ]
@@ -92,6 +102,18 @@ AeCairoImageSurface class >> newFromPngFileAt: aFileReference [
 	^ newInstance
 ]
 
+{ #category : #'instance creation' }
+AeCairoImageSurface class >> newWithFormat: aFormat width: aWidth height: aHeight [
+	"Answer a new image surface of the specified format and extent."
+
+	^ (self
+		   unownedNewWithFormat: aFormat
+		   width: aWidth
+		   height: aHeight)
+		  autoRelease;
+		  yourself
+]
+
 { #category : #query }
 AeCairoImageSurface class >> strideForWidth: aWidth format: aSurfaceFormat [
 	"This function provides a stride value that will respect all alignment requirements of the accelerated image-rendering code within cairo.
@@ -106,7 +128,7 @@ AeCairoImageSurface class >> strideForWidth: aWidth format: aSurfaceFormat [
 ]
 
 { #category : #'instance creation' }
-AeCairoImageSurface class >> unownedNewForData: aData width: width height: height stride: stride format: aSurfaceFormat [
+AeCairoImageSurface class >> unownedNewForData: aData format: aFormat width: aWidth height: aHeight stride: aStride [
 	"Creates an image surface for the provided pixel data. The output buffer must be kept around until the cairo_surface_t is destroyed or cairo_surface_finish() is called on the surface. The initial contents of data will be used as the initial image contents; you must explicitly clear the buffer, using, for example, cairo_rectangle() and cairo_fill() if you want it cleared.
 
 	The stride is the number of bytes between the start of rows in the buffer as allocated. This value should always be computed by cairo_format_stride_for_width() before allocating the data buffer.
@@ -123,10 +145,10 @@ AeCairoImageSurface class >> unownedNewForData: aData width: width height: heigh
 		AeCairoImageSurface
 		cairo_image_surface_create_for_data (
 			void* aData,
-			AeCairoSurfaceFormat aSurfaceFormat,
-			int width,
-			int height,
-			int stride ) )
+			AeCairoSurfaceFormat aFormat,
+			int aWidth,
+			int aHeight,
+			int aStride ) )
 ]
 
 { #category : #'instance creation' }
@@ -142,7 +164,7 @@ AeCairoImageSurface class >> unownedNewFromPngFileAt: pathUTF8Encoded [
 ]
 
 { #category : #'instance creation' }
-AeCairoImageSurface class >> unownedNewWithFormat: aSurfaceFormat width: aWidth height: aHeight [
+AeCairoImageSurface class >> unownedNewWithFormat: aFormat width: aWidth height: aHeight [
 	"Answer a new image surface of the specified format and dimensions.
 	
 	Initially the surface contents are set to 0. (Specifically, within each pixel, each color or alpha channel belonging to format will be 0. The contents of bits within a pixel, but not belonging to the given format are undefined).
@@ -154,7 +176,7 @@ AeCairoImageSurface class >> unownedNewWithFormat: aSurfaceFormat width: aWidth 
 	^ self ffiCall: #(
 		AeCairoImageSurface
 		cairo_image_surface_create (
-			AeCairoSurfaceFormat	aSurfaceFormat,
+			AeCairoSurfaceFormat	aFormat,
 			int aWidth,
 			int aHeight ) )
 ]
