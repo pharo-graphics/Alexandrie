@@ -299,6 +299,82 @@ AeCairoImageSurface >> byteSize [
 	^ self height * self stride
 ]
 
+{ #category : #'converting - color' }
+AeCairoImageSurface >> colorAt: aZeroBasedIntegerPoint [
+	"Answer an instance of `Color` that corresponds to the specified coordinate.
+
+	Preconditions:
+		0 <= x < width
+		0 <= y < height"
+
+	^ self colorAtX: aZeroBasedIntegerPoint x y: aZeroBasedIntegerPoint y
+]
+
+{ #category : #'converting - color' }
+AeCairoImageSurface >> colorAtX: x y: y [
+	"Answer an instance of `Color` that corresponds to the specified coordinate.
+
+	Preconditions:
+		0 <= x < width
+		0 <= y < height"
+
+	self isNull ifTrue: [ ^ self error ].
+
+	self format = AeCairoSurfaceFormat argb32
+		ifTrue: [ ^ self colorInARGB32FormatAtX: x y: y ].
+	self format = AeCairoSurfaceFormat rgb24
+		ifTrue: [ ^ self colorInRGB24FormatAtX: x y: y ].
+	self format = AeCairoSurfaceFormat a8
+		ifTrue: [ ^ self colorInA8FormatAtX: x y: y ].
+
+	self notYetImplemented
+]
+
+{ #category : #'converting - color' }
+AeCairoImageSurface >> colorInA8FormatAtX: x y: y [
+	"Answer a `Color` at a specified coordinate, assuming A8 format.
+	This format contains alpha levels only. The decision was to answer
+	black color, with variable levels of alpha."
+
+	| alpha |
+	alpha := self data uint8AtOffset: (x + (y * self stride)).
+
+	^ Color
+		r: 0.0
+		g: 0.0
+		b: 0.0
+		alpha: alpha / 255.0
+]
+
+{ #category : #'converting - color' }
+AeCairoImageSurface >> colorInARGB32FormatAtX: x y: y [
+
+	| pixel alpha |
+	pixel := self data uint32AtOffset: ((x * 4) + (y * self stride)).
+
+	alpha := pixel >> 24.
+	alpha = 0 ifTrue: [ ^ Color transparent ].
+
+	^ Color
+		r: ((pixel >> 16 bitAnd: 255) / alpha)
+		g: ((pixel >> 8  bitAnd: 255) / alpha)
+		b: ((pixel       bitAnd: 255) / alpha)
+		alpha: alpha / 255.0
+]
+
+{ #category : #'converting - color' }
+AeCairoImageSurface >> colorInRGB24FormatAtX: x y: y [
+
+	| pixel |
+	"Cairo's RGB24 uses 32-bits (each pixel has an ignored byte)."
+	pixel := self data uint32AtOffset: ((x * 4) + (y * self stride)).
+
+	^ Color
+		r: (pixel >> 16 bitAnd: 255) / 255.0
+		g: (pixel >> 8  bitAnd: 255) / 255.0
+		b: (pixel       bitAnd: 255) / 255.0
+]
+
 { #category : #'private - ffi' }
 AeCairoImageSurface >> data [
 	"Get a pointer to the data of the image surface, for direct inspection or modification.

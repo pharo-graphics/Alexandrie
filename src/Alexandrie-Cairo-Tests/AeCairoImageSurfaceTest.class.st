@@ -8,6 +8,106 @@ Class {
 }
 
 { #category : #tests }
+AeCairoImageSurfaceTest >> testColorAtInA8Format [
+
+	| context |
+	surface :=
+		AeCairoImageSurface
+			extent: 5 @ 3
+			format: AeCairoSurfaceFormat a8.
+
+	context := surface newContext.
+	context
+		rectangleX: 0 y: 0 width: 1 height: 3;
+		sourceColor: Color red; fill.
+	context
+		rectangleX: 1 y: 0 width: 1 height: 3;
+		sourceColor: (Color green alpha: 0.75); fill.
+	context
+		rectangleX: 2 y: 0 width: 1 height: 3;
+		sourceColor: (Color blue alpha: 0.5); fill.
+	context
+		rectangleX: 4 y: 0 width: 1 height: 3;
+		sourceColor: (Color yellow alpha: 0.25); fill.
+	surface flush.
+
+	"A8 is interpreted as black with variable levels of alpha"
+	0 to: 2 do: [ :y |
+		self assert: (surface colorAtX: 0 y: y) equals: Color black.
+		self assert: (surface colorAtX: 1 y: y) equals: (Color black alpha: 0.75).
+		self assert: (surface colorAtX: 2 y: y) equals: (Color black alpha: 0.5).
+		self assert: (surface colorAtX: 3 y: y) equals: Color transparent.
+		self assert: (surface colorAtX: 4 y: y) equals: (Color black alpha: 0.25) ]
+
+]
+
+{ #category : #tests }
+AeCairoImageSurfaceTest >> testColorAtInARGB32Format [
+
+	| context |
+	surface :=
+		AeCairoImageSurface
+			extent: 5 @ 3
+			format: AeCairoSurfaceFormat argb32.
+
+	context := surface newContext.
+	context
+		rectangleX: 0 y: 0 width: 1 height: 3;
+		sourceColor: Color red; fill.
+	context
+		rectangleX: 1 y: 0 width: 1 height: 3;
+		sourceColor: (Color green alpha: 0.75); fill.
+	context
+		rectangleX: 2 y: 0 width: 1 height: 3;
+		sourceColor: (Color blue alpha: 0.5); fill.
+	context
+		rectangleX: 4 y: 0 width: 1 height: 3;
+		sourceColor: (Color yellow alpha: 0.25); fill.
+	surface flush.
+
+	0 to: 2 do: [ :y |
+		self assert: (surface colorAtX: 0 y: y) equals: Color red.
+		self assert: (surface colorAtX: 1 y: y) equals: (Color green alpha: 0.75).
+		self assert: (surface colorAtX: 2 y: y) equals: (Color blue alpha: 0.5).
+		self assert: (surface colorAtX: 3 y: y) equals: Color transparent.
+		self assert: (surface colorAtX: 4 y: y) equals: (Color yellow alpha: 0.25) ]
+
+]
+
+{ #category : #tests }
+AeCairoImageSurfaceTest >> testColorAtInRGB24Format [
+
+	| context |
+	surface :=
+		AeCairoImageSurface
+			extent: 5 @ 3
+			format: AeCairoSurfaceFormat rgb24.
+
+	context := surface newContext.
+	context
+		rectangleX: 0 y: 0 width: 1 height: 3;
+		sourceColor: Color red; fill.
+	context
+		rectangleX: 1 y: 0 width: 1 height: 3;
+		sourceColor: Color green; fill.
+	context
+		rectangleX: 2 y: 0 width: 1 height: 3;
+		sourceColor: Color blue; fill.
+	context
+		rectangleX: 4 y: 0 width: 1 height: 3;
+		sourceColor: Color yellow; fill.
+	surface flush.
+
+	0 to: 2 do: [ :y |
+		self assert: (surface colorAtX: 0 y: y) equals: Color red.
+		self assert: (surface colorAtX: 1 y: y) equals: Color green.
+		self assert: (surface colorAtX: 2 y: y) equals: Color blue.
+		self assert: (surface colorAtX: 3 y: y) equals: Color black.
+		self assert: (surface colorAtX: 4 y: y) equals: Color yellow ]
+
+]
+
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testConvertZeroWidthAsFormARGB32 [
 
 	| aSurface aForm |
