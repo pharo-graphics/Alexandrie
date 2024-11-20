@@ -90,6 +90,27 @@ AeCairoExamplesRenderTest >> surfaceWithAllOperators [
 ]
 
 { #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithClearColorThatKeepsState [
+
+	| extent aSurface aContext aRectangle |
+	extent := 40 @ 20.
+	aRectangle := 5 @ 5 corner: (extent x - 5) @ (extent y - 5).
+
+	aSurface := AeCairoImageSurface
+		extent: extent
+		format: AeCairoSurfaceFormat argb32.
+
+	"Note that blue is restored after clear"
+	aContext := aSurface newContext.
+	aContext rectangle: aRectangle.
+	aContext sourceColor: Color blue.
+	aContext clearColor: Color orange.
+	aContext fill.
+
+	^ aSurface
+]
+
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithColoredIcons [
 
 	| inputSurface outputColors outputSurface outputContext |

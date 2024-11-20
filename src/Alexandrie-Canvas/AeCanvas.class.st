@@ -99,11 +99,7 @@ AeCanvas >> borderPathFactory: aUnaryBlock [
 AeCanvas >> clear: aColor [
 	"Clear the surface with a color."
 
-	cairoContext
-		clearR: aColor red
-		g: aColor green
-		b: aColor blue
-		a: aColor alpha
+	cairoContext clearColor: aColor
 ]
 
 { #category : #'API - painting' }

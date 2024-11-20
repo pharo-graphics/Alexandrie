@@ -283,6 +283,17 @@ AeCairoContext >> circleSectorCenter: aPoint from: radiansStart to: radiansStop 
 ]
 
 { #category : #'API - painting' }
+AeCairoContext >> clearColor: aColor [
+	"Clear the surface with a color."
+
+	self
+		clearR: aColor red
+		g: aColor green
+		b: aColor blue
+		a: aColor alpha
+]
+
+{ #category : #'API - painting' }
 AeCairoContext >> clearR: r g: g b: b a: a [
 	"See https://www.cairographics.org/FAQ/#clear_a_surface"
 
