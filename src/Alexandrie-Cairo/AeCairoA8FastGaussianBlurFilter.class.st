@@ -217,13 +217,11 @@ AeCairoA8FastGaussianBlurFilter >> applyRadius: blurRadius n: n [
 
 	| sigma solver stream |
 	n = 0 ifTrue: [ ^self ].
-	(blurRadius closeTo: 0) ifTrue: [ ^self ].
+	(blurRadius closeTo: 0.0) ifTrue: [ ^ self ].
 
 	self prepareBuffers.
 	sigma := blurRadius / GaussianScaleFactor.
-	solver := AeIntegralImageSolver new
-		calculateForSigma: sigma n: n;
-		yourself.
+	solver := AeIntegralImageSolver newForSigma: sigma n: n.
 	stream := solver boxRadiiStream.
 
 	n timesRepeat: [ | r |
@@ -233,8 +231,7 @@ AeCairoA8FastGaussianBlurFilter >> applyRadius: blurRadius n: n [
 			boxBlurTFrom: bufferB to: bufferA boxRadius: r ].
 
 	LibC memCopy: bufferA to: surfaceBuffer size: surfaceBuffer size.
-	surface markDirty.
-
+	surface markDirty
 ]
 
 { #category : #private }

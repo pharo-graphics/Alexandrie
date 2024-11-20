@@ -21,6 +21,14 @@ Class {
 	#category : #'Alexandrie-Cairo-Extra'
 }
 
+{ #category : #'instance creation' }
+AeIntegralImageSolver class >> newForSigma: aSigma n: aN [
+
+	^ self basicNew
+		initializeForSigma: aSigma n: aN;
+		yourself
+]
+
 { #category : #convenience }
 AeIntegralImageSolver >> boxRadiiStream [
 
@@ -31,9 +39,11 @@ AeIntegralImageSolver >> boxRadiiStream [
 				generator yield: radu ] ]
 ]
 
-{ #category : #'api - processing' }
-AeIntegralImageSolver >> calculateForSigma: aSigma n: aN [
+{ #category : #initialization }
+AeIntegralImageSolver >> initializeForSigma: aSigma n: aN [
 
+	self initialize.
+	
 	sigma := aSigma.
 	n := aN.
 	
@@ -54,8 +64,7 @@ AeIntegralImageSolver >> calculateForSigma: aSigma n: aN [
 	(m > n or: [ m negative ]) ifTrue: [
 		self error: 'calculation of m has failed' ].
 	
-	sigmaActual := ((m * wl squared + ((n-m) * wu squared) - n) / 12) sqrt.
-
+	sigmaActual := ((m * wl squared + ((n-m) * wu squared) - n) / 12) sqrt
 ]
 
 { #category : #accessing }
