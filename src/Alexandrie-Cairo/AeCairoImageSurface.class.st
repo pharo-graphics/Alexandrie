@@ -390,7 +390,7 @@ AeCairoImageSurface >> colorInRGB24FormatAtX: x y: y [
 		b: (pixel                 bitAnd: 255) / 255.0
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoImageSurface >> data [
 	"Get a pointer to the data of the image surface, for direct inspection or modification.
 
@@ -407,7 +407,7 @@ AeCairoImageSurface >> extent [
 	^ self width @ self height
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoImageSurface >> format [
 	"Answer the format of this surface.
 	
@@ -416,7 +416,7 @@ AeCairoImageSurface >> format [
 	^ self ffiCall: #( AeCairoSurfaceFormat cairo_image_surface_get_format (self) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoImageSurface >> height [
 	"Answer the pixel height of this image surface.
 	
@@ -425,7 +425,7 @@ AeCairoImageSurface >> height [
 	^ self ffiCall: #( int cairo_image_surface_get_height ( self ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #converting }
 AeCairoImageSurface >> newSimilarImageFormat: aFormat width: aWidth height: aHeight [
 
 	^ (self
@@ -436,7 +436,7 @@ AeCairoImageSurface >> newSimilarImageFormat: aFormat width: aWidth height: aHei
 		  yourself
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoImageSurface >> stride [
 	"Answer the stride of the image surface in bytes.
 	
@@ -445,7 +445,7 @@ AeCairoImageSurface >> stride [
 	^ self ffiCall: #( int cairo_image_surface_get_stride ( self ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #converting }
 AeCairoImageSurface >> unownedSimilarImageFormat: aFormat width: aWidth height: aHeight [
 	"Create a new image surface that is as compatible as possible for uploading to and the use in conjunction with an existing surface. However, this surface can still be used like any normal image surface. Unlike `cairo_surface_create_similar()` the new image surface won't inherit the device scale from other.
 
@@ -464,7 +464,7 @@ AeCairoImageSurface >> unownedSimilarImageFormat: aFormat width: aWidth height: 
 			int aHeight ) )
 ]
 
-{ #category : #'private - ffi' }
+{ #category : #API }
 AeCairoImageSurface >> width [
 	"Answer the pixel width of this image surface.
 	
@@ -473,7 +473,7 @@ AeCairoImageSurface >> width [
 	^ self ffiCall: #( int cairo_image_surface_get_width ( self ) )
 ]
 
-{ #category : #API }
+{ #category : #'API - exporting' }
 AeCairoImageSurface >> writePngTo: aFileReference [
 
 	| utf8EncodedPath status |
@@ -483,7 +483,7 @@ AeCairoImageSurface >> writePngTo: aFileReference [
 	^ status
 ]
 
-{ #category : #API }
+{ #category : #'API - exporting' }
 AeCairoImageSurface >> writePngToPathString: path [
 	"Write the contents of surface to a new file filename as a PNG image.
 	Returns CAIRO_STATUS_SUCCESS if the PNG file was written successfully.
