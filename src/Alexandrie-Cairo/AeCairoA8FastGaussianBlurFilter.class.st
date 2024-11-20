@@ -206,13 +206,13 @@ AeCairoA8FastGaussianBlurFilter class >> initialize [
 	GaussianScaleFactor := (3 * (Float twoPi sqrt) / 4) * 1.5
 ]
 
-{ #category : #'api - processing' }
+{ #category : #processing }
 AeCairoA8FastGaussianBlurFilter >> applyRadius: blurRadius [
 
 	self applyRadius: blurRadius n: 3
 ]
 
-{ #category : #'api - processing' }
+{ #category : #private }
 AeCairoA8FastGaussianBlurFilter >> applyRadius: blurRadius n: n [
 
 	| sigma solver stream |
@@ -237,7 +237,7 @@ AeCairoA8FastGaussianBlurFilter >> applyRadius: blurRadius n: n [
 
 ]
 
-{ #category : #'api - processing' }
+{ #category : #private }
 AeCairoA8FastGaussianBlurFilter >> boxBlurHFrom: scl to: tcl boxRadius: r [
 
 	| diam iarr |
@@ -274,7 +274,7 @@ AeCairoA8FastGaussianBlurFilter >> boxBlurHFrom: scl to: tcl boxRadius: r [
 		]
 ]
 
-{ #category : #'api - processing' }
+{ #category : #private }
 AeCairoA8FastGaussianBlurFilter >> boxBlurTFrom: scl to: tcl boxRadius: r [
 
 	| diam iarr |
@@ -310,7 +310,7 @@ AeCairoA8FastGaussianBlurFilter >> boxBlurTFrom: scl to: tcl boxRadius: r [
 
 ]
 
-{ #category : #'api - processing' }
+{ #category : #private }
 AeCairoA8FastGaussianBlurFilter >> prepareBuffers [
 
 	surfaceBuffer := AeFFIUInt8Array
@@ -320,7 +320,7 @@ AeCairoA8FastGaussianBlurFilter >> prepareBuffers [
 	bufferB := ByteArray new: surfaceBuffer size
 ]
 
-{ #category : #'api - processing' }
+{ #category : #processing }
 AeCairoA8FastGaussianBlurFilter >> surface: aSurface [
 
 	surface := aSurface.
