@@ -348,17 +348,32 @@ AeCairoImageSurface >> colorInA8FormatAtX: x y: y [
 
 { #category : #'converting - color' }
 AeCairoImageSurface >> colorInARGB32FormatAtX: x y: y [
+	"Answer a `Color` at a specified coordinate, assuming ARGB32 format.
+	In this format, colors are stored in memory in a format known as 
+	premultiplied-alpha, which means we must convert the RGB values to
+	straight-alpha."
 
 	| pixel alpha |
-	pixel := self data uint32AtOffset: ((x * 4) + (y * self stride)).
+	pixel := self data uint32AtOffset: (x bitShift: 2) + (y * self stride).
 
-	alpha := pixel >> 24.
+	alpha := pixel bitShift: -24.
+	
+	"Fully transparent color is a common case"
 	alpha = 0 ifTrue: [ ^ Color transparent ].
+	
+	"Opaque/solid color is another common and optimizable case"
+	alpha = 255 ifTrue: [
+		^ Color
+			r: (((pixel bitShift: -16) bitAnd: 255) / 255.0)
+			g: (((pixel bitShift: -8)  bitAnd: 255) / 255.0)
+			b: ((pixel                 bitAnd: 255) / 255.0) ].
 
+	"Convert to Float to avoid creating Fractions"
+	alpha := alpha asFloat.
 	^ Color
-		r: ((pixel >> 16 bitAnd: 255) / alpha)
-		g: ((pixel >> 8  bitAnd: 255) / alpha)
-		b: ((pixel       bitAnd: 255) / alpha)
+		r: (((pixel bitShift: -16) bitAnd: 255) / alpha)
+		g: (((pixel bitShift: -8)  bitAnd: 255) / alpha)
+		b: ((pixel                 bitAnd: 255) / alpha)
 		alpha: alpha / 255.0
 ]
 
@@ -367,12 +382,12 @@ AeCairoImageSurface >> colorInRGB24FormatAtX: x y: y [
 
 	| pixel |
 	"Cairo's RGB24 uses 32-bits (each pixel has an ignored byte)."
-	pixel := self data uint32AtOffset: ((x * 4) + (y * self stride)).
+	pixel := self data uint32AtOffset: (x bitShift: 2) + (y * self stride).
 
 	^ Color
-		r: (pixel >> 16 bitAnd: 255) / 255.0
-		g: (pixel >> 8  bitAnd: 255) / 255.0
-		b: (pixel       bitAnd: 255) / 255.0
+		r: ((pixel bitShift: -16) bitAnd: 255) / 255.0
+		g: ((pixel bitShift: -8)  bitAnd: 255) / 255.0
+		b: (pixel                 bitAnd: 255) / 255.0
 ]
 
 { #category : #'private - ffi' }
