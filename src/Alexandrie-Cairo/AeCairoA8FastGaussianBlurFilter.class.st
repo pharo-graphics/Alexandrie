@@ -65,7 +65,7 @@ AeCairoA8FastGaussianBlurFilter class >> example2MultiplePasses [
 	shadowGap := blurRadius * 3.
 	surfaceExtent := (lineLength + shadowGap) asPoint.
 
-	surfaces := (0 to: 6) collect: [ :eachN | 
+	surfaces := (1 to: 6) collect: [ :eachN | 
 		aSurface := AeCairoImageSurface
 			extent: surfaceExtent
 			format: AeCairoSurfaceFormat a8.
@@ -214,21 +214,22 @@ AeCairoA8FastGaussianBlurFilter >> applyRadius: blurRadius [
 
 { #category : #private }
 AeCairoA8FastGaussianBlurFilter >> applyRadius: blurRadius n: n [
+	"Apply blur with the specified radius, with in n passes."
 
-	| sigma solver stream |
-	n = 0 ifTrue: [ ^self ].
+	| sigma stream |
 	(blurRadius closeTo: 0.0) ifTrue: [ ^ self ].
 
-	self prepareBuffers.
-	sigma := blurRadius / GaussianScaleFactor.
-	solver := AeIntegralImageSolver newForSigma: sigma n: n.
-	stream := solver boxRadiiStream.
+	sigma := blurRadius rounded / GaussianScaleFactor. "Why scaling by this factor?"
+	stream := self boxRadiusStreamForSigma: sigma n: n.
 
-	n timesRepeat: [ | r |
-		r := stream next.
+	self prepareBuffers.
+
+	n timesRepeat: [
+		| eachBoxRadius |
+		eachBoxRadius := stream next.
 		self
-			boxBlurHFrom: bufferA to: bufferB boxRadius: r;
-			boxBlurTFrom: bufferB to: bufferA boxRadius: r ].
+			boxBlurHFrom: bufferA to: bufferB boxRadius: eachBoxRadius;
+			boxBlurTFrom: bufferB to: bufferA boxRadius: eachBoxRadius ].
 
 	LibC memCopy: bufferA to: surfaceBuffer size: surfaceBuffer size.
 	surface markDirty
@@ -305,6 +306,32 @@ AeCairoA8FastGaussianBlurFilter >> boxBlurTFrom: scl to: tcl boxRadius: r [
 		].
 	
 
+]
+
+{ #category : #private }
+AeCairoA8FastGaussianBlurFilter >> boxRadiusStreamForSigma: sigma n: n [
+	"Answer a read stream with n values. The sigma is the blur standard deviation. Based on the `boxesForGauss` function in the reference implementation (see class comment for the URL)."
+
+	| wIdeal wL wU radiusL radiusU mIdeal m |
+	wIdeal := (((12 * sigma squared) / n) + 1) sqrt.
+	wL := wIdeal floor.
+	wL even ifTrue: [ wL := wL - 1 ].
+	wU := wL + 2.
+	radiusL := (wL - 1) / 2.
+	radiusU := (wU - 1) / 2.
+	
+	mIdeal :=
+		((12 * sigma squared)
+		- (n * wL squared)
+		- (4 * n * wL)
+		- (3 * n)) / ((-4 * wL) - 4).
+	m := mIdeal rounded.
+	
+	^ Generator on: [ :generator |
+		m timesRepeat: [
+			generator yield: radiusL ].
+		(n - m) timesRepeat: [ 
+			generator yield: radiusU ] ]
 ]
 
 { #category : #private }
