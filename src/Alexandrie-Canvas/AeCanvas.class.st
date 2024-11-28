@@ -503,7 +503,6 @@ AeCanvas >> newSurfaceWithGaussianShadow: extent width: width canvasDo: aBlock [
 
 	alphaCanvas := AeCanvas newFor: alphaSurface.
 	aBlock value: alphaCanvas.
-	alphaSurface flush.
 
 	AeCairoA8FastGaussianBlurFilter new
 		surface: alphaSurface;
