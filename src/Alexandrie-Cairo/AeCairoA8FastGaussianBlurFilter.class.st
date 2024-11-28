@@ -322,21 +322,21 @@ AeCairoA8FastGaussianBlurFilter >> boxBlurTFrom: scl to: tcl boxRadius: r [
 
 { #category : #private }
 AeCairoA8FastGaussianBlurFilter >> boxRadiusStreamForSigma: sigma n: n [
-	"Answer a read stream with n values. The sigma is the blur standard deviation. Based on the `boxesForGauss` function in the reference implementation (see class comment for the URL)."
+	"Answer a read stream with n values. The sigma is the blur standard deviation.
+	Based on the `boxesForGauss` function in the reference implementation (see class comment for the URL)."
 
-	| wIdeal wL wU radiusL radiusU mIdeal m |
-	wIdeal := (((12 * sigma squared) / n) + 1) sqrt.
-	wL := wIdeal floor.
-	wL even ifTrue: [ wL := wL - 1 ].
-	wU := wL + 2.
-	radiusL := (wL - 1) / 2.
-	radiusU := (wU - 1) / 2.
-	
+	| widthIdeal widthL widthU radiusL radiusU mIdeal m |
+	widthIdeal := (((12 * sigma squared) / n) + 1) sqrt.
+	widthL := widthIdeal floor.
+	widthL even ifTrue: [ widthL := widthL - 1 ].
+	widthU := widthL + 2.
+	radiusL := (widthL - 1) bitShift: -1.
+	radiusU := (widthU - 1) bitShift: -1.
 	mIdeal :=
 		((12 * sigma squared)
-		- (n * wL squared)
-		- (4 * n * wL)
-		- (3 * n)) / ((-4 * wL) - 4).
+		- (n * widthL squared)
+		- (4 * n * widthL)
+		- (3 * n)) / ((-4 * widthL) - 4).
 	m := mIdeal rounded.
 	
 	^ Generator on: [ :generator |
