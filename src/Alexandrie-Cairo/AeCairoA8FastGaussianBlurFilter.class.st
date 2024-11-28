@@ -23,43 +23,53 @@ Class {
 
 { #category : #examples }
 AeCairoA8FastGaussianBlurFilter class >> example1MultipleRadius [
+	"Compare along different blur radius (or sigmas), on the same figure."
+	<sampleInstance>
 
-	| circleRadius shadowGap aSurface surfaces maxBlurRadius surfaceExtent |
+	| circleRadius margin surfaces maxBlurSigma surfaceExtent |
 	circleRadius := 45.
-	maxBlurRadius := 100.
-	shadowGap := maxBlurRadius * 3.
-	surfaceExtent := (circleRadius*2 + shadowGap) asPoint.
+	maxBlurSigma := 20.
+	margin := maxBlurSigma * 3.
+	surfaceExtent := ((circleRadius + margin) * 2) asPoint.
 
-	surfaces := (2 to: maxBlurRadius by: 10)
-		collect: [ :blurRadius | 
+	surfaces := (1 to: maxBlurSigma by: 1)
+		collect: [ :blurSigma |
+			| aSurface |
 			aSurface := AeCairoImageSurface
 				extent: surfaceExtent
 				format: AeCairoSurfaceFormat a8.
 			aSurface newContext
 				sourceColor: Color black;
-				translateBy: (shadowGap/2) asPoint;
+				translateBy: margin asPoint;
 				circleRadius: circleRadius;
 				fill.
-			aSurface flush.
 
 			[ AeCairoA8FastGaussianBlurFilter new
 					surface: aSurface;
-					applyRadius: blurRadius ]
+					applySigma: blurSigma ]
 							timeToRun asMilliSeconds traceCr.
 
 			aSurface ].
-		
-	surfaces inspect.
+
+"	(surfaces collect: [ :each |
+		| samples |
+		samples := (1 to: surfaceExtent x) collect: [ :i |
+			(each colorAtX: i - 1 y: surfaceExtent y // 2) alpha ].
+		RSScatterPlot x: (1 to: samples size) y: samples ]) inspect."
+
+	^ surfaces
 ]
 
 { #category : #examples }
 AeCairoA8FastGaussianBlurFilter class >> example2MultiplePasses [
-
-	| lineLength blurRadius shadowGap surfaceExtent aSurface surfaces |
+	"Compare along different box-blur number of passes (commonly 3 passes)"
+	<sampleInstance>
+	
+	| lineLength blurSigma margin surfaceExtent aSurface surfaces |
 	lineLength := 200.
-	blurRadius := 25.
-	shadowGap := blurRadius * 3.
-	surfaceExtent := (lineLength + shadowGap) asPoint.
+	blurSigma := 10.
+	margin := blurSigma * 3.
+	surfaceExtent := (lineLength + margin) asPoint.
 
 	surfaces := (1 to: 6) collect: [ :eachN | 
 		aSurface := AeCairoImageSurface
@@ -67,29 +77,28 @@ AeCairoA8FastGaussianBlurFilter class >> example2MultiplePasses [
 			format: AeCairoSurfaceFormat a8.
 		aSurface newContext
 			sourceColor: Color black;
-			lineWidth: blurRadius * 2;
-			lineTo: (shadowGap/2) asPoint;
+			lineWidth: blurSigma * 2;
+			lineTo: (margin/2) asPoint;
 			relativeLineTo: lineLength asPoint;
 			stroke.
-		aSurface flush.
 
 		[ AeCairoA8FastGaussianBlurFilter new
 				surface: aSurface;
-				applyRadius: blurRadius
-				n: eachN ]
+				applySigma: blurSigma n: eachN ]
 						timeToRun asMilliSeconds traceCr.
 
 		aSurface ].
 	
-	surfaces inspect.
+	^ surfaces
 ]
 
 { #category : #examples }
 AeCairoA8FastGaussianBlurFilter class >> example3Text [
+	"Render a text that drops a shadow."
+	<sampleInstance>
 
-	| fontSize string surfaceSize shadowSurface aFTLibrary aFTFace aFontFace aScaledFont aGlyphArray mainSurface shadowRadius shadowOffset |
-
-	shadowRadius := 6.
+	| fontSize string surfaceSize shadowSurface aFTLibrary aFTFace aFontFace aScaledFont aGlyphArray mainSurface blurSigma shadowOffset |
+	blurSigma := 5.
 	shadowOffset := 3@5.
 
 	fontSize := 72.
@@ -113,9 +122,7 @@ AeCairoA8FastGaussianBlurFilter class >> example3Text [
 		showGlyphs: aGlyphArray.
 	[ AeCairoA8FastGaussianBlurFilter new
 			surface: shadowSurface;
-			applyRadius: shadowRadius ] timeToRun asMilliSeconds traceCr.
-
-
+			applySigma: blurSigma ] timeToRun asMilliSeconds traceCr.
 
 	mainSurface := AeCairoImageSurface
 		  extent: surfaceSize
@@ -139,12 +146,14 @@ AeCairoA8FastGaussianBlurFilter class >> example3Text [
 		scaledFont: aScaledFont;
 		showGlyphs: aGlyphArray.
 
-"	mainSurface finish."
-	mainSurface inspect
+"	mainSurface finish. <-- Use it with PDF surface "
+	^ mainSurface
 ]
 
 { #category : #examples }
 AeCairoA8FastGaussianBlurFilter class >> example4RectangleStroke [
+	"Blur a rectangle stroke."
+	<sampleInstance>
 
 	| rectangleWidth blurRadius shadowGap aSurface |
 	rectangleWidth := 80.
@@ -158,41 +167,41 @@ AeCairoA8FastGaussianBlurFilter class >> example4RectangleStroke [
 		sourceColor: Color black;
 		rectangle: ((shadowGap/2) asPoint extent: rectangleWidth asPoint);
 		stroke.
-	aSurface flush.
 
 	AeCairoA8FastGaussianBlurFilter new
 		surface: aSurface;
 		applyRadius: blurRadius.
 
-	aSurface inspect.
+	^ aSurface
 ]
 
 { #category : #examples }
 AeCairoA8FastGaussianBlurFilter class >> example5DottedCircle [
+	"Blur a circle with dotted (dashed) stroke."
+	<sampleInstance>
 
-	| circleRadius blurRadius shadowGap aSurface |
-	circleRadius := 130.
-	blurRadius := 5.
-	shadowGap := blurRadius * 3.
+	| circleRadius blurSigma margin aSurface lineWidth |
+	circleRadius := 50.
+	blurSigma := 2.5.
+	margin := blurSigma * 3.
+	lineWidth := 20.
 
 	aSurface := AeCairoImageSurface
-		extent: (circleRadius*2 + shadowGap) asPoint
+		extent: (((circleRadius + margin) * 2) + lineWidth) asPoint
 		format: AeCairoSurfaceFormat a8.
 	aSurface newContext
 		sourceColor: Color black;
-		translateBy: (shadowGap/2) asPoint;
-		lineWidth: 10;
+		lineWidth: lineWidth;
 		lineCap: AeCairoCapStyle square;
-		dash: (AeFFIDoubleArray newFrom: #(0 20)) offset: 0;
-		circleRadius: circleRadius;
+		dash: (AeFFIDoubleArray newFrom: {0. lineWidth*2}) offset: 0;
+		circleCenter: aSurface extent / 2 radius: circleRadius;
 		stroke.
-	aSurface flush.
 
 	[ AeCairoA8FastGaussianBlurFilter new
 		surface: aSurface;
-		applyRadius: blurRadius ] timeToRun asMilliSeconds traceCr.
+		applySigma: blurSigma ] timeToRun asMilliSeconds traceCr.
 
-	aSurface inspect
+	^ aSurface
 ]
 
 { #category : #initialization }
