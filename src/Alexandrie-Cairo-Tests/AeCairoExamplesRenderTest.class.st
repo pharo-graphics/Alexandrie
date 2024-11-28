@@ -619,8 +619,7 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedBuffered [
 	mainContext
 		sourceColor: (shadowColor alpha: shadowAlpha);
 		maskSurface: aShadowSurface
-			x: shadowSize - shadowOffset x
-			y: shadowSize - shadowOffset y.
+			at: position - shadowOffset.
 
 	"draw circle"
 	mainContext

@@ -1059,6 +1059,12 @@ AeCairoContext >> maskGroupWith: aBlockClosure [
 ]
 
 { #category : #'API - painting' }
+AeCairoContext >> maskSurface: anAeCairoImageSurface at: aPoint [
+
+	self maskSurface: anAeCairoImageSurface x: aPoint x y: aPoint y
+]
+
+{ #category : #'API - painting' }
 AeCairoContext >> maskSurface: aSurface x: surfaceX y: surfaceY [
 	"A drawing operator that paints the current source using the alpha channel of surface as a mask. (Opaque areas of surface are painted with the source, transparent areas are not painted.)
 	

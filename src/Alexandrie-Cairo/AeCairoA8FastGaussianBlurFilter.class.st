@@ -137,9 +137,7 @@ AeCairoA8FastGaussianBlurFilter class >> example3Text [
 		paint;
 
 		sourceColor: Color red darker;
-		maskSurface: shadowSurface
-			x: shadowOffset x
-			y: shadowOffset y;
+		maskSurface: shadowSurface at: shadowOffset;
 
 		translateByX: 5 y: fontSize;
 		sourceColor: Color blue muchDarker;
