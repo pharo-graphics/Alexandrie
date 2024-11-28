@@ -245,6 +245,12 @@ AeCairoContext >> beginSubPath [
 ]
 
 { #category : #'API - path' }
+AeCairoContext >> circleCenter: aPoint radius: aNumber [
+
+	self circleCenterX: aPoint x y: aPoint y radius: aNumber
+]
+
+{ #category : #'API - path' }
 AeCairoContext >> circleCenterX: x y: y radius: radius [
 
 	self
