@@ -349,6 +349,7 @@ AeCairoA8FastGaussianBlurFilter >> boxRadiusStreamForSigma: sigma n: n [
 { #category : #private }
 AeCairoA8FastGaussianBlurFilter >> prepareBuffers [
 
+	surface flush.
 	surfaceBuffer := AeFFIUInt8Array
 		fromHandle: surface data
 		size: surface byteSize.
