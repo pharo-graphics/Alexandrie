@@ -12,15 +12,11 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'surface',
-		'radius',
 		'w',
 		'h',
 		'surfaceBuffer',
 		'bufferA',
 		'bufferB'
-	],
-	#classVars : [
-		'GaussianScaleFactor'
 	],
 	#category : #'Alexandrie-Cairo-Extra'
 }
@@ -216,10 +212,26 @@ AeCairoA8FastGaussianBlurFilter >> applyRadius: blurRadius [
 AeCairoA8FastGaussianBlurFilter >> applyRadius: blurRadius n: n [
 	"Apply blur with the specified radius, with in n passes."
 
-	| sigma stream |
-	(blurRadius closeTo: 0.0) ifTrue: [ ^ self ].
+	(blurRadius closeTo: 0) ifTrue: [ ^ self ].
 
-	sigma := blurRadius rounded / GaussianScaleFactor. "Why scaling by this factor?"
+	"See: https://github.com/pharo-graphics/Alexandrie/issues/71
+	gaussianScaleFactor := (3 * (Float twoPi sqrt) / 4) * 1.5"
+	self applySigma: (blurRadius / 2.8199568089598754) rounded n: n
+]
+
+{ #category : #processing }
+AeCairoA8FastGaussianBlurFilter >> applySigma: blurSigma [
+
+	self applySigma: blurSigma n: 3
+]
+
+{ #category : #private }
+AeCairoA8FastGaussianBlurFilter >> applySigma: sigma n: n [
+	"Apply blur with the specified sigma (standard deviation), in n passes."
+
+	| stream |
+	(sigma closeTo: 0.0) ifTrue: [ ^ self ].
+
 	stream := self boxRadiusStreamForSigma: sigma n: n.
 
 	self prepareBuffers.
