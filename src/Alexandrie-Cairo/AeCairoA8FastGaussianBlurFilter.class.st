@@ -204,13 +204,6 @@ AeCairoA8FastGaussianBlurFilter class >> example5DottedCircle [
 	^ aSurface
 ]
 
-{ #category : #initialization }
-AeCairoA8FastGaussianBlurFilter class >> initialize [
-
-	"See: https://www.w3.org/TR/SVG11/filters.html#feGaussianBlurElement"
-	GaussianScaleFactor := (3 * (Float twoPi sqrt) / 4) * 1.5
-]
-
 { #category : #processing }
 AeCairoA8FastGaussianBlurFilter >> applyRadius: blurRadius [
 
