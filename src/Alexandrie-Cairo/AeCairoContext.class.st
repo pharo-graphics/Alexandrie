@@ -1062,7 +1062,7 @@ AeCairoContext >> maskGroupWith: aBlockClosure [
 AeCairoContext >> maskSurface: aSurface [
 	"Paint the current source using the alpha channel of surface as a mask, at 0@0."
 
-	self maskSurface: aSurface x: 0.0 x y: 0.0
+	self maskSurface: aSurface x: 0.0 y: 0.0
 ]
 
 { #category : #'API - painting' }
