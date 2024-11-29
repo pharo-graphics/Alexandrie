@@ -1059,9 +1059,17 @@ AeCairoContext >> maskGroupWith: aBlockClosure [
 ]
 
 { #category : #'API - painting' }
-AeCairoContext >> maskSurface: anAeCairoImageSurface at: aPoint [
+AeCairoContext >> maskSurface: aSurface [
+	"Paint the current source using the alpha channel of surface as a mask, at 0@0."
 
-	self maskSurface: anAeCairoImageSurface x: aPoint x y: aPoint y
+	self maskSurface: aSurface x: 0.0 x y: 0.0
+]
+
+{ #category : #'API - painting' }
+AeCairoContext >> maskSurface: aSurface at: aPoint [
+	"Paint the current source using the alpha channel of surface as a mask, at the specified Point."
+
+	self maskSurface: aSurface x: aPoint x y: aPoint y
 ]
 
 { #category : #'API - painting' }

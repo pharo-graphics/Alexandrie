@@ -216,7 +216,7 @@ AeCairoImageSurface >> asAlphaChannelGrayscaleImage [
 		sourceColorR: 1.0 g: 1.0 b: 1.0;
 		paint;
 		sourceColorR: 0.0 g: 0.0 b: 0.0;
-	 	maskSurface: self x: 0.0 y: 0.0.
+	 	maskSurface: self.
 
 	^ aSurface
 

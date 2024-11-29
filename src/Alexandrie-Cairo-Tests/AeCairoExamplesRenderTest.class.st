@@ -129,7 +129,7 @@ AeCairoExamplesRenderTest >> surfaceWithColoredIcons [
 	    do: [ :eachColor |
 	        outputContext
 	            sourceColor: eachColor;
-	            maskSurface: inputSurface x: 0 y: 0 ]
+	            maskSurface: inputSurface ]
 	    separatedBy: [
 	        outputContext
 	            translateByX: inputSurface width
