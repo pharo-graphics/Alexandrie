@@ -430,18 +430,16 @@ AeCairoMigratedRenderTest >> surfaceWithGradientZeroStops [
 
 	aLinearGradient :=
 		AeCairoLinearGradientPattern
-			from: 0 @ 0
-			to: 1 @ 1.
+			fromX: 0 fromY: 0
+			toX: 1 toY: 1.
 	aContext
 		source: aLinearGradient;
 		paint.
 
 	aRadialGradient :=
 		AeCairoRadialGradientPattern 
-			innerCenter: 0@0
-			innerRadius: 0
-			outerCenter: 1@1
-			outerRadius: 1.
+			innerX: 0 innerY: 0 innerRadius: 0
+			outerX: 1 outerY: 1 outerRadius: 1.
 	aContext
 		source: aRadialGradient;
 		paint.

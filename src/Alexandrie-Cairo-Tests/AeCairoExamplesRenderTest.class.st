@@ -327,7 +327,7 @@ AeCairoExamplesRenderTest >> surfaceWithEmulatedRadialGradient [
 		sourceColor: (Color black alpha: 0.25).
 	(2 to: 10 by: 2) do: [ :radius |
 		context
-			circleCenterX: 10 y: 10 radius: radius;
+			circleCenter: 10@10 radius: radius;
 			fill ].
 	aPattern := context popGroupAsSurfacePattern.
 	
@@ -619,8 +619,7 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedBuffered [
 	mainContext
 		sourceColor: (shadowColor alpha: shadowAlpha);
 		maskSurface: aShadowSurface
-			x: shadowSize - shadowOffset x
-			y: shadowSize - shadowOffset y.
+			at: position - shadowOffset.
 
 	"draw circle"
 	mainContext

@@ -245,6 +245,12 @@ AeCairoContext >> beginSubPath [
 ]
 
 { #category : #'API - path' }
+AeCairoContext >> circleCenter: aPoint radius: aNumber [
+
+	self circleCenterX: aPoint x y: aPoint y radius: aNumber
+]
+
+{ #category : #'API - path' }
 AeCairoContext >> circleCenterX: x y: y radius: radius [
 
 	self
@@ -1050,6 +1056,12 @@ AeCairoContext >> maskGroupWith: aBlockClosure [
 	self pushGroup.
 	aBlockClosure value.
 	self mask: self popGroupAsSurfacePattern
+]
+
+{ #category : #'API - painting' }
+AeCairoContext >> maskSurface: anAeCairoImageSurface at: aPoint [
+
+	self maskSurface: anAeCairoImageSurface x: aPoint x y: aPoint y
 ]
 
 { #category : #'API - painting' }

@@ -12,13 +12,11 @@ Class {
 { #category : #'instance creation' }
 AeCairoLinearGradientPattern class >> from: aFromPoint to: aToPoint [
 
-	^ (self
-		   unownedNewFromX: aFromPoint x
-		   fromY: aFromPoint y
-		   toX: aToPoint x
-		   toY: aToPoint y)
-		  autoRelease;
-		  yourself
+	^ self
+		  fromX: aFromPoint x
+		  fromY: aFromPoint y
+		  toX: aToPoint x
+		  toY: aToPoint y
 ]
 
 { #category : #'instance creation' }
@@ -26,6 +24,18 @@ AeCairoLinearGradientPattern class >> from: aFromPoint to: aToPoint addStopsFrom
 
 	^ (self from: aFromPoint to: aToPoint)
 		  addStopsFrom: offsetColorAssociations;
+		  yourself
+]
+
+{ #category : #'instance creation' }
+AeCairoLinearGradientPattern class >> fromX: fromX fromY: fromY toX: toX toY: toY [
+
+	^ (self
+		   unownedNewFromX: fromX
+		   fromY: fromY
+		   toX: toX
+		   toY: toY)
+		  autoRelease;
 		  yourself
 ]
 
