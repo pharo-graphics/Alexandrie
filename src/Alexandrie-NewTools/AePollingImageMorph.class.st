@@ -14,12 +14,13 @@ Class {
 	#category : #'Alexandrie-NewTools'
 }
 
-{ #category : #stepping }
+{ #category : #initialization }
 AePollingImageMorph >> initialize [
 
 	super initialize.
 
-	stepTime := 50
+	"Number of milliseconds"
+	stepTime := 500
 ]
 
 { #category : #accessing }
