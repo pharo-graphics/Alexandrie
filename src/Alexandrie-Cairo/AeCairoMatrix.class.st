@@ -487,9 +487,44 @@ AeCairoMatrix >> rotateByRadians: angle [
 ]
 
 { #category : #'API - transformations' }
+AeCairoMatrix >> rotateByRadians: angle center: aPoint [
+	"Rotate about a center.
+	
+	See: https://www.cairographics.org/cookbook/transform_about_point/"
+
+	self rotateByRadians: angle centerX: aPoint x y: aPoint y
+]
+
+{ #category : #'API - transformations' }
+AeCairoMatrix >> rotateByRadians: angle centerX: cx y: cy [
+	"Rotate about a center.
+	
+	See: https://www.cairographics.org/cookbook/transform_about_point/"
+
+	self
+		translateByX: cx y: cy;
+		rotateByRadians: angle;
+		translateByX: cx negated y: cy negated
+]
+
+{ #category : #'API - transformations' }
 AeCairoMatrix >> scaleBy: aPoint [
+	"Scale about origin (0@0)."
 
 	self scaleByX: aPoint x y: aPoint y
+]
+
+{ #category : #'API - transformations' }
+AeCairoMatrix >> scaleBy: aPoint center: anotherPoint [
+	"Scale about a center.
+
+	See: https://www.cairographics.org/cookbook/transform_about_point/"
+
+	self
+		scaleByX: aPoint x
+		y: aPoint y
+		centerX: anotherPoint x
+		y: anotherPoint y
 ]
 
 { #category : #'API - transformations' }
@@ -504,6 +539,18 @@ AeCairoMatrix >> scaleByX: sx y: sy [
 			self,
 			double sx,
 			double sy ) )
+]
+
+{ #category : #'API - transformations' }
+AeCairoMatrix >> scaleByX: sx y: sy centerX: cx y: cy [
+	"Scale about a center.
+	
+	See: https://www.cairographics.org/cookbook/transform_about_point/"
+
+	self
+		translateByX: cx y: cy;
+		scaleByX: sx y: sy;
+		translateByX: cx negated y: cy negated
 ]
 
 { #category : #'accessing - structure variables' }

@@ -304,6 +304,22 @@ AeCairoMatrixTest >> testRotateByRadians [
 ]
 
 { #category : #tests }
+AeCairoMatrixTest >> testRotateByRadiansCenter [
+
+	| radians |
+	matrix := AeCairoMatrix newIdentity.
+	radians := 180 degreesToRadians.
+	matrix rotateByRadians: radians center: 20@10.
+	
+	self assert: matrix x   equals: 40.0.
+	self assert: matrix y   equals: 20.0.
+	self assert: matrix sx  equals: radians cos.
+	self assert: matrix sy  equals: radians cos.
+	self assert: matrix shx equals: radians sin negated.
+	self assert: matrix shy equals: radians sin
+]
+
+{ #category : #tests }
 AeCairoMatrixTest >> testRotateTwice [
 
 	| radians |
@@ -327,6 +343,22 @@ AeCairoMatrixTest >> testScaleBy [
 	
 	self assert: matrix x   equals: 0.0.
 	self assert: matrix y   equals: 0.0.
+	self assert: matrix sx  equals: 2.0.
+	self assert: matrix sy  equals: 3.0.
+	self assert: matrix shx equals: 0.0.
+	self assert: matrix shy equals: 0.0.
+
+	self assert: matrix scaleFactors equals: 2 @ 3
+]
+
+{ #category : #tests }
+AeCairoMatrixTest >> testScaleByCenter [
+
+	matrix := AeCairoMatrix newIdentity.
+	matrix scaleBy: 2 @ 3 center: 20 @ 10.
+	
+	self assert: matrix x   equals: -20.0.
+	self assert: matrix y   equals: -20.0.
 	self assert: matrix sx  equals: 2.0.
 	self assert: matrix sy  equals: 3.0.
 	self assert: matrix shx equals: 0.0.

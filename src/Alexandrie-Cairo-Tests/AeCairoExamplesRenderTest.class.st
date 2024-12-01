@@ -456,6 +456,41 @@ AeCairoExamplesRenderTest >> surfaceWithPixelatedIcon [
 ]
 
 { #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithRotationAboutCenter [
+	"Draw an asterisk with multiple lines rotated and scaled about the surface center."
+
+	| extent pivot mainSurface mainContext aMatrix numberOfLines |
+	extent := 40 @ 30.
+	pivot := extent / 2.
+	numberOfLines := 5.
+
+	mainSurface :=
+		AeCairoImageSurface
+			extent: extent
+			format: AeCairoSurfaceFormat argb32.
+	mainContext := mainSurface newContext.
+
+	aMatrix := AeCairoMatrix newIdentity.
+	(Color wheel: numberOfLines) do: [ :eachColor |
+		"Each iteration, rotate and scale a bit more"
+		aMatrix
+			rotateByRadians: Float twoPi / numberOfLines
+			center: pivot.
+		aMatrix
+			scaleBy: 1.2 @ 1.2
+			center: pivot.
+
+		mainContext
+			matrix: aMatrix;
+			sourceColor: (eachColor alpha: 0.75);
+			moveTo: pivot - 5;
+			lineTo: pivot + 5;
+			stroke ].
+
+	^ mainSurface
+]
+
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithRotationByQuadrantsOnContext [
 
 	| extent mainSurface mainContext m |
