@@ -24,6 +24,13 @@ I'm prepared to draw a tree of figures, A node's children can be either clipped 
 It depends on the chosen variant of `drawFigure*` method.
 
 See my test suite for some examples, and 'Bloc-Alexandrie' package.
+
+# Background Forms & caching
+
+The canvas receives Forms as arguments to `setBackgroundWithForm*` API, and converts those Forms to Cairo surfaces.
+Such conversion is a linear algorithm that can be time consuming, and we assume such Forms don't change often.
+That's the reason for the canvas to cache. The downside is that an update in a Form would require to manually reset the caches.
+This can be done via `resetFormCaches`.
 "
 Class {
 	#name : #AeCanvas,
@@ -628,6 +635,14 @@ AeCanvas >> privateAeCairoContext [
 AeCanvas >> privateAeCairoSurface [
 
 	^ cairoSurface
+]
+
+{ #category : #initialization }
+AeCanvas >> resetFormCaches [
+	"Reset the caches that #setBackgroundWithForm* API use to avoid conversions. But an update in a Form may require to reset these caches."
+
+	formToCairoSurfaceCache removeAll.
+	formSetToCairoSurfaceCache removeAll
 ]
 
 { #category : #'API - state' }

@@ -334,6 +334,50 @@ AeCanvasTest >> renderFormSet [
 	^ aeCanvas
 ]
 
+{ #category : #tests }
+AeCanvasTest >> renderFormThatUpdated [
+
+	| aeCanvas aFormCanvas |
+	aeCanvas := AeCanvas extent: 16@16.
+	
+	aFormCanvas := FormCanvas extent: 16@16.
+	aFormCanvas fillColor: Color red.
+
+	"1) Horizontal red rectangle"
+	aeCanvas pathFactory: [ :cairoContext |
+		cairoContext rectangleTo: 16@8 ].
+	aeCanvas
+		setBackgroundWithForm: aFormCanvas form
+		alpha: 1.0.
+	aeCanvas setBorderOff.
+	aeCanvas drawFigure.
+
+	"2) Vertical rectangle:
+	Without the Form cache, this rectangle would be green.
+	However, the cache makes it be painted red again."
+	aeCanvas pathFactory: [ :cairoContext |
+		cairoContext rectangleTo: 8@16 ].
+	aFormCanvas fillColor: Color green.
+	aeCanvas
+		setBackgroundWithForm: aFormCanvas form
+		alpha: 1.0.
+	aeCanvas setBorderOff.
+	aeCanvas drawFigure.
+
+	"3) Smaller rectangle:
+	This time, we reset the caches and it's painted in green"
+	aeCanvas resetFormCaches.
+	aeCanvas pathFactory: [ :cairoContext |
+		cairoContext rectangleTo: 8@8 ].
+	aeCanvas
+		setBackgroundWithForm: aFormCanvas form
+		alpha: 1.0.
+	aeCanvas setBorderOff.
+	aeCanvas drawFigure.
+
+	^ aeCanvas
+]
+
 { #category : #private }
 AeCanvasTest >> renderGlyphs: aCairoGlyphsArray scaledFont: aCairoScaledFont on: aeCanvas [
 
