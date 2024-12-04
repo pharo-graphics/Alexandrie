@@ -181,6 +181,18 @@ AeFaceEntry >> slant: aFontSlant [
 	slant := aFontSlant
 ]
 
+{ #category : #printing }
+AeFaceEntry >> slantName [
+
+	^ self slant name
+]
+
+{ #category : #printing }
+AeFaceEntry >> slantValue [
+
+	^ self slant value
+]
+
 { #category : #accessing }
 AeFaceEntry >> slantWeightStretch [
 
@@ -199,6 +211,18 @@ AeFaceEntry >> stretch [
 AeFaceEntry >> stretch: aFontStretch [
 
 	stretch := aFontStretch
+]
+
+{ #category : #accessing }
+AeFaceEntry >> stretchName [
+
+	^ self stretch name
+]
+
+{ #category : #accessing }
+AeFaceEntry >> stretchValue [
+
+	^ self stretch value
 ]
 
 { #category : #accessing }
@@ -225,4 +249,16 @@ AeFaceEntry >> weight [
 AeFaceEntry >> weight: aFontWeight [
 
 	weight := aFontWeight
+]
+
+{ #category : #accessing }
+AeFaceEntry >> weightName [
+
+	^ self weight name
+]
+
+{ #category : #accessing }
+AeFaceEntry >> weightValue [
+
+	^ self weight value
 ]
