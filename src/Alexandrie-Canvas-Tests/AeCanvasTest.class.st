@@ -298,9 +298,7 @@ AeCanvasTest >> renderForm [
 		"Tip: Use another path to clip the form"
 		cairoContext rectangleTo: aForm extent ].
 
-	aeCanvas
-		setBackgroundWithForm: aForm
-		alpha: 1.0.
+	aeCanvas setBackgroundWithForm: aForm alpha: 1.0.
 	aeCanvas setBorderOff.
 	aeCanvas drawFigure.
 
@@ -346,9 +344,7 @@ AeCanvasTest >> renderFormThatUpdated [
 	"1) Horizontal red rectangle"
 	aeCanvas pathFactory: [ :cairoContext |
 		cairoContext rectangleTo: 16@8 ].
-	aeCanvas
-		setBackgroundWithForm: aFormCanvas form
-		alpha: 1.0.
+	aeCanvas setBackgroundWithForm: aFormCanvas form alpha: 1.0.
 	aeCanvas setBorderOff.
 	aeCanvas drawFigure.
 
@@ -358,9 +354,7 @@ AeCanvasTest >> renderFormThatUpdated [
 	aeCanvas pathFactory: [ :cairoContext |
 		cairoContext rectangleTo: 8@16 ].
 	aFormCanvas fillColor: Color green.
-	aeCanvas
-		setBackgroundWithForm: aFormCanvas form
-		alpha: 1.0.
+	aeCanvas setBackgroundWithForm: aFormCanvas form alpha: 1.0.
 	aeCanvas setBorderOff.
 	aeCanvas drawFigure.
 
@@ -369,9 +363,7 @@ AeCanvasTest >> renderFormThatUpdated [
 	aeCanvas resetFormCaches.
 	aeCanvas pathFactory: [ :cairoContext |
 		cairoContext rectangleTo: 8@8 ].
-	aeCanvas
-		setBackgroundWithForm: aFormCanvas form
-		alpha: 1.0.
+	aeCanvas setBackgroundWithForm: aFormCanvas form alpha: 1.0.
 	aeCanvas setBorderOff.
 	aeCanvas drawFigure.
 
@@ -501,6 +493,27 @@ AeCanvasTest >> renderOpenFigure [
 				setCapSquare;
 				setBorderWidth: 4 ];
 		drawFigure.
+
+	^ aeCanvas
+]
+
+{ #category : #tests }
+AeCanvasTest >> renderSurface [
+
+	| aeCanvas aCairoSurface |
+	aeCanvas := AeCanvas extent: 60@20.
+	aeCanvas clear: Color paleGreen.
+	
+	aCairoSurface := AeCairoImageSurface newFromPngFileAt: AeFilesystemResources removeIconPNG.
+
+	aeCanvas pathScale: (aeCanvas extent / aCairoSurface extent) asFloatPoint.
+	aeCanvas pathFactory: [ :cairoContext |
+		"Tip: Use another path to clip the form"
+		cairoContext rectangleTo: aCairoSurface extent ].
+
+	aeCanvas setBackgroundWithSurface: aCairoSurface alpha: 1.0.
+	aeCanvas setBorderOff.
+	aeCanvas drawFigure.
 
 	^ aeCanvas
 ]

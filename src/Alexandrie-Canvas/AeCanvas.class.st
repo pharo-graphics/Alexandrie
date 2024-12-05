@@ -738,6 +738,14 @@ AeCanvas >> setBackgroundWithFormSet: aFormSet alpha: aDouble [
  		alpha: aDouble
 ]
 
+{ #category : #'API - background' }
+AeCanvas >> setBackgroundWithSurface: aCairoSurface alpha: aDouble [
+
+	self
+		setBackgroundWith: [ cairoContext sourceSurface: aCairoSurface ]
+		alpha: aDouble
+]
+
 { #category : #'API - border' }
 AeCanvas >> setBorderBlock: aBlockClosure [
 
