@@ -1,5 +1,5 @@
 "
-I am a comparison between Forms that should match.
+I am a comparison between Forms that should match. I assume that forms are not changed.
 
 See #isMatch, my main testing method.
 
@@ -13,7 +13,8 @@ Class {
 	#instVars : [
 		'actualForm',
 		'expectedForm',
-		'label'
+		'label',
+		'numberOfMismatchingPixels'
 	],
 	#category : #'Alexandrie-Base-Tests'
 }
@@ -191,11 +192,13 @@ AePixelComparison >> mismatchingPixelsDo: aBlock [
 { #category : #'accessing diff' }
 AePixelComparison >> numberOfMismatchingPixels [
 
-	| count |
-	count := 0.
-	self mismatchingPixelsDo: [
-		count := count + 1 ].
-	^ count
+	numberOfMismatchingPixels ifNil: [
+		| count |
+		count := 0.
+		self mismatchingPixelsDo: [ count := count + 1 ].
+		numberOfMismatchingPixels := count ].
+
+	^ numberOfMismatchingPixels
 ]
 
 { #category : #printing }
