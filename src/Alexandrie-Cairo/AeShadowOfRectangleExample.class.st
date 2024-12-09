@@ -4,80 +4,81 @@ Class {
 	#instVars : [
 		'surfaceExtent',
 		'shadowColor',
-		'blurRadius',
 		'gap',
 		'shadowOffset',
-		'aRectangle',
-		'rectangleSolidColor'
+		'shadowSigma',
+		'rectangle',
+		'rectangleColor',
+		'shadowWidth'
 	],
 	#category : #'Alexandrie-Cairo-Extra'
 }
-
-{ #category : #examples }
-AeShadowOfRectangleExample class >> example1 [
-
-	| anExample boxBlurSurface gradientsSurface |
-	anExample := self new.
-	[ boxBlurSurface := anExample surfaceWithBoxBlurShadow ] timeToRun asMilliSeconds traceCr.
-	[ gradientsSurface := anExample surfaceWithGradientsShadow ] timeToRun asMilliSeconds traceCr.
-	
-	boxBlurSurface inspectWithLabel: 'Box blur'.
-	gradientsSurface inspectWithLabel: 'Gradient emulation'.
-
-]
 
 { #category : #initialization }
 AeShadowOfRectangleExample >> initialize [
 
 	super initialize.
 	
-	shadowColor := Color blue alpha: 0.75.
-	shadowOffset := 15 asPoint.
-	blurRadius := 70.
+	shadowColor := Color blue.
+	shadowOffset := 20 asPoint.
+	shadowSigma := 12.
 
-	surfaceExtent := 1000 @ 500.
-	gap := (blurRadius * 2) asPoint.
-	aRectangle := gap extent: surfaceExtent - (gap * 2).
-	rectangleSolidColor := Color green.
+	"See AeCairoA8FastGaussianBlurFilter>>#applyRadius:n:"
+	shadowWidth := shadowSigma * 2.82.
+
+	surfaceExtent := 400 @ 300.
+	gap := (shadowSigma * 5) asPoint.
+	rectangle := gap asIntegerPoint  extent: (surfaceExtent - (gap * 2) - shadowOffset) asIntegerPoint.
+	rectangleColor := Color green alpha: 0.5.
 
 ]
 
 { #category : #building }
+AeShadowOfRectangleExample >> inspectSurfacesToBeCompared [
+	<script: 'self new inspectSurfacesToBeCompared'>
+
+	| boxBlurSurface gradientsSurface |
+	[ boxBlurSurface := self surfaceWithBoxBlurShadow ] timeToRun asMilliSeconds traceCr.
+	[ gradientsSurface := self surfaceWithGradientsShadow ] timeToRun asMilliSeconds traceCr.
+	
+	{ boxBlurSurface. gradientsSurface } inspectWithLabel: '1 -> Box blur. 2 -> Gradient emulation'
+]
+
+{ #category : #building }
 AeShadowOfRectangleExample >> surfaceWithBoxBlurShadow [
+	<sampleInstance>
 
-	| shadowSurface shadowGap mainSurface |
-	shadowSurface := AeCairoImageSurface
-		extent: surfaceExtent
-		format: AeCairoSurfaceFormat a8.
+	| shadowSurface mainSurface |
+	shadowSurface :=
+		AeCairoImageSurface
+			extent: surfaceExtent
+			format: AeCairoSurfaceFormat a8.
 
-	shadowGap := blurRadius * 3/2.
 	shadowSurface newContext
 		sourceColor: Color black;
-		translateBy: shadowGap asPoint;
-		rectangleTo: aRectangle extent;
+		translateBy: shadowWidth asPoint;
+		rectangleTo: rectangle extent;
 		fill.
-	shadowSurface flush.
 
 	AeCairoA8FastGaussianBlurFilter new
 		surface: shadowSurface;
-		applyRadius: blurRadius.
+		applySigma: shadowSigma.
 
 	mainSurface := AeCairoImageSurface
 		  extent: surfaceExtent
 		  format: AeCairoSurfaceFormat argb32.
 
 	mainSurface newContext
-		sourceColor: Color white;
-		paint;
-		translateBy: aRectangle origin;
+		sourceColor: Color white; paint;
+		translateBy: rectangle origin;
 
 		sourceColor: shadowColor;
 		maskSurface: shadowSurface
-			x: shadowOffset x - shadowGap
-			y: shadowOffset y - shadowGap;
-			
-		sourceColor: rectangleSolidColor;
-		rectangleTo: aRectangle extent;
+			x: shadowOffset x - shadowWidth
+			y: shadowOffset y - shadowWidth;
+		
+		sourceColor: rectangleColor;
+		rectangleTo: rectangle extent;
 		fill.
 	
 	^ mainSurface
@@ -85,6 +86,7 @@ AeShadowOfRectangleExample >> surfaceWithBoxBlurShadow [
 
 { #category : #building }
 AeShadowOfRectangleExample >> surfaceWithGradientsShadow [
+	<sampleInstance>
 
 	| aSurface aContext shadowRect |
 	aSurface := AeCairoImageSurface
@@ -93,27 +95,20 @@ AeShadowOfRectangleExample >> surfaceWithGradientsShadow [
 	aContext := aSurface newContext.
 
 	aContext
-			sourceColor: Color white;
-			paint;
-			translateBy: shadowOffset.
+		sourceColor: Color white; paint;
+		translateBy: shadowOffset.
 
-	self flag: #todo. "review coefficient"
-	shadowRect := aRectangle insetBy: blurRadius/1.5.
+	shadowRect := rectangle insetBy: shadowWidth / 1.5.
 	AeCairoGradientShadowFilter new
 		paintFor: shadowRect
-		blurRadius: blurRadius * 1.5
+		blurRadius: shadowWidth * 1.5
 		color: shadowColor
 		on: aContext.
 
 	aContext
-		rectangle: shadowRect;
-		sourceColor: shadowColor;
-		fill.
-
-	aContext
 		translateBy: shadowOffset negated;
-		rectangle: aRectangle;
-		sourceColor: rectangleSolidColor;
+		rectangle: rectangle;
+		sourceColor: rectangleColor;
 		fill.
 
 	^ aSurface

@@ -315,9 +315,7 @@ AeCairoA8FastGaussianBlurFilter >> boxBlurTFrom: scl to: tcl boxRadius: r [
 			val := val + lv - (scl zeroBasedAt: li).
 			tcl zeroBasedAt: ti putUint8: val*iarr.
 			li := li + w. ti := ti + w. ].
-		].
-	
-
+		]
 ]
 
 { #category : #private }

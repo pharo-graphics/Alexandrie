@@ -16,9 +16,8 @@ AeCairoGradientShadowFilter >> bellFunctionAt: x a: a b: b c: c [
 AeCairoGradientShadowFilter >> colorRampFor: aColor radius: aRadius [
 
 	| guide |
-	self flag: #todo. "Review this 3.0 coefficient"
 	guide := (1 to: aRadius) collect: [ :each |
-		self bellFunctionAt: each a: 1.0 b: 1 c: aRadius / 3.0 ].
+		self bellFunctionAt: each a: 1.0 b: 1.0 c: aRadius / 3.0 ].
 
 	^ guide withIndexCollect: [ :each :index |
 		(index / guide size) -> (aColor alpha: aColor alpha * each) ]
@@ -29,9 +28,19 @@ AeCairoGradientShadowFilter >> colorRampFor: aColor radius: aRadius [
 AeCairoGradientShadowFilter >> paintFor: rectangle blurRadius: radius color: aColor on: aContext [
 
 	| aRect colorRamp aGradient aGradientMatrix |
-	radius isZero ifTrue: [ ^ self ].
 
+	" -- core -- "
+
+	aContext
+		rectangle: rectangle;
+		sourceColor: aColor;
+		fill.
+
+	radius isZero ifTrue: [ ^ self ].
 	colorRamp := self colorRampFor: aColor radius: radius.
+
+	" -- corners -- "
+
 	aGradient := 
 		AeCairoRadialGradientPattern 
 			innerCenter: rectangle topLeft
@@ -41,7 +50,6 @@ AeCairoGradientShadowFilter >> paintFor: rectangle blurRadius: radius color: aCo
 			addStopsFrom: colorRamp.
 	aGradientMatrix := AeCairoMatrix newIdentity.
 
-	"corners painting"
 	aContext restoreStateAfter: [
 		aContext source: aGradient.			
 
@@ -69,7 +77,8 @@ AeCairoGradientShadowFilter >> paintFor: rectangle blurRadius: radius color: aCo
 		aContext rectangle: aRect; fill.
 		].	
 
-	" borders drawing"	
+
+	" -- sides -- "	
 
 	" top "
 	aRect := rectangle topLeft - (0 @ radius) extent: rectangle width @ radius.
@@ -104,11 +113,9 @@ AeCairoGradientShadowFilter >> paintFor: rectangle blurRadius: radius color: aCo
 
 	" left "
 	aRect := ((rectangle left - radius) @ rectangle top) extent: radius @ rectangle height.
-	aGradientMatrix := AeCairoMatrix newIdentity.
-	aGradientMatrix rotateByRadians: Float pi.
+	aGradientMatrix := AeCairoMatrix newRotationByRadians: Float pi.
 	aGradientMatrix translateBy: rectangle bottomLeft negated.
 	aGradient matrix: aGradientMatrix.
-
 	aContext
 		rectangle: aRect;
 		fill
