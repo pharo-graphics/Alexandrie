@@ -10,6 +10,16 @@ Class {
 }
 
 { #category : #'instance creation' }
+AeCairoRadialGradientPattern class >> center: aCenter innerRadius: anInnerRadius outerRadius: anOuterRadius [
+
+	^ self
+		innerCenter: aCenter
+		innerRadius: anInnerRadius
+		outerCenter: aCenter
+		outerRadius: anOuterRadius
+]
+
+{ #category : #'instance creation' }
 AeCairoRadialGradientPattern class >> innerCenter: anInnerCenter innerRadius: anInnerRadius outerCenter: anOuterCenter outerRadius: anOuterRadius [
 
 	^ self

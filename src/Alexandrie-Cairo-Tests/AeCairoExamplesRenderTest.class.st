@@ -626,9 +626,8 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedBuffered [
 		format: AeCairoSurfaceFormat a8.
 	aShadowContext := aShadowSurface newContext.
 	aGradient := (AeCairoRadialGradientPattern
-		innerCenter: shadowCenter
+		center: shadowCenter
 		innerRadius: radius
-		outerCenter: shadowCenter
 		outerRadius: radius + shadowSize)
 			addStopAt: 0.0 color: Color white;
 			addStopAt: 0.2 color: (Color white alpha: 0.5);
@@ -693,9 +692,8 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedDirect [
 
 	"draw shadow"
 	aGradient := (AeCairoRadialGradientPattern
-		innerCenter: shadowCenter
+		center: shadowCenter
 		innerRadius: radius
-		outerCenter: shadowCenter
 		outerRadius: radius + shadowSize)
 			addStopAt: 0.0 color: shadowColor;
 			addStopAt: 0.2 color: (shadowColor alpha: 0.5);

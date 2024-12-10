@@ -43,11 +43,10 @@ AeCairoGradientShadowFilter >> paintFor: rectangle blurRadius: radius color: aCo
 
 	aGradient := 
 		AeCairoRadialGradientPattern 
-			innerCenter: rectangle topLeft
+			center: rectangle topLeft
 			innerRadius: 0.0
-			outerCenter: rectangle topLeft
-			outerRadius: radius
-			addStopsFrom: colorRamp.
+			outerRadius: radius.
+	aGradient addStopsFrom: colorRamp.
 	aGradientMatrix := AeCairoMatrix newIdentity.
 
 	aContext restoreStateAfter: [
