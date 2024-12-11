@@ -184,10 +184,10 @@ AeCairoContext >> arcCenter: aCenter radius: aRadius startAngle: startAngleInRad
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> arcCenterX: centerX centerY: centerY radius: aRadius startAngle: aStartAngle endAngle: anEndAngle [ 
+AeCairoContext >> arcCenterX: centerX centerY: centerY radius: radius startAngle: startRadians endAngle: endRadians [
 	"Adds a circular arc of the given radius to the current path.
-	The arc is centered at xc@yc, begins at angle1 and proceeds in the direction of increasing angles to end at angle2.
-	If angle2 is less than angle1 it will be progressively increased by 2*PI until it is greater than angle1.
+	The arc is centered at centerX@centerY, begins at startRadians and proceeds in the direction of increasing angles to end at endRadians.
+	If endRadians is less than startRadians it will be progressively increased by 2*PI until it is greater than startRadians.
 	
 	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-arc"
 
@@ -197,9 +197,9 @@ AeCairoContext >> arcCenterX: centerX centerY: centerY radius: aRadius startAngl
 			self,
 			double centerX,
 			double centerY,
-			double aRadius,
-			double aStartAngle,
-			double anEndAngle ) )
+			double radius,
+			double startRadians,
+			double endRadians ) )
 ]
 
 { #category : #'API - path' }
@@ -214,9 +214,10 @@ AeCairoContext >> arcNegativeCenter: aPoint radius: aRadius startAngle: aStartAn
 ]
 
 { #category : #'API - path' }
-AeCairoContext >> arcNegativeCenterX: centerX centerY: centerY radius: aRadius startAngle: aStartAngle endAngle: anEndAngle [ 
+AeCairoContext >> arcNegativeCenterX: centerX centerY: centerY radius: radius startAngle: startRadians endAngle: endRadians [
 	"Adds a circular arc of the given radius to the current path.
-	The arc is centered at xc@yc, begins at angle1 and proceeds in the direction of decreasing angles to end at angle2. If angle2 is greater than angle1 it will be progressively decreased by 2*PI until it is less than angle1.
+	The arc is centered at centerX@centerY, begins at startRadians and proceeds in the direction of decreasing angles to end at endRadians.
+	If endRadians is greater than startRadians it will be progressively decreased by 2*PI until it is less than startRadians.
 	
 	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-arc-negative"
 
@@ -226,9 +227,9 @@ AeCairoContext >> arcNegativeCenterX: centerX centerY: centerY radius: aRadius s
 			self,
 			double centerX,
 			double centerY,
-			double aRadius,
-			double aStartAngle,
-			double anEndAngle ) )
+			double radius,
+			double startRadians,
+			double endRadians ) )
 ]
 
 { #category : #'API - path' }
