@@ -113,7 +113,7 @@ AeCairoMigratedRenderTest >> surfaceWithFillAndStroke [
 	aContext
 		rectangle: (pad asPoint extent: size asPoint);
 		sourceColor: Color blue;
-		fillPreserve;
+		fillPreservingPath;
 		sourceColor: Color red;
 		stroke.
 
@@ -123,7 +123,7 @@ AeCairoMigratedRenderTest >> surfaceWithFillAndStroke [
 		circleCenterX: pad + (size/2)
 			y: pad + (size/2)
 			radius: size/2;
-		fillPreserve;
+		fillPreservingPath;
 		sourceColor: Color blue;
 		stroke.
 
@@ -153,7 +153,7 @@ AeCairoMigratedRenderTest >> surfaceWithFillAndStrokeAlpha [
 					pathBlock value.
 					aContext
 						source: fillPattern;
-						fillPreserve;
+						fillPreservingPath;
 						source: strokePattern;
 						stroke ]
 				alpha: 0.5 ].
@@ -209,13 +209,13 @@ AeCairoMigratedRenderTest >> surfaceWithFillAndStrokeAlphaAdd [
 					pathBlock value.
 					aContext
 						source: fillPattern;
-						fillPreserve.
+						fillPreservingPath.
 
 					"Use DEST_OUT to subtract stroke from fill."
 					aContext
 						sourceColor: Color black;
 						operator: AeCairoOperator destOut;
-						strokePreserve.
+						strokePreservingPath.
 					
 					"Then use ADD to draw the stroke without a seam."
 					aContext
@@ -494,7 +494,7 @@ AeCairoMigratedRenderTest >> surfaceWithGroupClip [
 
 	aContext
 		rectangle: (25@25 extent: surfaceSize);
-		clipPreserve;
+		clipPreservingPath;
 		pushGroup;
 		sourceColor: Color blue;
 		fill;
@@ -504,7 +504,7 @@ AeCairoMigratedRenderTest >> surfaceWithGroupClip [
 
 	aContext
 		resetClip;
-		clipPreserve;
+		clipPreservingPath;
 		sourceColor: (Color red alpha: 0.5);
 		paint.
 
@@ -584,7 +584,7 @@ AeCairoMigratedRenderTest >> surfaceWithInvertedClip [
 			radius: 40
 			startAngle: 0
 			endAngle: Float twoPi;
-		clipPreserve;
+		clipPreservingPath;
 		paint.
 
 	aContext

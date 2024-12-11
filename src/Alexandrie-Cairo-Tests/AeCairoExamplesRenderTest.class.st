@@ -288,24 +288,24 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 	"stroke with black squared dots"
 	aContext
 		sourceColor: Color black;
-		lineCap: AeCairoCapStyle square;
-		lineWidth: lineWidth;
-		strokePreserve.
+		useLineCapSquare;
+		strokeSize: lineWidth;
+		strokePreservingPath.
 	self assert: aContext dashes equals: dashByteArray.
 	self assert: aContext hasCurrentPoint.
 
 	"stroke with green circle dots"
 	aContext
 		sourceColor: Color green;
-		lineWidth: lineWidth/1.5;
-		lineCap: AeCairoCapStyle round;
-		strokePreserve.
+		strokeSize: lineWidth/1.5;
+		useLineCapRound;
+		strokePreservingPath.
 	self assert: aContext dashes equals: dashByteArray.
 
 	"stroke red without dashes"
 	aContext
 		sourceColor: Color red;
-		lineWidth: 1;
+		strokeSize: 1;
 		dashDisable;
 		stroke.
 	self assert: aContext dashes equals: #().
@@ -600,7 +600,7 @@ AeCairoExamplesRenderTest >> surfaceWithRoundedRectangle [
 		bl: aRectangle height / 2.
 
 	aContext
-		lineWidth: 10;
+		strokeSize: 10;
 		sourceColor: (Color blue alpha: 0.5);
 		stroke.
 
@@ -772,7 +772,7 @@ AeCairoExamplesRenderTest >> surfaceWithStraightEdgesCurve [
 
 	aContext
 		sourceColor: Color white;
-		lineWidth: lineWidth;
+		strokeSize: lineWidth;
 		cubicCurveFrom: startPoint
 			controlPoint1: startPoint + (0 @ 35.4)
 			controlPoint2: startPoint + (39.4 @ 64)
@@ -880,7 +880,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
 	aContext
 		sourceColor: Color blue;
 		dash: (AeFFIDoubleArray newFrom: { 7. 1 }) offset: 3;
-		lineWidth: 1.5;
+		strokeSize: 1.5;
 		stroke.
 	
 	^ aSurface
@@ -960,10 +960,10 @@ AeCairoExamplesRenderTest >> surfaceWithToyAPISelectFontSlantWeight [
 		fontSize: fontSize;
 		translateByX: 2 y: fontSize;
 		appendTextPath: string;
-		lineWidth: 3;
+		strokeSize: 3;
 		sourceColor: Color white;
-		useLineJoinRound; 
-		strokePreserve;
+		useStrokeJoinRound; 
+		strokePreservingPath;
 		sourceColor: Color purple;
 		fill.
 
