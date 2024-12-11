@@ -402,12 +402,28 @@ AeCairoContext >> clipPreserve [
 ]
 
 { #category : #'API - clipping' }
+AeCairoContext >> clipPreservingPath [
+	"Establishes a new clip region by intersecting the current clip region with the current path as it would be filled according to the current fill rule.
+
+	Preserve the path within the cairo context.
+
+	The current clip region affects all drawing operations by effectively masking out any changes to the surface that are outside the current clip region.
+
+	This operation can only make the clip region smaller, never larger. But the current clip is part of the graphics state, so a temporary restriction of the clip region can be achieved by calling `cairo_clip_preserve()` within a `cairo_save()`/`cairo_restore()` pair.
+	The only other means of increasing the size of the clip region is `cairo_reset_clip()`.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-clip-preserve"
+
+	self clipPreserve
+]
+
+{ #category : #'API - clipping' }
 AeCairoContext >> clipPreservingPath: aBoolean [
 	"Establishes a new clip region by intersecting the current clip region with the current path as it would be filled according to the current fill rule.
 	The argument indicates whether the path must be preserved within the cairo context."
 
 	aBoolean
-		ifTrue: [ self clipPreserve ]
+		ifTrue: [ self clipPreservingPath ]
 		ifFalse: [ self clip ]
 ]
 
@@ -628,12 +644,20 @@ AeCairoContext >> fillPreserve [
 ]
 
 { #category : #'API - painting' }
+AeCairoContext >> fillPreservingPath [
+	"Fill the current path according to the current fill rule, source, and other settings.
+	Preserve the path within the cairo context."
+
+	self fillPreserve
+]
+
+{ #category : #'API - painting' }
 AeCairoContext >> fillPreservingPath: aBoolean [
 	"Fill the current path according to the current fill rule.
 	The argument indicates whether the path must be preserved within the cairo context."
 
 	aBoolean
-		ifTrue: [ self fillPreserve ]
+		ifTrue: [ self fillPreservingPath ]
 		ifFalse: [ self fill ]
 ]
 
@@ -1024,7 +1048,8 @@ AeCairoContext >> lineWidth [
 
 { #category : #'API - painting settings' }
 AeCairoContext >> lineWidth: aNumber [
-	"Sets the current line width within the cairo context. The line width value specifies the diameter of a pen that is circular in user space, (though device-space pen may be an ellipse in general due to scaling/shear/rotation of the CTM).
+	"Sets the current line width to be used in next stroke operations.
+	The line width value specifies the diameter of a pen that is circular in user space, (though device-space pen may be an ellipse in general due to scaling/shear/rotation of the CTM).
 	
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-width"
 
@@ -1839,6 +1864,14 @@ AeCairoContext >> stroke [
 	self ffiCall: #( void cairo_stroke ( self ) )
 ]
 
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeCap: aCairoCapStyle [
+	"Sets the current line cap style within the cairo context.
+	Default line cap style is butt."
+
+	self lineCap: aCairoCapStyle
+]
+
 { #category : #'API - query' }
 AeCairoContext >> strokeExtentsInDeviceSpace [
 
@@ -1881,6 +1914,28 @@ AeCairoContext >> strokeExtentsInUserSpace [
 		  (rightPointer doubleAt: 1) @ (bottomPointer doubleAt: 1)
 ]
 
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeJoin: aCairoJoinStyle [
+	"Sets the current line join style within the cairo context.
+	
+	The default line join style is miter."
+
+	self lineJoin: aCairoJoinStyle
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeJoinMiterLimit: aNumber [
+	"Set the current miter limit, to be used in next stroke operation if join is miter.
+
+	The default miter limit value is 10.0, which will convert joins with interior angles less than 11 degrees to bevels instead of miters. For reference, a miter limit of 2.0 makes the miter cutoff at 60 degrees, and a miter limit of 1.414 makes the cutoff at 90 degrees.
+
+	A miter limit for a desired angle can be computed as: miter limit = 1/sin(angle/2).
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-miter-limit"
+
+	self miterLimit: aNumber
+]
+
 { #category : #'API - painting' }
 AeCairoContext >> strokePreserve [
 	"Stroke the current path according to the current line width, line join, line cap, and dash settings.
@@ -1892,13 +1947,35 @@ AeCairoContext >> strokePreserve [
 ]
 
 { #category : #'API - painting' }
+AeCairoContext >> strokePreservingPath [
+	"Stroke the current path according to the current line width, line join, line cap, and dash settings.
+	Preserve the path within the cairo context."
+
+	self strokePreserve
+]
+
+{ #category : #'API - painting' }
 AeCairoContext >> strokePreservingPath: aBoolean [
 	"Stroke the current path according to the current line width, line join, line cap, and dash settings.
 	The argument indicates whether the path must be preserved within the cairo context."
 
 	aBoolean
-		ifTrue: [ self strokePreserve ]
+		ifTrue: [ self strokePreservingPath ]
 		ifFalse: [ self stroke ]
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeSize [
+	"Gets the current stroke size (line width) to be used in next stroke operations."
+
+	^ self lineWidth
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeSize: aNumber [
+	"Sets the current stroke size (line width) to be used in next stoke operations."
+
+	self lineWidth: aNumber
 ]
 
 { #category : #accessing }
@@ -2029,35 +2106,107 @@ AeCairoContext >> useFillRuleWinding [
 { #category : #'API - painting settings' }
 AeCairoContext >> useLineCapButt [
 
-	self lineCap: AeCairoCapStyle butt
+	self
+		deprecated: 'send stroke* version instead'
+		transformWith:
+			'`@receiver useLineCapButt' ->
+			'`@receiver useStrokeCapButt'.
+
+	self useStrokeCapButt
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> useLineCapRound [
 
-	self lineCap: AeCairoCapStyle round
+	self
+		deprecated: 'send stroke* version instead'
+		transformWith:
+			'`@receiver useLineCapRound' ->
+			'`@receiver useStrokeCapRound'.
+
+	self useStrokeCapRound
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> useLineCapSquare [
 
-	self lineCap: AeCairoCapStyle square
+	self
+		deprecated: 'send stroke* version instead'
+		transformWith:
+			'`@receiver useLineCapSquare' ->
+			'`@receiver useStrokeCapSquare'.
+
+	self useStrokeCapSquare
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> useLineJoinBevel [
 
-	self lineJoin: AeCairoJoinStyle bevel
+	self
+		deprecated: 'send stroke* version instead'
+		transformWith:
+			'`@receiver useLineJoinBevel' ->
+			'`@receiver useStrokeJoinBevel'.
+
+	self useStrokeJoinBevel
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> useLineJoinMiter [
 
-	self lineJoin: AeCairoJoinStyle miter
+	self
+		deprecated: 'send stroke* version instead'
+		transformWith:
+			'`@receiver useLineJoinMiter' ->
+			'`@receiver useStrokeJoinMiter'.
+
+	self useStrokeJoinMiter
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> useLineJoinRound [
 
-	self lineJoin: AeCairoJoinStyle round
+	self
+		deprecated: 'send stroke* version instead'
+		transformWith:
+			'`@receiver useLineJoinRound' ->
+			'`@receiver useStrokeJoinRound'.
+
+	self useStrokeJoinRound
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> useStrokeCapButt [
+
+	self strokeCap: AeCairoCapStyle butt
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> useStrokeCapRound [
+
+	self strokeCap: AeCairoCapStyle round
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> useStrokeCapSquare [
+
+	self strokeCap: AeCairoCapStyle square
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> useStrokeJoinBevel [
+
+	self strokeJoin: AeCairoJoinStyle bevel
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> useStrokeJoinMiter [
+
+	self strokeJoin: AeCairoJoinStyle miter
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> useStrokeJoinRound [
+
+	self strokeJoin: AeCairoJoinStyle round
 ]
