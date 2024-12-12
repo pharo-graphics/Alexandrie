@@ -987,7 +987,7 @@ AeCairoContext >> lineCap: aCairoCapStyle [
 		void
 		cairo_set_line_cap (
 			self,
-			AeCairoCapStyle aCairoCapStyle ) )
+			#AeCairoStrokeCap aCairoCapStyle ) )
 ]
 
 { #category : #'API - path' }
@@ -2178,19 +2178,19 @@ AeCairoContext >> useLineJoinRound [
 { #category : #'API - painting settings' }
 AeCairoContext >> useStrokeCapButt [
 
-	self strokeCap: AeCairoCapStyle butt
+	self strokeCap: AeCairoStrokeCap butt
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> useStrokeCapRound [
 
-	self strokeCap: AeCairoCapStyle round
+	self strokeCap: AeCairoStrokeCap round
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> useStrokeCapSquare [
 
-	self strokeCap: AeCairoCapStyle square
+	self strokeCap: AeCairoStrokeCap square
 ]
 
 { #category : #'API - painting settings' }

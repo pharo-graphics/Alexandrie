@@ -767,19 +767,19 @@ AeCanvas >> setCapButt [
 
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-cap"
 
-	cairoContext strokeCap: AeCairoCapStyle butt
+	cairoContext strokeCap: AeCairoStrokeCap butt
 ]
 
 { #category : #'API - border' }
 AeCanvas >> setCapRound [
 	
-	cairoContext strokeCap: AeCairoCapStyle round
+	cairoContext strokeCap: AeCairoStrokeCap round
 ]
 
 { #category : #'API - border' }
 AeCanvas >> setCapSquare [
 	
-	cairoContext strokeCap: AeCairoCapStyle square
+	cairoContext strokeCap: AeCairoStrokeCap square
 ]
 
 { #category : #'API - border' }
