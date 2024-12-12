@@ -1010,7 +1010,7 @@ AeCairoContext >> lineJoin: aCairoJoinStyle [
 		void
 		cairo_set_line_join (
 			self,
-			AeCairoJoinStyle aCairoJoinStyle ) )
+			#AeCairoStrokeJoin aCairoJoinStyle ) )
 ]
 
 { #category : #'API - path' }
@@ -2196,17 +2196,17 @@ AeCairoContext >> useStrokeCapSquare [
 { #category : #'API - painting settings' }
 AeCairoContext >> useStrokeJoinBevel [
 
-	self strokeJoin: AeCairoJoinStyle bevel
+	self strokeJoin: AeCairoStrokeJoin bevel
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> useStrokeJoinMiter [
 
-	self strokeJoin: AeCairoJoinStyle miter
+	self strokeJoin: AeCairoStrokeJoin miter
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> useStrokeJoinRound [
 
-	self strokeJoin: AeCairoJoinStyle round
+	self strokeJoin: AeCairoStrokeJoin round
 ]

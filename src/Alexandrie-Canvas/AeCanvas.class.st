@@ -822,7 +822,7 @@ AeCanvas >> setIdentityMatrix [
 { #category : #'API - border' }
 AeCanvas >> setJoinBevel [
 
-	cairoContext strokeJoin: AeCairoJoinStyle bevel
+	cairoContext strokeJoin: AeCairoStrokeJoin bevel
 ]
 
 { #category : #'API - border' }
@@ -830,7 +830,7 @@ AeCanvas >> setJoinMiter: limit [
 	
 	"Hint: there may be NO need to set miter join as it's the default in Cairo"
 	"https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-join"
-	cairoContext strokeJoin: AeCairoJoinStyle miter.
+	cairoContext strokeJoin: AeCairoStrokeJoin miter.
 	
 	"We might NOT need to set the miter limit if it's 10.0, the default"
 	"https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-miter-limit"
@@ -841,7 +841,7 @@ AeCanvas >> setJoinMiter: limit [
 { #category : #'API - border' }
 AeCanvas >> setJoinRound [
 
-	cairoContext strokeJoin: AeCairoJoinStyle round
+	cairoContext strokeJoin: AeCairoStrokeJoin round
 ]
 
 { #category : #initialization }
