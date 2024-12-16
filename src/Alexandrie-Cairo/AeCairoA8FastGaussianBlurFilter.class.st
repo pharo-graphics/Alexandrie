@@ -254,32 +254,32 @@ AeCairoA8FastGaussianBlurFilter >> boxBlurHFrom: scl to: tcl boxRadius: r [
 	diam := r+r+1.
 	iarr := 1.0 / diam.
 	
-	0 to: h-1 do: [ :i |
+	0 to: h - 1 do: [ :i |
 		| ti li ri fv lv val |
-		ti := i*w.
+		ti := (i * w) + 1.
 		li := ti.
 		ri := ti+r.
 		
-		fv := scl zeroBasedAt: ti.
-		lv := scl zeroBasedAt: ti+w-1.
-		val := (r+1)*fv.
+		fv := scl at: ti.
+		lv := scl at: ti + w - 1.
+		val := (r+1) * fv.
 
 		0 to: r-1 do: [ :j |
-			val := val + (scl zeroBasedAt: ti+j) ].
+			val := val + (scl at: ti+j) ].
 		r+1 timesRepeat: [
-			val := val + (scl zeroBasedAt: ri) - fv.
+			val := val + (scl at: ri) - fv.
 			ri := ri+1.
-			tcl zeroBasedAt: ti putUint8: val*iarr.
+			tcl at: ti put: (val * iarr) floor.
 			ti := ti+1 ].
 		w-diam timesRepeat: [
-			val := val + (scl zeroBasedAt: ri) - (scl zeroBasedAt: li).
+			val := val + (scl at: ri) - (scl at: li).
 			ri := ri+1. li := li+1.
-			tcl zeroBasedAt: ti putUint8: val*iarr.
+			tcl at: ti put: (val * iarr) floor.
 			ti := ti+1 ].
 		r timesRepeat: [
-			val := val + lv - (scl zeroBasedAt: li).
-			li := li+1.
-			tcl zeroBasedAt: ti putUint8: val*iarr.
+			val := val + lv - (scl at: li).
+			li := li+1. 
+			tcl at: ti put: (val * iarr) floor.
 			ti := ti+1 ]
 		]
 ]
@@ -291,29 +291,29 @@ AeCairoA8FastGaussianBlurFilter >> boxBlurTFrom: scl to: tcl boxRadius: r [
 	diam := r+r+1.
 	iarr := 1.0 / diam.
 	
-	0 to: w-1 do: [ :i |
+	1 to: w do: [ :i |
 		| ti li ri fv lv val |
 		ti := i.
 		li := ti.
-		ri := ti+(r*w).
+		ri := ti + (r*w).
 
-		fv := scl zeroBasedAt: ti.
-		lv := scl zeroBasedAt: ti+(w*(h-1)).
-		val := (r+1)*fv.
+		fv := scl at: ti.
+		lv := scl at: ti + (w*(h-1)).
+		val := (r+1) * fv.
 
 		0 to: r-1 do: [ :j |
-			val := val + (scl zeroBasedAt: ti+(j*w)) ].
+			val := val + (scl at: ti + (j*w)) ].
 		r+1 timesRepeat: [
-			val := val + (scl zeroBasedAt: ri) - fv.
-			tcl zeroBasedAt: ti putUint8: val*iarr.
+			val := val + (scl at: ri) - fv.
+			tcl at: ti put: (val * iarr) floor.
 			ri := ri + w. ti := ti + w. ].
 		h-diam timesRepeat: [
-			val := val + (scl zeroBasedAt: ri) - (scl zeroBasedAt: li).
-			tcl zeroBasedAt: ti putUint8: val*iarr.
+			val := val + (scl at: ri) - (scl at: li).
+			tcl at: ti put: (val * iarr) floor.
 			li := li + w. ri := ri + w. ti := ti + w. ].
 		r timesRepeat: [
-			val := val + lv - (scl zeroBasedAt: li).
-			tcl zeroBasedAt: ti putUint8: val*iarr.
+			val := val + lv - (scl at: li).
+			tcl at: ti put: (val * iarr) floor.
 			li := li + w. ti := ti + w. ].
 		]
 ]
