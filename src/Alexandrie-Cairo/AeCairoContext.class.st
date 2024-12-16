@@ -976,18 +976,18 @@ AeCairoContext >> isInStrokeX: x y: y [
 ]
 
 { #category : #'API - painting settings' }
-AeCairoContext >> lineCap: aCairoCapStyle [
+AeCairoContext >> lineCap: aCairoStrokeCap [
 	"Sets the current line cap style within the cairo context.
 	
 	The default line cap style is CAIRO_LINE_CAP_BUTT.
 	
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-cap"
 
-	self ffiCall: #(
-		void
-		cairo_set_line_cap (
-			self,
-			#AeCairoStrokeCap aCairoCapStyle ) )
+	self
+		deprecated: 'Deprecated method'
+		transformWith: '`@receiver lineCap: `@arg' -> '`@receiver strokeCap: `@arg'.
+
+	self strokeCap: aCairoStrokeCap
 ]
 
 { #category : #'API - path' }
@@ -999,18 +999,18 @@ AeCairoContext >> lineFrom: aPoint to: anotherPoint [
 ]
 
 { #category : #'API - painting settings' }
-AeCairoContext >> lineJoin: aCairoJoinStyle [
+AeCairoContext >> lineJoin: aCairoStrokeJoin [
 	"Sets the current line join style within the cairo context.
 	
 	The default line join style is CAIRO_LINE_JOIN_MITER.
 	
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-join"
 
-	self ffiCall: #(
-		void
-		cairo_set_line_join (
-			self,
-			#AeCairoStrokeJoin aCairoJoinStyle ) )
+	self
+		deprecated: 'Deprecated method'
+		transformWith: '`@receiver lineJoin: `@arg' -> '`@receiver strokeJoin: `@arg'.
+
+	self strokeJoin: aCairoStrokeJoin
 ]
 
 { #category : #'API - path' }
@@ -1041,9 +1041,11 @@ AeCairoContext >> lineWidth [
 	
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-line-width"
 
-	^ self ffiCall: #(
-		double
-		cairo_get_line_width ( self ) )
+	self
+		deprecated: 'Deprecated method'
+		transformWith: '`@receiver lineWidth' -> '`@receiver strokeSize'.
+
+	^ self strokeSize
 ]
 
 { #category : #'API - painting settings' }
@@ -1053,11 +1055,11 @@ AeCairoContext >> lineWidth: aNumber [
 	
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-width"
 
-	self ffiCall: #(
-		void
-		cairo_set_line_width (
-			self,
-			double aNumber ) )
+	self
+		deprecated: 'Deprecated method'
+		transformWith: '`@receiver lineWidth: `@arg' -> '`@receiver strokeSize: `@arg'.
+
+	self strokeSize: aNumber
 ]
 
 { #category : #'API - painting' }
@@ -1148,11 +1150,13 @@ AeCairoContext >> miterLimit: aNumber [
 	
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-miter-limit"
 
-	self ffiCall: #(
-		void
-		cairo_set_miter_limit (
-			self,
-			double aNumber ) )
+	self
+		deprecated: 'Deprecated method'
+		transformWith:
+			'`@receiver miterLimit: `@arg' ->
+			'`@receiver strokeJoinMiterLimit: `@arg'.
+
+	self strokeJoinMiterLimit: aNumber
 ]
 
 { #category : #'API - path' }
@@ -1865,11 +1869,18 @@ AeCairoContext >> stroke [
 ]
 
 { #category : #'API - painting settings' }
-AeCairoContext >> strokeCap: aCairoCapStyle [
+AeCairoContext >> strokeCap: aCairoStrokeCap [
 	"Sets the current line cap style within the cairo context.
-	Default line cap style is butt."
 
-	self lineCap: aCairoCapStyle
+	Default line cap style is butt.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-cap"
+
+	self ffiCall: #(
+		void
+		cairo_set_line_cap (
+			self,
+			AeCairoStrokeCap aCairoStrokeCap ) )
 ]
 
 { #category : #'API - query' }
@@ -1915,12 +1926,18 @@ AeCairoContext >> strokeExtentsInUserSpace [
 ]
 
 { #category : #'API - painting settings' }
-AeCairoContext >> strokeJoin: aCairoJoinStyle [
+AeCairoContext >> strokeJoin: aCairoStrokeJoin [
 	"Sets the current line join style within the cairo context.
 	
-	The default line join style is miter."
+	The default line join style is miter.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-join"
 
-	self lineJoin: aCairoJoinStyle
+	self ffiCall: #(
+		void
+		cairo_set_line_join (
+			self,
+			AeCairoStrokeJoin aCairoStrokeJoin ) )
 ]
 
 { #category : #'API - painting settings' }
@@ -1933,7 +1950,11 @@ AeCairoContext >> strokeJoinMiterLimit: aNumber [
 	
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-miter-limit"
 
-	self miterLimit: aNumber
+	self ffiCall: #(
+		void
+		cairo_set_miter_limit (
+			self,
+			double aNumber ) )
 ]
 
 { #category : #'API - painting' }
@@ -1943,15 +1964,21 @@ AeCairoContext >> strokePreserve [
 	
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-stroke-preserve"
 
-	self ffiCall: #( void cairo_stroke_preserve ( self ))
+	self
+		deprecated: 'Deprecated method'
+		transformWith: '`@receiver strokePreserve' -> '`@receiver strokePreservingPath'.
+
+	^ self strokePreservingPath
 ]
 
 { #category : #'API - painting' }
 AeCairoContext >> strokePreservingPath [
 	"Stroke the current path according to the current line width, line join, line cap, and dash settings.
-	Preserve the path within the cairo context."
+	Preserve the path within the cairo context.
 
-	self strokePreserve
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-stroke-preserve"
+
+	self ffiCall: #( void cairo_stroke_preserve ( self ))
 ]
 
 { #category : #'API - painting' }
@@ -1966,16 +1993,26 @@ AeCairoContext >> strokePreservingPath: aBoolean [
 
 { #category : #'API - painting settings' }
 AeCairoContext >> strokeSize [
-	"Gets the current stroke size (line width) to be used in next stroke operations."
+	"Gets the current stroke size (line width) to be used in next stroke operations.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-line-width"
 
-	^ self lineWidth
+	^ self ffiCall: #(
+		double
+		cairo_get_line_width ( self ) )
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> strokeSize: aNumber [
-	"Sets the current stroke size (line width) to be used in next stoke operations."
+	"Sets the current stroke size (line width) to be used in next stoke operations.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-width"
 
-	self lineWidth: aNumber
+	self ffiCall: #(
+		void
+		cairo_set_line_width (
+			self,
+			double aNumber ) )
 ]
 
 { #category : #accessing }
