@@ -162,12 +162,12 @@ AeCanvas >> drawFigureWithBorderCenterAndBackground [
 			"Need to restore clipping area to draw the border afterwards"
 			self restoreContextAfter: [
 				self fillViaClipPreservingPath ] ]
-		ifFalse: [ cairoContext fillPreserve ].
+		ifFalse: [ cairoContext fillPreservingPath ].
 
 	"Draw border, and clip afterwards if required"
 	self prepareStrokeWithSingleWidth.
 	clipAfterwards
-		ifTrue: [ cairoContext strokePreserve; clip ]
+		ifTrue: [ cairoContext strokePreservingPath; clip ]
 		ifFalse: [ cairoContext stroke ]
 ]
 
@@ -179,7 +179,7 @@ AeCanvas >> drawFigureWithBorderCenterAndNoBackground [
 	"Draw border and clip (if required)"
 	self prepareStrokeWithSingleWidth.
 	clipAfterwards
-		ifTrue: [ cairoContext strokePreserve; clip ]
+		ifTrue: [ cairoContext strokePreservingPath; clip ]
 		ifFalse: [ cairoContext stroke ]
 ]
 
@@ -206,7 +206,7 @@ AeCanvas >> drawFigureWithBorderInsideAndNoBackground [
 	self restoreContextOnlyIfClipAfterwards: [
 		"Draw border"
 		self prepareStrokeWithDoubledWidth.
-		cairoContext clipPreserve; stroke ]
+		cairoContext clipPreservingPath; stroke ]
 ]
 
 { #category : #private }
@@ -222,7 +222,7 @@ AeCanvas >> drawFigureWithBorderOutsideAndNoBackground [
 	cairoContext paintGroupWith: [
 		self prepareStrokeWithDoubledWidth.
 		cairoContext
-			strokePreserve;
+			strokePreservingPath;
 			setOperatorClear;
 			fillPreservingPath: clipAfterwards ].
 	
@@ -238,7 +238,7 @@ AeCanvas >> drawFigureWithBorderOutsideAndOpaqueBackground [
 
 	"Draw border"
 	self prepareStrokeWithDoubledWidth.
-	cairoContext strokePreserve.
+	cairoContext strokePreservingPath.
 
 	"Draw background. As it is opaque, it overlaps
 	the inner half of the double-sized border, emulating
@@ -263,9 +263,9 @@ AeCanvas >> drawFigureWithBorderOutsideAndTranslucentBackground [
 	cairoContext paintGroupWith: [
 		self prepareStrokeWithDoubledWidth.
 		cairoContext
-			strokePreserve;
+			strokePreservingPath;
 			setOperatorClear;
-			fillPreserve ].
+			fillPreservingPath ].
 	
 	"Draw background"
 	backgroundSourceBlock value.
@@ -384,7 +384,7 @@ AeCanvas >> fillViaClip [
 { #category : #private }
 AeCanvas >> fillViaClipPreservingPath [
 
-	cairoContext clipPreserve.
+	cairoContext clipPreservingPath.
 	backgroundAlpha < 1.0
 		ifTrue: [ cairoContext paintWithAlpha: backgroundAlpha ]
 		ifFalse: [ cairoContext paint ]
@@ -612,7 +612,7 @@ AeCanvas >> prepareStrokeWithDoubledWidth [
 
 	borderBlock value.
 
-	cairoContext lineWidth: borderWidth * 2.0.
+	cairoContext strokeSize: borderWidth * 2.0.
 
 ]
 
@@ -621,7 +621,7 @@ AeCanvas >> prepareStrokeWithSingleWidth [
 
 	borderBlock value.
 
-	cairoContext lineWidth: borderWidth.
+	cairoContext strokeSize: borderWidth.
 
 ]
 
@@ -767,31 +767,30 @@ AeCanvas >> setCapButt [
 
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-cap"
 
-	cairoContext lineCap: AeCairoCapStyle butt
+	cairoContext strokeCap: AeCairoStrokeCap butt
 ]
 
 { #category : #'API - border' }
 AeCanvas >> setCapRound [
 	
-	cairoContext lineCap: AeCairoCapStyle round
+	cairoContext strokeCap: AeCairoStrokeCap round
 ]
 
 { #category : #'API - border' }
 AeCanvas >> setCapSquare [
 	
-	cairoContext lineCap: AeCairoCapStyle square
+	cairoContext strokeCap: AeCairoStrokeCap square
 ]
 
 { #category : #'API - border' }
-AeCanvas >> setDashes: dashArray offset: dashOffset [ 
+AeCanvas >> setDashes: dashArray offset: dashOffset [
 	"Set the dashes and offset for the figure's stroke. Don't send this message to draw a figure without dashes.
 	
 	See https://www.cairographics.org/samples/dash/"
 
 	cairoContext
-		dash: (dashesCache at: dashArray)
+		strokeDashPattern: (dashesCache at: dashArray)
 		offset: dashOffset
-
 ]
 
 { #category : #initialization }
@@ -822,7 +821,7 @@ AeCanvas >> setIdentityMatrix [
 { #category : #'API - border' }
 AeCanvas >> setJoinBevel [
 
-	cairoContext lineJoin: AeCairoJoinStyle bevel
+	cairoContext strokeJoin: AeCairoStrokeJoin bevel
 ]
 
 { #category : #'API - border' }
@@ -830,18 +829,18 @@ AeCanvas >> setJoinMiter: limit [
 	
 	"Hint: there may be NO need to set miter join as it's the default in Cairo"
 	"https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-join"
-	cairoContext lineJoin: AeCairoJoinStyle miter.
+	cairoContext strokeJoin: AeCairoStrokeJoin miter.
 	
 	"We might NOT need to set the miter limit if it's 10.0, the default"
 	"https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-miter-limit"
-	cairoContext miterLimit: limit
+	cairoContext strokeJoinMiterLimit: limit
 
 ]
 
 { #category : #'API - border' }
 AeCanvas >> setJoinRound [
 
-	cairoContext lineJoin: AeCairoJoinStyle round
+	cairoContext strokeJoin: AeCairoStrokeJoin round
 ]
 
 { #category : #initialization }

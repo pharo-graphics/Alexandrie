@@ -403,12 +403,28 @@ AeCairoContext >> clipPreserve [
 ]
 
 { #category : #'API - clipping' }
+AeCairoContext >> clipPreservingPath [
+	"Establishes a new clip region by intersecting the current clip region with the current path as it would be filled according to the current fill rule.
+
+	Preserve the path within the cairo context.
+
+	The current clip region affects all drawing operations by effectively masking out any changes to the surface that are outside the current clip region.
+
+	This operation can only make the clip region smaller, never larger. But the current clip is part of the graphics state, so a temporary restriction of the clip region can be achieved by calling `cairo_clip_preserve()` within a `cairo_save()`/`cairo_restore()` pair.
+	The only other means of increasing the size of the clip region is `cairo_reset_clip()`.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-clip-preserve"
+
+	self clipPreserve
+]
+
+{ #category : #'API - clipping' }
 AeCairoContext >> clipPreservingPath: aBoolean [
 	"Establishes a new clip region by intersecting the current clip region with the current path as it would be filled according to the current fill rule.
 	The argument indicates whether the path must be preserved within the cairo context."
 
 	aBoolean
-		ifTrue: [ self clipPreserve ]
+		ifTrue: [ self clipPreservingPath ]
 		ifFalse: [ self clip ]
 ]
 
@@ -535,29 +551,36 @@ AeCairoContext >> dash: anArrayOfDoubles count: aNumberOfDashes offset: anOffset
 	
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash"
 
-	self ffiCall: #(
-		void
-		cairo_set_dash (
-			self,
-			void * anArrayOfDoubles,
-			int aNumberOfDashes,
-			double anOffset ) )
+	self
+		deprecated: 'Deprecated method'
+		transformWith:
+			'`@receiver dash: `@arg1 size: `@arg2 offset: `@arg3' ->
+			'`@receiver strokeDashPattern: `@arg1 size: `@arg2 offset: `@arg3'.
+
+	self strokeDashPattern: anArrayOfDoubles size: aNumberOfDashes offset: anOffset
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> dash: aFFIExternalArrayOfFloat64 offset: anOffset [
 
 	self
-		dash: aFFIExternalArrayOfFloat64
-		count: aFFIExternalArrayOfFloat64 size
-		offset: anOffset
+		deprecated: 'Deprecated method'
+		transformWith:
+			'`@receiver dash: `@arg1 offset: `@arg2' ->
+			'`@receiver strokeDashPattern: `@arg1 offset: `@arg2'.
+
+	self strokeDashPattern: aFFIExternalArrayOfFloat64 offset: anOffset
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> dashCount [
 	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-dash-count"
 
-	self ffiCall: #( int cairo_get_dash_count ( self ) )
+	self
+		deprecated: 'Deprecated method'
+		transformWith: '`@receiver dashCount' -> '`@receiver strokeDashPatternSize'.
+
+	^ self strokeDashPatternSize
 ]
 
 { #category : #'API - painting settings' }
@@ -567,25 +590,22 @@ AeCairoContext >> dashDisable [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash"
 
 	self
-		dash: ExternalAddress null
-		count: 0
-		offset: 0.0
+		deprecated: 'Deprecated method'
+		transformWith:
+			'`@receiver dashDisable' ->
+			'`@receiver resetStrokeDashPattern'.
+
+	self resetStrokeDashPattern
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> dashes [
 
-	| count aDashArray |
-	count := self dashCount.
-	count = 0 ifTrue: [ ^ Array empty ].
-
-	aDashArray := AeFFIDoubleArray newOf: count.
-
 	self
-		getDashesInto: aDashArray getHandle
-		offset: ExternalAddress null.
-	
-	^ aDashArray
+		deprecated: 'Deprecated method'
+		transformWith: '`@receiver dashes' -> '`@receiver strokeDashPattern'.
+
+	^ self strokeDashPattern
 ]
 
 { #category : #'API - path' }
@@ -629,12 +649,20 @@ AeCairoContext >> fillPreserve [
 ]
 
 { #category : #'API - painting' }
+AeCairoContext >> fillPreservingPath [
+	"Fill the current path according to the current fill rule, source, and other settings.
+	Preserve the path within the cairo context."
+
+	self fillPreserve
+]
+
+{ #category : #'API - painting' }
 AeCairoContext >> fillPreservingPath: aBoolean [
 	"Fill the current path according to the current fill rule.
 	The argument indicates whether the path must be preserved within the cairo context."
 
 	aBoolean
-		ifTrue: [ self fillPreserve ]
+		ifTrue: [ self fillPreservingPath ]
 		ifFalse: [ self fill ]
 ]
 
@@ -777,12 +805,13 @@ AeCairoContext >> getCurrentPointIntoX: xPointer y: yPointer [
 AeCairoContext >> getDashesInto: pointerToArrayOfDoubles offset: pointerToOffset [
 	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-dash"
 
-	self ffiCall: #(
-		void
-		cairo_get_dash (
-			self,
-			"double" void * pointerToArrayOfDoubles,
-			"double" void * pointerToOffset ) )
+	self
+		deprecated: 'Deprecated method'
+		transformWith:
+			'`@receiver getDashesInto: `@arg1 offset: `@arg2' ->
+			'`@receiver getStrokeDashPatternInto: `@arg1 offset: `@arg2'.
+
+	self getStrokeDashPatternInto: pointerToArrayOfDoubles offset: pointerToOffset
 ]
 
 { #category : #'API - query' }
@@ -840,6 +869,18 @@ AeCairoContext >> getMatrixInto: aCairoMatrix [
 		cairo_get_matrix (
 			self,
 			AeCairoMatrix *aCairoMatrix ) )
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> getStrokeDashPatternInto: pointerToArrayOfDoubles offset: pointerToOffset [
+	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-dash"
+
+	self ffiCall: #(
+		void
+		cairo_get_dash (
+			self,
+			"double" void * pointerToArrayOfDoubles,
+			"double" void * pointerToOffset ) )
 ]
 
 { #category : #'API - query' }
@@ -909,6 +950,12 @@ AeCairoContext >> hasCurrentPoint [
 	^ self ffiCall: #( Boolean cairo_has_current_point ( self ) )
 ]
 
+{ #category : #'API - painting settings' }
+AeCairoContext >> hasStrokeDashPattern [
+
+	^ self strokeDashPatternSize > 0
+]
+
 { #category : #initialization }
 AeCairoContext >> initializeWith: anAeCairoSurface [
 	"Note: don't send super initialize as it nullifies the handle."
@@ -953,18 +1000,18 @@ AeCairoContext >> isInStrokeX: x y: y [
 ]
 
 { #category : #'API - painting settings' }
-AeCairoContext >> lineCap: aCairoCapStyle [
+AeCairoContext >> lineCap: aCairoStrokeCap [
 	"Sets the current line cap style within the cairo context.
 	
 	The default line cap style is CAIRO_LINE_CAP_BUTT.
 	
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-cap"
 
-	self ffiCall: #(
-		void
-		cairo_set_line_cap (
-			self,
-			AeCairoCapStyle aCairoCapStyle ) )
+	self
+		deprecated: 'Deprecated method'
+		transformWith: '`@receiver lineCap: `@arg' -> '`@receiver strokeCap: `@arg'.
+
+	self strokeCap: aCairoStrokeCap
 ]
 
 { #category : #'API - path' }
@@ -976,18 +1023,18 @@ AeCairoContext >> lineFrom: aPoint to: anotherPoint [
 ]
 
 { #category : #'API - painting settings' }
-AeCairoContext >> lineJoin: aCairoJoinStyle [
+AeCairoContext >> lineJoin: aCairoStrokeJoin [
 	"Sets the current line join style within the cairo context.
 	
 	The default line join style is CAIRO_LINE_JOIN_MITER.
 	
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-join"
 
-	self ffiCall: #(
-		void
-		cairo_set_line_join (
-			self,
-			AeCairoJoinStyle aCairoJoinStyle ) )
+	self
+		deprecated: 'Deprecated method'
+		transformWith: '`@receiver lineJoin: `@arg' -> '`@receiver strokeJoin: `@arg'.
+
+	self strokeJoin: aCairoStrokeJoin
 ]
 
 { #category : #'API - path' }
@@ -1018,22 +1065,25 @@ AeCairoContext >> lineWidth [
 	
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-line-width"
 
-	^ self ffiCall: #(
-		double
-		cairo_get_line_width ( self ) )
+	self
+		deprecated: 'Deprecated method'
+		transformWith: '`@receiver lineWidth' -> '`@receiver strokeSize'.
+
+	^ self strokeSize
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> lineWidth: aNumber [
-	"Sets the current line width within the cairo context. The line width value specifies the diameter of a pen that is circular in user space, (though device-space pen may be an ellipse in general due to scaling/shear/rotation of the CTM).
+	"Sets the current line width to be used in next stroke operations.
+	The line width value specifies the diameter of a pen that is circular in user space, (though device-space pen may be an ellipse in general due to scaling/shear/rotation of the CTM).
 	
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-width"
 
-	self ffiCall: #(
-		void
-		cairo_set_line_width (
-			self,
-			double aNumber ) )
+	self
+		deprecated: 'Deprecated method'
+		transformWith: '`@receiver lineWidth: `@arg' -> '`@receiver strokeSize: `@arg'.
+
+	self strokeSize: aNumber
 ]
 
 { #category : #'API - painting' }
@@ -1124,11 +1174,13 @@ AeCairoContext >> miterLimit: aNumber [
 	
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-miter-limit"
 
-	self ffiCall: #(
-		void
-		cairo_set_miter_limit (
-			self,
-			double aNumber ) )
+	self
+		deprecated: 'Deprecated method'
+		transformWith:
+			'`@receiver miterLimit: `@arg' ->
+			'`@receiver strokeJoinMiterLimit: `@arg'.
+
+	self strokeJoinMiterLimit: aNumber
 ]
 
 { #category : #'API - path' }
@@ -1433,6 +1485,18 @@ AeCairoContext >> resetPath [
 	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-new-path"
 
 	self ffiCall: #( void cairo_new_path ( self ) )
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> resetStrokeDashPattern [
+	"Disable dashing.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash"
+
+	self
+		strokeDashPattern: ExternalAddress null
+		size: 0
+		offset: 0.0
 ]
 
 { #category : #'API - states' }
@@ -1840,6 +1904,130 @@ AeCairoContext >> stroke [
 	self ffiCall: #( void cairo_stroke ( self ) )
 ]
 
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeCap: aCairoStrokeCap [
+	"Sets the current line cap style within the cairo context.
+
+	Default line cap style is butt.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-cap"
+
+	self ffiCall: #(
+		void
+		cairo_set_line_cap (
+			self,
+			AeCairoStrokeCap aCairoStrokeCap ) )
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeDashPattern [
+
+	| arraySize anArrayOfDoubles |
+	arraySize := self strokeDashPatternSize.
+	arraySize = 0 ifTrue: [ ^ Array empty ].
+
+	anArrayOfDoubles := AeFFIDoubleArray newOf: arraySize.
+
+	self
+		getStrokeDashPatternInto: anArrayOfDoubles getHandle
+		offset: ExternalAddress null.
+	
+	^ anArrayOfDoubles
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeDashPattern: anArrayOfDoubles [
+	"Set the dash pattern to be used by next stroke operations.
+
+	A dash pattern is specified by an array of positive values.
+	Each value provides the length of alternate 'on' and 'off' portions of the stroke.
+
+	Each 'on' segment will have caps applied as if the segment were a separate sub-path.
+	In particular, it is valid to use an 'on' length of 0.0 with `CAIRO_LINE_CAP_ROUND` or `CAIRO_LINE_CAP_SQUARE`` in order to distributed dots or squares along a path.
+
+	Note: The length values are in user-space units as evaluated at the time of stroking.
+	This is not necessarily the same as the user space at the time of `cairo_set_dash()`.
+
+	If arraySize is 0 dashing is disabled.
+
+	If arraySize is 1, a symmetric pattern is assumed with alternating on and off portions of the size specified by the single value.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash"
+
+	self strokeDashPattern: anArrayOfDoubles offset: 0.0
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeDashPattern: anArrayOfDoubles offset: anOffset [
+	"Set the dash pattern to be used by next stroke operations.
+
+	A dash pattern is specified by an array of positive values.
+	Each value provides the length of alternate 'on' and 'off' portions of the stroke.
+	The offset specifies an offset into the pattern at which the stroke begins.
+
+	Each 'on' segment will have caps applied as if the segment were a separate sub-path.
+	In particular, it is valid to use an 'on' length of 0.0 with `CAIRO_LINE_CAP_ROUND` or `CAIRO_LINE_CAP_SQUARE`` in order to distributed dots or squares along a path.
+
+	Note: The length values are in user-space units as evaluated at the time of stroking.
+	This is not necessarily the same as the user space at the time of `cairo_set_dash()`.
+
+	If arraySize is 0 dashing is disabled.
+
+	If arraySize is 1, a symmetric pattern is assumed with alternating on and off portions of the size specified by the single value.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash"
+
+
+	| convertedArray |
+	anArrayOfDoubles class = AeFFIDoubleArray ifTrue: [
+		^ self
+			strokeDashPattern: anArrayOfDoubles
+			size: anArrayOfDoubles size
+			offset: anOffset ].
+	
+	convertedArray := AeFFIDoubleArray newFrom: anArrayOfDoubles.
+	self
+		strokeDashPattern: convertedArray
+		size: convertedArray size
+		offset: anOffset
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeDashPattern: anArrayOfDoubles size: arraySize offset: anOffset [
+	"Sets the dash pattern to be used by next stroke operations.
+
+	A dash pattern is specified by an array of positive values.
+	Each value provides the length of alternate 'on' and 'off' portions of the stroke.
+	The offset specifies an offset into the pattern at which the stroke begins.
+
+	Each 'on' segment will have caps applied as if the segment were a separate sub-path.
+	In particular, it is valid to use an 'on' length of 0.0 with `CAIRO_LINE_CAP_ROUND` or `CAIRO_LINE_CAP_SQUARE` in order to distributed dots or squares along a path.
+
+	Note: The length values are in user-space units as evaluated at the time of stroking.
+	This is not necessarily the same as the user space at the time of `cairo_set_dash()`.
+
+	If arraySize is 0 dashing is disabled.
+
+	If arraySize is 1, a symmetric pattern is assumed with alternating on and off portions of the size specified by the single value.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash"
+
+	self ffiCall: #(
+		void
+		cairo_set_dash (
+			self,
+			void * anArrayOfDoubles,
+			int arraySize,
+			double anOffset ) )
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeDashPatternSize [
+	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-dash-count"
+
+	^ self ffiCall: #( int cairo_get_dash_count ( self ) )
+]
+
 { #category : #'API - query' }
 AeCairoContext >> strokeExtentsInDeviceSpace [
 
@@ -1882,11 +2070,57 @@ AeCairoContext >> strokeExtentsInUserSpace [
 		  (rightPointer doubleAt: 1) @ (bottomPointer doubleAt: 1)
 ]
 
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeJoin: aCairoStrokeJoin [
+	"Sets the current line join style within the cairo context.
+	
+	The default line join style is miter.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-join"
+
+	self ffiCall: #(
+		void
+		cairo_set_line_join (
+			self,
+			AeCairoStrokeJoin aCairoStrokeJoin ) )
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeJoinMiterLimit: aNumber [
+	"Set the current miter limit, to be used in next stroke operation if join is miter.
+
+	The default miter limit value is 10.0, which will convert joins with interior angles less than 11 degrees to bevels instead of miters. For reference, a miter limit of 2.0 makes the miter cutoff at 60 degrees, and a miter limit of 1.414 makes the cutoff at 90 degrees.
+
+	A miter limit for a desired angle can be computed as: miter limit = 1/sin(angle/2).
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-miter-limit"
+
+	self ffiCall: #(
+		void
+		cairo_set_miter_limit (
+			self,
+			double aNumber ) )
+]
+
 { #category : #'API - painting' }
 AeCairoContext >> strokePreserve [
 	"Stroke the current path according to the current line width, line join, line cap, and dash settings.
 	Preserve the path within the cairo context.
 	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-stroke-preserve"
+
+	self
+		deprecated: 'Deprecated method'
+		transformWith: '`@receiver strokePreserve' -> '`@receiver strokePreservingPath'.
+
+	^ self strokePreservingPath
+]
+
+{ #category : #'API - painting' }
+AeCairoContext >> strokePreservingPath [
+	"Stroke the current path according to the current line width, line join, line cap, and dash settings.
+	Preserve the path within the cairo context.
+
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-stroke-preserve"
 
 	self ffiCall: #( void cairo_stroke_preserve ( self ))
@@ -1898,8 +2132,32 @@ AeCairoContext >> strokePreservingPath: aBoolean [
 	The argument indicates whether the path must be preserved within the cairo context."
 
 	aBoolean
-		ifTrue: [ self strokePreserve ]
+		ifTrue: [ self strokePreservingPath ]
 		ifFalse: [ self stroke ]
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeSize [
+	"Gets the current stroke size (line width) to be used in next stroke operations.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-line-width"
+
+	^ self ffiCall: #(
+		double
+		cairo_get_line_width ( self ) )
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeSize: aNumber [
+	"Sets the current stroke size (line width) to be used in next stoke operations.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-width"
+
+	self ffiCall: #(
+		void
+		cairo_set_line_width (
+			self,
+			double aNumber ) )
 ]
 
 { #category : #accessing }
@@ -2030,35 +2288,107 @@ AeCairoContext >> useFillRuleWinding [
 { #category : #'API - painting settings' }
 AeCairoContext >> useLineCapButt [
 
-	self lineCap: AeCairoCapStyle butt
+	self
+		deprecated: 'send stroke* version instead'
+		transformWith:
+			'`@receiver useLineCapButt' ->
+			'`@receiver useStrokeCapButt'.
+
+	self useStrokeCapButt
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> useLineCapRound [
 
-	self lineCap: AeCairoCapStyle round
+	self
+		deprecated: 'send stroke* version instead'
+		transformWith:
+			'`@receiver useLineCapRound' ->
+			'`@receiver useStrokeCapRound'.
+
+	self useStrokeCapRound
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> useLineCapSquare [
 
-	self lineCap: AeCairoCapStyle square
+	self
+		deprecated: 'send stroke* version instead'
+		transformWith:
+			'`@receiver useLineCapSquare' ->
+			'`@receiver useStrokeCapSquare'.
+
+	self useStrokeCapSquare
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> useLineJoinBevel [
 
-	self lineJoin: AeCairoJoinStyle bevel
+	self
+		deprecated: 'send stroke* version instead'
+		transformWith:
+			'`@receiver useLineJoinBevel' ->
+			'`@receiver useStrokeJoinBevel'.
+
+	self useStrokeJoinBevel
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> useLineJoinMiter [
 
-	self lineJoin: AeCairoJoinStyle miter
+	self
+		deprecated: 'send stroke* version instead'
+		transformWith:
+			'`@receiver useLineJoinMiter' ->
+			'`@receiver useStrokeJoinMiter'.
+
+	self useStrokeJoinMiter
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> useLineJoinRound [
 
-	self lineJoin: AeCairoJoinStyle round
+	self
+		deprecated: 'send stroke* version instead'
+		transformWith:
+			'`@receiver useLineJoinRound' ->
+			'`@receiver useStrokeJoinRound'.
+
+	self useStrokeJoinRound
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> useStrokeCapButt [
+
+	self strokeCap: AeCairoStrokeCap butt
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> useStrokeCapRound [
+
+	self strokeCap: AeCairoStrokeCap round
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> useStrokeCapSquare [
+
+	self strokeCap: AeCairoStrokeCap square
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> useStrokeJoinBevel [
+
+	self strokeJoin: AeCairoStrokeJoin bevel
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> useStrokeJoinMiter [
+
+	self strokeJoin: AeCairoStrokeJoin miter
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> useStrokeJoinRound [
+
+	self strokeJoin: AeCairoStrokeJoin round
 ]

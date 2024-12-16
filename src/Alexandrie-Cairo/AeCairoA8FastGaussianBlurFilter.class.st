@@ -77,7 +77,7 @@ AeCairoA8FastGaussianBlurFilter class >> example2MultiplePasses [
 			format: AeCairoSurfaceFormat a8.
 		aSurface newContext
 			sourceColor: Color black;
-			lineWidth: blurSigma * 2;
+			strokeSize: blurSigma * 2;
 			lineTo: (margin/2) asPoint;
 			relativeLineTo: lineLength asPoint;
 			stroke.
@@ -178,21 +178,21 @@ AeCairoA8FastGaussianBlurFilter class >> example5DottedCircle [
 	"Blur a circle with dotted (dashed) stroke."
 	<sampleInstance>
 
-	| circleRadius blurSigma margin aSurface lineWidth |
+	| circleRadius blurSigma margin aSurface strokeSize |
 	circleRadius := 50.
 	blurSigma := 2.5.
 	margin := blurSigma * 3.
-	lineWidth := 20.
+	strokeSize := 20.
 
 	aSurface := AeCairoImageSurface
-		extent: (((circleRadius + margin) * 2) + lineWidth) asPoint
+		extent: (((circleRadius + margin) * 2) + strokeSize) asPoint
 		format: AeCairoSurfaceFormat a8.
 	aSurface newContext
 		sourceColor: Color black;
-		lineWidth: lineWidth;
-		lineCap: AeCairoCapStyle square;
-		dash: (AeFFIDoubleArray newFrom: {0. lineWidth*2}) offset: 0;
 		circleCenter: aSurface extent / 2 radius: circleRadius;
+		strokeSize: strokeSize;
+		useStrokeCapSquare;
+		strokeDashPattern: { 0. strokeSize*2 };
 		stroke.
 
 	[ AeCairoA8FastGaussianBlurFilter new

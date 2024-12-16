@@ -214,21 +214,6 @@ AeCairoContextTest >> testGlyphExtentsOf [
 ]
 
 { #category : #tests }
-AeCairoContextTest >> testLineWidth [
-
-	surface := AeCairoImageSurface extent: 1@1.
-	context := surface newContext.
-	
-	"Assert on default value"
-	self assert: context lineWidth equals: 2.0. 
-	
-	context lineWidth: 7.
-	
-	"Assert on new value"
-	self assert: context lineWidth equals: 7.0
-]
-
-{ #category : #tests }
 AeCairoContextTest >> testOperator [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
@@ -264,7 +249,7 @@ AeCairoContextTest >> testPathExtents [
 		scaleByX: 0.5 y: 2;
 		moveTo: 5 @ 10;
 		lineTo: 90 @ 50;
-		fillPreserve.
+		fillPreservingPath.
 
 	self
 		assert: context pathExtentsInUserSpace
@@ -341,6 +326,36 @@ AeCairoContextTest >> testScaledFont [
 ]
 
 { #category : #tests }
+AeCairoContextTest >> testStrokeDashPattern [
+
+	surface := AeCairoImageSurface extent: 1@1.
+	context := surface newContext.
+	
+	"By default it is empty. As an optimization, the answer is an Array."
+	self deny: context hasStrokeDashPattern.
+	self assert: context strokeDashPatternSize equals: 0.
+	self assert: context strokeDashPattern class equals: Array.
+	self assert: context strokeDashPattern isEmpty.
+	
+	"Set an Array. The bindings retrieve the pattern as an instance of AeFFIDoubleArray"
+	context strokeDashPattern: #(1 2 3).
+	self assert: context hasStrokeDashPattern.
+	self assert: context strokeDashPatternSize equals: 3.
+	self assert: context strokeDashPattern class equals: AeFFIDoubleArray.
+	self deny: context strokeDashPattern isEmpty.
+	self
+		assert: context strokeDashPattern
+		equals: (AeFFIDoubleArray newFrom: #(1 2 3)).
+
+	"Setting an AeFFIDoubleArray is more direct. You can use it to avoid the creation of
+	a temporary AeFFIDoubleArray and doing the conversion many times."
+	context strokeDashPattern: (AeFFIDoubleArray newFrom: #(4 5)).
+	self
+		assert: context strokeDashPattern
+		equals: (AeFFIDoubleArray newFrom: #(4 5))
+]
+
+{ #category : #tests }
 AeCairoContextTest >> testStrokeExtents [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
@@ -354,12 +369,12 @@ AeCairoContextTest >> testStrokeExtents [
 		equals: (Rectangle origin: 0 asPoint extent: 0 asPoint).
 	
 	context
-		translateBy: -1 @ -2;
+		translateByX: -1 y: -2;
 		scaleByX: 0.5 y: 2;
-		moveTo: 5 @ 10;
-		lineTo: 90 @ 50;
-		lineWidth: 10;
-		strokePreserve.
+		moveToX: 5 y: 10;
+		lineToX: 90 y: 50;
+		strokeSize: 10;
+		strokePreservingPath.
 
 	self
 		assert: context strokeExtentsInUserSpace 
@@ -377,4 +392,19 @@ AeCairoContextTest >> testStrokeExtents [
 		assert: context strokeExtentsInDeviceSpace
 		equals: (Rectangle origin: -1 @ -2 extent: 0 asPoint).
 
+]
+
+{ #category : #tests }
+AeCairoContextTest >> testStrokeSize [
+
+	surface := AeCairoImageSurface extent: 1@1.
+	context := surface newContext.
+	
+	"Assert on default value"
+	self assert: context strokeSize equals: 2.0. 
+	
+	context strokeSize: 7.
+	
+	"Assert on new value"
+	self assert: context strokeSize equals: 7.0
 ]
