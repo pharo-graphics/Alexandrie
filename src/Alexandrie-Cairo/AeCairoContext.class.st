@@ -550,29 +550,36 @@ AeCairoContext >> dash: anArrayOfDoubles count: aNumberOfDashes offset: anOffset
 	
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash"
 
-	self ffiCall: #(
-		void
-		cairo_set_dash (
-			self,
-			void * anArrayOfDoubles,
-			int aNumberOfDashes,
-			double anOffset ) )
+	self
+		deprecated: 'Deprecated method'
+		transformWith:
+			'`@receiver dash: `@arg1 size: `@arg2 offset: `@arg3' ->
+			'`@receiver strokeDashPattern: `@arg1 size: `@arg2 offset: `@arg3'.
+
+	self strokeDashPattern: anArrayOfDoubles size: aNumberOfDashes offset: anOffset
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> dash: aFFIExternalArrayOfFloat64 offset: anOffset [
 
 	self
-		dash: aFFIExternalArrayOfFloat64
-		count: aFFIExternalArrayOfFloat64 size
-		offset: anOffset
+		deprecated: 'Deprecated method'
+		transformWith:
+			'`@receiver dash: `@arg1 offset: `@arg2' ->
+			'`@receiver strokeDashPattern: `@arg1 offset: `@arg2'.
+
+	self strokeDashPattern: aFFIExternalArrayOfFloat64 offset: anOffset
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> dashCount [
 	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-dash-count"
 
-	self ffiCall: #( int cairo_get_dash_count ( self ) )
+	self
+		deprecated: 'Deprecated method'
+		transformWith: '`@receiver dashCount' -> '`@receiver strokeDashPatternSize'.
+
+	^ self strokeDashPatternSize
 ]
 
 { #category : #'API - painting settings' }
@@ -582,25 +589,22 @@ AeCairoContext >> dashDisable [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash"
 
 	self
-		dash: ExternalAddress null
-		count: 0
-		offset: 0.0
+		deprecated: 'Deprecated method'
+		transformWith:
+			'`@receiver dashDisable' ->
+			'`@receiver resetStrokeDashPattern'.
+
+	self resetStrokeDashPattern
 ]
 
 { #category : #'API - painting settings' }
 AeCairoContext >> dashes [
 
-	| count aDashArray |
-	count := self dashCount.
-	count = 0 ifTrue: [ ^ Array empty ].
-
-	aDashArray := AeFFIDoubleArray newOf: count.
-
 	self
-		getDashesInto: aDashArray getHandle
-		offset: ExternalAddress null.
-	
-	^ aDashArray
+		deprecated: 'Deprecated method'
+		transformWith: '`@receiver dashes' -> '`@receiver strokeDashPattern'.
+
+	^ self strokeDashPattern
 ]
 
 { #category : #'API - path' }
@@ -800,12 +804,13 @@ AeCairoContext >> getCurrentPointIntoX: xPointer y: yPointer [
 AeCairoContext >> getDashesInto: pointerToArrayOfDoubles offset: pointerToOffset [
 	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-dash"
 
-	self ffiCall: #(
-		void
-		cairo_get_dash (
-			self,
-			"double" void * pointerToArrayOfDoubles,
-			"double" void * pointerToOffset ) )
+	self
+		deprecated: 'Deprecated method'
+		transformWith:
+			'`@receiver getDashesInto: `@arg1 offset: `@arg2' ->
+			'`@receiver getStrokeDashPatternInto: `@arg1 offset: `@arg2'.
+
+	self getStrokeDashPatternInto: pointerToArrayOfDoubles offset: pointerToOffset
 ]
 
 { #category : #'API - query' }
@@ -863,6 +868,18 @@ AeCairoContext >> getMatrixInto: aCairoMatrix [
 		cairo_get_matrix (
 			self,
 			AeCairoMatrix *aCairoMatrix ) )
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> getStrokeDashPatternInto: pointerToArrayOfDoubles offset: pointerToOffset [
+	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-dash"
+
+	self ffiCall: #(
+		void
+		cairo_get_dash (
+			self,
+			"double" void * pointerToArrayOfDoubles,
+			"double" void * pointerToOffset ) )
 ]
 
 { #category : #'API - query' }
@@ -930,6 +947,12 @@ AeCairoContext >> hasCurrentPoint [
 	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-has-current-point"
 
 	^ self ffiCall: #( Boolean cairo_has_current_point ( self ) )
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> hasStrokeDashPattern [
+
+	^ self strokeDashPatternSize > 0
 ]
 
 { #category : #initialization }
@@ -1463,6 +1486,18 @@ AeCairoContext >> resetPath [
 	self ffiCall: #( void cairo_new_path ( self ) )
 ]
 
+{ #category : #'API - painting settings' }
+AeCairoContext >> resetStrokeDashPattern [
+	"Disable dashing.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash"
+
+	self
+		strokeDashPattern: ExternalAddress null
+		size: 0
+		offset: 0.0
+]
+
 { #category : #'API - states' }
 AeCairoContext >> restoreState [
 	"Restores me to the state saved by a preceding call to `cairo_save()` and removes that state from the stack of saved states.
@@ -1881,6 +1916,115 @@ AeCairoContext >> strokeCap: aCairoStrokeCap [
 		cairo_set_line_cap (
 			self,
 			AeCairoStrokeCap aCairoStrokeCap ) )
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeDashPattern [
+
+	| arraySize anArrayOfDoubles |
+	arraySize := self strokeDashPatternSize.
+	arraySize = 0 ifTrue: [ ^ Array empty ].
+
+	anArrayOfDoubles := AeFFIDoubleArray newOf: arraySize.
+
+	self
+		getStrokeDashPatternInto: anArrayOfDoubles getHandle
+		offset: ExternalAddress null.
+	
+	^ anArrayOfDoubles
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeDashPattern: anArrayOfDoubles [
+	"Set the dash pattern to be used by next stroke operations.
+
+	A dash pattern is specified by an array of positive values.
+	Each value provides the length of alternate 'on' and 'off' portions of the stroke.
+
+	Each 'on' segment will have caps applied as if the segment were a separate sub-path.
+	In particular, it is valid to use an 'on' length of 0.0 with `CAIRO_LINE_CAP_ROUND` or `CAIRO_LINE_CAP_SQUARE`` in order to distributed dots or squares along a path.
+
+	Note: The length values are in user-space units as evaluated at the time of stroking.
+	This is not necessarily the same as the user space at the time of `cairo_set_dash()`.
+
+	If arraySize is 0 dashing is disabled.
+
+	If arraySize is 1, a symmetric pattern is assumed with alternating on and off portions of the size specified by the single value.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash"
+
+	self strokeDashPattern: anArrayOfDoubles offset: 0.0
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeDashPattern: anArrayOfDoubles offset: anOffset [
+	"Set the dash pattern to be used by next stroke operations.
+
+	A dash pattern is specified by an array of positive values.
+	Each value provides the length of alternate 'on' and 'off' portions of the stroke.
+	The offset specifies an offset into the pattern at which the stroke begins.
+
+	Each 'on' segment will have caps applied as if the segment were a separate sub-path.
+	In particular, it is valid to use an 'on' length of 0.0 with `CAIRO_LINE_CAP_ROUND` or `CAIRO_LINE_CAP_SQUARE`` in order to distributed dots or squares along a path.
+
+	Note: The length values are in user-space units as evaluated at the time of stroking.
+	This is not necessarily the same as the user space at the time of `cairo_set_dash()`.
+
+	If arraySize is 0 dashing is disabled.
+
+	If arraySize is 1, a symmetric pattern is assumed with alternating on and off portions of the size specified by the single value.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash"
+
+
+	| convertedArray |
+	anArrayOfDoubles class = AeFFIDoubleArray ifTrue: [
+		^ self
+			strokeDashPattern: anArrayOfDoubles
+			size: anArrayOfDoubles size
+			offset: anOffset ].
+	
+	convertedArray := AeFFIDoubleArray newFrom: anArrayOfDoubles.
+	self
+		strokeDashPattern: convertedArray
+		size: convertedArray size
+		offset: anOffset
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeDashPattern: anArrayOfDoubles size: arraySize offset: anOffset [
+	"Sets the dash pattern to be used by next stroke operations.
+
+	A dash pattern is specified by an array of positive values.
+	Each value provides the length of alternate 'on' and 'off' portions of the stroke.
+	The offset specifies an offset into the pattern at which the stroke begins.
+
+	Each 'on' segment will have caps applied as if the segment were a separate sub-path.
+	In particular, it is valid to use an 'on' length of 0.0 with `CAIRO_LINE_CAP_ROUND` or `CAIRO_LINE_CAP_SQUARE` in order to distributed dots or squares along a path.
+
+	Note: The length values are in user-space units as evaluated at the time of stroking.
+	This is not necessarily the same as the user space at the time of `cairo_set_dash()`.
+
+	If arraySize is 0 dashing is disabled.
+
+	If arraySize is 1, a symmetric pattern is assumed with alternating on and off portions of the size specified by the single value.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash"
+
+	self ffiCall: #(
+		void
+		cairo_set_dash (
+			self,
+			void * anArrayOfDoubles,
+			int arraySize,
+			double anOffset ) )
+]
+
+{ #category : #'API - painting settings' }
+AeCairoContext >> strokeDashPatternSize [
+	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-dash-count"
+
+	^ self ffiCall: #( int cairo_get_dash_count ( self ) )
 ]
 
 { #category : #'API - query' }

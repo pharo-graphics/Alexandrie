@@ -262,14 +262,15 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 	numberOfDots := 5.
 	perimeterOfCircle := Float twoPi * radius.
 	gapBetweenDots := perimeterOfCircle / numberOfDots.
-	
+
 	aSurface := AeCairoImageSurface
-		extent: 2 * (radius + strokeSize) asPoint
-		format: AeCairoSurfaceFormat argb32.
+		            extent: 2 * (radius + strokeSize) asPoint
+		            format: AeCairoSurfaceFormat argb32.
 
 	"set up dotted dashes"
-	dashByteArray := AeFFIDoubleArray
-		newFrom: { 0.0. gapBetweenDots }.
+	dashByteArray := AeFFIDoubleArray newFrom: {
+			                 0.0.
+			                 gapBetweenDots }.
 
 	aContext := aSurface newContext.
 
@@ -282,7 +283,7 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 	aContext
 		translateBy: strokeSize asPoint;
 		circleRadius: radius;
-		dash: dashByteArray offset: perimeterOfCircle / 4.
+		strokeDashPattern: dashByteArray offset: perimeterOfCircle / 4.
 	self assert: aContext hasCurrentPoint.
 
 	"stroke with black squared dots"
@@ -291,28 +292,29 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 		useStrokeCapSquare;
 		strokeSize: strokeSize;
 		strokePreservingPath.
-	self assert: aContext dashes equals: dashByteArray.
+	self assert: aContext hasStrokeDashPattern.
+	self assert: aContext strokeDashPattern equals: dashByteArray.
 	self assert: aContext hasCurrentPoint.
 
 	"stroke with green circle dots"
 	aContext
 		sourceColor: Color green;
-		strokeSize: strokeSize/1.5;
+		strokeSize: strokeSize / 1.5;
 		useStrokeCapRound;
 		strokePreservingPath.
-	self assert: aContext dashes equals: dashByteArray.
+	self assert: aContext hasStrokeDashPattern.
+	self assert: aContext strokeDashPattern equals: dashByteArray.
 
 	"stroke red without dashes"
 	aContext
 		sourceColor: Color red;
 		strokeSize: 1;
-		dashDisable;
+		resetStrokeDashPattern;
 		stroke.
-	self assert: aContext dashes equals: #().
+	self deny: aContext hasStrokeDashPattern.
 	self deny: aContext hasCurrentPoint.
 
 	^ aSurface
-
 ]
 
 { #category : #tests }
@@ -853,13 +855,12 @@ AeCairoExamplesRenderTest >> surfaceWithText [
 AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
 
 	| fontSize string surfaceSize aSurface aContext aFTFace aFontFace glyphArray |
-
 	fontSize := 25.
 	string := 'Hola'.
 	surfaceSize := 60 @ 30.
 	aSurface := AeCairoImageSurface
-		  extent: surfaceSize
-		  format: AeCairoSurfaceFormat argb32.
+		            extent: surfaceSize
+		            format: AeCairoSurfaceFormat argb32.
 	aContext := aSurface newContext.
 
 	"Set up"
@@ -879,10 +880,10 @@ AeCairoExamplesRenderTest >> surfaceWithTextAsPath [
 	"Draw dashed stroke using the path"
 	aContext
 		sourceColor: Color blue;
-		dash: (AeFFIDoubleArray newFrom: { 7. 1 }) offset: 3;
+		strokeDashPattern: #(7 1) offset: 3;
 		strokeSize: 1.5;
 		stroke.
-	
+
 	^ aSurface
 ]
 

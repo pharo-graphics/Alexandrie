@@ -326,6 +326,36 @@ AeCairoContextTest >> testScaledFont [
 ]
 
 { #category : #tests }
+AeCairoContextTest >> testStrokeDashPattern [
+
+	surface := AeCairoImageSurface extent: 1@1.
+	context := surface newContext.
+	
+	"By default it is empty. As an optimization, the answer is an Array."
+	self deny: context hasStrokeDashPattern.
+	self assert: context strokeDashPatternSize equals: 0.
+	self assert: context strokeDashPattern class equals: Array.
+	self assert: context strokeDashPattern isEmpty.
+	
+	"Set an Array. The bindings retrieve the pattern as an instance of AeFFIDoubleArray"
+	context strokeDashPattern: #(1 2 3).
+	self assert: context hasStrokeDashPattern.
+	self assert: context strokeDashPatternSize equals: 3.
+	self assert: context strokeDashPattern class equals: AeFFIDoubleArray.
+	self deny: context strokeDashPattern isEmpty.
+	self
+		assert: context strokeDashPattern
+		equals: (AeFFIDoubleArray newFrom: #(1 2 3)).
+
+	"Setting an AeFFIDoubleArray is more direct. You can use it to avoid the creation of
+	a temporary AeFFIDoubleArray and doing the conversion many times."
+	context strokeDashPattern: (AeFFIDoubleArray newFrom: #(4 5)).
+	self
+		assert: context strokeDashPattern
+		equals: (AeFFIDoubleArray newFrom: #(4 5))
+]
+
+{ #category : #tests }
 AeCairoContextTest >> testStrokeExtents [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.

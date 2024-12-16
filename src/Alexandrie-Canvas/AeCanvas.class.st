@@ -783,15 +783,14 @@ AeCanvas >> setCapSquare [
 ]
 
 { #category : #'API - border' }
-AeCanvas >> setDashes: dashArray offset: dashOffset [ 
+AeCanvas >> setDashes: dashArray offset: dashOffset [
 	"Set the dashes and offset for the figure's stroke. Don't send this message to draw a figure without dashes.
 	
 	See https://www.cairographics.org/samples/dash/"
 
 	cairoContext
-		dash: (dashesCache at: dashArray)
+		strokeDashPattern: (dashesCache at: dashArray)
 		offset: dashOffset
-
 ]
 
 { #category : #initialization }

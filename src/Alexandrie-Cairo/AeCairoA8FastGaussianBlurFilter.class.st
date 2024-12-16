@@ -192,7 +192,7 @@ AeCairoA8FastGaussianBlurFilter class >> example5DottedCircle [
 		circleCenter: aSurface extent / 2 radius: circleRadius;
 		strokeSize: strokeSize;
 		useStrokeCapSquare;
-		dash: (AeFFIDoubleArray newFrom: {0. strokeSize*2}) offset: 0;
+		strokeDashPattern: { 0. strokeSize*2 };
 		stroke.
 
 	[ AeCairoA8FastGaussianBlurFilter new
