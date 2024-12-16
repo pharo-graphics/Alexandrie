@@ -256,15 +256,15 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash
 	"
 
-	| radius lineWidth gapBetweenDots aSurface dashByteArray numberOfDots perimeterOfCircle aContext |
+	| radius strokeSize gapBetweenDots aSurface dashByteArray numberOfDots perimeterOfCircle aContext |
 	radius := 11.
-	lineWidth := 9.
+	strokeSize := 9.
 	numberOfDots := 5.
 	perimeterOfCircle := Float twoPi * radius.
 	gapBetweenDots := perimeterOfCircle / numberOfDots.
 	
 	aSurface := AeCairoImageSurface
-		extent: 2 * (radius + lineWidth) asPoint
+		extent: 2 * (radius + strokeSize) asPoint
 		format: AeCairoSurfaceFormat argb32.
 
 	"set up dotted dashes"
@@ -280,7 +280,7 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 
 	"set a circle as path"
 	aContext
-		translateBy: lineWidth asPoint;
+		translateBy: strokeSize asPoint;
 		circleRadius: radius;
 		dash: dashByteArray offset: perimeterOfCircle / 4.
 	self assert: aContext hasCurrentPoint.
@@ -288,8 +288,8 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 	"stroke with black squared dots"
 	aContext
 		sourceColor: Color black;
-		useLineCapSquare;
-		strokeSize: lineWidth;
+		useStrokeCapSquare;
+		strokeSize: strokeSize;
 		strokePreservingPath.
 	self assert: aContext dashes equals: dashByteArray.
 	self assert: aContext hasCurrentPoint.
@@ -297,8 +297,8 @@ AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 	"stroke with green circle dots"
 	aContext
 		sourceColor: Color green;
-		strokeSize: lineWidth/1.5;
-		useLineCapRound;
+		strokeSize: strokeSize/1.5;
+		useStrokeCapRound;
 		strokePreservingPath.
 	self assert: aContext dashes equals: dashByteArray.
 
@@ -755,9 +755,9 @@ AeCairoExamplesRenderTest >> surfaceWithStraightEdgesCurve [
 	"Edges of the curve are straight.
 	Reference: https://github.com/memononen/nanovg/issues/650"
 
-	| lineWidth startPoint extent aSurface aContext |
-	lineWidth := 32.
-	startPoint := ((lineWidth/2) + 10) @ 10.
+	| strokeSize startPoint extent aSurface aContext |
+	strokeSize := 32.
+	startPoint := ((strokeSize/2) + 10) @ 10.
 	extent := 120 @ 100.
 
 	aSurface := AeCairoImageSurface
@@ -772,7 +772,7 @@ AeCairoExamplesRenderTest >> surfaceWithStraightEdgesCurve [
 
 	aContext
 		sourceColor: Color white;
-		strokeSize: lineWidth;
+		strokeSize: strokeSize;
 		cubicCurveFrom: startPoint
 			controlPoint1: startPoint + (0 @ 35.4)
 			controlPoint2: startPoint + (39.4 @ 64)
