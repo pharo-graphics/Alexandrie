@@ -117,6 +117,43 @@ AeCairoContextTest >> testCurrentTarget [
 ]
 
 { #category : #tests }
+AeCairoContextTest >> testFillPreservingPath [
+
+	surface :=
+		AeCairoImageSurface
+			newWithFormat: AeCairoSurfaceFormat argb32
+			width: 3
+			height: 3.
+	context := surface newContext.
+	context rectangleX: 1 y: 1 width: 1 height: 1.
+
+	context sourceColor: Color blue.
+	context fillPreservingPath: true.
+	self
+		assert: context hasCurrentPoint
+		description: 'Path is preserved after fill'.
+	surface flush.
+	"This pixel was included in the rectangle"
+	self assert: (surface colorAtX: 1 y: 1) equals: Color blue.
+	"These pixels were not, so they as untouched."
+	self assert: (surface colorAtX: 0 y: 1) equals: Color transparent.
+	self assert: (surface colorAtX: 2 y: 1) equals: Color transparent.
+
+
+	context sourceColor: Color green.
+	context fillPreservingPath: false.
+	self
+		deny: context hasCurrentPoint
+		description: 'Path is not preserved after fill'.
+	surface flush.
+	"This pixel was included in the rectangle"
+	self assert: (surface colorAtX: 1 y: 1) equals: Color green.
+	"These pixels were not, so they as untouched."
+	self assert: (surface colorAtX: 0 y: 1) equals: Color transparent.
+	self assert: (surface colorAtX: 2 y: 1) equals: Color transparent
+]
+
+{ #category : #tests }
 AeCairoContextTest >> testFillRule [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
