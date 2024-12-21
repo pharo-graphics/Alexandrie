@@ -666,6 +666,17 @@ AeCairoContext >> fillPreservingPath: aBoolean [
 		ifFalse: [ self fill ]
 ]
 
+{ #category : #painting }
+AeCairoContext >> fillPreservingPath: aBoolean alpha: maskAlpha [
+	"Fill with a mask of constant alpha value."
+	
+	self
+		saveState;
+		clipPreservingPath: aBoolean;
+		paintWithAlpha: maskAlpha;
+		restoreState
+]
+
 { #category : #'API - path' }
 AeCairoContext >> fillRule [
 	"Answer the current fill rule.
