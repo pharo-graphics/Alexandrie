@@ -565,7 +565,7 @@ AeCanvas >> pathRotateByRadians: angle [
 AeCanvas >> pathRotateByRadians: angle about: aPoint [
 	"Rotate by an angle, expressed in radians, about aPoint."
 
-	cairoContext rotateByRadians: angle aboutX: aPoint x y: aPoint y
+	cairoContext rotateByRadians: angle center: aPoint
 ]
 
 { #category : #'API - transformations' }

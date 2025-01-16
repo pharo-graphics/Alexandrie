@@ -1550,9 +1550,34 @@ AeCairoContext >> rotateByRadians: angle aboutX: centerX y: centerY [
 	See: https://www.cairographics.org/cookbook/matrix_conventions/"
 
 	self
-		translateByX: centerX y: centerY;
+		deprecated: 'Deprecated method'
+		transformWith:
+			'`@r rotateByRadians: `@a  aboutX: `@b y: `@c' ->
+			'`@r rotateByRadians: `@a centerX: `@b y: `@c'.
+
+	self rotateByRadians: angle centerX: centerX y: centerY
+]
+
+{ #category : #'API - matrix' }
+AeCairoContext >> rotateByRadians: angle center: aPoint [
+	"Rotate about a center.
+	
+	See: https://www.cairographics.org/cookbook/transform_about_point/"
+
+	self rotateByRadians: angle centerX: aPoint x y: aPoint y
+]
+
+{ #category : #'API - matrix' }
+AeCairoContext >> rotateByRadians: angle centerX: cx y: cy [
+	"Modifies the current transformation matrix (CTM) by rotating the user-space axes by angle radians about a center received as argument.
+	
+	See: https://www.cairographics.org/cookbook/transform_about_point/
+	See: https://www.cairographics.org/cookbook/matrix_conventions/"
+
+	self
+		translateByX: cx y: cy;
 		rotateByRadians: angle;
-		translateByX: centerX negated y: centerY negated
+		translateByX: cx negated y: cy negated
 ]
 
 { #category : #'API - path' }

@@ -402,6 +402,26 @@ AeCairoContextTest >> testPathExtents [
 ]
 
 { #category : #tests }
+AeCairoContextTest >> testRotateByRadiansCenter [
+
+	| radians matrix |
+	surface := AeCairoImageSurface extent: 1 @ 1.
+	context := surface newContext.
+
+	radians := 180 degreesToRadians.
+	context rotateByRadians: radians center: 20 @ 10.
+
+	matrix := context matrix.
+	
+	self assert: matrix x   equals: 40.0.
+	self assert: matrix y   equals: 20.0.
+	self assert: matrix sx  equals: radians cos.
+	self assert: matrix sy  equals: radians cos.
+	self assert: matrix shx equals: radians sin negated.
+	self assert: matrix shy equals: radians sin
+]
+
+{ #category : #tests }
 AeCairoContextTest >> testScaledFont [
 
 	| aSurface aContext aFontFace scaledFont17 scaledFont71 scaledFont17b |
