@@ -63,3 +63,10 @@ done
 (In a Git Bash terminal)
 
 Step 4 would change to `./pharo-vm1/Pharo.exe Pharo.image`, to open Pharo with the new libs.
+
+---
+
+SDL2
+----
+
+Previous notes miss SDL2. Do it similarly. Install using apt on Debian-based distros. Do the analogous on Arch-like. Install it with brew on Mac. Download [from here](https://github.com/libsdl-org/SDL/releases/latest) on Windows.
