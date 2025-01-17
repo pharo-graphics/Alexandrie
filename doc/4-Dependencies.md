@@ -59,5 +59,7 @@ for LIB_PREFIX in libpng libpixman libharfbuzz libfreetype libfontconfig libcair
 do 
   rm -fv pharo-vm1/${LIB_PREFIX}*.dll
 done
-```bash
+```
 (In a Git Bash terminal)
+
+Step 4 would change to `./pharo-vm1/Pharo.exe Pharo.image`, to open Pharo with the new libs.
