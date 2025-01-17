@@ -522,7 +522,7 @@ AeCanvas >> newSurfaceWithGaussianShadow: extent width: width canvasDo: aBlock [
 AeCanvas >> paint: aCairoPattern alpha: opacity [
 	"Paint a pattern. opacity is a Number between 0 and 1. Note: Context state is not restored."
 
-	cairoContext source: aCairoPattern.
+	cairoContext sourcePattern: aCairoPattern.
 
 	opacity < 1.0
 		ifTrue: [ cairoContext paintWithAlpha: opacity ]
@@ -938,7 +938,7 @@ AeCanvas >> setSourceLinearPatternStops: aCollection start: startPoint end: endP
 		            to: endPoint
 		            addStopsFrom: aCollection.
 
-	cairoContext source: aPattern
+	cairoContext sourcePattern: aPattern
 ]
 
 { #category : #'API - source' }
@@ -952,7 +952,7 @@ AeCanvas >> setSourceRadialPatternStops: aCollection innerCenter: anInnerCenter 
 		outerRadius: anOuterRadius
 		addStopsFrom: aCollection.
 	
-	cairoContext source: aPattern.
+	cairoContext sourcePattern: aPattern
 ]
 
 { #category : #'API - source' }

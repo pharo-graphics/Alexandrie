@@ -1812,19 +1812,14 @@ AeCairoContext >> source [
 
 { #category : #'API - source' }
 AeCairoContext >> source: aPattern [
-	"Sets the source pattern to aPattern. This pattern will then be used for any subsequent drawing operation until a new source pattern is set.
 
-	Note: The pattern's transformation matrix will be locked to the user space in effect at the time of this function. This means that further modifications of the current transformation matrix will not affect the source pattern. See `cairo_pattern_set_matrix()`.
+	self
+		deprecated: 'Deprecated method'
+		transformWith:
+			'`@receiver source: `@statement' ->
+			'`@receiver sourcePattern: `@statement'.
 
-	The default source pattern is a solid pattern that is opaque black.
-	
-	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-source"
-
-	self ffiCall: #(
-		void
-		cairo_set_source (
-			self,
-			AeCairoPattern aPattern ) )
+	^ self sourcePattern: aPattern
 ]
 
 { #category : #'API - source' }
@@ -1890,6 +1885,23 @@ AeCairoContext >> sourceConverted [
 	preciseClass := result type correspondingClass.
 	preciseClass adoptInstance: result.
 	^ result
+]
+
+{ #category : #'API - source' }
+AeCairoContext >> sourcePattern: aPattern [
+	"Sets the source pattern to aPattern. This pattern will then be used for any subsequent drawing operation until a new source pattern is set.
+
+	Note: The pattern's transformation matrix will be locked to the user space in effect at the time of this function. This means that further modifications of the current transformation matrix will not affect the source pattern. See `cairo_pattern_set_matrix()`.
+
+	The default source pattern is a solid pattern that is opaque black.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-source"
+
+	self ffiCall: #(
+		void
+		cairo_set_source (
+			self,
+			AeCairoPattern aPattern ) )
 ]
 
 { #category : #'API - source' }

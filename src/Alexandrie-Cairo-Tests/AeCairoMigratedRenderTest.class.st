@@ -152,9 +152,9 @@ AeCairoMigratedRenderTest >> surfaceWithFillAndStrokeAlpha [
 				paintGroupWith: [
 					pathBlock value.
 					aContext
-						source: fillPattern;
+						sourcePattern: fillPattern;
 						fillPreservingPath;
-						source: strokePattern;
+						sourcePattern: strokePattern;
 						stroke ]
 				alpha: 0.5 ].
 
@@ -208,7 +208,7 @@ AeCairoMigratedRenderTest >> surfaceWithFillAndStrokeAlphaAdd [
 				paintGroupWith: [
 					pathBlock value.
 					aContext
-						source: fillPattern;
+						sourcePattern: fillPattern;
 						fillPreservingPath.
 
 					"Use DEST_OUT to subtract stroke from fill."
@@ -219,7 +219,7 @@ AeCairoMigratedRenderTest >> surfaceWithFillAndStrokeAlphaAdd [
 					
 					"Then use ADD to draw the stroke without a seam."
 					aContext
-						source: strokePattern;
+						sourcePattern: strokePattern;
 						operator: AeCairoOperator add;
 						stroke ] ].
 
@@ -386,7 +386,7 @@ AeCairoMigratedRenderTest >> surfaceWithGradientAlpha [
 	aGradient addStopAt: 1.0 color: (Color blue alpha: 0.5).
 	
 	aContext
-		source: aGradient;
+		sourcePattern: aGradient;
 		paint.
 	
 	^ aSurface
@@ -411,7 +411,7 @@ AeCairoMigratedRenderTest >> surfaceWithGradientConstantAlpha [
 	aGradient addStopAt: 1.0 color: (Color blue alpha: 0.5).
 	
 	aContext
-		source: aGradient;
+		sourcePattern: aGradient;
 		paint.
 	
 	^ aSurface
@@ -433,7 +433,7 @@ AeCairoMigratedRenderTest >> surfaceWithGradientZeroStops [
 			fromX: 0 fromY: 0
 			toX: 1 toY: 1.
 	aContext
-		source: aLinearGradient;
+		sourcePattern: aLinearGradient;
 		paint.
 
 	aRadialGradient :=
@@ -441,7 +441,7 @@ AeCairoMigratedRenderTest >> surfaceWithGradientZeroStops [
 			innerX: 0 innerY: 0 innerRadius: 0
 			outerX: 1 outerY: 1 outerRadius: 1.
 	aContext
-		source: aRadialGradient;
+		sourcePattern: aRadialGradient;
 		paint.
 
 	^ aSurface
@@ -666,7 +666,7 @@ AeCairoMigratedRenderTest >> surfaceWithMeshPatternConical [
 			endPatch ].
 	 
 	aContext
-		source: aMesh;
+		sourcePattern: aMesh;
 		paint.
 
 	^ aSurface
@@ -707,7 +707,7 @@ AeCairoMigratedRenderTest >> surfaceWithMeshPatternOverlap [
 	aMesh endPatch.
 
 	aContext
-		source: aMesh;
+		sourcePattern: aMesh;
 		paint.
 
 	^ aSurface

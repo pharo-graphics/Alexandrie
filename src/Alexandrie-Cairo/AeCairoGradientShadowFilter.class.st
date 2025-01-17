@@ -50,7 +50,7 @@ AeCairoGradientShadowFilter >> paintFor: rectangle blurRadius: radius color: aCo
 	aGradientMatrix := AeCairoMatrix newIdentity.
 
 	aContext restoreStateAfter: [
-		aContext source: aGradient.			
+		aContext sourcePattern: aGradient.			
 
 		" top left"
 		aRect := rectangle topLeft - radius asPoint extent: radius asPoint.
@@ -85,7 +85,7 @@ AeCairoGradientShadowFilter >> paintFor: rectangle blurRadius: radius color: aCo
 		from: aRect bottomLeft
 		to: aRect bottomLeft - (0 @ radius)
 		addStopsFrom: colorRamp.
-	aContext source: aGradient; rectangle: aRect; fill.
+	aContext sourcePattern: aGradient; rectangle: aRect; fill.
 
 	" bottom "
 	aRect := rectangle bottomLeft extent: rectangle width @ radius.
@@ -93,7 +93,7 @@ AeCairoGradientShadowFilter >> paintFor: rectangle blurRadius: radius color: aCo
 		from: aRect topLeft
 		to: aRect topLeft + (0 @ radius)
 		addStopsFrom: colorRamp.
-	aContext source: aGradient; rectangle: aRect; fill.
+	aContext sourcePattern: aGradient; rectangle: aRect; fill.
 
 	" right "
 	aRect := 0 @ 0 extent: radius @ rectangle height.
@@ -101,7 +101,7 @@ AeCairoGradientShadowFilter >> paintFor: rectangle blurRadius: radius color: aCo
 		from: 0 @ 0
 		to: radius @ 0
 		addStopsFrom: colorRamp.
-	aContext source: aGradient.
+	aContext sourcePattern: aGradient.
 	aGradientMatrix := AeCairoMatrix newTranslationBy: rectangle topRight negated.
 	aGradient matrix: aGradientMatrix.
 	aContext restoreStateAfter: [
