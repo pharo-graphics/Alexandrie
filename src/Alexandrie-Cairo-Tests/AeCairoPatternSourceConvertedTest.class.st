@@ -19,7 +19,7 @@ AeCairoPatternSourceConvertedTest >> testLinearGradient [
 		AeCairoLinearGradientPattern
 			from: 0 @ 0
 			to: 1 @ 1.
-	context source: aLinearGradient.
+	context sourcePattern: aLinearGradient.
 	
 	self
 		assert: context sourceConverted class
@@ -34,7 +34,7 @@ AeCairoPatternSourceConvertedTest >> testMesh [
 	context := surface newContext.
 	
 	meshPattern := AeCairoMeshPattern new.
-	context source: meshPattern.
+	context sourcePattern: meshPattern.
 	
 	self
 		assert: context sourceConverted class
@@ -54,7 +54,7 @@ AeCairoPatternSourceConvertedTest >> testRadialGradient [
 			innerRadius: 0
 			outerCenter: 1@1
 			outerRadius: 1.
-	context source: aRadialGradient.
+	context sourcePattern: aRadialGradient.
 	
 	self
 		assert: context sourceConverted class

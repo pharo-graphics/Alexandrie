@@ -165,7 +165,7 @@ AeCairoExamplesRenderTest >> surfaceWithCoonsPatch [
 		sourceColor: Color yellow;
 		paint;
 		translateByX: -15 y: 0;
-		source: aMeshPattern;
+		sourcePattern: aMeshPattern;
 		paint.
 
 	^ aSurface
@@ -413,7 +413,7 @@ AeCairoExamplesRenderTest >> surfaceWithGouraudBasedTriangle [
 	aContext
 		sourceColor: Color yellow;
 		paint;
-		source: aMeshPattern;
+		sourcePattern: aMeshPattern;
 		paint.
 
 	^ aSurface
@@ -441,7 +441,7 @@ AeCairoExamplesRenderTest >> surfaceWithPixelatedIcon [
 	iconPattern filter: AeCairoSamplingFilter nearest.
 	aContext
 		scaleByX: scale y: scale;
-		source: iconPattern;
+		sourcePattern: iconPattern;
 		rectangleTo: iconSurface extent * scale;
 		fill.
 
@@ -636,7 +636,7 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedBuffered [
 			addStopAt: 1.0 color: Color transparent;
 			yourself.
 	aShadowContext
-		source: aGradient;
+		sourcePattern: aGradient;
 		paint.
 	aShadowSurface status ensureIsSuccess.
 
@@ -702,7 +702,7 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedDirect [
 			addStopAt: 1.0 color: Color transparent;
 			yourself.
 	mainContext
-		source: aGradient;
+		sourcePattern: aGradient;
 		paintWithAlpha: shadowAlpha.
 
 	"draw circle"
@@ -745,7 +745,7 @@ AeCairoExamplesRenderTest >> surfaceWithSphere [
 			addStopAt: 1.0 color: Color red;
 			yourself.
 	aContext
-		source: aGradient;
+		sourcePattern: aGradient;
 		circleRadius: radius; 
 		fill.
 
@@ -809,7 +809,7 @@ AeCairoExamplesRenderTest >> surfaceWithStretchedIcon [
 
 	"Draw a the icon"
 	aContext
-		source: iconPattern;
+		sourcePattern: iconPattern;
 		paint.
 
 	^ aSurface
@@ -935,7 +935,7 @@ AeCairoExamplesRenderTest >> surfaceWithTextPixelated [
 	aContext
 		sourceColor: Color paleGreen;
 		paint;
-		source: aPattern;
+		sourcePattern: aPattern;
 		paint.
 
 	^ aSurface
