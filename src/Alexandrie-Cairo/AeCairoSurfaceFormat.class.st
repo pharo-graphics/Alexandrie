@@ -98,6 +98,12 @@ AeCairoSurfaceFormat class >> enumDecl [
 ]
 
 { #category : #'accessing enum' }
+AeCairoSurfaceFormat class >> invalid [
+
+	^ CAIRO_FORMAT_INVALID
+]
+
+{ #category : #'accessing enum' }
 AeCairoSurfaceFormat class >> rgb24 [
 
 	^ CAIRO_FORMAT_RGB24
