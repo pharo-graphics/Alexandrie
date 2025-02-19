@@ -80,7 +80,7 @@ AthensAeCairoPathBuilder >> curveVia: p1 to: aPoint [
 	endPoint := self toAbsolute: aPoint.
 	lastControlPoint := nil.
 	
-	cairoContext quadraticCurveFrom: pt0 controlPoint: pt1 to: endPoint
+	cairoContext quadraticCurveFromCurrentPoint: pt0 via: pt1 to: endPoint
 ]
 
 { #category : #'builder commands' }

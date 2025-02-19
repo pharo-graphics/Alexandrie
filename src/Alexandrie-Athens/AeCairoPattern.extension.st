@@ -37,7 +37,7 @@ AeCairoPattern >> loadOnCairoCanvas: aCanvas [
 
 	self flag: #athens. "arbitrary"
 	self status isSuccess
-		ifTrue:[ aCanvas cairoContext source: self ]
+		ifTrue:[ aCanvas cairoContext sourcePattern: self ]
 		ifFalse:[ aCanvas setSourceR: 1.0 g: 0.0 b: 0.0 a: 1.0 ]
 ]
 

@@ -34,19 +34,19 @@ AthensAeCairoStrokePaint >> athensFillRectangle: aRectangle on: aCanvas [
 { #category : #'setting - cap styles' }
 AthensAeCairoStrokePaint >> capButt [
 	
-	capStyle := AeCairoCapStyle butt
+	capStyle := AeCairoStrokeCap butt
 ]
 
 { #category : #'setting - join styles' }
 AthensAeCairoStrokePaint >> joinBevel [
 
-	joinStyle := AeCairoJoinStyle bevel
+	joinStyle := AeCairoStrokeJoin bevel
 ]
 
 { #category : #'setting - join styles' }
 AthensAeCairoStrokePaint >> joinMiter [
 	
-	joinStyle := AeCairoJoinStyle miter
+	joinStyle := AeCairoStrokeJoin miter
 ]
 
 { #category : #private }
@@ -55,9 +55,9 @@ AthensAeCairoStrokePaint >> prepareForDrawingOn: aCanvas [
 	fillPaint loadOnCairoCanvas: aCanvas.
 
 	aCanvas cairoContext
-		lineWidth: width;
-		lineJoin: joinStyle;
-		lineCap: capStyle.
+		strokeSize: width;
+		strokeJoin: joinStyle;
+		strokeCap: capStyle.
 
 	dashLenghts
 		ifNil: [ aCanvas resetDash ]
