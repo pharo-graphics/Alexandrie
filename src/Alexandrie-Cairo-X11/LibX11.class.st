@@ -11,7 +11,7 @@ Class {
 LibX11 class >> exampleWindowDisplayVisual [
 	<sampleInstance>
 
-	| mainWindow wmInfo drawable display |
+	| mainWindow wmInfo drawable display screen visual |
 	mainWindow := SDL_Window allInstances detect: [ :each | each isNull not ].
 	wmInfo := SDL_SysWMinfo new version: SDL_Version bindingVersion.
 	mainWindow getWMInfo: wmInfo.
@@ -19,9 +19,16 @@ LibX11 class >> exampleWindowDisplayVisual [
 	^ {
 		drawable := wmInfo info x11 window.
 		display := wmInfo info x11 display.
-		LibX11 uniqueInstance defaultVisualOnDisplay: display screenNumber: 0.
-"		LibX11 uniqueInstance displayWidthOf: display screenNumber: 0.
-		LibX11 uniqueInstance displayHeightOf: display screenNumber: 0." }
+		screen := LibX11 uniqueInstance defaultScreenOf: display.
+		visual := LibX11 uniqueInstance defaultVisualOnDisplay: display screenNumber: screen.
+		LibX11 uniqueInstance displayWidthOf: display screenNumber: screen.
+		LibX11 uniqueInstance displayHeightOf: display screenNumber: screen. }
+]
+
+{ #category : #api }
+LibX11 >> defaultScreenOf: displayPointer [
+
+	^ self ffiCall: #(int XDefaultScreen("Display"void *displayPointer))
 ]
 
 { #category : #api }
