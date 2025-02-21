@@ -1,10 +1,10 @@
 SmalltalkCISpec {
-  #registerInIceberg : true,
   #loading : [
     SCIMetacelloLoadSpec {
       #baseline : 'Alexandrie',
       #directory : 'src',
-      #platforms : [ #pharo ]
+      #platforms : [ #pharo ],
+      #registerInIceberg : true
     }
   ]
 }
