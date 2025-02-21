@@ -1,11 +1,11 @@
 SmalltalkCISpec {
-  #preLoading: 'scripts/ciPreLoading.st',
   #loading : [
     SCIMetacelloLoadSpec {
       #baseline : 'Alexandrie',
       #directory : 'src',
       #platforms : [ #pharo ],
-      #load : [ 'ffi-minimal' ]
+      #load : [ 'ffi-minimal' ],
+      #registerInIceberg : true
     }
   ],
   #testing : {
