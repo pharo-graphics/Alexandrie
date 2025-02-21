@@ -1,5 +1,5 @@
 SmalltalkCISpec {
-  #preLoading: 'scripts/ciPreLoading.st',
+  #registerInIceberg : true,
   #loading : [
     SCIMetacelloLoadSpec {
       #baseline : 'Alexandrie',
