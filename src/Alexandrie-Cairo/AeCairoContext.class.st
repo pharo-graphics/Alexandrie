@@ -243,6 +243,8 @@ AeCairoContext >> beginSubPath [
 	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-new-sub-path"
 
 	self ffiCall: #( void cairo_new_sub_path ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+	
 ]
 
 { #category : #'API - path' }
@@ -342,6 +344,8 @@ AeCairoContext >> clip [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-clip"
 
 	self ffiCall: #( void cairo_clip ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+	
 ]
 
 { #category : #'API - query' }
@@ -400,6 +404,8 @@ AeCairoContext >> clipPreserve [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-clip-preserve"
 
 	self ffiCall: #( void cairo_clip_preserve ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+	
 ]
 
 { #category : #'API - clipping' }
@@ -435,6 +441,7 @@ AeCairoContext >> closePath [
 	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-close-path"
 
 	self ffiCall: #( void cairo_close_path ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
 ]
 
 { #category : #'API - pages' }
@@ -446,6 +453,7 @@ AeCairoContext >> copyPage [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-copy-page"
 
 	self ffiCall: #( void cairo_copy_page ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
 ]
 
 { #category : #'API - path' }
@@ -499,6 +507,7 @@ AeCairoContext >> currentTarget [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-group-target"
 
 	self ffiCall: #( AeCairoSurface cairo_get_group_target ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
 ]
 
 { #category : #'API - path' }
@@ -636,6 +645,8 @@ AeCairoContext >> fill [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-fill"
 
 	self ffiCall: #( void cairo_fill ( self ) )
+			options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+
 ]
 
 { #category : #'API - painting' }
@@ -646,6 +657,7 @@ AeCairoContext >> fillPreserve [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-fill-preserve"
 
 	self ffiCall: #( void cairo_fill_preserve ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
 ]
 
 { #category : #'API - painting' }
@@ -720,6 +732,7 @@ AeCairoContext >> fontFace [
 	See: https://www.cairographics.org/manual/cairo-text.html#cairo-get-font-face"
 
 	^ self ffiCall: #( AeCairoFontFace cairo_get_font_face ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
 ]
 
 { #category : #'API - text' }
@@ -1068,6 +1081,8 @@ AeCairoContext >> lineToX: x y: y [
 			self,
 			double x,
 			double y ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+
 ]
 
 { #category : #'API - painting settings' }
@@ -1212,6 +1227,8 @@ AeCairoContext >> moveToX: x y: y [
 			self,
 			double x,
 			double y ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+
 ]
 
 { #category : #'API - compositing' }
@@ -1221,6 +1238,7 @@ AeCairoContext >> operator [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-operator"
 
 	^ self ffiCall: #( AeCairoOperator cairo_get_operator ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
 ]
 
 { #category : #'API - compositing' }
@@ -1245,6 +1263,8 @@ AeCairoContext >> paint [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-paint"
 
 	self ffiCall: #( void cairo_paint ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+
 ]
 
 { #category : #'API - painting' }
@@ -1343,6 +1363,8 @@ AeCairoContext >> popGroupToSource [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-pop-group-to-source"
 
 	self ffiCall: #( void cairo_pop_group_to_source ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+	
 ]
 
 { #category : #'API - compositing' }
@@ -1356,6 +1378,8 @@ AeCairoContext >> pushGroup [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-push-group"
 
 	self ffiCall: #( void cairo_push_group ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+	
 ]
 
 { #category : #'API - compositing' }
@@ -1457,6 +1481,8 @@ AeCairoContext >> relativeLineToX: dx y: dy [
 			self,
 			double dx,
 			double dy ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+			
 ]
 
 { #category : #'API - path' }
@@ -1478,6 +1504,8 @@ AeCairoContext >> relativeMoveToX: dx y: dy [
 			self,
 			double dx,
 			double dy ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+			
 ]
 
 { #category : #'API - clipping' }
@@ -1487,6 +1515,8 @@ AeCairoContext >> resetClip [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-reset-clip"
 
 	self ffiCall: #( void cairo_reset_clip #( self ) )
+			options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+
 ]
 
 { #category : #'API - path' }
@@ -1496,6 +1526,8 @@ AeCairoContext >> resetPath [
 	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-new-path"
 
 	self ffiCall: #( void cairo_new_path ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+	
 ]
 
 { #category : #'API - painting settings' }
@@ -1517,6 +1549,8 @@ AeCairoContext >> restoreState [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-restore"
 
 	self ffiCall: #( void cairo_restore ( self ) )
+			options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+
 ]
 
 { #category : #'API - states' }
@@ -1661,7 +1695,9 @@ AeCairoContext >> saveState [
 	
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-save"
 
-	self ffiCall: #( void cairo_save ( self ) )
+	self ffiCall: #( void cairo_save ( self ) ) 
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+	
 ]
 
 { #category : #'API - matrix' }
@@ -1683,6 +1719,8 @@ AeCairoContext >> scaleByX: sx y: sy [
 			self,
 			double sx,
 			double sy ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+
 ]
 
 { #category : #'API - text' }
@@ -1692,6 +1730,7 @@ AeCairoContext >> scaledFont [
 	See: https://www.cairographics.org/manual/cairo-text.html#cairo-get-scaled-font"
 
 	^ self ffiCall: #( AeCairoScaledFont cairo_get_scaled_font ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
 ]
 
 { #category : #'API - text' }
@@ -1732,6 +1771,8 @@ AeCairoContext >> setIdentityMatrix [
 	See: https://www.cairographics.org/manual/cairo-Transformations.html#cairo-identity-matrix"
 
 	self ffiCall: #( void cairo_identity_matrix ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+	
 ]
 
 { #category : #'API - compositing' }
@@ -1792,6 +1833,8 @@ AeCairoContext >> showPage [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-show-page"
 
 	self ffiCall: #( void cairo_show_page ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+	
 ]
 
 { #category : #'API - text toy' }
@@ -1808,6 +1851,7 @@ AeCairoContext >> source [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-source"
 
 	^ self ffiCall: #( AeCairoPattern cairo_get_source ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
 ]
 
 { #category : #'API - source' }
@@ -1852,6 +1896,8 @@ AeCairoContext >> sourceColorR: aRed g: aGreen b: aBlue [
 			double aRed,
 			double aGreen,
 			double aBlue ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+
 ]
 
 { #category : #'API - source' }
@@ -1874,6 +1920,8 @@ AeCairoContext >> sourceColorR: aRed g: aGreen b: aBlue a: anAlpha [
 			double aGreen,
 			double aBlue,
 			double anAlpha ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+	
 ]
 
 { #category : #'API - source' }
@@ -1939,6 +1987,7 @@ AeCairoContext >> status [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-status"
 
 	^ self ffiCall: #( AeCairoStatus cairo_status ( self ) )
+	
 ]
 
 { #category : #'API - painting' }
@@ -1950,6 +1999,8 @@ AeCairoContext >> stroke [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-stroke"
 
 	self ffiCall: #( void cairo_stroke ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+	
 ]
 
 { #category : #'API - painting settings' }
@@ -2172,6 +2223,8 @@ AeCairoContext >> strokePreservingPath [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-stroke-preserve"
 
 	self ffiCall: #( void cairo_stroke_preserve ( self ))
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+	
 ]
 
 { #category : #'API - painting' }
@@ -2291,6 +2344,8 @@ AeCairoContext >> translateByX: tx y: ty [
 			self,
 			double tx,
 			double ty ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+
 ]
 
 { #category : #'API - query' }
@@ -2300,6 +2355,8 @@ AeCairoContext >> unownedCurrentPath [
 	See: https://www.cairographics.org/manual/cairo-Paths.html#cairo-copy-path"
 
 	^ self ffiCall: #( AeCairoPath cairo_copy_path ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+	
 ]
 
 { #category : #'API - compositing' }
@@ -2313,6 +2370,8 @@ AeCairoContext >> unownedPopGroupAsSurfacePattern [
 	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-pop-group"
 
 	^ self ffiCall: #( AeCairoSurfacePattern cairo_pop_group ( self ) )
+		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
+	
 ]
 
 { #category : #'API - path' }
