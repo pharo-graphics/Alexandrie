@@ -10,6 +10,13 @@ Class {
 	#category : #'Alexandrie-Cairo-Tests'
 }
 
+{ #category : #asserting }
+AeCairoMatrixTest >> assert: actualNumber closeTo: expectedNumber [
+	"Explicit the precision"
+
+	self assert: actualNumber closeTo: expectedNumber precision: 0.0001
+]
+
 { #category : #tests }
 AeCairoMatrixTest >> testBeMultiplicationOfBy [
 
