@@ -46,23 +46,11 @@ This is an example of how to run benchmarks from Terminal:
 
 **Windows**
 
-Adapt previous steps to use downloaded dependencies: 
+Download the zip bundle of [latest Harfbuzz release](https://github.com/harfbuzz/harfbuzz/releases).
+Copy `pharo-vm` as `pharo-vm-nolibs` and uncompress the zip into it. Replace files! (this is key).
+Open Pharo with the new libs with `./pharo-vm-nolibs/Pharo.exe Pharo.image`.
 
-Step 1 can be adapted to downloading and uncompressing [latest Harfbuzz release zip bundle](https://github.com/harfbuzz/harfbuzz/releases).
-You will get DLLs for our dependencies (libpng, libpixman, libharfbuzz, libfreetype, libfontconfig, libcairo).
-Place them in the same directory as the Pharo image, and the FFI library finder should find them.
-
-Step 3 can translate to:
-```bash
-cp -r pharo-vm pharo-vm-nolibs
-for LIB_PREFIX in libpng libpixman libharfbuzz libfreetype libfontconfig libcairo
-do 
-  rm -fv pharo-vm-nolibs/${LIB_PREFIX}*.dll
-done
-```
-(In a Git Bash terminal)
-
-Step 4 would change to `./pharo-vm-nolibs/Pharo.exe Pharo.image`, to open Pharo with the new libs.
+WARNING: Harfbuzz-Freetype doesn't work.
 
 ---
 
