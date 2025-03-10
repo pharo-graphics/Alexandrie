@@ -24,6 +24,25 @@ AeCairoContextTest >> resources [
 ]
 
 { #category : #tests }
+AeCairoContextTest >> testAntialias [
+
+	surface := AeCairoImageSurface extent: 100 @ 100.
+	context := surface newContext.
+	
+	self assert: context antialias equals: AeCairoAntialias default.
+
+	context antialias: AeCairoAntialias gray.
+	self assert: context antialias equals: AeCairoAntialias gray.
+
+	context restoreStateAfter: [
+		context antialias: AeCairoAntialias none.
+		self assert: context antialias equals: AeCairoAntialias none ].
+
+	"Assert antialias is restored"
+	self assert: context antialias equals: AeCairoAntialias gray
+]
+
+{ #category : #tests }
 AeCairoContextTest >> testClipExtents [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.

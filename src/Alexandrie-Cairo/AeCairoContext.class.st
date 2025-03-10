@@ -73,6 +73,16 @@ AeCairoContext >> annulusSectorCenter: aPoint from: radiansStart to: radiansStop
 ]
 
 { #category : #'API - painting settings' }
+AeCairoContext >> antialias [
+	"Answer the current shape antialiasing mode.
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-antialias"
+
+	^ self ffiCall: #(
+		AeCairoAntialias cairo_get_antialias ( self ) )
+]
+
+{ #category : #'API - painting settings' }
 AeCairoContext >> antialias: aCairoAntialias [
 	"Set the antialiasing mode of the rasterizer used for drawing shapes. This value is a hint, and a particular backend may or may not support a particular value.
 	
