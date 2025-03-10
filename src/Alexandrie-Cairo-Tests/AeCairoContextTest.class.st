@@ -272,17 +272,27 @@ AeCairoContextTest >> testFillRule [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
 	context := surface newContext.
-	
+
+	"Default value"	
 	self
 		assert: context fillRule
 		equals: AeCairoFillRule winding.
 
+	"Change value"
 	context fillRule: AeCairoFillRule evenOdd.
-
 	self
 		assert: context fillRule
 		equals: AeCairoFillRule evenOdd.
 
+	"Assert fillRule is restored"
+	context restoreStateAfter: [
+		context fillRule: AeCairoFillRule winding.
+		self
+			assert: context fillRule
+			equals: AeCairoFillRule winding ].
+	self
+		assert: context fillRule
+		equals: AeCairoFillRule evenOdd
 ]
 
 { #category : #tests }
@@ -380,6 +390,15 @@ AeCairoContextTest >> testOperator [
 		assert: context operator
 		equals: AeCairoOperator clear.
 
+	"Assert operator is restored"
+	context restoreStateAfter: [
+		context operator: AeCairoOperator screen.
+		self
+			assert: context operator
+			equals: AeCairoOperator screen ].
+	self
+		assert: context operator
+		equals: AeCairoOperator clear
 ]
 
 { #category : #tests }
