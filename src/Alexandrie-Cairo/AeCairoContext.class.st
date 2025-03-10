@@ -2237,6 +2237,12 @@ AeCairoContext >> textExtentsOf: aString [
 ]
 
 { #category : #'API - painting settings' }
+AeCairoContext >> tolerance [
+
+	^ self ffiCall: #( double cairo_get_tolerance ( self ) )
+]
+
+{ #category : #'API - painting settings' }
 AeCairoContext >> tolerance: tolerance [ 
 	"Sets the tolerance used when converting paths into trapezoids. Curved segments of the path will be subdivided until the maximum deviation between the original path and the polygonal approximation is less than tolerance.
 	The default value is 0.1. A larger value will give better performance, a smaller value, better appearance. (Reducing the value from the default value of 0.1 is unlikely to improve appearance significantly.) The accuracy of paths within Cairo is limited by the precision of its internal arithmetic, and the prescribed tolerance is restricted to the smallest representable internal value.

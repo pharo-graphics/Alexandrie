@@ -579,3 +579,23 @@ AeCairoContextTest >> testStrokeSize [
 	"Assert on new value"
 	self assert: context strokeSize equals: 7.0
 ]
+
+{ #category : #tests }
+AeCairoContextTest >> testTolerance [
+
+	surface := AeCairoImageSurface extent: 100 @ 100.
+	context := surface newContext.
+	
+	self assert: context tolerance closeTo: 0.1.
+
+	context tolerance: 0.5.
+	self assert: context tolerance closeTo: 0.5.
+
+	context restoreStateAfter: [
+		context tolerance: 0.7.
+		self assert: context tolerance closeTo: 0.7 ].
+
+	"Assert tolerance is restored"
+	self assert: context tolerance closeTo: 0.5.
+
+]
