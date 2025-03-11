@@ -480,6 +480,7 @@ AeCanvas >> metricsFor: aCairoGlyphsArray font: aCairoScaledFont [
 		do: [ :aTextExtents |
 			textMetrics
 				advanceX: aTextExtents advanceX;
+				advanceY: aTextExtents advanceY;
 				bearingX: aTextExtents bearingX;
 				bearingY: aTextExtents bearingY;
 				width: aTextExtents width;

@@ -28,6 +28,12 @@ Class {
 }
 
 { #category : #accessing }
+AeCairoTextMetrics >> advance [
+
+	^ self advanceX @ self advanceY
+]
+
+{ #category : #accessing }
 AeCairoTextMetrics >> advanceX [
 
 	^ advanceX
@@ -61,6 +67,12 @@ AeCairoTextMetrics >> ascent [
 AeCairoTextMetrics >> ascent: aNumber [
 
 	ascent := aNumber
+]
+
+{ #category : #accessing }
+AeCairoTextMetrics >> bearing [
+
+	^ self bearingX @ self bearingY
 ]
 
 { #category : #accessing }
@@ -100,6 +112,12 @@ AeCairoTextMetrics >> descent: aNumber [
 ]
 
 { #category : #accessing }
+AeCairoTextMetrics >> extent [
+
+	^ self width @ self height
+]
+
+{ #category : #accessing }
 AeCairoTextMetrics >> height [
 
 	^ height
@@ -109,6 +127,22 @@ AeCairoTextMetrics >> height [
 AeCairoTextMetrics >> height: aNumber [
 
 	height := aNumber
+]
+
+{ #category : #printing }
+AeCairoTextMetrics >> printOn: aStream [
+
+	super printOn: aStream.
+	aStream nextPut: $(.
+
+	#(extent bearing advance) do: [ :each |
+		aStream
+			nextPutAll: each asMutator;
+			space;
+			print: (self perform: each) ]
+		separatedBy: [ aStream space ].
+
+	aStream nextPut: $)
 ]
 
 { #category : #accessing }
