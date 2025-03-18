@@ -27,7 +27,7 @@ AthensAeCairoMatrix >> loadIdentity [
 	cairoMatrix beIdentity 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #transformations }
 AthensAeCairoMatrix >> loadInvertedOnPattern: aPattern [
 
 	aPattern matrix:

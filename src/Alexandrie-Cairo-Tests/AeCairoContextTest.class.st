@@ -24,6 +24,25 @@ AeCairoContextTest >> resources [
 ]
 
 { #category : #tests }
+AeCairoContextTest >> testAntialias [
+
+	surface := AeCairoImageSurface extent: 100 @ 100.
+	context := surface newContext.
+	
+	self assert: context antialias equals: AeCairoAntialias default.
+
+	context antialias: AeCairoAntialias gray.
+	self assert: context antialias equals: AeCairoAntialias gray.
+
+	context restoreStateAfter: [
+		context antialias: AeCairoAntialias none.
+		self assert: context antialias equals: AeCairoAntialias none ].
+
+	"Assert antialias is restored"
+	self assert: context antialias equals: AeCairoAntialias gray
+]
+
+{ #category : #tests }
 AeCairoContextTest >> testClipExtents [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
@@ -253,17 +272,27 @@ AeCairoContextTest >> testFillRule [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
 	context := surface newContext.
-	
+
+	"Default value"	
 	self
 		assert: context fillRule
 		equals: AeCairoFillRule winding.
 
+	"Change value"
 	context fillRule: AeCairoFillRule evenOdd.
-
 	self
 		assert: context fillRule
 		equals: AeCairoFillRule evenOdd.
 
+	"Assert fillRule is restored"
+	context restoreStateAfter: [
+		context fillRule: AeCairoFillRule winding.
+		self
+			assert: context fillRule
+			equals: AeCairoFillRule winding ].
+	self
+		assert: context fillRule
+		equals: AeCairoFillRule evenOdd
 ]
 
 { #category : #tests }
@@ -361,6 +390,15 @@ AeCairoContextTest >> testOperator [
 		assert: context operator
 		equals: AeCairoOperator clear.
 
+	"Assert operator is restored"
+	context restoreStateAfter: [
+		context operator: AeCairoOperator screen.
+		self
+			assert: context operator
+			equals: AeCairoOperator screen ].
+	self
+		assert: context operator
+		equals: AeCairoOperator clear
 ]
 
 { #category : #tests }
@@ -559,4 +597,24 @@ AeCairoContextTest >> testStrokeSize [
 	
 	"Assert on new value"
 	self assert: context strokeSize equals: 7.0
+]
+
+{ #category : #tests }
+AeCairoContextTest >> testTolerance [
+
+	surface := AeCairoImageSurface extent: 100 @ 100.
+	context := surface newContext.
+	
+	self assert: context tolerance closeTo: 0.1.
+
+	context tolerance: 0.5.
+	self assert: context tolerance closeTo: 0.5.
+
+	context restoreStateAfter: [
+		context tolerance: 0.7.
+		self assert: context tolerance closeTo: 0.7 ].
+
+	"Assert tolerance is restored"
+	self assert: context tolerance closeTo: 0.5.
+
 ]

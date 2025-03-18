@@ -1,3 +1,6 @@
+"
+I'm an AthensCanvas that uses Alexandrie as backend.
+"
 Class {
 	#name : #AthensAeCairoCanvas,
 	#superclass : #AthensCanvas,
@@ -168,13 +171,13 @@ AthensAeCairoCanvas >> rectangleX: x y: y width: aWidth height: aHeight [
 { #category : #drawing }
 AthensAeCairoCanvas >> resetDash [
 
-	cairoContext dashDisable
+	cairoContext resetStrokeDashPattern
 ]
 
 { #category : #'drawing text' }
 AthensAeCairoCanvas >> setFont: aFont [
 
-	currentFontRenderer := aFont athensAeCairoFontRendererFor: self
+	fontRenderer := aFont athensAeCairoFontRendererFor: self
 ]
 
 { #category : #initialization }

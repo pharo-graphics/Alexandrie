@@ -52,7 +52,8 @@ Class {
 		'figureBlock',
 		'dashesCache',
 		'borderPathBlock',
-		'clipAfterwards'
+		'clipAfterwards',
+		'clippingRectangle'
 	],
 	#category : #'Alexandrie-Canvas-Base'
 }
@@ -114,6 +115,19 @@ AeCanvas >> clearTransparent [
 	"Clear the surface with transparent color."
 
 	cairoContext clearTransparent
+]
+
+{ #category : #accessing }
+AeCanvas >> clippingRectangle [
+
+	^ clippingRectangle ifNil: [
+		clippingRectangle := 0@0 extent: (cairoSurface extent / cairoSurface deviceScale) ]
+]
+
+{ #category : #accessing }
+AeCanvas >> clippingRectangle: aRectangle [
+
+	clippingRectangle := aRectangle
 ]
 
 { #category : #accessing }
@@ -480,6 +494,7 @@ AeCanvas >> metricsFor: aCairoGlyphsArray font: aCairoScaledFont [
 		do: [ :aTextExtents |
 			textMetrics
 				advanceX: aTextExtents advanceX;
+				advanceY: aTextExtents advanceY;
 				bearingX: aTextExtents bearingX;
 				bearingY: aTextExtents bearingY;
 				width: aTextExtents width;
@@ -805,7 +820,7 @@ AeCanvas >> setHighQualityOptions [
 
 	fontOptions := AeCairoFontOptions new
 		antialias: antialiasOption;
-		hintMetrics: AeCairoHintMetrics off;
+		hintMetrics: AeCairoHintMetrics on;
 		hintStyle: AeCairoHintStyle slight;
 		subpixelOrder: AeCairoSubpixelOrder default;
 		yourself
