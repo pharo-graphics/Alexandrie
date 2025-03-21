@@ -1,3 +1,6 @@
+"
+Deprecated, please use AeCairoStrokeJoin.
+"
 Class {
 	#name : #AeCairoJoinStyle,
 	#superclass : #AeCairoStrokeJoin,
@@ -6,6 +9,7 @@ Class {
 
 { #category : #testing }
 AeCairoJoinStyle class >> isDeprecated [
-		" Uses AeCairoStrokeJoin instead of AeCairoJoinStyle"
-		^ true
+	"Please, use AeCairoStrokeJoin instead of AeCairoJoinStyle"
+
+	^ true
 ]

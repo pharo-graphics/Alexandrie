@@ -150,6 +150,20 @@ AthensAeCairoSurface >> fillPath: aCairoPath withSolidColor: aColor [
 		fill
 ]
 
+{ #category : #'rendering dispatch' }
+AthensAeCairoSurface >> fillRectangle: aRectangle withSolidColor: aColor [
+
+	self loadSolidColor: aColor.
+
+	currentCanvas
+		newPath;
+		rectangleX: aRectangle left asFloat
+		y: aRectangle top asFloat
+		width: aRectangle width asFloat
+		height: aRectangle height asFloat;
+		fill
+]
+
 { #category : #accessing }
 AthensAeCairoSurface >> flush [
 	

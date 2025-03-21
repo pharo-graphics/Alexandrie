@@ -101,7 +101,8 @@ BaselineOfAlexandrie >> postload: loader package: packageSpec [
 
 { #category : #actions }
 BaselineOfAlexandrie >> stdoutLibraryVersions [
-	
+	<script: 'self new stdoutLibraryVersions'>
+
 	| aeCairoLibrary aeFTLibrary aeHarfbuzzLibrary |
 	"Do this class name trick to avoid loading warnings such as: 
 	NewUndeclaredWarning: BaselineOfAlexandrie>>stdoutLibraryVersions (AeCairoLibrary is Undeclared).
@@ -124,7 +125,7 @@ BaselineOfAlexandrie >> stdoutLibraryVersions [
 			[ aeHarfbuzzLibrary uniqueInstance libraryName ]}.
 		'SDL2:     '. {
 			[ SDL2 version versionString ].
-			[ SDL2 findSDL2 asFFILibrary libraryName ]}.
+			[ SDL2Library uniqueInstance libraryName ]}.
 
 	} 	pairsDo: [ :label :blockArray |
 		Stdio stdout << label.

@@ -4,69 +4,57 @@ The dynamic libraries provided by the Pharo VM satisfy the project needs in all 
 - Cairo: 1.17.4
 - FreeType: 2.12.1
 - Harfbuzz: 5.3.1
+- SDL2: 2.30.6
 
-You can find the library versions by printing each of the following sentences:
+You can find the library versions by printing the result of the following expression:
 ```smalltalk
-AeCairoLibrary uniqueInstance versionString.
-AeFTLibrary newInitialized versionString.
-AeHarfbuzzLibrary uniqueInstance versionString.
+{ #Cairo -> AeCairoLibrary uniqueInstance versionString.
+  #Freetype -> AeFTLibrary newInitialized versionString.
+  #Harfbuzz -> AeHarfbuzzLibrary uniqueInstance versionString.
+  #SDL2 -> SDL2 version versionString } asOrderedDictionary
 ```
 
-**Mac: Use system dependencies (brew)**
+## Updating libraries locally
 
-Follow the following steps on Mac, or adapt them to other system.
+The following notes show how to try the most recent Cairo, Freetype and Harfbuzz libraries on your system. We miss SDL2 library; please read about SDL2 at the final of this document.
 
-In a terminal:
+**Mac/Linux**
 
-1. Install latest dependencies with `brew install harfbuzz`, or get latest with `brew upgrade` if you already have them installed. Harfbuzz depends on all our dependencies so this is ensures everything needed is installed and updated.
-2. In a directory, download Pharo 12: `curl https://get.pharo.org/120+vmLatest | bash`
-3. Create a copy of the VM without the dependencies:
+Follow the following steps on Mac, or adapt them to Linux. In a terminal:
+
+1. On Linux, install harfbuzz either with apt or your distro's way to do it. On Mac, you can use the [Harfbuzz formulae](https://formulae.brew.sh/formula/harfbuzz#default) to get it (`brew install harfbuzz` or get latest with `brew upgrade` if you already have them installed). Harfbuzz depends on all our dependencies so this is ensures everything needed is installed and updated.
+2. Create a directory and download Pharo 12: `curl https://get.pharo.org/120+vmLatest | bash`
+3. In the same directory, create a copy of the VM that doesn't have these libraries (to force Pharo find the system libraries):
 ```bash
-cp -r pharo-vm pharo-vm1
+cp -r pharo-vm pharo-vm-nolibs
 
 for LIB_PREFIX in libpng libpixman libharfbuzz libfreetype libfontconfig libcairo
 do 
-  rm -v pharo-vm1/Pharo.app/Contents/MacOS/Plugins/${LIB_PREFIX}*dylib  
+  rm -v pharo-vm-nolibs/Pharo.app/Contents/MacOS/Plugins/${LIB_PREFIX}*dylib  
 done
 ```
-4. Open image with: `./pharo-vm1/Pharo.app/Contents/MacOS/Pharo Pharo.image`
-5. Inspect current versions with:
-```smalltalk
-{ AeCairoLibrary uniqueInstance versionString.
-  AeFTLibrary newInitialized versionString.
-  AeHarfbuzzLibrary uniqueInstance versionString } inspect
-```
-6. Run benchmarks (e.g. https://github.com/pharo-graphics/BlocBenchs)
+4. Open Pharo with: `./pharo-vm-nolibs/Pharo.app/Contents/MacOS/Pharo Pharo.image`
+5. Done. Check current versions with the versions expression shown before in this document.
 
-To run benchmarks from Terminal (an example):
+
+You can run some benchmarks before/after. For example, the benchmakrs in https://github.com/pharo-graphics/BlocBenchs
+This is an example of how to run benchmarks from Terminal:
 ```bash
 ./pharo-vm/Pharo.app/Contents/MacOS/Pharo --headless Pharo.image eval "AeBenchFigureGridRunner new run"
-./pharo-vm1/Pharo.app/Contents/MacOS/Pharo --headless Pharo.image eval "AeBenchFigureGridRunner new run"
+./pharo-vm-nolibs/Pharo.app/Contents/MacOS/Pharo --headless Pharo.image eval "AeBenchFigureGridRunner new run"
 ```
 
-**Windows: Use downloaded dependencies**
+**Windows**
 
-Adapt previous steps: 
+Download the zip bundle of [latest Harfbuzz release](https://github.com/harfbuzz/harfbuzz/releases).
+Copy `pharo-vm` as `pharo-vm-nolibs` and uncompress the zip into it. Replace files! (this is key).
+Open Pharo with the new libs with `./pharo-vm-nolibs/Pharo.exe Pharo.image`.
 
-Step 1 can be adapted to downloading and uncompressing [latest Harfbuzz release zip bundle](https://github.com/harfbuzz/harfbuzz/releases).
-You will get DLLs for our dependencies (libpng, libpixman, libharfbuzz, libfreetype, libfontconfig, libcairo).
-Place them in the same directory as the Pharo image, and the FFI library finder should find them.
-
-Step 3 can translate to:
-```bash
-cp -r pharo-vm pharo-vm1
-for LIB_PREFIX in libpng libpixman libharfbuzz libfreetype libfontconfig libcairo
-do 
-  rm -fv pharo-vm1/${LIB_PREFIX}*.dll
-done
-```
-(In a Git Bash terminal)
-
-Step 4 would change to `./pharo-vm1/Pharo.exe Pharo.image`, to open Pharo with the new libs.
+WARNING: Harfbuzz-Freetype doesn't work.
 
 ---
 
 SDL2
 ----
 
-Previous notes miss SDL2. Do it similarly. Install using apt on Debian-based distros. Do the analogous on Arch-like. Install it with brew on Mac. Download [from here](https://github.com/libsdl-org/SDL/releases/latest) on Windows.
+Update the SDL2 library similarly to Cairo and other libraries. First, build or install the SDL2 library as explained in https://wiki.libsdl.org/SDL2/Installation. On Mac, the [Homebrew formulae](https://formulae.brew.sh/formula/sdl2) works well. On Windows, you can download the SDL2 library [from here](https://github.com/libsdl-org/SDL/releases/latest).

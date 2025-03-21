@@ -1,3 +1,6 @@
+"
+Deprecated, please use AeCairoStrokeCap.
+"
 Class {
 	#name : #AeCairoCapStyle,
 	#superclass : #AeCairoStrokeCap,
@@ -6,6 +9,7 @@ Class {
 
 { #category : #testing }
 AeCairoCapStyle class >> isDeprecated [
-		" Uses AeCairoStrokeCap instead of AeCairoCapStyle"
-		^ true
+	"Please, use AeCairoStrokeCap instead of AeCairoCapStyle"
+
+	^ true
 ]
