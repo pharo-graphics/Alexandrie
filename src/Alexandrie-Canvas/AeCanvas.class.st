@@ -52,7 +52,8 @@ Class {
 		'figureBlock',
 		'dashesCache',
 		'borderPathBlock',
-		'clipAfterwards'
+		'clipAfterwards',
+		'clippingRectangle'
 	],
 	#category : #'Alexandrie-Canvas-Base'
 }
@@ -114,6 +115,19 @@ AeCanvas >> clearTransparent [
 	"Clear the surface with transparent color."
 
 	cairoContext clearTransparent
+]
+
+{ #category : #accessing }
+AeCanvas >> clippingRectangle [
+
+	^ clippingRectangle ifNil: [
+		clippingRectangle := 0@0 extent: (cairoSurface extent / cairoSurface deviceScale) ]
+]
+
+{ #category : #accessing }
+AeCanvas >> clippingRectangle: aRectangle [
+
+	clippingRectangle := aRectangle
 ]
 
 { #category : #accessing }
