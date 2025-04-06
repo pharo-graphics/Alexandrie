@@ -78,6 +78,18 @@ AeCanvas class >> newFor: aeCairoSurface [
 		  yourself
 ]
 
+{ #category : #'instance creation' }
+AeCanvas class >> newWithoutSurface [
+
+	"A new canvas without surface, it should not be used before sending #prepareForSurface:"
+	
+	^ self basicNew
+		initialize;
+		initializeCaches;
+		yourself
+
+]
+
 { #category : #'API - text' }
 AeCanvas >> appendGlyphsPath: aeGlyphArray font: aScaledFont [
 
@@ -609,6 +621,15 @@ AeCanvas >> prepareBorderPath [
 	borderPathBlock value: cairoContext
 ]
 
+{ #category : #initialization }
+AeCanvas >> prepareForSurface: aeCairoSurface [
+
+	cairoSurface := aeCairoSurface.
+	cairoContext := cairoSurface newContext.
+	self setHighQualityOptions.
+
+]
+
 { #category : #private }
 AeCanvas >> preparePath [
 
@@ -650,6 +671,15 @@ AeCanvas >> privateAeCairoContext [
 AeCanvas >> privateAeCairoSurface [
 
 	^ cairoSurface
+]
+
+{ #category : #initialization }
+AeCanvas >> removeSurface [
+
+	cairoSurface := nil.
+	cairoContext externallyFree.
+	cairoContext := nil.
+
 ]
 
 { #category : #initialization }
