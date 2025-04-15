@@ -55,6 +55,10 @@ Class {
 		'clipAfterwards',
 		'clippingRectangle'
 	],
+	#classVars : [
+		'HighQualityFontOptions',
+		'LowQualityFontOptions'
+	],
 	#category : #'Alexandrie-Canvas-Base'
 }
 
@@ -64,30 +68,55 @@ AeCanvas class >> extent: aPoint [
 	^ self newFor: (AeCairoImageSurface extent: aPoint)
 ]
 
-{ #category : #'instance creation' }
-AeCanvas class >> new [
+{ #category : #'class initialization' }
+AeCanvas class >> initialize [
 
-	^ self shouldNotImplement
+	SessionManager default registerUserClassNamed: self name.
+	
+	self resetFontOptions
 ]
 
 { #category : #'instance creation' }
 AeCanvas class >> newFor: aeCairoSurface [
 
-	^ self basicNew
-		  initializeWith: aeCairoSurface;
-		  yourself
+	^ self new
+		prepareForSurface: aeCairoSurface;
+		yourself
 ]
 
 { #category : #'instance creation' }
 AeCanvas class >> newWithoutSurface [
-
 	"A new canvas without surface, it should not be used before sending #prepareForSurface:"
 	
-	^ self basicNew
-		initialize;
-		initializeCaches;
-		yourself
+	^ self new
+]
 
+{ #category : #'class initialization' }
+AeCanvas class >> resetFontOptions [
+
+	LowQualityFontOptions :=
+		AeCairoFontOptions new
+			antialias: AeCairoAntialias fast;
+			hintMetrics: AeCairoHintMetrics off;
+			hintStyle: AeCairoHintStyle none;
+			subpixelOrder: AeCairoSubpixelOrder default;
+			yourself.
+
+	HighQualityFontOptions :=
+		AeCairoFontOptions new
+			antialias: AeCairoAntialias fast;
+			hintMetrics: AeCairoHintMetrics on;
+			hintStyle: AeCairoHintStyle slight;
+			subpixelOrder: AeCairoSubpixelOrder default;
+			yourself
+]
+
+{ #category : #'class initialization' }
+AeCanvas class >> startUp: isImageStarting [
+
+	isImageStarting ifFalse: [ ^ self ].
+
+	self initialize
 ]
 
 { #category : #'API - text' }
@@ -429,6 +458,14 @@ AeCanvas >> flush [
 ]
 
 { #category : #initialization }
+AeCanvas >> initialize [
+
+	super initialize.
+
+	self initializeCaches
+]
+
+{ #category : #initialization }
 AeCanvas >> initializeCaches [
 
 	identityMatrix := AeCairoMatrix newIdentity.
@@ -453,20 +490,6 @@ AeCanvas >> initializeCaches [
 				deviceScale: scale asPoint;
 				yourself ];
 		yourself.
-]
-
-{ #category : #initialization }
-AeCanvas >> initializeWith: aeCairoSurface [
-
-	self initialize.
-
-	cairoSurface := aeCairoSurface.
-	cairoContext := cairoSurface newContext.
-
-	self initializeCaches.
-
-	self setHighQualityOptions.
-
 ]
 
 { #category : #testing }
@@ -624,10 +647,24 @@ AeCanvas >> prepareBorderPath [
 { #category : #initialization }
 AeCanvas >> prepareForSurface: aeCairoSurface [
 
+	self
+		prepareForSurface: aeCairoSurface
+		scaleFactor: aeCairoSurface deviceScale max
+]
+
+{ #category : #initialization }
+AeCanvas >> prepareForSurface: aeCairoSurface scaleFactor: scaleFactor [
+
 	cairoSurface := aeCairoSurface.
 	cairoContext := cairoSurface newContext.
-	self setHighQualityOptions.
 
+	self flag: #todo. "Extract to settings"
+
+	"On High DPI displays, high quality is not visible enough, and often 
+	much larger surface areas are painted."
+	scaleFactor > 1.0
+		ifTrue: [ self setLowQualityOptions ]
+		ifFalse: [ self setHighQualityOptions ]
 ]
 
 { #category : #private }
@@ -841,20 +878,11 @@ AeCanvas >> setDashes: dashArray offset: dashOffset [
 { #category : #initialization }
 AeCanvas >> setHighQualityOptions [
 
-	| antialiasOption |
-	antialiasOption := AeCairoAntialias fast.
-
 	cairoContext
 		tolerance: 0.2;
-		antialias: antialiasOption.
+		antialias: AeCairoAntialias fast.
 
-	fontOptions := AeCairoFontOptions new
-		antialias: antialiasOption;
-		hintMetrics: AeCairoHintMetrics on;
-		hintStyle: AeCairoHintStyle slight;
-		subpixelOrder: AeCairoSubpixelOrder default;
-		yourself
-
+	fontOptions := HighQualityFontOptions
 ]
 
 { #category : #'API - transformations' }
@@ -895,13 +923,7 @@ AeCanvas >> setLowQualityOptions [
 		tolerance: 0.5;
 		antialias: AeCairoAntialias none.
 
-	fontOptions := AeCairoFontOptions new
-		antialias: AeCairoAntialias fast;
-		hintMetrics: AeCairoHintMetrics off;
-		hintStyle: AeCairoHintStyle none;
-		subpixelOrder: AeCairoSubpixelOrder default;
-		yourself
-
+	fontOptions := LowQualityFontOptions
 ]
 
 { #category : #'API - border' }
