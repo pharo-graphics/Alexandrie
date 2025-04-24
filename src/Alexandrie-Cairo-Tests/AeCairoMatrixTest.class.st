@@ -159,6 +159,29 @@ AeCairoMatrixTest >> testCreation [
 ]
 
 { #category : #tests }
+AeCairoMatrixTest >> testInvert [
+
+	| status |
+	matrix := AeCairoMatrix newX: 0.1 y: 0.2 sx: 0.3 sy: 0.4 shx: 0.5 shy: 0.6.
+	status := matrix invert.
+	status ensureIsSuccess.
+
+	self assert: matrix x   closeTo: -0.3333.
+	self assert: matrix y   closeTo: 0.0.
+	self assert: matrix sx  closeTo: -2.2222.
+	self assert: matrix sy  closeTo: -1.6666.
+	self assert: matrix shx closeTo: 2.7777.
+	self assert: matrix shy closeTo: 3.3333.
+
+	"Not all matrices have inverse"
+	matrix := AeCairoMatrix new.
+	status := matrix invert.
+	self
+		should: [ status ensureIsSuccess ]
+		raise: AeCairoStatusError
+]
+
+{ #category : #tests }
 AeCairoMatrixTest >> testInverted [
 
 	| invertedMatrix |
