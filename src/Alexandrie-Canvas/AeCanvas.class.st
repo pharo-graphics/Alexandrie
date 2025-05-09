@@ -676,10 +676,9 @@ AeCanvas >> privateAeCairoSurface [
 { #category : #initialization }
 AeCanvas >> removeSurface [
 
-	cairoSurface := nil.
-	cairoContext externallyFree.
+	cairoContext ifNotNil: [ cairoContext externallyFree ].
 	cairoContext := nil.
-
+	cairoSurface := nil
 ]
 
 { #category : #initialization }
