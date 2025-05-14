@@ -849,7 +849,7 @@ AeCanvas >> setHighQualityOptions [
 
 	fontOptions := AeCairoFontOptions new
 		antialias: antialiasOption;
-		hintMetrics: AeCairoHintMetrics on;
+		hintMetrics: AeCairoHintMetrics off;
 		hintStyle: AeCairoHintStyle slight;
 		subpixelOrder: AeCairoSubpixelOrder default;
 		yourself
