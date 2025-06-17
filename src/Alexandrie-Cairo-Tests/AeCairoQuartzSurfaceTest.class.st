@@ -8,15 +8,19 @@ Class {
 }
 
 { #category : #tests }
-AeCairoQuartzSurfaceTest >> testItIsNotCurrentlySupported [
+AeCairoQuartzSurfaceTest >> testExportPNG [
 
-	| aSurface |
+	| aSurface filename |
 	Smalltalk os isMacOSX ifFalse: [ ^ self skip ].
 	
 	aSurface := AeCairoQuartzSurface
 						extent: 100 @ 100
 						format: AeCairoSurfaceFormat rgb24.
 
-	self assert: aSurface status isSuccess. "Confusingly: it says it was a success".
-	self assert: aSurface extent equals: 0 @ 0 "But the width and height is zero."
+	self assert: aSurface status isSuccess.
+	
+	filename := (Time microsecondClockValue asString, '.png') asFileReference.
+	self deny: filename exists.
+	aSurface writePngTo: filename.
+	self assert: filename exists.
 ]
