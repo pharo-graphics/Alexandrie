@@ -179,7 +179,7 @@ AeCairoImageSurfaceTest >> testNewForByteArray [
 	height := 150.
 	format := AeCairoSurfaceFormat argb32.
 	stride := AeCairoImageSurface strideForWidth: width format: format.
-	byteArray := ByteArray new: stride * width.
+	byteArray := ByteArray new: stride * height.
 
 	surface :=
 		AeCairoImageSurface 
