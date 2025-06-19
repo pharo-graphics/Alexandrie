@@ -47,6 +47,12 @@ AeCairoQuartzSurface class >> unownedNewWrapping: aCairoImageSurface [
 ]
 
 { #category : #accessing }
+AeCairoQuartzSurface >> asForm [
+
+	^ self image asForm
+]
+
+{ #category : #accessing }
 AeCairoQuartzSurface >> image [
 	"Returns a cairo_surface_t (owned by the quartz cairo_surface_t), or NULL if the quartz surface is not an image surface.
 

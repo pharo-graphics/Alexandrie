@@ -37,6 +37,35 @@ AeCairoMigratedRenderTest class >> inspectMismatches [
 	super inspectMismatches
 ]
 
+{ #category : #tests }
+AeCairoMigratedRenderTest >> _surfaceWithQuartzAppleColorEmoji [
+	"todo: Check with a future Cairo version... It is blank with v1.18.4.
+	
+	Test showing a color font in a Quartz surface (only in Mac).
+	
+	Based on: quartz-color-font.c"
+
+	| string extent aSurface aContext |
+	string := WideString with: (Character value: 16r1F642). "smily face"
+	extent := 100@50.
+	aSurface := AeCairoQuartzSurface
+		  extent: extent
+		  format: AeCairoSurfaceFormat argb32.
+	aContext := aSurface newContext.
+
+	"Draw outlined text with toy font selection"
+	aContext
+		selectFont: 'Apple Color Emoji'
+			slant: AeCairoFontSlant normal
+			weight: AeCairoFontWeight normal;
+		fontSize: extent y // 2;
+		moveToX: extent x // 5 y: (2 * extent y) // 3;
+		showText: string;
+		showText: string.
+		
+	^ aSurface
+]
+
 { #category : #private }
 AeCairoMigratedRenderTest >> drawTestPaintCheckeredOn: aContext [
 	"Based on the cairo_test_paint_checkered function, defined in cairo-test.c"
@@ -760,34 +789,5 @@ AeCairoMigratedRenderTest >> surfaceWithOutsideClipping [
 				height: size / 2.0;
 			fill ].
 
-	^ aSurface
-]
-
-{ #category : #tests }
-AeCairoMigratedRenderTest >> surfaceWithQuartzAppleColorEmoji [
-	"Test showing a color font in a Quartz surface (only in Mac).
-	
-	Based on: quartz-color-font.c"
-
-	| string extent aSurface aContext |
-	Smalltalk os isMacOSX ifFalse: [ ^ AeCairoImageSurface extent: 0@0 ].
-
-	string := WideString with: (Character value: 16r1F642). "smily face"
-	extent := 100@50.
-	aSurface := AeCairoQuartzSurface
-		  extent: extent
-		  format: AeCairoSurfaceFormat argb32.
-	aContext := aSurface newContext.
-
-	"Draw outlined text with toy font selection"
-	aContext
-		selectFont: 'Apple Color Emoji'
-			slant: AeCairoFontSlant normal
-			weight: AeCairoFontWeight normal;
-		fontSize: extent y // 2;
-		moveToX: extent x // 5 y: (2 * extent y) // 3;
-		showText: string;
-		showText: string.
-		
 	^ aSurface
 ]
