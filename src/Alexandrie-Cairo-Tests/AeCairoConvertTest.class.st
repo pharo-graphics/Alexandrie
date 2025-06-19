@@ -7,7 +7,7 @@ Class {
 { #category : #tests }
 AeCairoConvertTest >> surfaceWithDeviceScaleAsARGB32ImageSurface [
 
-	| radius center extent scale aSurface aContext |
+	| radius center extent scale aSurface |
 	radius := 5.
 	center := radius asPoint.
 	extent := (radius*2) asPoint.
@@ -17,14 +17,13 @@ AeCairoConvertTest >> surfaceWithDeviceScaleAsARGB32ImageSurface [
 		extent: extent * scale
 		format: AeCairoSurfaceFormat rgb24.
 	aSurface deviceScale: scale.
-	aContext := aSurface newContext.
-
-	aContext
-		sourceColor: Color blue;
-		paint;
-		sourceColor: Color orange;
-		circleRadius: radius; 
-		fill.
+	aSurface newContextDo: [ :aContext |
+		aContext
+			sourceColor: Color blue;
+			paint;
+			sourceColor: Color orange;
+			circleRadius: radius; 
+			fill ].
 
 	^ aSurface asARGB32ImageSurface
 ]
@@ -32,7 +31,7 @@ AeCairoConvertTest >> surfaceWithDeviceScaleAsARGB32ImageSurface [
 { #category : #tests }
 AeCairoConvertTest >> surfaceWithDeviceScaleAsAlphaChannelGrayscaleImage [
 
-	| radius center extent scale aSurface aContext |
+	| radius center extent scale aSurface |
 	radius := 5.
 	center := radius asPoint.
 	extent := (radius*2) asPoint.
@@ -42,12 +41,12 @@ AeCairoConvertTest >> surfaceWithDeviceScaleAsAlphaChannelGrayscaleImage [
 		extent: extent * scale
 		format: AeCairoSurfaceFormat argb32.
 	aSurface deviceScale: scale.
-	aContext := aSurface newContext.
 
-	aContext
-		sourceColor: Color green;
-		circleRadius: radius; 
-		fill.
+	aSurface newContextDo: [ :aContext |
+		aContext
+			sourceColor: Color green;
+			circleRadius: radius; 
+			fill ].
 
 	^ aSurface asAlphaChannelGrayscaleImage
 ]

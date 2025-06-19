@@ -92,7 +92,7 @@ AeCairoExamplesRenderTest >> surfaceWithAllOperators [
 { #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithClearColorThatKeepsState [
 
-	| extent aSurface aContext aRectangle |
+	| extent aSurface aRectangle |
 	extent := 40 @ 20.
 	aRectangle := 5 @ 5 corner: (extent x - 5) @ (extent y - 5).
 
@@ -101,11 +101,11 @@ AeCairoExamplesRenderTest >> surfaceWithClearColorThatKeepsState [
 		format: AeCairoSurfaceFormat argb32.
 
 	"Note that blue is restored after clear"
-	aContext := aSurface newContext.
-	aContext rectangle: aRectangle.
-	aContext sourceColor: Color blue.
-	aContext clearColor: Color orange.
-	aContext fill.
+	aSurface newContextDo: [ :aContext |
+		aContext rectangle: aRectangle.
+		aContext sourceColor: Color blue.
+		aContext clearColor: Color orange.
+		aContext fill ].
 
 	^ aSurface
 ]
@@ -394,10 +394,7 @@ AeCairoExamplesRenderTest >> surfaceWithFlippedText [
 { #category : #'tests - mesh gradient' }
 AeCairoExamplesRenderTest >> surfaceWithGouraudBasedTriangle [
 
-	| aSurface aContext aMeshPattern |
-	aSurface := AeCairoImageSurface extent: 100 @ 100.
-	aContext := aSurface newContext.
-
+	| aSurface aMeshPattern |
 	aMeshPattern := AeCairoMeshPattern new.
 	aMeshPattern
 		beginPatch;
@@ -410,11 +407,13 @@ AeCairoExamplesRenderTest >> surfaceWithGouraudBasedTriangle [
 			Color blue };
 		endPatch.
 
-	aContext
-		sourceColor: Color yellow;
-		paint;
-		sourcePattern: aMeshPattern;
-		paint.
+	aSurface := AeCairoImageSurface extent: 100 @ 100.
+	aSurface newContextDo: [ :aContext |
+		aContext
+			sourceColor: Color yellow;
+			paint;
+			sourcePattern: aMeshPattern;
+			paint ].
 
 	^ aSurface
 ]
@@ -975,24 +974,24 @@ AeCairoExamplesRenderTest >> surfaceWithToyAPISelectFontSlantWeight [
 AeCairoExamplesRenderTest >> surfaceWithToyAPIShowText [
 	"Use `AeCairoContext>>#showText:`, which cairo documentation considers 'toy API'."
 
-	| string fontSize aSurface aContext aFTFace aFontFace |
+	| string fontSize aSurface aFTFace aFontFace |
 	string := 'Hï'.
 	fontSize := 25.
 	aSurface := AeCairoImageSurface
 		  extent: 30 @ 30
 		  format: AeCairoSurfaceFormat rgb24.
-	aContext := aSurface newContext.
 
 	"Set up a font"
 	aFTFace := AeFTLibraryResource current sourceSansProBoldFTFace.
 	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
 
-	aContext
-		fontFace: aFontFace;
-		fontSize: fontSize;
-		sourceColor: Color white;
-		translateByX: 2 y: fontSize;
-		showText: string.
+	aSurface newContextDo: [ :aContext |
+		aContext
+			fontFace: aFontFace;
+			fontSize: fontSize;
+			sourceColor: Color white;
+			translateByX: 2 y: fontSize;
+			showText: string ].
 
 	^ aSurface
 ]

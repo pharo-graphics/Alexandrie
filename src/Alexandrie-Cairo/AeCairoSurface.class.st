@@ -216,6 +216,16 @@ AeCairoSurface >> newContext [
 	^ AeCairoContext newFor: self
 ]
 
+{ #category : #'instance creation' }
+AeCairoSurface >> newContextDo: aUnaryBlock [
+	"Evaluate a block closure on a `AeCairoContext` that is especially created and released immediately after its use. This avoids #autoRelease mechanism."
+
+	| tmpContext |
+	tmpContext := AeCairoContext unownedNewFor: self.
+
+	[ aUnaryBlock value: tmpContext ] ensure: [ tmpContext externallyFree ]
+]
+
 { #category : #'API - pages' }
 AeCairoSurface >> showPage [
 	"Emits and clears the current page for backends that support multiple pages. 
