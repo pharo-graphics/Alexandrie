@@ -551,82 +551,6 @@ AeCairoContext >> curveViaX: x1 y: y1 viaX: x2 y: y2 toX: x3 y: y3 [
 			double y3 ) )
 ]
 
-{ #category : #'API - painting settings' }
-AeCairoContext >> dash: anArrayOfDoubles count: aNumberOfDashes offset: anOffset [
-	"Sets the dash pattern to be used by `cairo_stroke()`.
-	A dash pattern is specified by an array of positive values.
-	Each value provides the length of alternate 'on' and 'off' portions of the stroke.
-	The offset specifies an offset into the pattern at which the stroke begins.
-
-	Each 'on' segment will have caps applied as if the segment were a separate sub-path.
-	In particular, it is valid to use an 'on' length of 0.0 with `CAIRO_LINE_CAP_ROUND` or `CAIRO_LINE_CAP_SQUARE` in order to distributed dots or squares along a path.
-
-	Note: The length values are in user-space units as evaluated at the time of stroking.
-	This is not necessarily the same as the user space at the time of `cairo_set_dash()`.
-
-	If aNumberOfDashes is 0 dashing is disabled.
-
-	If aNumberOfDashes is 1, a symmetric pattern is assumed with alternating on and off portions of the size specified by the single value.
-	
-	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash"
-
-	self
-		deprecated: 'Deprecated method'
-		transformWith:
-			'`@receiver dash: `@arg1 size: `@arg2 offset: `@arg3' ->
-			'`@receiver strokeDashPattern: `@arg1 size: `@arg2 offset: `@arg3'.
-
-	self strokeDashPattern: anArrayOfDoubles size: aNumberOfDashes offset: anOffset
-]
-
-{ #category : #'API - painting settings' }
-AeCairoContext >> dash: aFFIExternalArrayOfFloat64 offset: anOffset [
-
-	self
-		deprecated: 'Deprecated method'
-		transformWith:
-			'`@receiver dash: `@arg1 offset: `@arg2' ->
-			'`@receiver strokeDashPattern: `@arg1 offset: `@arg2'.
-
-	self strokeDashPattern: aFFIExternalArrayOfFloat64 offset: anOffset
-]
-
-{ #category : #'API - painting settings' }
-AeCairoContext >> dashCount [
-	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-dash-count"
-
-	self
-		deprecated: 'Deprecated method'
-		transformWith: '`@receiver dashCount' -> '`@receiver strokeDashPatternSize'.
-
-	^ self strokeDashPatternSize
-]
-
-{ #category : #'API - painting settings' }
-AeCairoContext >> dashDisable [
-	"Disable dashing.
-	
-	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-dash"
-
-	self
-		deprecated: 'Deprecated method'
-		transformWith:
-			'`@receiver dashDisable' ->
-			'`@receiver resetStrokeDashPattern'.
-
-	self resetStrokeDashPattern
-]
-
-{ #category : #'API - painting settings' }
-AeCairoContext >> dashes [
-
-	self
-		deprecated: 'Deprecated method'
-		transformWith: '`@receiver dashes' -> '`@receiver strokeDashPattern'.
-
-	^ self strokeDashPattern
-]
-
 { #category : #'API - path' }
 AeCairoContext >> ellipseWidth: width height: height [
 	"See: https://www.cairographics.org/cookbook/ellipses/"
@@ -835,19 +759,6 @@ AeCairoContext >> getCurrentPointIntoX: xPointer y: yPointer [
 			double *yPointer ) )
 ]
 
-{ #category : #'API - painting settings' }
-AeCairoContext >> getDashesInto: pointerToArrayOfDoubles offset: pointerToOffset [
-	"See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-dash"
-
-	self
-		deprecated: 'Deprecated method'
-		transformWith:
-			'`@receiver getDashesInto: `@arg1 offset: `@arg2' ->
-			'`@receiver getStrokeDashPatternInto: `@arg1 offset: `@arg2'.
-
-	self getStrokeDashPatternInto: pointerToArrayOfDoubles offset: pointerToOffset
-]
-
 { #category : #'API - query' }
 AeCairoContext >> getExtentsIntoLeft: x1 top: y1 right: x2 bottom: y2 [
 	"Computes a bounding box in user-space coordinates covering the points on the current path. If the current path is empty, returns an empty rectangle. Stroke parameters, fill rule, surface dimensions and clipping are not taken into account.
@@ -1033,42 +944,12 @@ AeCairoContext >> isInStrokeX: x y: y [
 			double y ) )
 ]
 
-{ #category : #'API - painting settings' }
-AeCairoContext >> lineCap: aCairoStrokeCap [
-	"Sets the current line cap style within the cairo context.
-	
-	The default line cap style is CAIRO_LINE_CAP_BUTT.
-	
-	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-cap"
-
-	self
-		deprecated: 'Deprecated method'
-		transformWith: '`@receiver lineCap: `@arg' -> '`@receiver strokeCap: `@arg'.
-
-	self strokeCap: aCairoStrokeCap
-]
-
 { #category : #'API - path' }
 AeCairoContext >> lineFrom: aPoint to: anotherPoint [
 
 	self
 		moveTo: aPoint;
 		lineTo: anotherPoint
-]
-
-{ #category : #'API - painting settings' }
-AeCairoContext >> lineJoin: aCairoStrokeJoin [
-	"Sets the current line join style within the cairo context.
-	
-	The default line join style is CAIRO_LINE_JOIN_MITER.
-	
-	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-join"
-
-	self
-		deprecated: 'Deprecated method'
-		transformWith: '`@receiver lineJoin: `@arg' -> '`@receiver strokeJoin: `@arg'.
-
-	self strokeJoin: aCairoStrokeJoin
 ]
 
 { #category : #'API - path' }
@@ -1093,33 +974,6 @@ AeCairoContext >> lineToX: x y: y [
 			double y ) )
 		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
 
-]
-
-{ #category : #'API - painting settings' }
-AeCairoContext >> lineWidth [
-	"Gets the current line width within the cairo context.
-	
-	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-get-line-width"
-
-	self
-		deprecated: 'Deprecated method'
-		transformWith: '`@receiver lineWidth' -> '`@receiver strokeSize'.
-
-	^ self strokeSize
-]
-
-{ #category : #'API - painting settings' }
-AeCairoContext >> lineWidth: aNumber [
-	"Sets the current line width to be used in next stroke operations.
-	The line width value specifies the diameter of a pen that is circular in user space, (though device-space pen may be an ellipse in general due to scaling/shear/rotation of the CTM).
-	
-	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-line-width"
-
-	self
-		deprecated: 'Deprecated method'
-		transformWith: '`@receiver lineWidth: `@arg' -> '`@receiver strokeSize: `@arg'.
-
-	self strokeSize: aNumber
 ]
 
 { #category : #'API - painting' }
@@ -1198,25 +1052,6 @@ AeCairoContext >> matrix: aMatrix [
 		cairo_set_matrix (
 			self,
 			AeCairoMatrix *aMatrix ) )
-]
-
-{ #category : #'API - painting settings' }
-AeCairoContext >> miterLimit: aNumber [
-	"Sets the current miter limit within the cairo context.
-
-	The default miter limit value is 10.0, which will convert joins with interior angles less than 11 degrees to bevels instead of miters. For reference, a miter limit of 2.0 makes the miter cutoff at 60 degrees, and a miter limit of 1.414 makes the cutoff at 90 degrees.
-
-	A miter limit for a desired angle can be computed as: miter limit = 1/sin(angle/2).
-	
-	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-set-miter-limit"
-
-	self
-		deprecated: 'Deprecated method'
-		transformWith:
-			'`@receiver miterLimit: `@arg' ->
-			'`@receiver strokeJoinMiterLimit: `@arg'.
-
-	self strokeJoinMiterLimit: aNumber
 ]
 
 { #category : #'API - path' }
@@ -1587,22 +1422,6 @@ AeCairoContext >> rotateByRadians: angle [
 ]
 
 { #category : #'API - matrix' }
-AeCairoContext >> rotateByRadians: angle aboutX: centerX y: centerY [
-	"Modifies the current transformation matrix (CTM) by rotating the user-space axes by angle radians about a center received as argument.
-	
-	See: https://www.cairographics.org/cookbook/transform_about_point/
-	See: https://www.cairographics.org/cookbook/matrix_conventions/"
-
-	self
-		deprecated: 'Deprecated method'
-		transformWith:
-			'`@r rotateByRadians: `@a  aboutX: `@b y: `@c' ->
-			'`@r rotateByRadians: `@a centerX: `@b y: `@c'.
-
-	self rotateByRadians: angle centerX: centerX y: centerY
-]
-
-{ #category : #'API - matrix' }
 AeCairoContext >> rotateByRadians: angle center: aPoint [
 	"Rotate about a center.
 	
@@ -1862,18 +1681,6 @@ AeCairoContext >> source [
 
 	^ self ffiCall: #( AeCairoPattern cairo_get_source ( self ) )
 		options: #(+optUseOptimizedVersion +optPointersMightBeExternalAddresses )
-]
-
-{ #category : #'API - source' }
-AeCairoContext >> source: aPattern [
-
-	self
-		deprecated: 'Deprecated method'
-		transformWith:
-			'`@receiver source: `@statement' ->
-			'`@receiver sourcePattern: `@statement'.
-
-	^ self sourcePattern: aPattern
 ]
 
 { #category : #'API - source' }
@@ -2212,20 +2019,6 @@ AeCairoContext >> strokeJoinMiterLimit: aNumber [
 ]
 
 { #category : #'API - painting' }
-AeCairoContext >> strokePreserve [
-	"Stroke the current path according to the current line width, line join, line cap, and dash settings.
-	Preserve the path within the cairo context.
-	
-	See: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-stroke-preserve"
-
-	self
-		deprecated: 'Deprecated method'
-		transformWith: '`@receiver strokePreserve' -> '`@receiver strokePreservingPath'.
-
-	^ self strokePreservingPath
-]
-
-{ #category : #'API - painting' }
 AeCairoContext >> strokePreservingPath [
 	"Stroke the current path according to the current line width, line join, line cap, and dash settings.
 	Preserve the path within the cairo context.
@@ -2406,78 +2199,6 @@ AeCairoContext >> useFillRuleWinding [
 	If the path crosses the ray from left-to-right, counts +1. If the path crosses the ray from right to left, counts -1. (Left and right are determined from the perspective of looking along the ray from the starting point.) If the total count is non-zero, the point will be filled."
 
 	self fillRule: AeCairoFillRule winding
-]
-
-{ #category : #'API - painting settings' }
-AeCairoContext >> useLineCapButt [
-
-	self
-		deprecated: 'send stroke* version instead'
-		transformWith:
-			'`@receiver useLineCapButt' ->
-			'`@receiver useStrokeCapButt'.
-
-	self useStrokeCapButt
-]
-
-{ #category : #'API - painting settings' }
-AeCairoContext >> useLineCapRound [
-
-	self
-		deprecated: 'send stroke* version instead'
-		transformWith:
-			'`@receiver useLineCapRound' ->
-			'`@receiver useStrokeCapRound'.
-
-	self useStrokeCapRound
-]
-
-{ #category : #'API - painting settings' }
-AeCairoContext >> useLineCapSquare [
-
-	self
-		deprecated: 'send stroke* version instead'
-		transformWith:
-			'`@receiver useLineCapSquare' ->
-			'`@receiver useStrokeCapSquare'.
-
-	self useStrokeCapSquare
-]
-
-{ #category : #'API - painting settings' }
-AeCairoContext >> useLineJoinBevel [
-
-	self
-		deprecated: 'send stroke* version instead'
-		transformWith:
-			'`@receiver useLineJoinBevel' ->
-			'`@receiver useStrokeJoinBevel'.
-
-	self useStrokeJoinBevel
-]
-
-{ #category : #'API - painting settings' }
-AeCairoContext >> useLineJoinMiter [
-
-	self
-		deprecated: 'send stroke* version instead'
-		transformWith:
-			'`@receiver useLineJoinMiter' ->
-			'`@receiver useStrokeJoinMiter'.
-
-	self useStrokeJoinMiter
-]
-
-{ #category : #'API - painting settings' }
-AeCairoContext >> useLineJoinRound [
-
-	self
-		deprecated: 'send stroke* version instead'
-		transformWith:
-			'`@receiver useLineJoinRound' ->
-			'`@receiver useStrokeJoinRound'.
-
-	self useStrokeJoinRound
 ]
 
 { #category : #'API - painting settings' }
