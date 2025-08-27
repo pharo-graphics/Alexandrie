@@ -732,6 +732,24 @@ AeCanvas >> scaledFontForFace: aFace size: pointSize [
 		options: fontOptions
 ]
 
+{ #category : #'API - text' }
+AeCanvas >> scaledFontForHbFont: hbFont size: fontSize [
+	"Answer a `AeCairoScaledFont` that corresponds to the provided face and point size."
+
+ 	| aCairoFontFace |
+	aCairoFontFace := hbFont newCairoFontFace.
+
+	cairoContext
+		fontFace: aCairoFontFace;
+		fontSize: fontSize;
+		fontOptions: fontOptions.
+	^ cairoContext scaledFont
+
+
+
+		
+]
+
 { #category : #'API - background' }
 AeCanvas >> setBackgroundOff [
 

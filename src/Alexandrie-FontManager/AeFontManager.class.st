@@ -12,7 +12,8 @@ Class {
 		'freetypeLibrary',
 		'faceByEntryCache',
 		'defaultFace',
-		'defaultCodeFace'
+		'defaultCodeFace',
+		'hbFontByEntryCache'
 	],
 	#classInstVars : [
 		'globalInstance'
@@ -129,6 +130,23 @@ AeFontManager >> detectFamilyName: aFamilyName slant: aSlant weight: aWeight str
 ]
 
 { #category : #accessing }
+AeFontManager >> detectHbFontForFamilyName: aFamilyName slant: aSlant weight: aWeight stretch: aStretch ifNone: absentBlock [
+
+	| faces attributes entry |
+	faces := faceEntriesByFamilyName
+		at: aFamilyName asLowercase
+		ifAbsent: [ ^ absentBlock value ].
+	
+	attributes := { aSlant. aWeight. aStretch }.
+
+	entry := faces
+		detect: [ :each | each slantWeightStretch = attributes ]
+		ifNone: [ ^ absentBlock value ].
+
+	^ self hbFontAt: entry
+]
+
+{ #category : #accessing }
 AeFontManager >> faceAt: aFaceEntry [ 
 
 	^ self faceByEntryCache at: aFaceEntry
@@ -172,6 +190,19 @@ AeFontManager >> freetypeLibrary [
 
 	self checkSession.
 	^ freetypeLibrary
+]
+
+{ #category : #accessing }
+AeFontManager >> hbFontAt: aFaceEntry [ 
+
+	^ self hbFontByEntryCache at: aFaceEntry
+]
+
+{ #category : #accessing }
+AeFontManager >> hbFontByEntryCache [
+
+	self checkSession. "Cache may be invalid after session change"
+	^ hbFontByEntryCache
 ]
 
 { #category : #testing }
@@ -257,6 +288,10 @@ AeFontManager >> reset [
 		maximumWeight: 20;
 		factory: [ :anEntry | anEntry newFaceWith: freetypeLibrary ];
 		yourself.
+	hbFontByEntryCache := LRUCache new
+		maximumWeight: 20;
+		factory: [ :anEntry | anEntry newHbFont ];
+		yourself
 ]
 
 { #category : #scanning }
