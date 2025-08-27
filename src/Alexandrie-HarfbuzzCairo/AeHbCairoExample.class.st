@@ -199,7 +199,7 @@ AeHbCairoExample >> drawDottedHLineCenteredAt: centerY thickness: thickness left
 
 		cairoContext
 			strokeSize: thickness;
-			strokeCap: AeCairoCapStyle round;
+			strokeCap: AeCairoStrokeCap round;
 			strokeDashPattern: { 0. 2*thickness }
 			offset: 0.
 
