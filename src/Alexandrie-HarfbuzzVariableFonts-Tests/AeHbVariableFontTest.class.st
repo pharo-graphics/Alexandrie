@@ -5,7 +5,7 @@ Class {
 		'hbFace',
 		'hbBlob'
 	],
-	#category : #'Alexandrie-HarfbuzzVariableFonts'
+	#category : #'Alexandrie-HarfbuzzVariableFonts-Tests'
 }
 
 { #category : #running }

@@ -15,7 +15,7 @@ Class {
 		'cairoScaledFont',
 		'fontSize'
 	],
-	#category : #'Alexandrie-HarfbuzzCairo'
+	#category : #'Alexandrie-HarfbuzzCairo-Tests'
 }
 
 { #category : #'instance creation' }
