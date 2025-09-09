@@ -737,6 +737,8 @@ AeCanvas >> scaledFontForFace: aFace size: fontSize [
 	"Answer a `AeCairoScaledFont` that corresponds to the provided face and point size."
 
  	| aCairoFontFace |
+	self deprecated: 'Use the similar method that receives the AeCairoFontFace'.
+
 	aCairoFontFace := aFace newCairoFontFace.
 
 	cairoContext

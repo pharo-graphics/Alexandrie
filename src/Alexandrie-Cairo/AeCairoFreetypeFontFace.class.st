@@ -40,6 +40,12 @@ AeCairoFreetypeFontFace class >> unownedNewFor: aFreetypeFontFace [
 ]
 
 { #category : #accessing }
+AeCairoFreetypeFontFace >> familyName [
+
+	^ freetypeFace familyName
+]
+
+{ #category : #accessing }
 AeCairoFreetypeFontFace >> freetypeFace [
 	"Answer the `AeFTFace` associated with this font face"
 
