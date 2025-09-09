@@ -15,7 +15,7 @@ Class {
 		'cairoScaledFont',
 		'fontSize'
 	],
-	#category : #'Alexandrie-HarfbuzzCairo'
+	#category : #'Alexandrie-HarfbuzzCairo-Tests'
 }
 
 { #category : #'instance creation' }
@@ -199,7 +199,7 @@ AeHbCairoExample >> drawDottedHLineCenteredAt: centerY thickness: thickness left
 
 		cairoContext
 			strokeSize: thickness;
-			strokeCap: AeCairoCapStyle round;
+			strokeCap: AeCairoStrokeCap round;
 			strokeDashPattern: { 0. 2*thickness }
 			offset: 0.
 

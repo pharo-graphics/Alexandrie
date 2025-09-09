@@ -71,6 +71,11 @@ AeFaceEntry >> newFaceWith: anAeFTLibrary [
 	^ self subclassResponsibility
 ]
 
+{ #category : #'instance creation' }
+AeFaceEntry >> newHbFont [
+	^ self subclassResponsibility
+]
+
 { #category : #printing }
 AeFaceEntry >> printOn: aStream [
 

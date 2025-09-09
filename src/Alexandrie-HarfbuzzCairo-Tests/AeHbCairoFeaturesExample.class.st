@@ -11,7 +11,7 @@ Class {
 		'features',
 		'fontSize'
 	],
-	#category : #'Alexandrie-HarfbuzzCairo'
+	#category : #'Alexandrie-HarfbuzzCairo-Tests'
 }
 
 { #category : #examples }

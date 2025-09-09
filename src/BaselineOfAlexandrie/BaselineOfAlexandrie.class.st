@@ -39,11 +39,19 @@ BaselineOfAlexandrie >> baseline: spec [
 					with: [ spec requires: #('Alexandrie-FreeType') ];
 				package: 'Alexandrie-Harfbuzz-Tests'
 					with: [ spec requires: #('Alexandrie-Harfbuzz' 'Alexandrie-FreeType-Tests') ];
+
 				package: 'Alexandrie-HarfbuzzCairo'
 					with: [ spec requires: #('Alexandrie-Harfbuzz' 'Alexandrie-Cairo') ];
+				package: 'Alexandrie-HarfbuzzCairo-Tests'
+					with: [ spec requires: #('Alexandrie-HarfbuzzCairo' 'Alexandrie-Harfbuzz-Tests') ];
+
+				package: 'Alexandrie-HarfbuzzVariableFonts'
+					with: [ spec requires: #('Alexandrie-HarfbuzzCairo') ];
+				package: 'Alexandrie-HarfbuzzVariableFonts-Tests'
+					with: [ spec requires: #('Alexandrie-HarfbuzzVariableFonts' 'Alexandrie-HarfbuzzCairo-Tests') ];
 				
 				package: 'Alexandrie-Canvas'
-					with: [ spec requires: #('Alexandrie-Cairo' 'Alexandrie-FreeType' 'Alexandrie-Harfbuzz') ];
+					with: [ spec requires: #('Alexandrie-Cairo' 'Alexandrie-FreeType' 'Alexandrie-Harfbuzz' 'Alexandrie-HarfbuzzCairo') ];
 				package: 'Alexandrie-Canvas-Tests'
 					with: [ spec requires: #('Alexandrie-Canvas' 'Alexandrie-FreeType-Tests' 'Alexandrie-Cairo-Tests') ];
 
@@ -52,6 +60,7 @@ BaselineOfAlexandrie >> baseline: spec [
 				package: 'Alexandrie-NewTools-Tests'
 					with: [ spec requires: #('Alexandrie-NewTools' 'Alexandrie-Canvas-Tests') ].
 
+			"We do not include HarfbuzzCairo-Tests and HarfbuzzVariableFonts-Tests because they crash without the external libs manually  installed"
 			spec
 				group: 'ffi-minimal' with: #('Alexandrie-Harfbuzz' 'Alexandrie-Cairo' 'Alexandrie-FreeType');
 				group: 'development' with: #('Alexandrie-NewTools-Tests' 'Alexandrie-Harfbuzz-Tests' 'Alexandrie-FontManager-Tests');

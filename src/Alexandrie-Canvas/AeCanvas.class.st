@@ -431,7 +431,6 @@ AeCanvas >> flush [
 { #category : #initialization }
 AeCanvas >> initializeCaches [
 
-	identityMatrix := AeCairoMatrix newIdentity.
 	textExtents := AeCairoTextExtents new.
 
 	dashesCache := LRUCache new
@@ -719,17 +718,17 @@ AeCanvas >> restoreContextOnlyIfClipAfterwards: aBlock [
 ]
 
 { #category : #'API - text' }
-AeCanvas >> scaledFontForFace: aFace size: pointSize [
+AeCanvas >> scaledFontForFace: aFace size: fontSize [
 	"Answer a `AeCairoScaledFont` that corresponds to the provided face and point size."
 
- 	| aCairoFontFace aFontMatrix |
+ 	| aCairoFontFace |
 	aCairoFontFace := aFace newCairoFontFace.
-	aFontMatrix := AeCairoMatrix newScalingByX: pointSize y: pointSize.
-	
-	^ aCairoFontFace 
-		newScaledFontWithFontMatrix: aFontMatrix
-		userToDeviceMatrix: identityMatrix
-		options: fontOptions
+
+	cairoContext
+		fontFace: aCairoFontFace;
+		fontSize: fontSize;
+		fontOptions: fontOptions.
+	^ cairoContext scaledFont
 ]
 
 { #category : #'API - background' }
