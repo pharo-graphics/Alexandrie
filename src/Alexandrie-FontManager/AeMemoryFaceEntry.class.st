@@ -32,9 +32,8 @@ AeMemoryFaceEntry >> newFaceWith: anAeFTLibrary [
 { #category : #'instance creation' }
 AeMemoryFaceEntry >> newHbFont [
 	
-	| aBlob aFace aFont |
+	| aBlob aFace |
 	aBlob := AeHbBlob newFrom: bytes.
 	aFace := aBlob newHbFaceAtIndex: index.
-	aFont := aFace newHbFont.
-	^ aFont
+	^ aFace newHbFont
 ]

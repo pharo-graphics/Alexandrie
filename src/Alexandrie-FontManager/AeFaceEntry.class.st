@@ -73,6 +73,7 @@ AeFaceEntry >> newFaceWith: anAeFTLibrary [
 
 { #category : #'instance creation' }
 AeFaceEntry >> newHbFont [
+
 	^ self subclassResponsibility
 ]
 

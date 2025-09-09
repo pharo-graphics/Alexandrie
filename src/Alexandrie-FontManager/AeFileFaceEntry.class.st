@@ -29,12 +29,11 @@ AeFileFaceEntry >> newFaceWith: anAeFTLibrary [
 	
 ]
 
-{ #category : #'double-dispatch' }
+{ #category : #'instance creation' }
 AeFileFaceEntry >> newHbFont [
 	
-	| aBlob aFace aFont |
+	| aBlob aFace |
 	aBlob := AeHbBlob newLocatedAt: location.
 	aFace := aBlob newHbFaceAtIndex: index.
-	aFont := aFace newHbFont.
-	^ aFont
+	^ aFace newHbFont
 ]

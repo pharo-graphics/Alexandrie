@@ -13,7 +13,9 @@ Class {
 		'faceByEntryCache',
 		'defaultFace',
 		'defaultCodeFace',
-		'hbFontByEntryCache'
+		'hbFontByEntryCache',
+		'defaultHbFont',
+		'defaultCodeHbFont'
 	],
 	#classInstVars : [
 		'globalInstance'
@@ -33,20 +35,20 @@ AeFontManager class >> defaultFontFamilyName [
 
 { #category : #accessing }
 AeFontManager class >> globalInstance [
-	
+	"globalInstance := nil"
+
 	^ globalInstance ifNil: [
 		| aFace |
 		globalInstance := self new
 			scanEmbeddedFonts;
 			yourself.
-			
+		
 		aFace := globalInstance
 			detectFamilyName: AeSourceSansPro_Regular familyName
 			slant: AeFontSlant normal
 			weight: AeFontWeight normal
 			stretch: AeFontStretch normal
 			ifNone: [ self error: 'Shouldn''t happen' ].
-		
 		globalInstance defaultFace: aFace.
 
 		aFace := globalInstance
@@ -55,8 +57,24 @@ AeFontManager class >> globalInstance [
 			weight: AeFontWeight normal
 			stretch: AeFontStretch normal
 			ifNone: [ self error: 'Shouldn''t happen' ].
-		
 		globalInstance defaultCodeFace: aFace.
+
+
+		aFace := globalInstance
+			detectHbFontForFamilyName: AeSourceSansPro_Regular familyName
+			slant: AeFontSlant normal
+			weight: AeFontWeight normal
+			stretch: AeFontStretch normal
+			ifNone: [ self error: 'Shouldn''t happen' ].
+		globalInstance defaultHbFont: aFace.
+
+		aFace := globalInstance
+			detectHbFontForFamilyName: AeSourceCodePro_Regular familyName
+			slant: AeFontSlant normal
+			weight: AeFontWeight normal
+			stretch: AeFontStretch normal
+			ifNone: [ self error: 'Shouldn''t happen' ].
+		globalInstance defaultCodeHbFont: aFace.
 
 
 		globalInstance ]
@@ -100,6 +118,19 @@ AeFontManager >> defaultCodeFace: aFTFace [
 ]
 
 { #category : #accessing }
+AeFontManager >> defaultCodeHbFont [
+	
+	self checkSession.
+	^ defaultCodeHbFont
+]
+
+{ #category : #accessing }
+AeFontManager >> defaultCodeHbFont: aHbFont [
+
+	defaultCodeHbFont := aHbFont
+]
+
+{ #category : #accessing }
 AeFontManager >> defaultFace [
 	
 	self checkSession.
@@ -110,6 +141,19 @@ AeFontManager >> defaultFace [
 AeFontManager >> defaultFace: aFTFace [
 
 	defaultFace := aFTFace
+]
+
+{ #category : #accessing }
+AeFontManager >> defaultHbFont [
+	
+	self checkSession.
+	^ defaultHbFont
+]
+
+{ #category : #accessing }
+AeFontManager >> defaultHbFont: aHbFont [
+
+	defaultHbFont := aHbFont
 ]
 
 { #category : #accessing }
@@ -283,11 +327,15 @@ AeFontManager >> reset [
 	"Session dependents"
 	session := Smalltalk session.
 	defaultFace := nil.
+	defaultCodeFace := nil.
 	freetypeLibrary := AeFTLibrary newInitialized.
 	faceByEntryCache := LRUCache new
 		maximumWeight: 20;
 		factory: [ :anEntry | anEntry newFaceWith: freetypeLibrary ];
 		yourself.
+	"Harfbuzz-Cairo"
+	defaultHbFont := nil.
+	defaultCodeHbFont := nil.
 	hbFontByEntryCache := LRUCache new
 		maximumWeight: 20;
 		factory: [ :anEntry | anEntry newHbFont ];
