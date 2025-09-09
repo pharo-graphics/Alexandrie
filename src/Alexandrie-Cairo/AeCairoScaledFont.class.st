@@ -295,6 +295,15 @@ AeCairoScaledFont >> glyphsFrom: bytes size: byteCount intoGlyphs: glyphs size: 
 ]
 
 { #category : #API }
+AeCairoScaledFont >> increaseReferenceCount [
+	"Increases the reference count on scaled_font by one. This prevents scaled_font from being destroyed until a matching call to cairo_scaled_font_destroy() is made.
+
+	See: https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-reference"
+
+	self ffiCall: #( void cairo_scaled_font_reference (self) )
+]
+
+{ #category : #API }
 AeCairoScaledFont >> lock [
 	"See: https://www.cairographics.org/manual/cairo-FreeType-Fonts.html#cairo-ft-scaled-font-lock-face"
 	

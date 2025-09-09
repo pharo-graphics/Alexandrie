@@ -718,6 +718,21 @@ AeCanvas >> restoreContextOnlyIfClipAfterwards: aBlock [
 ]
 
 { #category : #'API - text' }
+AeCanvas >> scaledFontFor: aCairoFontFace size: fontSize [
+	"Answer a `AeCairoScaledFont` that corresponds to the provided face and point size."
+
+	cairoContext
+		fontFace: aCairoFontFace;
+		fontSize: fontSize.
+
+	"We add a reference since scaled font is actually owned by the context"
+	^ cairoContext scaledFont 
+		increaseReferenceCount;
+		autoRelease;
+		yourself
+]
+
+{ #category : #'API - text' }
 AeCanvas >> scaledFontForFace: aFace size: fontSize [
 	"Answer a `AeCairoScaledFont` that corresponds to the provided face and point size."
 
@@ -842,17 +857,17 @@ AeCanvas >> setHighQualityOptions [
 	| antialiasOption |
 	antialiasOption := AeCairoAntialias fast.
 
-	cairoContext
-		tolerance: 0.2;
-		antialias: antialiasOption.
-
 	fontOptions := AeCairoFontOptions new
 		antialias: antialiasOption;
 		hintMetrics: AeCairoHintMetrics off;
 		hintStyle: AeCairoHintStyle slight;
 		subpixelOrder: AeCairoSubpixelOrder default;
-		yourself
+		yourself.
 
+	cairoContext
+		tolerance: 0.2;
+		antialias: antialiasOption;
+		fontOptions: fontOptions
 ]
 
 { #category : #'API - transformations' }
@@ -889,17 +904,17 @@ AeCanvas >> setJoinRound [
 { #category : #initialization }
 AeCanvas >> setLowQualityOptions [
 
-	cairoContext
-		tolerance: 0.5;
-		antialias: AeCairoAntialias none.
-
 	fontOptions := AeCairoFontOptions new
 		antialias: AeCairoAntialias fast;
 		hintMetrics: AeCairoHintMetrics off;
 		hintStyle: AeCairoHintStyle none;
 		subpixelOrder: AeCairoSubpixelOrder default;
-		yourself
-
+		yourself.
+		
+	cairoContext
+		tolerance: 0.5;
+		antialias: AeCairoAntialias none;
+		fontOptions: fontOptions
 ]
 
 { #category : #'API - border' }
