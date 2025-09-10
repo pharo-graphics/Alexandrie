@@ -21,6 +21,12 @@ AeCairoFontFace class >> externallyFree: aHandle [
 	self ffiCall: #( void cairo_font_face_destroy ( void * aHandle) )
 ]
 
+{ #category : #'as yet unclassified' }
+AeCairoFontFace >> familyName [
+
+	^ self subclassResponsibility
+]
+
 { #category : #'instance creation' }
 AeCairoFontFace >> newScaledFontWithFontMatrix: aFontMatrix userToDeviceMatrix: aUserToDeviceCairoMatrix options: theFontOptions [
 
