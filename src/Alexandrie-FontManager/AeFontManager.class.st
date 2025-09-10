@@ -12,10 +12,7 @@ Class {
 		'freetypeLibrary',
 		'faceByEntryCache',
 		'defaultFace',
-		'defaultCodeFace',
-		'hbFontByEntryCache',
-		'defaultHbFont',
-		'defaultCodeHbFont'
+		'defaultCodeFace'
 	],
 	#classInstVars : [
 		'globalInstance'
@@ -35,7 +32,9 @@ AeFontManager class >> defaultFontFamilyName [
 
 { #category : #accessing }
 AeFontManager class >> globalInstance [
-	"globalInstance := nil"
+	"
+	globalInstance := nil
+	"
 
 	^ globalInstance ifNil: [
 		| aFace |
@@ -59,24 +58,6 @@ AeFontManager class >> globalInstance [
 			ifNone: [ self error: 'Shouldn''t happen' ].
 		globalInstance defaultCodeFace: aFace.
 
-
-		aFace := globalInstance
-			detectHbFontForFamilyName: AeSourceSansPro_Regular familyName
-			slant: AeFontSlant normal
-			weight: AeFontWeight normal
-			stretch: AeFontStretch normal
-			ifNone: [ self error: 'Shouldn''t happen' ].
-		globalInstance defaultHbFont: aFace.
-
-		aFace := globalInstance
-			detectHbFontForFamilyName: AeSourceCodePro_Regular familyName
-			slant: AeFontSlant normal
-			weight: AeFontWeight normal
-			stretch: AeFontStretch normal
-			ifNone: [ self error: 'Shouldn''t happen' ].
-		globalInstance defaultCodeHbFont: aFace.
-
-
 		globalInstance ]
 ]
 
@@ -88,6 +69,7 @@ AeFontManager class >> initialize [
 
 { #category : #accessing }
 AeFontManager class >> resetGlobalInstance [
+	<script>
 
 	globalInstance := nil
 ]
@@ -118,19 +100,6 @@ AeFontManager >> defaultCodeFace: aFTFace [
 ]
 
 { #category : #accessing }
-AeFontManager >> defaultCodeHbFont [
-	
-	self checkSession.
-	^ defaultCodeHbFont
-]
-
-{ #category : #accessing }
-AeFontManager >> defaultCodeHbFont: aHbFont [
-
-	defaultCodeHbFont := aHbFont
-]
-
-{ #category : #accessing }
 AeFontManager >> defaultFace [
 	
 	self checkSession.
@@ -141,19 +110,6 @@ AeFontManager >> defaultFace [
 AeFontManager >> defaultFace: aFTFace [
 
 	defaultFace := aFTFace
-]
-
-{ #category : #accessing }
-AeFontManager >> defaultHbFont [
-	
-	self checkSession.
-	^ defaultHbFont
-]
-
-{ #category : #accessing }
-AeFontManager >> defaultHbFont: aHbFont [
-
-	defaultHbFont := aHbFont
 ]
 
 { #category : #accessing }
@@ -171,23 +127,6 @@ AeFontManager >> detectFamilyName: aFamilyName slant: aSlant weight: aWeight str
 		ifNone: [ ^ absentBlock value ].
 
 	^ self faceAt: entry
-]
-
-{ #category : #accessing }
-AeFontManager >> detectHbFontForFamilyName: aFamilyName slant: aSlant weight: aWeight stretch: aStretch ifNone: absentBlock [
-
-	| faces attributes entry |
-	faces := faceEntriesByFamilyName
-		at: aFamilyName asLowercase
-		ifAbsent: [ ^ absentBlock value ].
-	
-	attributes := { aSlant. aWeight. aStretch }.
-
-	entry := faces
-		detect: [ :each | each slantWeightStretch = attributes ]
-		ifNone: [ ^ absentBlock value ].
-
-	^ self hbFontAt: entry
 ]
 
 { #category : #accessing }
@@ -234,19 +173,6 @@ AeFontManager >> freetypeLibrary [
 
 	self checkSession.
 	^ freetypeLibrary
-]
-
-{ #category : #accessing }
-AeFontManager >> hbFontAt: aFaceEntry [ 
-
-	^ self hbFontByEntryCache at: aFaceEntry
-]
-
-{ #category : #accessing }
-AeFontManager >> hbFontByEntryCache [
-
-	self checkSession. "Cache may be invalid after session change"
-	^ hbFontByEntryCache
 ]
 
 { #category : #testing }
@@ -331,14 +257,11 @@ AeFontManager >> reset [
 	freetypeLibrary := AeFTLibrary newInitialized.
 	faceByEntryCache := LRUCache new
 		maximumWeight: 20;
-		factory: [ :anEntry | anEntry newFaceWith: freetypeLibrary ];
-		yourself.
-	"Harfbuzz-Cairo"
-	defaultHbFont := nil.
-	defaultCodeHbFont := nil.
-	hbFontByEntryCache := LRUCache new
-		maximumWeight: 20;
-		factory: [ :anEntry | anEntry newHbFont ];
+		factory: [ :anEntry |
+			| fontFace |
+"			fontFace := anEntry newHbFont."
+			fontFace := anEntry newFaceWith: freetypeLibrary.
+			fontFace newCairoFontFace ];
 		yourself
 ]
 

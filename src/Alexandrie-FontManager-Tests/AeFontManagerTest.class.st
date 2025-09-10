@@ -10,26 +10,27 @@ Class {
 { #category : #tests }
 AeFontManagerTest >> testDetectFamilyNameSlantWeightStretchIfNone [
 
-	| aManager aFace isAbsent |
+	| aManager aCairoFontFace aFace isAbsent |
 	aManager := AeFontManager new.
 	aManager
 		scanDirectory: AeFilesystemResources fontsDirectory;
 		scanEmbeddedFonts.
 
-	aFace := aManager
+	aCairoFontFace := aManager
 		detectFamilyName: 'Inria Serif'
 		slant: AeFontSlant normal
 		weight: AeFontWeight normal
 		stretch: AeFontStretch normal
 		ifNone: [ self fail ].
-	self assert: aFace class equals: AeFTFace.
+	self assert: aCairoFontFace freetypeFace class equals: AeFTFace.
 
-	aFace := aManager
+	aCairoFontFace := aManager
 		detectFamilyName: 'INRIA SERIF' "<-- it ignores case"
 		slant: AeFontSlant italic
 		weight: AeFontWeight light
 		stretch: AeFontStretch normal
 		ifNone: [ self fail ].
+	aFace := aCairoFontFace freetypeFace.
 	self assert: aFace class equals: AeFTFace.
 	self assert: aFace familyName equals: 'Inria Serif'.
 	self assert: aFace isItalic.
@@ -37,7 +38,7 @@ AeFontManagerTest >> testDetectFamilyNameSlantWeightStretchIfNone [
 	self deny: aFace isFixedWidth.
 
 	isAbsent := false.
-	aManager 
+	aManager
 		detectFamilyName: 'Source Code Pro'
 		slant: AeFontSlant italic
 		weight: AeFontWeight extraLight
@@ -45,7 +46,7 @@ AeFontManagerTest >> testDetectFamilyNameSlantWeightStretchIfNone [
 		ifNone: [ isAbsent := true ].
 	self assert: isAbsent.	isAbsent := false.
 
-	aManager 
+	aManager
 		detectFamilyName: 'Source Code Pr' "<-- Not present"
 		slant: AeFontSlant italic
 		weight: AeFontWeight extraLight

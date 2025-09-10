@@ -17,6 +17,12 @@ Class {
 }
 
 { #category : #accessing }
+AeHbCairoFontFace >> familyName [
+
+	^ hbFaceOrFont face openTypeFontFamily
+]
+
+{ #category : #accessing }
 AeHbCairoFontFace >> hbFaceOrFont: aHarfbuzzFaceOrFont [
 	"Associate with either the Harfbuzz face or font that was used to create this object."
 
