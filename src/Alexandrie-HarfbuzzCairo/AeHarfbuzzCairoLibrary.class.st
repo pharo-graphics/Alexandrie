@@ -10,6 +10,13 @@ Class {
 	#category : #'Alexandrie-HarfbuzzCairo'
 }
 
+{ #category : #testing }
+AeHarfbuzzCairoLibrary class >> isAvailable [
+
+	[ self uniqueInstance libraryName ] onErrorDo: [ ^ false ].
+	^ true
+]
+
 { #category : #'accessing - platform' }
 AeHarfbuzzCairoLibrary >> macLibraryName [
 
