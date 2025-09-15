@@ -312,6 +312,15 @@ AeCairoScaledFont >> lock [
 ]
 
 { #category : #API }
+AeCairoScaledFont >> referenceCount [
+	"Returns my current reference count.
+
+	See:  https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-get-reference-count"
+
+	^ self ffiCall: #( uint cairo_scaled_font_get_reference_count (self) )
+]
+
+{ #category : #API }
 AeCairoScaledFont >> scaleMatrix [
 
 	| aCairoMatrix |
