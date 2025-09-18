@@ -8,7 +8,7 @@ Class {
 	#category : #'Alexandrie-Cairo-Tests'
 }
 
-{ #category : #running }
+{ #category : #'tests - text' }
 AeCairoContextTest >> newSourceSansProRegularFontFace [
 
 	| aFTLibrary aFTFace |
@@ -133,6 +133,25 @@ AeCairoContextTest >> testCurrentTarget [
 		deny: context currentTarget getHandle
 		equals: surface getHandle.
 
+]
+
+{ #category : #'tests - text' }
+AeCairoContextTest >> testDeviceScaleImpactsFontMatrix [
+
+	| aSurface aContext aFontFace aScaledFont |
+	aSurface := AeCairoImageSurface extent: 1@1.
+	aSurface deviceScaleX: 2 y: 3.
+	aContext := aSurface newContext.
+	
+	"Set up scaled font in the context"
+	aFontFace := AeFTLibraryResource current sourceSansProRegularFTFace newCairoFontFace.
+	aContext fontFace: aFontFace.
+	aContext fontSize: 17.
+	aScaledFont := aContext scaledFont.
+
+	self
+		assert: aScaledFont currentTransformationMatrix
+		equals: (AeCairoMatrix newScalingByX: 2 y: 3)
 ]
 
 { #category : #tests }
@@ -295,7 +314,7 @@ AeCairoContextTest >> testFillRule [
 		equals: AeCairoFillRule evenOdd
 ]
 
-{ #category : #tests }
+{ #category : #'tests - text' }
 AeCairoContextTest >> testFontExtents [
 
 	| aSurface aContext aFontFace aScaledFont aFontExtents |
@@ -335,7 +354,7 @@ AeCairoContextTest >> testFontExtents [
 
 ]
 
-{ #category : #tests }
+{ #category : #'tests - text' }
 AeCairoContextTest >> testGlyphExtentsOf [
 
 	| aSurface aContext string aScaledFont aGlyphArray aTextExtents aFontFace |
@@ -459,7 +478,7 @@ AeCairoContextTest >> testRotateByRadiansCenter [
 	self assert: matrix shy equals: radians sin
 ]
 
-{ #category : #tests }
+{ #category : #'tests - text' }
 AeCairoContextTest >> testScaledFont [
 
 	| aSurface aContext aFontFace scaledFont17 scaledFont71 scaledFont17b |
