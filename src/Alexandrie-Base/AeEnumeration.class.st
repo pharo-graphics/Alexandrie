@@ -19,6 +19,17 @@ AeEnumeration class >> allValues [
 			ifTrue: [ ^ allValues asArray "done!" ] ]
 ]
 
+{ #category : #accessing }
+AeEnumeration class >> camelCaseNameFor: aUnderlinedName [
+
+	| camelCaseName |
+	camelCaseName := aUnderlinedName withoutPrefix: self underlinedNamePrefix.
+	camelCaseName := String streamContents: [ :stringStream |
+		($_ split: camelCaseName) do: [ :each |
+			stringStream << each asLowercase asCamelCase ] ].
+	^ camelCaseName uncapitalized
+]
+
 { #category : #'class initialization' }
 AeEnumeration class >> initialize [
 	"We take the responsibility of initializing the whole hierarchy.
@@ -61,4 +72,10 @@ AeEnumeration class >> underlineToCamelCaseDictionary [
 AeEnumeration class >> underlinedNamePrefix [
 	
 	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
+AeEnumeration >> camelCaseName [
+
+	^ self class camelCaseNameFor: self item
 ]
