@@ -103,6 +103,9 @@ BaselineOfAlexandrie >> postload: loader package: packageSpec [
 	Additionally: reference the class indirectly to avoid NewUndeclaredWarning."
 	(self class environment at: #AeEnumeration) initialize.
 
+	"This class depends on cairo enumerations, that are now ready."
+	(self class environment at: #AeCanvas) initializeFontOptions.
+
 	self downloadTestFonts; stdoutLibraryVersions.
 
 	Initialized := true

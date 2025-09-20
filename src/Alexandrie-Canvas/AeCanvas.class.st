@@ -72,9 +72,7 @@ AeCanvas class >> extent: aPoint [
 { #category : #'class initialization' }
 AeCanvas class >> initialize [
 
-	SessionManager default registerUserClassNamed: self name.
-
-	self initializeFontOptions
+	SessionManager default registerUserClassNamed: self name
 ]
 
 { #category : #initialization }
