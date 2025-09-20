@@ -54,7 +54,8 @@ Class {
 		'borderPathBlock',
 		'clipAfterwards',
 		'clippingRectangle',
-		'deviceScaleMatrix'
+		'deviceScaleMatrix',
+		'scaledFontCache'
 	],
 	#classVars : [
 		'HighQualityFontOptions',
@@ -455,25 +456,6 @@ AeCanvas >> flush [
 	cairoSurface flush
 ]
 
-{ #category : #'API - text' }
-AeCanvas >> fontForFamily: familyName size: fontSize slant: slant weight: weight stretch: stretch [
-
-	| aCairoFontFace fontSizeMatrix |
-	aCairoFontFace := AeFontManager globalInstance
-		detectFamilyName:familyName
-		slant: slant
-		weight: weight
-		stretch: stretch 
-		ifNone: [ AeFontManager globalInstance defaultFace ].
-
-	fontSizeMatrix := AeCairoMatrix newScalingByX: fontSize y: fontSize.
-	
-	^ aCairoFontFace
-		newScaledFontWithFontMatrix: fontSizeMatrix
-		userToDeviceMatrix: deviceScaleMatrix
-		options: fontOptions
-]
-
 { #category : #initialization }
 AeCanvas >> initialize [
 
@@ -486,6 +468,10 @@ AeCanvas >> initialize [
 AeCanvas >> initializeCaches [
 
 	textExtents := AeCairoTextExtents new.
+
+	scaledFontCache := LRUCache new
+		maximumWeight: 20;
+		yourself.
 
 	dashesCache := LRUCache new
 		maximumWeight: 400;
@@ -772,6 +758,28 @@ AeCanvas >> scaledFontForFace: aFace size: fontSize [
 		fontSize: fontSize;
 		fontOptions: fontOptions.
 	^ cairoContext scaledFont
+]
+
+{ #category : #'API - text' }
+AeCanvas >> scaledFontForFamily: familyName size: fontSize slant: slant weight: weight stretch: stretch [
+
+	^ scaledFontCache
+		at: { familyName. fontSize. slant. weight. stretch }
+		ifAbsentPut: [
+			| aCairoFontFace fontSizeMatrix |
+			aCairoFontFace := AeFontManager globalInstance
+				detectFamilyName: familyName
+				slant: slant
+				weight: weight
+				stretch: stretch
+				ifNone: [ AeFontManager globalInstance defaultFace ].
+
+			fontSizeMatrix := AeCairoMatrix newScalingByX: fontSize y: fontSize.
+			
+			aCairoFontFace
+				newScaledFontWithFontMatrix: fontSizeMatrix
+				userToDeviceMatrix: deviceScaleMatrix
+				options: fontOptions ]
 ]
 
 { #category : #'API - background' }
