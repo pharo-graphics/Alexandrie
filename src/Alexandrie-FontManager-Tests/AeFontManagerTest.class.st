@@ -129,7 +129,7 @@ AeFontManagerTest >> testScanDirectoryWithoutDuplicates [
 
 	"This test directory has ttf and otf files"
 	self
-		assert: (aManager faceEntriesByFamilyName at: 'inria serif') size
+		assert: (aManager entriesByFamilyName at: 'inria serif') size
 		equals: AeFilesystemResources inriaSerifRegularTTF parent files size.
 
 ]

@@ -8,11 +8,11 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'session',
-		'faceEntriesByFamilyName',
 		'freetypeLibrary',
 		'faceByEntryCache',
 		'defaultFace',
-		'defaultCodeFace'
+		'defaultCodeFace',
+		'entriesByFamilyName'
 	],
 	#classInstVars : [
 		'globalInstance'
@@ -115,18 +115,22 @@ AeFontManager >> defaultFace: aFTFace [
 { #category : #accessing }
 AeFontManager >> detectFamilyName: aFamilyName slant: aSlant weight: aWeight stretch: aStretch ifNone: absentBlock [
 
-	| faces attributes entry |
-	faces := faceEntriesByFamilyName
+	| entriesByAttributes entry |
+	entriesByAttributes := entriesByFamilyName
 		at: aFamilyName asLowercase
 		ifAbsent: [ ^ absentBlock value ].
-	
-	attributes := { aSlant. aWeight. aStretch }.
 
-	entry := faces
-		detect: [ :each | each slantWeightStretch = attributes ]
-		ifNone: [ ^ absentBlock value ].
+	entry := entriesByAttributes
+		at: { aSlant. aWeight. aStretch }
+		ifAbsent: [ ^ absentBlock value ].
 
 	^ self faceAt: entry
+]
+
+{ #category : #accessing }
+AeFontManager >> entriesByFamilyName [
+
+	^ entriesByFamilyName
 ]
 
 { #category : #accessing }
@@ -147,15 +151,17 @@ AeFontManager >> faceEntries [
 
 	| result |
 	result := Set new.
-	self faceEntriesByFamilyName valuesDo: [ :each |
-		result addAll: each ].
+	entriesByFamilyName valuesDo: [ :each |
+		result addAll: each values ].
 	^ result
 ]
 
 { #category : #accessing }
 AeFontManager >> faceEntriesByFamilyName [
 
-	^ faceEntriesByFamilyName
+	self deprecated: 'Please use the new selector'.
+	
+	^ self entriesByFamilyName
 ]
 
 { #category : #accessing }
@@ -163,7 +169,7 @@ AeFontManager >> familyNames [
 
 	| result |
 	result := SortedCollection new.
-	self faceEntriesByFamilyName valuesDo: [ :each |
+	entriesByFamilyName valuesDo: [ :each |
 		result add: each anyOne familyName ].
 	^ result
 ]
@@ -178,7 +184,7 @@ AeFontManager >> freetypeLibrary [
 { #category : #testing }
 AeFontManager >> includesFamilyName: aString [
 
-	^ faceEntriesByFamilyName includesKey: aString asLowercase
+	^ entriesByFamilyName includesKey: aString asLowercase
 ]
 
 { #category : #initialization }
@@ -192,7 +198,7 @@ AeFontManager >> initialize [
 { #category : #registering }
 AeFontManager >> registerFace: aFace entry: aFaceEntry [
 
-	| registeredFaceEntries |
+	| entriesByAttributes |
 	aFaceEntry 
 		familyName: aFace familyName;
 		styleName: aFace styleName.
@@ -206,14 +212,13 @@ AeFontManager >> registerFace: aFace entry: aFaceEntry [
 			ifFalse: [ AeFontSlant normal ]).
 	aFaceEntry stretch: AeFontStretch normal.
 
-	registeredFaceEntries := faceEntriesByFamilyName
+	entriesByAttributes := entriesByFamilyName
 		at: aFaceEntry familyName asLowercase
-		ifAbsentPut: [ Set new ].
+		ifAbsentPut: [ Dictionary new ].
 
-	(registeredFaceEntries anySatisfy: [ :each |
-		each slantWeightStretch = aFaceEntry slantWeightStretch ])
-		ifFalse: [ registeredFaceEntries add: aFaceEntry ]
-
+	entriesByAttributes
+		at: aFaceEntry slantWeightStretch
+		ifAbsentPut: [ aFaceEntry ]
 ]
 
 { #category : #registering }
@@ -248,7 +253,7 @@ AeFontManager >> registerFacesOnMemory: aByteArray [
 AeFontManager >> reset [
 
 	"Filesystem dependent"
-	faceEntriesByFamilyName := Dictionary new.
+	entriesByFamilyName := Dictionary new.
 
 	"Session dependents"
 	session := Smalltalk session.
