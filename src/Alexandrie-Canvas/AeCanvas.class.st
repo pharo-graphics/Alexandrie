@@ -77,6 +77,7 @@ AeCanvas class >> initialize [
 
 { #category : #initialization }
 AeCanvas class >> initializeFontOptions [
+	<script>
 
 	LowQualityFontOptions :=
 		AeCairoFontOptions new
@@ -89,7 +90,7 @@ AeCanvas class >> initializeFontOptions [
 	HighQualityFontOptions :=
 		AeCairoFontOptions new
 			antialias: AeCairoAntialias fast;
-			hintMetrics: AeCairoHintMetrics on;
+			hintMetrics: AeCairoHintMetrics off;
 			hintStyle: AeCairoHintStyle slight;
 			subpixelOrder: AeCairoSubpixelOrder default;
 			yourself
