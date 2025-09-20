@@ -123,6 +123,20 @@ AeCairoSurface >> deviceScale: aPoint [
 ]
 
 { #category : #'API - device' }
+AeCairoSurface >> deviceScaleMatrix [
+
+	| xPointer yPointer |
+	xPointer := FFIFloat64 newBuffer.
+	yPointer := FFIFloat64 newBuffer.
+
+	self getDeviceScaleOnX: xPointer onY: yPointer.
+
+	^ AeCairoMatrix
+		newScalingByX: (xPointer doubleAt: 1)
+		y: (yPointer doubleAt: 1)
+]
+
+{ #category : #'API - device' }
 AeCairoSurface >> deviceScaleX: xScale y: yScale [
 	"Sets a scale that is multiplied to the device coordinates determined by the CTM when drawing to this surface. 
 	One common use for this is to render to very high resolution display devices at a scale factor, so that code that assumes 1 pixel will be a certain size will still work. 

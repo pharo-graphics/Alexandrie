@@ -53,7 +53,12 @@ Class {
 		'dashesCache',
 		'borderPathBlock',
 		'clipAfterwards',
-		'clippingRectangle'
+		'clippingRectangle',
+		'deviceScaleMatrix'
+	],
+	#classVars : [
+		'HighQualityFontOptions',
+		'LowQualityFontOptions'
 	],
 	#category : #'Alexandrie-Canvas-Base'
 }
@@ -64,30 +69,53 @@ AeCanvas class >> extent: aPoint [
 	^ self newFor: (AeCairoImageSurface extent: aPoint)
 ]
 
-{ #category : #'instance creation' }
-AeCanvas class >> new [
+{ #category : #'class initialization' }
+AeCanvas class >> initialize [
 
-	^ self shouldNotImplement
+	SessionManager default registerUserClassNamed: self name.
+
+	self initializeFontOptions
+]
+
+{ #category : #initialization }
+AeCanvas class >> initializeFontOptions [
+
+	LowQualityFontOptions :=
+		AeCairoFontOptions new
+			antialias: AeCairoAntialias fast;
+			hintMetrics: AeCairoHintMetrics off;
+			hintStyle: AeCairoHintStyle none;
+			subpixelOrder: AeCairoSubpixelOrder default;
+			yourself.
+
+	HighQualityFontOptions :=
+		AeCairoFontOptions new
+			antialias: AeCairoAntialias fast;
+			hintMetrics: AeCairoHintMetrics on;
+			hintStyle: AeCairoHintStyle slight;
+			subpixelOrder: AeCairoSubpixelOrder default;
+			yourself
 ]
 
 { #category : #'instance creation' }
 AeCanvas class >> newFor: aeCairoSurface [
 
-	^ self basicNew
-		  initializeWith: aeCairoSurface;
-		  yourself
+	^ self new
+		prepareForSurface: aeCairoSurface;
+		yourself
 ]
 
 { #category : #'instance creation' }
 AeCanvas class >> newWithoutSurface [
-
-	"A new canvas without surface, it should not be used before sending #prepareForSurface:"
+	"Answer a new canvas without surface, it should not be used before sending #prepareForSurface:"
 	
-	^ self basicNew
-		initialize;
-		initializeCaches;
-		yourself
+	^ self new
+]
 
+{ #category : #'system startup' }
+AeCanvas class >> startUp: isImageStarting [
+
+	isImageStarting ifTrue: [ self initializeFontOptions ]
 ]
 
 { #category : #'API - text' }
@@ -428,6 +456,33 @@ AeCanvas >> flush [
 	cairoSurface flush
 ]
 
+{ #category : #'API - text' }
+AeCanvas >> fontForFamily: familyName size: fontSize slant: slant weight: weight stretch: stretch [
+
+	| aCairoFontFace fontSizeMatrix |
+	aCairoFontFace := AeFontManager globalInstance
+		detectFamilyName:familyName
+		slant: slant
+		weight: weight
+		stretch: stretch 
+		ifNone: [ AeFontManager globalInstance defaultFace ].
+
+	fontSizeMatrix := AeCairoMatrix newScalingByX: fontSize y: fontSize.
+	
+	^ aCairoFontFace
+		newScaledFontWithFontMatrix: fontSizeMatrix
+		userToDeviceMatrix: deviceScaleMatrix
+		options: fontOptions
+]
+
+{ #category : #initialization }
+AeCanvas >> initialize [
+
+	super initialize.
+
+	self initializeCaches
+]
+
 { #category : #initialization }
 AeCanvas >> initializeCaches [
 
@@ -452,20 +507,6 @@ AeCanvas >> initializeCaches [
 				deviceScale: scale asPoint;
 				yourself ];
 		yourself.
-]
-
-{ #category : #initialization }
-AeCanvas >> initializeWith: aeCairoSurface [
-
-	self initialize.
-
-	cairoSurface := aeCairoSurface.
-	cairoContext := cairoSurface newContext.
-
-	self initializeCaches.
-
-	self setHighQualityOptions.
-
 ]
 
 { #category : #testing }
@@ -625,8 +666,9 @@ AeCanvas >> prepareForSurface: aeCairoSurface [
 
 	cairoSurface := aeCairoSurface.
 	cairoContext := cairoSurface newContext.
-	self setHighQualityOptions.
+	deviceScaleMatrix := cairoSurface deviceScaleMatrix.
 
+	self setHighQualityOptions
 ]
 
 { #category : #private }
@@ -715,21 +757,6 @@ AeCanvas >> restoreContextOnlyIfClipAfterwards: aBlock [
 		ifTrue: aBlock
 		ifFalse: [ self restoreContextAfter: aBlock ]
 
-]
-
-{ #category : #'API - text' }
-AeCanvas >> scaledFontFor: aCairoFontFace size: fontSize [
-	"Answer a `AeCairoScaledFont` that corresponds to the provided face and point size."
-
-	cairoContext
-		fontFace: aCairoFontFace;
-		fontSize: fontSize.
-
-	"We add a reference since scaled font is actually owned by the context"
-	^ cairoContext scaledFont 
-		increaseReferenceCount;
-		autoRelease;
-		yourself
 ]
 
 { #category : #'API - text' }
@@ -856,20 +883,11 @@ AeCanvas >> setDashes: dashArray offset: dashOffset [
 { #category : #initialization }
 AeCanvas >> setHighQualityOptions [
 
-	| antialiasOption |
-	antialiasOption := AeCairoAntialias fast.
-
-	fontOptions := AeCairoFontOptions new
-		antialias: antialiasOption;
-		hintMetrics: AeCairoHintMetrics off;
-		hintStyle: AeCairoHintStyle slight;
-		subpixelOrder: AeCairoSubpixelOrder default;
-		yourself.
-
 	cairoContext
 		tolerance: 0.2;
-		antialias: antialiasOption;
-		fontOptions: fontOptions
+		antialias: AeCairoAntialias fast.
+
+	fontOptions := HighQualityFontOptions
 ]
 
 { #category : #'API - transformations' }
@@ -906,17 +924,11 @@ AeCanvas >> setJoinRound [
 { #category : #initialization }
 AeCanvas >> setLowQualityOptions [
 
-	fontOptions := AeCairoFontOptions new
-		antialias: AeCairoAntialias fast;
-		hintMetrics: AeCairoHintMetrics off;
-		hintStyle: AeCairoHintStyle none;
-		subpixelOrder: AeCairoSubpixelOrder default;
-		yourself.
-		
 	cairoContext
 		tolerance: 0.5;
-		antialias: AeCairoAntialias none;
-		fontOptions: fontOptions
+		antialias: AeCairoAntialias none.
+
+	fontOptions := LowQualityFontOptions
 ]
 
 { #category : #'API - border' }
