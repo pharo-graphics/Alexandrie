@@ -101,6 +101,24 @@ AeCairoFontOptions >> hintStyle: aHintStyle [
 			AeCairoHintStyle aHintStyle ) )
 ]
 
+{ #category : #printing }
+AeCairoFontOptions >> printOn: aStream [
+
+	super printOn: aStream.
+
+	aStream nextPut: $(.
+
+	#(antialias hintStyle hintMetrics subpixelOrder)
+		do: [ :each |
+			aStream
+				nextPutAll: each;
+				nextPutAll: ': ';
+				nextPutAll: (self perform: each) camelCaseName ]
+		separatedBy: [ aStream nextPutAll: ', ' ].
+
+	aStream nextPut: $)
+]
+
 { #category : #'private - ffi' }
 AeCairoFontOptions >> subpixelOrder [
 
