@@ -79,21 +79,20 @@ AeCanvas class >> initialize [
 { #category : #initialization }
 AeCanvas class >> initializeFontOptions [
 	<script>
-
+	"BAOffscreen resetInstance."
+	
 	LowQualityFontOptions :=
 		AeCairoFontOptions new
 			antialias: AeCairoAntialias fast;
 			hintMetrics: AeCairoHintMetrics off;
 			hintStyle: AeCairoHintStyle none;
-			subpixelOrder: AeCairoSubpixelOrder default;
 			yourself.
 
 	HighQualityFontOptions :=
 		AeCairoFontOptions new
 			antialias: AeCairoAntialias fast;
-			hintMetrics: AeCairoHintMetrics off;
+			hintMetrics: AeCairoHintMetrics on;
 			hintStyle: AeCairoHintStyle slight;
-			subpixelOrder: AeCairoSubpixelOrder default;
 			yourself
 ]
 
