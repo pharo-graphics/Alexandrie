@@ -46,7 +46,6 @@ Class {
 		'pathBlock',
 		'cairoContext',
 		'fontOptions',
-		'identityMatrix',
 		'textExtents',
 		'borderBlock',
 		'figureBlock',
@@ -747,13 +746,16 @@ AeCanvas >> restoreContextOnlyIfClipAfterwards: aBlock [
 AeCanvas >> scaledFontForFace: aFace size: fontSize [
 	"Answer a `AeCairoScaledFont` that corresponds to the provided face and point size."
 
-	self deprecated: 'Use the similar method that receives the AeCairoFontFace'.
-
-	cairoContext
-		fontFace: aFace;
-		fontSize: fontSize;
-		fontOptions: fontOptions.
-	^ cairoContext scaledFont
+"	^ scaledFontCache
+		at: { aFace. fontSize }
+		ifAbsentPut: ["
+		 	| aFontMatrix |
+			aFontMatrix := AeCairoMatrix newScalingByX: fontSize y: fontSize.
+			
+			^ aFace newCairoFontFace
+				newScaledFontWithFontMatrix: aFontMatrix
+				userToDeviceMatrix: deviceScaleMatrix
+				options: fontOptions "]"
 ]
 
 { #category : #'API - text' }
