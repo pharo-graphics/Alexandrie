@@ -746,16 +746,16 @@ AeCanvas >> restoreContextOnlyIfClipAfterwards: aBlock [
 AeCanvas >> scaledFontForFace: aFace size: fontSize [
 	"Answer a `AeCairoScaledFont` that corresponds to the provided face and point size."
 
-"	^ scaledFontCache
+	^ scaledFontCache
 		at: { aFace. fontSize }
-		ifAbsentPut: ["
+		ifAbsentPut: [
 		 	| aFontMatrix |
 			aFontMatrix := AeCairoMatrix newScalingByX: fontSize y: fontSize.
 			
-			^ aFace newCairoFontFace
+			^ aFace
 				newScaledFontWithFontMatrix: aFontMatrix
 				userToDeviceMatrix: deviceScaleMatrix
-				options: fontOptions "]"
+				options: fontOptions ]
 ]
 
 { #category : #'API - text' }

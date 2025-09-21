@@ -271,7 +271,7 @@ AeCanvasTest >> renderEmoji [
 	emojiFTFace := AeFTLibraryResource current emojiFTFace.
 	cairoScaledFont :=
 		aeCanvas
-			scaledFontForFace: emojiFTFace
+			scaledFontForFace: emojiFTFace newCairoFontFace
 			size: fontHeight.
 
 	cairoGlyphsArray := cairoScaledFont glyphArrayForString: (Unicode value: 16r1F468) asString.
@@ -426,7 +426,7 @@ AeCanvasTest >> renderLigatureTextWithHarfbuzz [
 
 	"We do know this typeface defines a glyph for ff"
 	ffLigatureFTFace := AeFTLibraryResource current sourceSansProRegularFTFace.
-	cairoScaledFont := aeCanvas scaledFontForFace: ffLigatureFTFace size: fontSize.
+	cairoScaledFont := aeCanvas scaledFontForFace: ffLigatureFTFace newCairoFontFace size: fontSize.
 
 	"This is the key message send of this test"
 	cairoGlyphsArray := AeHbBuffer
@@ -457,7 +457,7 @@ AeCanvasTest >> renderLigatureTextWithoutHarfbuzz [
 
 	"We do know this typeface defines a glyph for ff"
 	ffLigatureFTFace := AeFTLibraryResource current sourceSansProRegularFTFace.
-	cairoScaledFont := aeCanvas scaledFontForFace: ffLigatureFTFace size: fontSize.
+	cairoScaledFont := aeCanvas scaledFontForFace: ffLigatureFTFace newCairoFontFace size: fontSize.
 
 	"We know that cairo ignores the ff ligature (that'd be provided by Harfbuzz)"
 	cairoGlyphsArray := cairoScaledFont glyphArrayForString: aString.
@@ -561,7 +561,7 @@ AeCanvasTest >> renderZWJEmojiWithHarfbuzz [
 	emojiFTFace := AeFTLibraryResource current emojiFTFace.
 	cairoScaledFont :=
 		aeCanvas
-			scaledFontForFace: emojiFTFace
+			scaledFontForFace: emojiFTFace newCairoFontFace
 			size: fontHeight.
 
 	"This is the key message send of this test"
@@ -596,7 +596,7 @@ AeCanvasTest >> renderZWJEmojiWithoutHarfbuzz [
 	emojiFTFace := AeFTLibraryResource current emojiFTFace.
 	cairoScaledFont :=
 		aeCanvas
-			scaledFontForFace: emojiFTFace
+			scaledFontForFace: emojiFTFace newCairoFontFace
 			size: fontHeight.
 
 	"We know that cairo ignores the ZWJ sequence (that'd be provided by Harfbuzz)"
