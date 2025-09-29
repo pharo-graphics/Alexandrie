@@ -35,7 +35,7 @@ AeCairoFreetypeFontFace class >> unownedNewFor: aFreetypeFontFace [
 		ffiCall: #(
 			AeCairoFreetypeFontFace
 			cairo_ft_font_face_create_for_ft_face (
-				void* aFreetypeFontFace,
+				AeFTFace * aFreetypeFontFace,
 				int 0 ) )
 ]
 
