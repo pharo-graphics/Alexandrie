@@ -28,12 +28,3 @@ AeFileFaceEntry >> newFaceWith: anAeFTLibrary [
 	^ anAeFTLibrary newFaceFromFile: location index: index
 	
 ]
-
-{ #category : #'instance creation' }
-AeFileFaceEntry >> newHbFont [
-	
-	| aBlob aFace |
-	aBlob := AeHbBlob newLocatedAt: location.
-	aFace := aBlob newHbFaceAtIndex: index.
-	^ aFace newHbFont
-]
