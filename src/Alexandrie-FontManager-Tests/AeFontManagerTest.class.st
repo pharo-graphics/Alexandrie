@@ -22,15 +22,14 @@ AeFontManagerTest >> testDetectFamilyNameSlantWeightStretchIfNone [
 		weight: AeFontWeight normal
 		stretch: AeFontStretch normal
 		ifNone: [ self fail ].
-	self assert: aCairoFontFace freetypeFace class equals: AeFTFace.
+	self assert: aCairoFontFace class equals: AeFTFace.
 
-	aCairoFontFace := aManager
+	aFace := aManager
 		detectFamilyName: 'INRIA SERIF' "<-- it ignores case"
 		slant: AeFontSlant italic
 		weight: AeFontWeight light
 		stretch: AeFontStretch normal
 		ifNone: [ self fail ].
-	aFace := aCairoFontFace freetypeFace.
 	self assert: aFace class equals: AeFTFace.
 	self assert: aFace familyName equals: 'Inria Serif'.
 	self assert: aFace isItalic.

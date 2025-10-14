@@ -150,7 +150,10 @@ AeHarfbuzzRenderExample >> newForm [
 	aeCanvas := AeCanvas extent: 1000 @ (fontHeight * 4).
 	aeCanvas clear: Color white.
 
-	cairoScaledFont := aeCanvas scaledFontForFace: freetypeFace size: fontHeight.
+	cairoScaledFont :=
+		aeCanvas
+			scaledFontForFace: freetypeFace
+			size: fontHeight.
 
 	"Margin"
 	aeCanvas pathTranslate: (fontHeight/2) @ 0.

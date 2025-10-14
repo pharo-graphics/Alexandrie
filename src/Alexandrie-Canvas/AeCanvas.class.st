@@ -743,39 +743,17 @@ AeCanvas >> restoreContextOnlyIfClipAfterwards: aBlock [
 ]
 
 { #category : #'API - text' }
-AeCanvas >> scaledFontForFace: aFace size: fontSize [
-	"Answer a `AeCairoScaledFont` that corresponds to the provided face and point size."
+AeCanvas >> scaledFontForFace: aFace size: size [
+	"Answer a `AeCairoScaledFont` that corresponds to the provided face and size."
 
-	^ scaledFontCache
-		at: { aFace. fontSize }
+	^ scaledFontCache 
+		at: { aFace. size }
 		ifAbsentPut: [
 		 	| aFontMatrix |
-			aFontMatrix := AeCairoMatrix newScalingByX: fontSize y: fontSize.
+			aFontMatrix := AeCairoMatrix newScalingByX: size y: size.
 			
-			^ aFace
+			^ aFace newCairoFontFace
 				newScaledFontWithFontMatrix: aFontMatrix
-				userToDeviceMatrix: deviceScaleMatrix
-				options: fontOptions ]
-]
-
-{ #category : #'API - text' }
-AeCanvas >> scaledFontForFamily: familyName size: fontSize slant: slant weight: weight stretch: stretch [
-
-	^ scaledFontCache
-		at: { familyName. fontSize. slant. weight. stretch }
-		ifAbsentPut: [
-			| aCairoFontFace fontSizeMatrix |
-			aCairoFontFace := AeFontManager globalInstance
-				detectFamilyName: familyName
-				slant: slant
-				weight: weight
-				stretch: stretch
-				ifNone: [ AeFontManager globalInstance defaultFace ].
-
-			fontSizeMatrix := AeCairoMatrix newScalingByX: fontSize y: fontSize.
-			
-			aCairoFontFace
-				newScaledFontWithFontMatrix: fontSizeMatrix
 				userToDeviceMatrix: deviceScaleMatrix
 				options: fontOptions ]
 ]
