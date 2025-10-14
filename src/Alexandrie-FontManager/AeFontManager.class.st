@@ -266,7 +266,7 @@ AeFontManager >> reset [
 			| fontFace |
 "			fontFace := anEntry newHbFont."
 			fontFace := anEntry newFaceWith: freetypeLibrary.
-			fontFace newCairoFontFace ];
+"			fontFace newCairoFontFace" ];
 		yourself
 ]
 
