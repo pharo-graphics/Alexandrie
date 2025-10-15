@@ -146,33 +146,34 @@ AeHarfbuzzRenderExample >> glyphArrayWithoutHarfbuzz: cairoScaledFont [
 { #category : #accessing }
 AeHarfbuzzRenderExample >> newForm [
 
-	| aeCanvas cairoScaledFont |
-	aeCanvas := AeCanvas extent: 1000 @ (fontHeight * 4).
-	aeCanvas clear: Color white.
+	| aSurface aContext cairoScaledFont |
+	aSurface := AeCairoImageSurface extent: 1000 @ (fontHeight * 4).
+	aContext := aSurface newContext.
 
-	cairoScaledFont :=
-		aeCanvas
-			scaledFontForFace: freetypeFace
-			size: fontHeight.
+	"Paint background"
+	aContext clearColor: Color white.
+
+	aContext
+		fontFace: (AeCairoFreetypeFontFace newForFace: freetypeFace);
+		fontSize: fontHeight.
+	cairoScaledFont := aContext scaledFont.
 
 	"Margin"
-	aeCanvas pathTranslate: (fontHeight/2) @ 0.
+	aContext translateByX: (fontHeight/2) y: 0.
 
 	"Draw text withOUT Harfbuzz:"
-	aeCanvas pathTranslate: 0 @ (fontHeight*1.1).
-	aeCanvas setSourceColor: Color red muchDarker.
-	aeCanvas
-		drawGlyphs: (self glyphArrayWithoutHarfbuzz: cairoScaledFont)
-		font: cairoScaledFont.
+	aContext
+		translateByX: 0 y: (fontHeight * 1.1);
+		sourceColor: Color red muchDarker;
+		showGlyphs: (self glyphArrayWithoutHarfbuzz: cairoScaledFont).
 
 	"Draw text with Harfbuzz:"
-	aeCanvas pathTranslate: 0 @ (fontHeight*1.1).
-	aeCanvas setSourceColor: Color green muchDarker.
-	aeCanvas
-		drawGlyphs: self glyphArrayWithHarfbuzz
-		font: cairoScaledFont.
+	aContext
+		translateByX: 0 y: (fontHeight * 1.1);
+		sourceColor: Color green muchDarker;
+		showGlyphs: self glyphArrayWithHarfbuzz.
 
-	^ aeCanvas asForm
+	^ aSurface asForm
 ]
 
 { #category : #accessing }
