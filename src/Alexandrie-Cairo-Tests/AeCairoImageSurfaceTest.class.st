@@ -245,7 +245,7 @@ AeCairoImageSurfaceTest >> testNewSimilarImageFormatWidthHeight [
 AeCairoImageSurfaceTest >> testPremultipliedAlphaCanLooseInformation [
 	"The purpose of this test is showing that pixels with little alpha loose information due to Cairo's premultiplied-alpha."
 
-	| aColor aSurface pixelValue |
+	| aColor aSurface pixelValue readColor |
 	aSurface := AeCairoImageSurface
 		extent: 1@1
 		format: AeCairoSurfaceFormat argb32.
@@ -256,16 +256,21 @@ AeCairoImageSurfaceTest >> testPremultipliedAlphaCanLooseInformation [
 	aSurface flush.
 
 	"Conversion to Form shows that some color components are lost"
+	readColor := Color r: 1.0 g: 0.0 b: 0.0 alpha: 0.00392156862745098.
 	self
 		assert: (aSurface asFormARGB32 colorAt: 0@0)
-		equals: (Color r: 1.0 g: 0.0 b: 0.0 alpha: 0.00392156862745098).
+		equals: readColor.
 
 	"Note: Such information is already lost in the Cairo's internal buffer"
-	pixelValue := aSurface data uint32AtOffset: 0.
+	pixelValue := aSurface data unsignedLongAt: 1.
 	self assert: (pixelValue byteAt: 1) equals: 0. "blue"
 	self assert: (pixelValue byteAt: 2) equals: 0. "green"
 	self assert: (pixelValue byteAt: 3) equals: 1. "red"
 	self assert: (pixelValue byteAt: 4) equals: 1. "alpha"
+
+	self
+		assert: pixelValue
+		equals: readColor asPremultipliedARGB32Integer
 ]
 
 { #category : #tests }
@@ -304,7 +309,11 @@ AeCairoImageSurfaceTest >> testPremultipliedAlphaConversionAsForm [
 	"The bytes of the reconverted surface match"
 	self
 		assert: anotherSurfaceBytes
-		equals: aSurfaceBytes
+		equals: aSurfaceBytes.
+
+	self
+		assert: (anotherSurfaceBytes getHandle unsignedLongAt: 1)
+		equals: aColor asPremultipliedARGB32Integer
 ]
 
 { #category : #tests }
