@@ -61,7 +61,10 @@ AthensAeCairoMorphTest >> surface01PlainMorph [
 { #category : #tests }
 AthensAeCairoMorphTest >> surface02StringMorph [
 
-	^ self newSurfaceForMorph: 'Hola' asStringMorph
+	^ self newSurfaceForMorph:
+		('Hola' asStringMorph
+		   color: Color black; "Default color is taken from current theme"
+		   yourself)
 ]
 
 { #category : #tests }
