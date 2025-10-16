@@ -38,7 +38,7 @@ AthensAeCairoFreetypeRenderer >> cairoScaledFontFor: aFont ftFace: ftFace [
 		at: aFont
 		ifAbsentPut: [
 			AeCairoScaledFont
-				fontFace: (AeCairoFreetypeFontFace newForFace: ftFace)
+				fontFace: ftFace newCairoFontFace
 				fontMatrix: (AeCairoMatrix newScalingBy: aFont pixelSize asPoint)
 				userToDeviceMatrix: identityMatrix
 				options: fontOptions ]
