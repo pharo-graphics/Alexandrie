@@ -69,7 +69,10 @@ BaselineOfAlexandrie >> baseline: spec [
 				package: 'Alexandrie-NewTools'
 					with: [ spec requires: #('Alexandrie-Canvas') ];
 				package: 'Alexandrie-NewTools-Tests'
-					with: [ spec requires: #('Alexandrie-NewTools' 'Alexandrie-Canvas-Tests') ].
+					with: [ spec requires: #(
+						'Alexandrie-NewTools'
+						'Alexandrie-Cairo-Tests'
+						'Alexandrie-FontManager') ].
 
 			spec
 				group: 'ffi-minimal' with: #('Alexandrie-HarfbuzzCairo' 'Alexandrie-CairoFreetype');
@@ -77,6 +80,7 @@ BaselineOfAlexandrie >> baseline: spec [
 					'Alexandrie-NewTools-Tests'
 					'Alexandrie-Harfbuzz-Tests'
 					'Alexandrie-Blur-Tests'
+					'Alexandrie-CairoFreetype-Tests'
 					'Alexandrie-FontManager-Tests');
 				group: 'default' with: #('development')	]
 ]
