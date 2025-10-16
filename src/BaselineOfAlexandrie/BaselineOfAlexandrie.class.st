@@ -80,6 +80,7 @@ BaselineOfAlexandrie >> baseline: spec [
 					'Alexandrie-NewTools-Tests'
 					'Alexandrie-Harfbuzz-Tests'
 					'Alexandrie-Blur-Tests'
+					'Alexandrie-Canvas-Tests'
 					'Alexandrie-CairoFreetype-Tests'
 					'Alexandrie-FontManager-Tests');
 				group: 'default' with: #('development')	]
