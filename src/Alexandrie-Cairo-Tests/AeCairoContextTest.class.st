@@ -8,15 +8,6 @@ Class {
 	#category : #'Alexandrie-Cairo-Tests'
 }
 
-{ #category : #'tests - text' }
-AeCairoContextTest >> newSourceSansProRegularFontFace [
-
-	| aFTLibrary aFTFace |
-	aFTLibrary := AeFTLibrary newInitialized.
-	aFTFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
-	^ AeCairoFreetypeFontFace newForFace: aFTFace
-]
-
 { #category : #accessing }
 AeCairoContextTest >> resources [
 
@@ -481,12 +472,12 @@ AeCairoContextTest >> testRotateByRadiansCenter [
 { #category : #'tests - text' }
 AeCairoContextTest >> testScaledFont [
 
-	| aSurface aContext aFontFace scaledFont17 scaledFont71 scaledFont17b |
+	| aSurface aContext aFontFace scaledFont17 scaledFont71 scaledFont17b fontFaceInAnotherLibrary |
 	aSurface := AeCairoImageSurface extent: 1@1.
 	aContext := aSurface newContext.
 	
 	"Set up scaled font in the context"
-	aFontFace := self newSourceSansProRegularFontFace.
+	aFontFace := AeFTLibraryResource current sourceSansProRegularFTFace newCairoFontFace.
 	aContext
 		fontFace: aFontFace;
 		fontSize: 17.
@@ -520,8 +511,11 @@ AeCairoContextTest >> testScaledFont [
 		assert: aContext scaledFont getHandle
 		equals: scaledFont71 getHandle.
 	
-	"There isn't cache when same cairo font face but in new instance."
-	aContext fontFace: self newSourceSansProRegularFontFace.
+	"Cairo cache doesn't work if Freetype face belongs to a different library"
+	AeFTLibraryResource reset.
+	fontFaceInAnotherLibrary :=
+		AeFTLibraryResource current sourceSansProRegularFTFace newCairoFontFace.
+	aContext fontFace: fontFaceInAnotherLibrary.
 	self
 		deny: aContext scaledFont getHandle
 		equals: scaledFont71 getHandle.
