@@ -8,7 +8,7 @@ Class {
 AeBlurTest class >> allFormSelectors [
 
 	^ self selectors select: [ :each |
-		  each isUnary and: [ each beginsWith: 'blurred' ] ]
+		  each isUnary and: [ each beginsWith: 'blur' ] ]
 ]
 
 { #category : #convenience }
