@@ -19,45 +19,6 @@ Class {
 	#category : #'Alexandrie-Cairo-Text'
 }
 
-{ #category : #examples }
-AeCairoTextToGlyphShaping class >> exampleShapeAndDraw [
-
-	| fontSize string surfaceSize aSurface aContext aFTLibrary aFTFace aScaledFont aShaping aStatus |
-	fontSize := 12.
-	"Get Lorem Ipsum without last cr character"
-	string := (String loremIpsum: 28) allButLast.
-	surfaceSize := 150 @ (fontSize*1.3).
-	aSurface := AeCairoImageSurface
-		  extent: surfaceSize
-		  format: AeCairoSurfaceFormat argb32.
-	aContext := aSurface newContext.
-
-	"Set up scaled font in the context"
-	aFTLibrary := AeFTLibrary newInitialized.
-	aFTFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
-	aContext
-		fontFace: (AeCairoFreetypeFontFace newForFace: aFTFace);
-		fontSize: fontSize.
-	aScaledFont := aContext scaledFont.
-
-	aShaping := AeCairoTextToGlyphShaping new.
-	aShaping string: string.
-	aShaping scaledFont: aScaledFont.
-	aStatus := aShaping convertTextToGlyphs.
-	aStatus ensureIsSuccess.
-"	aShaping newGlyphArray.
-	aShaping newClusterArray."
-	
-	aContext
-		translateByX: 5 y: fontSize;
-		sourceColor: Color blue;
-		scaledFont: aScaledFont.
-	
-	aShaping showTextGlyphsOn: aContext.
-
-	^ aSurface inspect
-]
-
 { #category : #private }
 AeCairoTextToGlyphShaping >> convertTextToGlyphs [
 	"Convert UTF-8 text to an array of glyphs. Return `CAIRO_STATUS_SUCCESS` upon success, or an error status if the input values are wrong or if conversion failed.

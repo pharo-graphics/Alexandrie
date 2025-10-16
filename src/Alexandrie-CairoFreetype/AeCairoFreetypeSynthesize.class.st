@@ -12,7 +12,7 @@ Class {
 		'CAIRO_FT_SYNTHESIZE_BOLD',
 		'CAIRO_FT_SYNTHESIZE_OBLIQUE'
 	],
-	#category : #'Alexandrie-Cairo-Text'
+	#category : #'Alexandrie-CairoFreetype'
 }
 
 { #category : #'accessing enum' }

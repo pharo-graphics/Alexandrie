@@ -10,7 +10,7 @@ Class {
 		'cairoSurface',
 		'cairoContext'
 	],
-	#category : #'Alexandrie-Cairo-Tests'
+	#category : #'Alexandrie-CairoFreetype-Tests'
 }
 
 { #category : #accessing }
@@ -27,7 +27,7 @@ AeCairoFreetypeTest >> setUp [
 	cairoContext := cairoSurface newContext.
 
 	aFTFace := AeFTLibraryResource current sourceSansProRegularFTFace.
-	aFontFace := AeCairoFreetypeFontFace newForFace: aFTFace.
+	aFontFace := aFTFace newCairoFontFace.
 	aFontMatrix := AeCairoMatrix newScalingByX: 10 y: 15.
 	aScaledFont := aFontFace 
 		newScaledFontWithFontMatrix: aFontMatrix

@@ -9,7 +9,7 @@ Class {
 	#instVars : [
 		'freetypeFace'
 	],
-	#category : #'Alexandrie-Cairo-Text'
+	#category : #'Alexandrie-CairoFreetype'
 }
 
 { #category : #'instance creation' }

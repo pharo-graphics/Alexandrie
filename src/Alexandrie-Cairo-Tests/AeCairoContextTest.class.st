@@ -8,15 +8,6 @@ Class {
 	#category : #'Alexandrie-Cairo-Tests'
 }
 
-{ #category : #'tests - text' }
-AeCairoContextTest >> newSourceSansProRegularFontFace [
-
-	| aFTLibrary aFTFace |
-	aFTLibrary := AeFTLibrary newInitialized.
-	aFTFace := AeSourceSansPro_Regular firstFaceUsing: aFTLibrary.
-	^ AeCairoFreetypeFontFace newForFace: aFTFace
-]
-
 { #category : #accessing }
 AeCairoContextTest >> resources [
 
@@ -476,62 +467,6 @@ AeCairoContextTest >> testRotateByRadiansCenter [
 	self assert: matrix sy  equals: radians cos.
 	self assert: matrix shx equals: radians sin negated.
 	self assert: matrix shy equals: radians sin
-]
-
-{ #category : #'tests - text' }
-AeCairoContextTest >> testScaledFont [
-
-	| aSurface aContext aFontFace scaledFont17 scaledFont71 scaledFont17b |
-	aSurface := AeCairoImageSurface extent: 1@1.
-	aContext := aSurface newContext.
-	
-	"Set up scaled font in the context"
-	aFontFace := self newSourceSansProRegularFontFace.
-	aContext
-		fontFace: aFontFace;
-		fontSize: 17.
-	scaledFont17 := aContext scaledFont.
-
-	"Second time we get the same address (it's not a copy)."
-	self
-		assert: aContext scaledFont getHandle
-		equals: scaledFont17 getHandle.
-
-	"Changing fontSize implies a new scaledFont is set"
-	aContext fontSize: 71.
-	self
-		deny: aContext scaledFont getHandle
-		equals: scaledFont17 getHandle.
-	scaledFont71 := aContext scaledFont.
-
-	"Caching, when switching back to fontSize=17 via #fontMatrix:"
-	aContext fontMatrix: (AeCairoMatrix newScalingBy: 17 asPoint).
-	self
-		deny: aContext scaledFont getHandle
-		equals: scaledFont71 getHandle.
-	scaledFont17b := aContext scaledFont.
-	self
-		assert: scaledFont17b getHandle
-		equals: scaledFont17 getHandle.
-
-	"Caching, also when switching back to fontSize=71 via #fontSize:"
-	aContext fontSize: 71.
-	self
-		assert: aContext scaledFont getHandle
-		equals: scaledFont71 getHandle.
-	
-	"There isn't cache when same cairo font face but in new instance."
-	aContext fontFace: self newSourceSansProRegularFontFace.
-	self
-		deny: aContext scaledFont getHandle
-		equals: scaledFont71 getHandle.
-
-	"Getting back to original cairo font face instance, gets
-	cached scaled font face."
-	aContext fontFace: aFontFace.
-	self
-		assert: aContext scaledFont getHandle
-		equals: scaledFont71 getHandle
 ]
 
 { #category : #tests }

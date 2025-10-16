@@ -32,7 +32,7 @@ AeCairoInspectionTest >> assertCanInspectImageSurfaceWithFormat: aFormat [
 AeCairoInspectionTest >> testInspectContext [
 
 	| aSurface aContext aPresenter aForm aPixelComparison |
-	aSurface := AeCairoExamplesRenderTest new surfaceWithText.
+	aSurface := AeCairoExamplesRenderTest new surfaceWithSphere.
 	aContext := aSurface newContext.
 
 	aPresenter := aContext inspectionOfSurfaceAsForm: SpPresenter new.
@@ -88,7 +88,7 @@ AeCairoInspectionTest >> testInspectImageSurfaceSomeNotYetImplemented [
 AeCairoInspectionTest >> testToleratesNullContext [
 
 	| aSurface aContext aPresenter |
-	aSurface := AeCairoExamplesRenderTest new surfaceWithText.
+	aSurface := AeCairoExamplesRenderTest new surfaceWithSphere.
 	aContext := aSurface newContext.
 
 	aPresenter := aSurface inspectionAsForm: SpPresenter new.
@@ -105,7 +105,7 @@ AeCairoInspectionTest >> testToleratesNullContext [
 AeCairoInspectionTest >> testToleratesNullImage [
 
 	| aSurface aPresenter |
-	aSurface := AeCairoExamplesRenderTest new surfaceWithText.
+	aSurface := AeCairoExamplesRenderTest new surfaceWithSphere.
 
 	aPresenter := aSurface inspectionAsForm: SpPresenter new.
 

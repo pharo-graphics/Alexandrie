@@ -29,6 +29,16 @@ BaselineOfAlexandrie >> baseline: spec [
 					with: [ spec requires: #('Alexandrie-FreeType') ];
 				package: 'Alexandrie-Cairo-Tests'
 					with: [ spec requires: #('Alexandrie-Cairo' 'Alexandrie-FreeType-Tests') ];
+
+				package: 'Alexandrie-CairoFreetype'
+					with: [ spec requires: #('Alexandrie-Cairo') ];
+				package: 'Alexandrie-CairoFreetype-Tests'
+					with: [ spec requires: #('Alexandrie-CairoFreetype') ];
+
+				package: 'Alexandrie-Blur'
+					with: [ spec requires: #('Alexandrie-Cairo') ]; "Examples use freetype"
+				package: 'Alexandrie-Blur-Tests'
+					with: [ spec requires: #('Alexandrie-Blur' 'Alexandrie-CairoFreetype') ];
 					
 				package: 'Alexandrie-FontManager'
 					with: [ spec requires: #('Alexandrie-FreeType') ];
@@ -45,25 +55,34 @@ BaselineOfAlexandrie >> baseline: spec [
 				package: 'Alexandrie-HarfbuzzCairo-Tests'
 					with: [ spec requires: #('Alexandrie-HarfbuzzCairo' 'Alexandrie-Harfbuzz-Tests') ];
 
+				"Requires libharfbuzz-cairo. See: https://github.com/pharo-graphics/Alexandrie/issues/113"
 				package: 'Alexandrie-HarfbuzzVariableFonts'
 					with: [ spec requires: #('Alexandrie-HarfbuzzCairo') ];
 				package: 'Alexandrie-HarfbuzzVariableFonts-Tests'
 					with: [ spec requires: #('Alexandrie-HarfbuzzVariableFonts' 'Alexandrie-HarfbuzzCairo-Tests') ];
 				
 				package: 'Alexandrie-Canvas'
-					with: [ spec requires: #('Alexandrie-Cairo' 'Alexandrie-FreeType' 'Alexandrie-Harfbuzz' 'Alexandrie-HarfbuzzCairo') ];
+					with: [ spec requires: #('Alexandrie-Cairo' 'Alexandrie-Blur') ];
 				package: 'Alexandrie-Canvas-Tests'
 					with: [ spec requires: #('Alexandrie-Canvas' 'Alexandrie-FreeType-Tests' 'Alexandrie-Cairo-Tests') ];
 
 				package: 'Alexandrie-NewTools'
 					with: [ spec requires: #('Alexandrie-Canvas') ];
 				package: 'Alexandrie-NewTools-Tests'
-					with: [ spec requires: #('Alexandrie-NewTools' 'Alexandrie-Canvas-Tests') ].
+					with: [ spec requires: #(
+						'Alexandrie-NewTools'
+						'Alexandrie-Cairo-Tests'
+						'Alexandrie-FontManager') ].
 
-			"We do not include HarfbuzzCairo-Tests and HarfbuzzVariableFonts-Tests because they crash without the external libs manually  installed"
 			spec
-				group: 'ffi-minimal' with: #('Alexandrie-Harfbuzz' 'Alexandrie-Cairo' 'Alexandrie-FreeType');
-				group: 'development' with: #('Alexandrie-NewTools-Tests' 'Alexandrie-Harfbuzz-Tests' 'Alexandrie-FontManager-Tests');
+				group: 'ffi-minimal' with: #('Alexandrie-HarfbuzzCairo' 'Alexandrie-CairoFreetype');
+				group: 'development' with: #(
+					'Alexandrie-NewTools-Tests'
+					'Alexandrie-Harfbuzz-Tests'
+					'Alexandrie-Blur-Tests'
+					'Alexandrie-Canvas-Tests'
+					'Alexandrie-CairoFreetype-Tests'
+					'Alexandrie-FontManager-Tests');
 				group: 'default' with: #('development')	]
 ]
 

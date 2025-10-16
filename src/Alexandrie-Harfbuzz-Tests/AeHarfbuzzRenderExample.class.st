@@ -154,7 +154,7 @@ AeHarfbuzzRenderExample >> newForm [
 	aContext clearColor: Color white.
 
 	aContext
-		fontFace: (AeCairoFreetypeFontFace newForFace: freetypeFace);
+		fontFace: freetypeFace newCairoFontFace;
 		fontSize: fontHeight.
 	cairoScaledFont := aContext scaledFont.
 
