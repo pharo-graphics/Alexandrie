@@ -12,6 +12,12 @@ Class {
 	#category : #'Alexandrie-CairoFreetype'
 }
 
+{ #category : #testing }
+AeCairoFreetypeFontFace class >> isFontType: fontType font: aCairoFontFace [
+
+	^ fontType = AeCairoFontType freetype
+]
+
 { #category : #'instance creation' }
 AeCairoFreetypeFontFace class >> newForFace: aFTFace [
 	"Create a cairo font face for a given freetype face"

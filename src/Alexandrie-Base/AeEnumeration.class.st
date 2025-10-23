@@ -46,11 +46,11 @@ AeEnumeration class >> underlineToCamelCaseDictionary [
 	"
 	Example of use:
 		| aClass |
-		aClass := AeFTFaceFlag.
+		aClass := AeCairoFontType.
 		aClass underlineToCamelCaseDictionary keysAndValuesDo: [ :k :v |
 		aClass class compile: ('{2}
 
-	^ self {1}' format: { k. v }) classified: 'accessing enum camelcased' ]
+	^ {1}' format: { k. v }) classified: 'accessing enum camelcased' ]
 	"
 
 	| result |

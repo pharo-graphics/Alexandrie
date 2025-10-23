@@ -12,6 +12,16 @@ Class {
 	#category : #'Alexandrie-Cairo-Text'
 }
 
+{ #category : #convenience }
+AeCairoFontFace class >> adoptTypeSpecificSubclass: aFontFace [
+
+	| fontType |
+	fontType := aFontFace type.
+	self allSubclassesDo: [ :each |
+		(each isFontType: fontType font: aFontFace)
+			ifTrue: [ ^ each adoptInstance: aFontFace ] ]
+]
+
 { #category : #finalization }
 AeCairoFontFace class >> externallyFree: aHandle [
 	"Decreases the reference count on a font face by one. If the result is zero, then font_face and all associated resources are freed.
@@ -21,7 +31,13 @@ AeCairoFontFace class >> externallyFree: aHandle [
 	self ffiCall: #( void cairo_font_face_destroy ( void * aHandle) )
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
+AeCairoFontFace class >> isFontType: fontType font: aCairoFontFace [
+
+	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
 AeCairoFontFace >> familyName [
 
 	^ self subclassResponsibility

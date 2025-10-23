@@ -86,7 +86,7 @@ AeCairoScaledFont >> fontExtents [
 
 { #category : #accessing }
 AeCairoScaledFont >> fontFace: aCairoFontFace [
-	"Set the fonce face associated with myself."
+	"Set the font face associated with me at creation from Pharo, to prevent a too early garbage collection (and crash)."
 
 	fontFace := aCairoFontFace
 ]
@@ -356,6 +356,18 @@ AeCairoScaledFont >> unlock [
 	
 	self ffiCall: #(
 		void cairo_ft_scaled_font_unlock_face (self) )
+]
+
+{ #category : #API }
+AeCairoScaledFont >> unownedFontFace [
+	"Answer the font face that this scaled font uses. This might be the font face passed at creation.
+	
+	This object is owned by cairo. To keep a reference to it, you must increase the reference count and take the responsibility of destroying it (#autoRelease can do it for you).
+	
+	See: https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-scaled-font-get-font-face"
+
+	^ self ffiCall: #(
+		AeCairoFontFace cairo_scaled_font_get_font_face ( self ) )
 ]
 
 { #category : #API }

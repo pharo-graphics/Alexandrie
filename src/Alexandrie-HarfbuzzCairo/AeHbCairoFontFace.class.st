@@ -16,6 +16,13 @@ Class {
 	#category : #'Alexandrie-HarfbuzzCairo'
 }
 
+{ #category : #testing }
+AeHbCairoFontFace class >> isFontType: fontType font: aCairoFontFace [ 
+	"These bindings do not implement user fonts so we will consider this is a Harfbuzz-Cairo font that is defined by such library via a Cairo user font."
+
+	^ fontType = AeCairoFontType user
+]
+
 { #category : #accessing }
 AeHbCairoFontFace >> familyName [
 
@@ -24,7 +31,8 @@ AeHbCairoFontFace >> familyName [
 
 { #category : #accessing }
 AeHbCairoFontFace >> hbFaceOrFont: aHarfbuzzFaceOrFont [
-	"Associate with either the Harfbuzz face or font that was used to create this object."
+	"Associate with either the Harfbuzz face or font that was used to create this object.
+	This prevents a too early garbage collection of it, which could cause a crash."
 
 	hbFaceOrFont := aHarfbuzzFaceOrFont
 ]
