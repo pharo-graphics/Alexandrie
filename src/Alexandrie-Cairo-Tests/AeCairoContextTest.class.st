@@ -572,3 +572,36 @@ AeCairoContextTest >> testTolerance [
 	self assert: context tolerance closeTo: 0.5.
 
 ]
+
+{ #category : #'tests - text' }
+AeCairoContextTest >> testToyFontFace [
+	"Use `AeCairoContext>>selectFont:slant:weight:`, which cairo documentation considers 'toy API'."
+
+	| aSurface aContext |
+	aSurface := AeCairoImageSurface extent: 1 @ 1.
+	aContext := aSurface newContext.
+
+	aContext
+		selectFont: '@cairo:' "internal font for tests"
+			slant: AeCairoFontSlant italic
+			weight: AeCairoFontWeight bold.
+
+	self assert: aContext fontFace status isSuccess.
+
+	self
+		assert: aContext fontFace type
+		equals: AeCairoFontType toy.
+	self
+		assert: aContext fontFaceAdoptingType familyName
+		equals: '@cairo:'.
+	self
+		assert: aContext fontFaceAdoptingType slant
+		equals: AeCairoFontSlant italic.
+	self
+		assert: aContext fontFaceAdoptingType weight
+		equals: AeCairoFontWeight bold.
+
+	self
+		assert: aContext scaledFont unownedFontFace getHandle
+		equals: aContext fontFace getHandle
+]

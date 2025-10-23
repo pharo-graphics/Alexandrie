@@ -63,8 +63,38 @@ AeCairoFontType class >> enumDecl [
 	)
 ]
 
+{ #category : #'accessing enum camelcased' }
+AeCairoFontType class >> freetype [
+
+	^ CAIRO_FONT_TYPE_FT
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoFontType class >> quartz [
+
+	^ CAIRO_FONT_TYPE_QUARTZ
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoFontType class >> toy [
+
+	^ CAIRO_FONT_TYPE_TOY
+]
+
 { #category : #hook }
 AeCairoFontType class >> underlinedNamePrefix [
 	
-	^ 'CAIRO_FONT_'
+	^ 'CAIRO_FONT_TYPE_'
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoFontType class >> user [
+
+	^ CAIRO_FONT_TYPE_USER
+]
+
+{ #category : #'accessing enum camelcased' }
+AeCairoFontType class >> win32 [
+
+	^ CAIRO_FONT_TYPE_WIN32
 ]

@@ -683,6 +683,16 @@ AeCairoContext >> fontFace: aFontFace [
 			) )
 ]
 
+{ #category : #'as yet unclassified' }
+AeCairoContext >> fontFaceAdoptingType [
+	"Answer the current font face, adopted by the subclass of `AeCairoFontFace` hierarchy that more precisely represents its type."
+
+	| result |
+	result := self fontFace.
+	AeCairoFontFace adoptTypeSpecificSubclass: result.
+	^ result
+]
+
 { #category : #'API - text' }
 AeCairoContext >> fontMatrix: aMatrix [
 	"Sets the current font matrix to `aMatrix`. 
