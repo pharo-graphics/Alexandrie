@@ -103,12 +103,14 @@ BaselineOfAlexandrie >> downloadTestFonts [
 	self class environment
 		at: #AeDownloadedFont
 		ifPresent: [ :aeDownloadedFont |
-			aeDownloadedFont ensureAllDownloadedAt: aeFilesystemResources downloadedFontsDirectory ].
+			aeDownloadedFont ensureAllDownloadedAt:
+				aeFilesystemResources downloadedFontsDirectory ].
 
 	self class environment
 		at: #AeFontManager
 		ifPresent: [ :aeFontManager |
-			aeFontManager globalInstance scanDirectory: aeFilesystemResources fontsDirectory ]
+			aeFontManager current scanDirectory:
+				aeFilesystemResources fontsDirectory ]
 ]
 
 { #category : #actions }

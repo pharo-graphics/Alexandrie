@@ -12,13 +12,29 @@ Class {
 		'faceByEntryCache',
 		'defaultFace',
 		'defaultCodeFace',
-		'entriesByFamilyName'
+		'entriesByLowercaseFamilyName'
 	],
 	#classInstVars : [
-		'globalInstance'
+		'current'
 	],
 	#category : #'Alexandrie-FontManager'
 }
+
+{ #category : #accessing }
+AeFontManager class >> current [
+
+	^ current ifNil: [
+		current := self new.
+		current scanEmbeddedFonts.
+
+		current defaultFace:
+			(AeSourceSansPro_Regular firstFaceUsing: current freetypeLibrary).
+
+		current defaultCodeFace:
+			(AeSourceCodePro_Regular firstFaceUsing: current freetypeLibrary).
+
+		current ]
+]
 
 { #category : #accessing }
 AeFontManager class >> defaultCodeFontFamilyName [
@@ -32,33 +48,12 @@ AeFontManager class >> defaultFontFamilyName [
 
 { #category : #accessing }
 AeFontManager class >> globalInstance [
-	"
-	globalInstance := nil
-	"
 
-	^ globalInstance ifNil: [
-		| aFace |
-		globalInstance := self new
-			scanEmbeddedFonts;
-			yourself.
-		
-		aFace := globalInstance
-			detectFamilyName: AeSourceSansPro_Regular familyName
-			slant: AeFontSlant normal
-			weight: AeFontWeight normal
-			stretch: AeFontStretch normal
-			ifNone: [ self error: 'Shouldn''t happen' ].
-		globalInstance defaultFace: aFace.
+	self
+		deprecated: 'Please use current instead'
+		transformWith: '`@receiver globalInstance' -> '`@receiver current'.
 
-		aFace := globalInstance
-			detectFamilyName: AeSourceCodePro_Regular familyName
-			slant: AeFontSlant normal
-			weight: AeFontWeight normal
-			stretch: AeFontStretch normal
-			ifNone: [ self error: 'Shouldn''t happen' ].
-		globalInstance defaultCodeFace: aFace.
-
-		globalInstance ]
+	^ self current
 ]
 
 { #category : #'system startup' }
@@ -68,16 +63,26 @@ AeFontManager class >> initialize [
 ]
 
 { #category : #accessing }
-AeFontManager class >> resetGlobalInstance [
+AeFontManager class >> reset [
 	<script>
 
-	globalInstance := nil
+	current := nil
+]
+
+{ #category : #accessing }
+AeFontManager class >> resetGlobalInstance [
+
+	self
+		deprecated: 'Please use reset instead'
+		transformWith: '`@receiver resetGlobalInstance' -> '`@receiver reset'.
+
+	self reset
 ]
 
 { #category : #'system startup' }
 AeFontManager class >> startUp: isResuming [
 
-	isResuming ifTrue: [ self resetGlobalInstance ]
+	isResuming ifTrue: [ self reset ]
 ]
 
 { #category : #initialization }

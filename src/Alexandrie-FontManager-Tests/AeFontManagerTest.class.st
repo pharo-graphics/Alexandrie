@@ -8,6 +8,27 @@ Class {
 }
 
 { #category : #tests }
+AeFontManagerTest >> testCurrent [
+	"Warning: this test resets the singleton instance."
+	
+	| aManager |
+	AeFontManager reset.
+	aManager := AeFontManager current.
+	
+	self assert:
+		(aManager familyNames includes:
+			AeSourceSansPro_Regular familyName).
+
+	self
+		assert: aManager defaultFace familyName
+		equals: AeSourceSansPro_Regular familyName.
+
+	self
+		assert: aManager defaultCodeFace familyName
+		equals: AeSourceCodePro_Regular familyName
+]
+
+{ #category : #tests }
 AeFontManagerTest >> testDetectFamilyNameSlantWeightStretchIfNone [
 
 	| aManager aCairoFontFace aFace isAbsent |
@@ -68,18 +89,6 @@ AeFontManagerTest >> testFamilyNames [
 		assert: aManager familyNames asArray
 		equals: #('Cascadia Code' 'Inria Serif' 'Noto Color Emoji' 'Source Code Pro' 'Source Sans Pro')
 
-]
-
-{ #category : #tests }
-AeFontManagerTest >> testGlobalInstance [
-	"Warning: this test resets the singleton instance."
-	
-	| aManager |
-	AeFontManager resetGlobalInstance.
-	aManager := AeFontManager globalInstance.
-	
-	self assert: (aManager familyNames includes: AeSourceSansPro_Regular familyName).
-	self assert: aManager defaultFace familyName equals: AeSourceSansPro_Regular familyName.
 ]
 
 { #category : #tests }
