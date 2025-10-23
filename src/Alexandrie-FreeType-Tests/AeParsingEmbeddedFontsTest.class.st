@@ -2,25 +2,25 @@
 An AeEmbeddedFontFileTest is a test class for testing the behavior of AeEmbeddedFontFile
 "
 Class {
-	#name : #AeEmbeddedFontFileTest,
+	#name : #AeParsingEmbeddedFontsTest,
 	#superclass : #TestCase,
 	#category : #'Alexandrie-FreeType-Tests-Embedded'
 }
 
 { #category : #tests }
-AeEmbeddedFontFileTest >> testAllFaces [
+AeParsingEmbeddedFontsTest >> testAllFaces [
 
 	| lib |
-	lib := AeFTLibraryResource current library.
+	lib := AeFTLibrary newInitialized.
 	
-	self denyEmpty: (AeSourceSansPro_Regular allFacesUsing: lib)
+	self assert: (AeSourceSansPro_Regular allFacesUsing: lib) size equals: 1
 ]
 
 { #category : #tests }
-AeEmbeddedFontFileTest >> testFirstFace [
+AeParsingEmbeddedFontsTest >> testFirstFace [
 
 	| lib allFaces |
-	lib := AeFTLibraryResource current library.
+	lib := AeFTLibrary newInitialized.
 
 	allFaces := Array streamContents: [ :stream |
 		AeEmbeddedFontFile allSubclassesDo: [ :each | 
@@ -34,5 +34,5 @@ AeEmbeddedFontFileTest >> testFirstFace [
 
 			stream nextPut: aFTFace ] ].
 
-	self denyEmpty: allFaces
+	self assert: allFaces size equals: AeEmbeddedFontFile allSubclasses size
 ]

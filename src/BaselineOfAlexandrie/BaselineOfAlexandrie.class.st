@@ -20,10 +20,21 @@ BaselineOfAlexandrie >> baseline: spec [
 				package: 'Alexandrie-Base';
 				package: 'Alexandrie-Base-Tests';
 
-				package: 'Alexandrie-FreeType'
+				"Fonts package is independent from Freetype (e.g. it could be read by Harfbuzz)"
+				package: 'Alexandrie-Fonts'
 					with: [ spec requires: #('Alexandrie-Base') ];
+
+				"Source Pro family is sed by test s but also are the default font manager fonts"
+				package: 'Alexandrie-Fonts-SourcePro'
+					with: [ spec requires: #('Alexandrie-Fonts') ];
+
+				package: 'Alexandrie-FreeType'
+					with: [ spec requires: #('Alexandrie-Base' 'Alexandrie-Fonts') ];
 				package: 'Alexandrie-FreeType-Tests'
-					with: [ spec requires: #('Alexandrie-FreeType' 'Alexandrie-Base-Tests') ];
+					with: [ spec requires: #(
+						'Alexandrie-FreeType'
+						'Alexandrie-Base-Tests'
+						'Alexandrie-Fonts-SourcePro') ];
 
 				package: 'Alexandrie-Cairo'
 					with: [ spec requires: #('Alexandrie-FreeType') ];
@@ -41,7 +52,7 @@ BaselineOfAlexandrie >> baseline: spec [
 					with: [ spec requires: #('Alexandrie-Blur' 'Alexandrie-CairoFreetype') ];
 					
 				package: 'Alexandrie-FontManager'
-					with: [ spec requires: #('Alexandrie-FreeType') ];
+					with: [ spec requires: #('Alexandrie-FreeType' 'Alexandrie-Fonts-SourcePro') ];
 				package: 'Alexandrie-FontManager-Tests'
 					with: [ spec requires: #('Alexandrie-FontManager' 'Alexandrie-FreeType-Tests') ];
 
