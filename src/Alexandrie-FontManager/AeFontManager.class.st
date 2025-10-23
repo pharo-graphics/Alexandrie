@@ -12,53 +12,50 @@ Class {
 		'faceByEntryCache',
 		'defaultFace',
 		'defaultCodeFace',
-		'entriesByFamilyName'
+		'entriesByLowercaseFamilyName'
 	],
 	#classInstVars : [
-		'globalInstance'
+		'current'
 	],
 	#category : #'Alexandrie-FontManager'
 }
 
 { #category : #accessing }
+AeFontManager class >> current [
+
+	^ current ifNil: [
+		current := self new.
+		current scanEmbeddedFonts.
+
+		current defaultFace:
+			(AeSourceSansPro_Regular firstFaceUsing: current freetypeLibrary).
+
+		current defaultCodeFace:
+			(AeSourceCodePro_Regular firstFaceUsing: current freetypeLibrary).
+
+		current ]
+]
+
+{ #category : #accessing }
 AeFontManager class >> defaultCodeFontFamilyName [
-	^ self globalInstance defaultCodeFace familyName
+
+	^ self current defaultCodeFace familyName
 ]
 
 { #category : #accessing }
 AeFontManager class >> defaultFontFamilyName [
-	^ self globalInstance defaultFace familyName
+
+	^ self current defaultFace familyName
 ]
 
 { #category : #accessing }
 AeFontManager class >> globalInstance [
-	"
-	globalInstance := nil
-	"
 
-	^ globalInstance ifNil: [
-		| aFace |
-		globalInstance := self new
-			scanEmbeddedFonts;
-			yourself.
-		
-		aFace := globalInstance
-			detectFamilyName: AeSourceSansPro_Regular familyName
-			slant: AeFontSlant normal
-			weight: AeFontWeight normal
-			stretch: AeFontStretch normal
-			ifNone: [ self error: 'Shouldn''t happen' ].
-		globalInstance defaultFace: aFace.
+	self
+		deprecated: 'Please use current instead'
+		transformWith: '`@receiver globalInstance' -> '`@receiver current'.
 
-		aFace := globalInstance
-			detectFamilyName: AeSourceCodePro_Regular familyName
-			slant: AeFontSlant normal
-			weight: AeFontWeight normal
-			stretch: AeFontStretch normal
-			ifNone: [ self error: 'Shouldn''t happen' ].
-		globalInstance defaultCodeFace: aFace.
-
-		globalInstance ]
+	^ self current
 ]
 
 { #category : #'system startup' }
@@ -68,16 +65,26 @@ AeFontManager class >> initialize [
 ]
 
 { #category : #accessing }
-AeFontManager class >> resetGlobalInstance [
+AeFontManager class >> reset [
 	<script>
 
-	globalInstance := nil
+	current := nil
+]
+
+{ #category : #accessing }
+AeFontManager class >> resetGlobalInstance [
+
+	self
+		deprecated: 'Please use reset instead'
+		transformWith: '`@receiver resetGlobalInstance' -> '`@receiver reset'.
+
+	self reset
 ]
 
 { #category : #'system startup' }
 AeFontManager class >> startUp: isResuming [
 
-	isResuming ifTrue: [ self resetGlobalInstance ]
+	isResuming ifTrue: [ self reset ]
 ]
 
 { #category : #initialization }
@@ -116,7 +123,7 @@ AeFontManager >> defaultFace: aFTFace [
 AeFontManager >> detectFamilyName: aFamilyName slant: aSlant weight: aWeight stretch: aStretch ifNone: absentBlock [
 
 	| entriesByAttributes entry |
-	entriesByAttributes := entriesByFamilyName
+	entriesByAttributes := entriesByLowercaseFamilyName
 		at: aFamilyName asLowercase
 		ifAbsent: [ ^ absentBlock value ].
 
@@ -130,7 +137,7 @@ AeFontManager >> detectFamilyName: aFamilyName slant: aSlant weight: aWeight str
 { #category : #accessing }
 AeFontManager >> entriesByFamilyName [
 
-	^ entriesByFamilyName
+	^ entriesByLowercaseFamilyName
 ]
 
 { #category : #accessing }
@@ -151,7 +158,7 @@ AeFontManager >> faceEntries [
 
 	| result |
 	result := Set new.
-	entriesByFamilyName valuesDo: [ :each |
+	entriesByLowercaseFamilyName valuesDo: [ :each |
 		result addAll: each values ].
 	^ result
 ]
@@ -169,7 +176,8 @@ AeFontManager >> familyNames [
 
 	| result |
 	result := SortedCollection new.
-	entriesByFamilyName valuesDo: [ :each |
+	"Take the family name from the face, as the key is lowercased"
+	entriesByLowercaseFamilyName valuesDo: [ :each |
 		result add: each anyOne familyName ].
 	^ result
 ]
@@ -184,7 +192,7 @@ AeFontManager >> freetypeLibrary [
 { #category : #testing }
 AeFontManager >> includesFamilyName: aString [
 
-	^ entriesByFamilyName includesKey: aString asLowercase
+	^ entriesByLowercaseFamilyName includesKey: aString asLowercase
 ]
 
 { #category : #initialization }
@@ -212,7 +220,7 @@ AeFontManager >> registerFace: aFace entry: aFaceEntry [
 			ifFalse: [ AeFontSlant normal ]).
 	aFaceEntry stretch: AeFontStretch normal.
 
-	entriesByAttributes := entriesByFamilyName
+	entriesByAttributes := entriesByLowercaseFamilyName
 		at: aFaceEntry familyName asLowercase
 		ifAbsentPut: [ Dictionary new ].
 
@@ -253,7 +261,7 @@ AeFontManager >> registerFacesOnMemory: aByteArray [
 AeFontManager >> reset [
 
 	"Filesystem dependent"
-	entriesByFamilyName := Dictionary new.
+	entriesByLowercaseFamilyName := Dictionary new.
 
 	"Session dependents"
 	session := Smalltalk session.
@@ -265,7 +273,7 @@ AeFontManager >> reset [
 		factory: [ :anEntry |
 			| fontFace |
 "			fontFace := anEntry newHbFont."
-			fontFace := anEntry newFaceWith: freetypeLibrary.
+			fontFace := anEntry newFTFaceWith: freetypeLibrary.
 "			fontFace newCairoFontFace" ];
 		yourself
 ]

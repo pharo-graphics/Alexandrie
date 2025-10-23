@@ -97,7 +97,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 Class {
 	#name : #'AeSourceSansPro_Italic',
 	#superclass : #AeEmbeddedFontFile,
-	#category : #'Alexandrie-FreeType-Embedded'
+	#category : #'Alexandrie-Fonts-SourcePro'
 }
 
 { #category : #accessing }
