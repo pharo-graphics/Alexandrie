@@ -13,7 +13,7 @@ AeParsingEmbeddedFontsTest >> testAllFaces [
 	| lib |
 	lib := AeFTLibrary newInitialized.
 	
-	self assert: (AeSourceSansPro_Regular allFacesUsing: lib) size equals: 1
+	self assert: (AeSourceSansProRegular allFacesUsing: lib) size equals: 1
 ]
 
 { #category : #tests }

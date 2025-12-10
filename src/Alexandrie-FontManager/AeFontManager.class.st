@@ -28,10 +28,10 @@ AeFontManager class >> current [
 		current scanEmbeddedFonts.
 
 		current defaultFace:
-			(AeSourceSansPro_Regular firstFaceUsing: current freetypeLibrary).
+			(AeSourceSansProRegular firstFaceUsing: current freetypeLibrary).
 
 		current defaultCodeFace:
-			(AeSourceCodePro_Regular firstFaceUsing: current freetypeLibrary).
+			(AeSourceCodeProRegular firstFaceUsing: current freetypeLibrary).
 
 		current ]
 ]

@@ -17,15 +17,15 @@ AeFontManagerTest >> testCurrent [
 	
 	self assert:
 		(aManager familyNames includes:
-			AeSourceSansPro_Regular familyName).
+			AeSourceSansProRegular familyName).
 
 	self
 		assert: aManager defaultFace familyName
-		equals: AeSourceSansPro_Regular familyName.
+		equals: AeSourceSansProRegular familyName.
 
 	self
 		assert: aManager defaultCodeFace familyName
-		equals: AeSourceCodePro_Regular familyName
+		equals: AeSourceCodeProRegular familyName
 ]
 
 { #category : #tests }
