@@ -344,6 +344,29 @@ AeCairoImageSurfaceTest >> testReadNonASCIIFilenamePNG [
 ]
 
 { #category : #tests }
+AeCairoImageSurfaceTest >> testReadPNGFromStream [
+
+	AeFilesystemResources removeIconPNG binaryReadStreamDo: [ :stream |
+		surface := AeCairoImageSurface newFromPngOn: stream ].
+
+	self assert: surface status isSuccess.
+	self assert: surface extent equals: 16 @ 16
+]
+
+{ #category : #tests }
+AeCairoImageSurfaceTest >> testReadPNGFromStreamError [
+
+	| pngBytes |
+	pngBytes := AeFilesystemResources removeIconPNG
+		binaryReadStreamDo: [ :stream | stream upToEnd ].
+	pngBytes := pngBytes allButLast: 10.
+
+	self
+		should: [ AeCairoImageSurface newFromPngOn: pngBytes readStream ]
+		raise: AeCairoStatusError
+]
+
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testStrideForWidthFormat [
 
 	self
