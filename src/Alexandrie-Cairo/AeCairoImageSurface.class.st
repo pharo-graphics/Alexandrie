@@ -97,8 +97,8 @@ AeCairoImageSurface class >> newFromPngFileAt: aFileReference [
 	| encodedPath newInstance |
 	encodedPath := aFileReference pathString nullTerminatedEncodeWith: #utf8.
 	newInstance := self unownedNewFromPngFileAt: encodedPath.
-	newInstance status ensureIsSuccess.
 	newInstance autoRelease.
+	newInstance status ensureIsSuccess.
 	^ newInstance
 ]
 
