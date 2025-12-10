@@ -120,14 +120,6 @@ AeCairoImageSurfaceTest >> testConvertZeroWidthAsFormARGB32 [
 ]
 
 { #category : #tests }
-AeCairoImageSurfaceTest >> testErrorReadingPNG [
-
-	self
-		should: [ AeCairoImageSurface newFromPngFileAt: 'unexisting_png' asFileReference ]
-		raise: AeCairoStatusError
-]
-
-{ #category : #tests }
 AeCairoImageSurfaceTest >> testExtent [
 
 	surface := AeCairoImageSurface extent: 100 @ 50.
@@ -336,11 +328,43 @@ AeCairoImageSurfaceTest >> testPremultipliedAlphaConversionFromForm [
 ]
 
 { #category : #tests }
-AeCairoImageSurfaceTest >> testReadNonASCIIFilenamePNG [
+AeCairoImageSurfaceTest >> testReadPNGFromNonASCIIFilename [
 
-	surface := AeCairoImageSurface newFromPngFileAt: AeFilesystemResources testsDirectory / 'import' / 'utf8-logō.png'.
+	surface := AeCairoImageSurface newFromPngFileAt:
+		AeFilesystemResources testsDirectory / 'import' / 'utf8-logō.png'.
 
 	self assert: surface extent equals: 100 @ 34
+]
+
+{ #category : #tests }
+AeCairoImageSurfaceTest >> testReadPNGFromStream [
+
+	AeFilesystemResources removeIconPNG binaryReadStreamDo: [ :stream |
+		surface := AeCairoImageSurface newFromPngOn: stream ].
+
+	self assert: surface status isSuccess.
+	self assert: surface extent equals: 16 @ 16
+]
+
+{ #category : #tests }
+AeCairoImageSurfaceTest >> testReadPNGFromStreamError [
+
+	| pngBytes |
+	pngBytes := AeFilesystemResources removeIconPNG
+		binaryReadStreamDo: [ :stream | stream upToEnd ].
+	pngBytes := pngBytes allButLast: 10.
+
+	self
+		should: [ AeCairoImageSurface newFromPngOn: pngBytes readStream ]
+		raise: AeCairoStatusError
+]
+
+{ #category : #tests }
+AeCairoImageSurfaceTest >> testReadPNGFromUnexistingFileError [
+
+	self
+		should: [ AeCairoImageSurface newFromPngFileAt: 'unexisting_png' asFileReference ]
+		raise: AeCairoStatusError
 ]
 
 { #category : #tests }
@@ -369,7 +393,7 @@ AeCairoImageSurfaceTest >> testWidth [
 ]
 
 { #category : #tests }
-AeCairoImageSurfaceTest >> testWriteNonASCIIFilenamePNG [
+AeCairoImageSurfaceTest >> testWritePNGOnNonASCIIFilename [
 
 	| aPNGFileReference |
 	surface := AeCairoImageSurface extent: 2 @ 3.

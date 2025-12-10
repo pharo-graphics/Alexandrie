@@ -97,8 +97,23 @@ AeCairoImageSurface class >> newFromPngFileAt: aFileReference [
 	| encodedPath newInstance |
 	encodedPath := aFileReference pathString nullTerminatedEncodeWith: #utf8.
 	newInstance := self unownedNewFromPngFileAt: encodedPath.
-	newInstance status ensureIsSuccess.
 	newInstance autoRelease.
+	newInstance status ensureIsSuccess.
+	^ newInstance
+]
+
+{ #category : #'instance creation' }
+AeCairoImageSurface class >> newFromPngOn: aReadStream [
+	"Answer a new image surface with the contents of a PNG binary read stream. 
+	
+	Note: this can be slow since cairo will parse the stream by calling multiple times a `FFICallback` which is slow.
+	
+	Raise `AeCairoStatusError` on failure."
+
+	| newInstance |
+	newInstance := self unownedNewFromPngOn: aReadStream.
+	newInstance autoRelease.
+	newInstance status ensureIsSuccess.
 	^ newInstance
 ]
 
@@ -152,6 +167,19 @@ AeCairoImageSurface class >> unownedNewForData: aData format: aFormat width: aWi
 ]
 
 { #category : #'instance creation' }
+AeCairoImageSurface class >> unownedNewFromPng: closure callback: readCallback [
+	"Return a new instance initialized with the contents of the PNG data read incrementally via the readCallback function, or a nil surface if any error occurred. A nil surface can be checked for with `cairo_surface_status()`.
+
+	See: https://www.cairographics.org/manual/cairo-PNG-Support.html#cairo-image-surface-create-from-png-stream"
+
+	^ self ffiCall: #(
+		AeCairoImageSurface
+		cairo_image_surface_create_from_png_stream (
+			FFICallback readCallback,
+			void *closure) )
+]
+
+{ #category : #'instance creation' }
 AeCairoImageSurface class >> unownedNewFromPngFileAt: pathUTF8Encoded [
 	"Return a new instance initialized with the contents of the PNG file, or a nil surface if any error occurred. A nil surface can be checked for with `cairo_surface_status()`.
 
@@ -161,6 +189,26 @@ AeCairoImageSurface class >> unownedNewFromPngFileAt: pathUTF8Encoded [
 		AeCairoImageSurface
 		cairo_image_surface_create_from_png (
 			const char * pathUTF8Encoded ) )
+]
+
+{ #category : #'instance creation' }
+AeCairoImageSurface class >> unownedNewFromPngOn: aReadStream [
+	"Return a new instance initialized with the contents of the PNG data read stream."
+
+	| readCallback |
+
+	readCallback := 
+		FFICallback
+			signature: #(AeCairoStatus (void ** closure, char ** buffer, uint size))
+			block: [ :closure :buffer :size |
+				| bytes |
+				bytes := aReadStream next: size.
+				LibC memCopy: bytes to: buffer size: size.
+				bytes size = size
+					ifFalse: [ AeCairoStatus readError ]
+					ifTrue: [ AeCairoStatus success ] ].
+
+	^ self unownedNewFromPng: nil callback: readCallback
 ]
 
 { #category : #'instance creation' }

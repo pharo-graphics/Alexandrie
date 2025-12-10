@@ -74,6 +74,12 @@ AeEnumeration class >> underlinedNamePrefix [
 	^ self subclassResponsibility
 ]
 
+{ #category : #converting }
+AeEnumeration >> asInteger [
+
+	^ value asInteger
+]
+
 { #category : #accessing }
 AeEnumeration >> camelCaseName [
 
