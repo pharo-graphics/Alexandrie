@@ -120,14 +120,6 @@ AeCairoImageSurfaceTest >> testConvertZeroWidthAsFormARGB32 [
 ]
 
 { #category : #tests }
-AeCairoImageSurfaceTest >> testErrorReadingPNG [
-
-	self
-		should: [ AeCairoImageSurface newFromPngFileAt: 'unexisting_png' asFileReference ]
-		raise: AeCairoStatusError
-]
-
-{ #category : #tests }
 AeCairoImageSurfaceTest >> testExtent [
 
 	surface := AeCairoImageSurface extent: 100 @ 50.
@@ -336,9 +328,10 @@ AeCairoImageSurfaceTest >> testPremultipliedAlphaConversionFromForm [
 ]
 
 { #category : #tests }
-AeCairoImageSurfaceTest >> testReadNonASCIIFilenamePNG [
+AeCairoImageSurfaceTest >> testReadPNGFromNonASCIIFilename [
 
-	surface := AeCairoImageSurface newFromPngFileAt: AeFilesystemResources testsDirectory / 'import' / 'utf8-logō.png'.
+	surface := AeCairoImageSurface newFromPngFileAt:
+		AeFilesystemResources testsDirectory / 'import' / 'utf8-logō.png'.
 
 	self assert: surface extent equals: 100 @ 34
 ]
@@ -363,6 +356,14 @@ AeCairoImageSurfaceTest >> testReadPNGFromStreamError [
 
 	self
 		should: [ AeCairoImageSurface newFromPngOn: pngBytes readStream ]
+		raise: AeCairoStatusError
+]
+
+{ #category : #tests }
+AeCairoImageSurfaceTest >> testReadPNGFromUnexistingFileError [
+
+	self
+		should: [ AeCairoImageSurface newFromPngFileAt: 'unexisting_png' asFileReference ]
 		raise: AeCairoStatusError
 ]
 
@@ -392,7 +393,7 @@ AeCairoImageSurfaceTest >> testWidth [
 ]
 
 { #category : #tests }
-AeCairoImageSurfaceTest >> testWriteNonASCIIFilenamePNG [
+AeCairoImageSurfaceTest >> testWritePNGOnNonASCIIFilename [
 
 	| aPNGFileReference |
 	surface := AeCairoImageSurface extent: 2 @ 3.
