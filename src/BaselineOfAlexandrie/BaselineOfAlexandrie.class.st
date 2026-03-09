@@ -77,7 +77,6 @@ BaselineOfAlexandrie >> baseline: spec [
 			spec
 				group: 'ffi-minimal' with: #('Alexandrie-HarfbuzzCairo' 'Alexandrie-CairoFreetype');
 				group: 'production' with: #(
-					'Alexandrie-NewTools'
 					'Alexandrie-Harfbuzz'
 					'Alexandrie-Blur'
 					'Alexandrie-Canvas'
