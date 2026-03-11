@@ -236,6 +236,7 @@ AeCairoSurface >> newContextDo: aUnaryBlock [
 
 	| tmpContext |
 	tmpContext := AeCairoContext unownedNewFor: self.
+	tmpContext initializeWith: self.
 
 	[ aUnaryBlock value: tmpContext ] ensure: [ tmpContext externallyFree ]
 ]
