@@ -10,6 +10,19 @@ Class {
 	#category : #'Alexandrie-Harfbuzz-Library'
 }
 
+{ #category : #versions }
+AeHarfbuzzLibrary >> isAtLeastVersionMajor: major minor: minor micro: micro [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-version.html#hb-version-atleast"
+
+	^ self ffiCall: #(
+		Boolean
+		hb_version_atleast (
+			uint major,
+			uint minor,
+			uint micro)
+		)
+]
+
 { #category : #'accessing - platform' }
 AeHarfbuzzLibrary >> macLibraryName [
 
