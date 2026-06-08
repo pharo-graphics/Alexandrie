@@ -449,6 +449,19 @@ A call to `cairo_surface_flush()` is required before accessing the pixel data to
 	^ self ffiCall: #( uchar* cairo_image_surface_get_data ( self ) )
 ]
 
+{ #category : #copying }
+AeCairoImageSurface >> duplicate [
+	
+	| newSurface |
+	newSurface := self class extent: self extent format: self format.
+	newSurface newContextDo: [ :ctx | 
+		ctx sourceSurface: self.
+		ctx setOperatorSource.
+		ctx paint ].
+	
+	^newSurface
+]
+
 { #category : #API }
 AeCairoImageSurface >> extent [
 
