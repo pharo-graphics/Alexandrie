@@ -120,6 +120,31 @@ AeCairoImageSurfaceTest >> testConvertZeroWidthAsFormARGB32 [
 ]
 
 { #category : #tests }
+AeCairoImageSurfaceTest >> testDuplicate [
+
+	| duplicatedSurface |
+	surface := AeCairoImageSurface
+		           extent: 16 @ 20
+		           format: AeCairoSurfaceFormat rgb24.
+	surface deviceScale: 1.2 @ 3.4.
+	surface deviceOffset: 5.6 @ 7.8.
+
+	duplicatedSurface := surface duplicate.
+
+	self
+		assert: duplicatedSurface format
+		equals: AeCairoSurfaceFormat rgb24.
+	self assert: duplicatedSurface extent equals: 16 @ 20.
+	self assert: duplicatedSurface status isSuccess.
+	
+	self deny: duplicatedSurface getHandle equals: surface getHandle.
+	
+	"The device scale and offset are copied"
+	self assert: duplicatedSurface deviceScale equals: 1.2 @ 3.4.
+	self assert: duplicatedSurface deviceOffset equals: 5.6 @ 7.8.
+]
+
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testExtent [
 
 	surface := AeCairoImageSurface extent: 100 @ 50.
@@ -220,17 +245,24 @@ AeCairoImageSurfaceTest >> testNewSimilarImageFormatWidthHeight [
 		           extent: 100 @ 50
 		           format: AeCairoSurfaceFormat argb32.
 
-	aSimilarSurface := surface
-		                   newSimilarImageFormat:
-		                   AeCairoSurfaceFormat a8
-		                   width: 16
-		                   height: 20.
+	surface deviceScale: 1.2 @ 3.4.
+	surface deviceOffset: 5.6 @ 7.8.
+
+	aSimilarSurface :=
+		surface
+			newSimilarImageFormat: AeCairoSurfaceFormat a8
+			width: 16
+			height: 20.
 
 	self
 		assert: aSimilarSurface format
 		equals: AeCairoSurfaceFormat a8.
 	self assert: aSimilarSurface extent equals: 16 @ 20.
 	self assert: aSimilarSurface status isSuccess.
+	
+	"Warning! The device scale and offset are not copied"
+	self assert: aSimilarSurface deviceScale equals: 1.0 @ 1.0.
+	self assert: aSimilarSurface deviceOffset equals: 0.0 @ 0.0
 ]
 
 { #category : #tests }
