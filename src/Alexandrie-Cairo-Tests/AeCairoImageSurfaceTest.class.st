@@ -120,6 +120,31 @@ AeCairoImageSurfaceTest >> testConvertZeroWidthAsFormARGB32 [
 ]
 
 { #category : #tests }
+AeCairoImageSurfaceTest >> testDuplicate [
+
+	| duplicatedSurface |
+	surface := AeCairoImageSurface
+		           extent: 16 @ 20
+		           format: AeCairoSurfaceFormat rgb24.
+	surface deviceScale: 1.2 @ 3.4.
+	surface deviceOffset: 5.6 @ 7.8.
+
+	duplicatedSurface := surface duplicate.
+
+	self
+		assert: duplicatedSurface format
+		equals: AeCairoSurfaceFormat rgb24.
+	self assert: duplicatedSurface extent equals: 16 @ 20.
+	self assert: duplicatedSurface status isSuccess.
+	
+	self deny: duplicatedSurface getHandle equals: surface getHandle.
+	
+	"The device scale and offset are copied"
+	self assert: duplicatedSurface deviceScale equals: 1.2 @ 3.4.
+	self assert: duplicatedSurface deviceOffset equals: 5.6 @ 7.8.
+]
+
+{ #category : #tests }
 AeCairoImageSurfaceTest >> testExtent [
 
 	surface := AeCairoImageSurface extent: 100 @ 50.

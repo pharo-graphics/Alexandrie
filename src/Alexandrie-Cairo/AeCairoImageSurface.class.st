@@ -451,15 +451,20 @@ A call to `cairo_surface_flush()` is required before accessing the pixel data to
 
 { #category : #copying }
 AeCairoImageSurface >> duplicate [
-	
+	"Answer a new surface that has same extent, format, device scale and offset, and same pixels (without sharing memory)."
+
 	| newSurface |
 	newSurface := self class extent: self extent format: self format.
-	newSurface newContextDo: [ :ctx | 
+	newSurface
+		deviceOffset: self deviceOffset;
+		deviceScale: self deviceScale.
+
+	newSurface newContextDo: [ :ctx |
 		ctx sourceSurface: self.
 		ctx setOperatorSource.
 		ctx paint ].
-	
-	^newSurface
+
+	^ newSurface
 ]
 
 { #category : #API }
