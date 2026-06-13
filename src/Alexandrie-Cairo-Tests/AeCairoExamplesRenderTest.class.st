@@ -249,6 +249,34 @@ AeCairoExamplesRenderTest >> surfaceWithDeviceScale [
 ]
 
 { #category : #tests }
+AeCairoExamplesRenderTest >> surfaceWithDeviceScaleAndOffsetDuplicated [
+
+	| aSurface duplicate |
+	aSurface := AeCairoImageSurface
+		extent: 16 @ 16
+		format: AeCairoSurfaceFormat argb32.
+
+	aSurface deviceScale: 3 @ 5.
+	aSurface deviceOffset: 2 @ 1.
+
+	duplicate := aSurface duplicate.
+	self deny: duplicate getHandle equals: aSurface getHandle.
+
+	duplicate newContext
+		" clear background "
+		sourceColor: Color yellow;
+		paint;
+
+		" mark 0@0 "
+		sourceColor: Color blue;
+		rectangleTo: 2 asPoint;
+		fill.
+
+	^ duplicate
+
+]
+
+{ #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithDottedCircle [
 	"Cairo allows drawing strokes with dotted borders (either with circular dots, or squared dots).
 	The trick is setting dash segments of length 0.0, followed by a non-zero segment.
