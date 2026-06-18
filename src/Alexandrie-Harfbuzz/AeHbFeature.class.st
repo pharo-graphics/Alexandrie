@@ -13,7 +13,7 @@ See: https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-feature-t
 "
 Class {
 	#name : #AeHbFeature,
-	#superclass : #FFIExternalStructure,
+	#superclass : #FFIStructure,
 	#traits : 'AeTHarfbuzzLibrary',
 	#classTraits : 'AeTHarfbuzzLibrary classTrait',
 	#classVars : [

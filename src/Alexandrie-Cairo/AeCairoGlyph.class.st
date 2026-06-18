@@ -7,7 +7,7 @@ See: https://www.cairographics.org/manual/cairo-text.html#cairo-glyph-t
 "
 Class {
 	#name : #AeCairoGlyph,
-	#superclass : #FFIExternalStructure,
+	#superclass : #FFIStructure,
 	#classVars : [
 		'OFFSET_INDEX',
 		'OFFSET_X',

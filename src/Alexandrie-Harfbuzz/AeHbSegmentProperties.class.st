@@ -7,7 +7,7 @@ See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-segment-properties-t
 "
 Class {
 	#name : #AeHbSegmentProperties,
-	#superclass : #FFIExternalStructure,
+	#superclass : #FFIStructure,
 	#classVars : [
 		'OFFSET_DIRECTION',
 		'OFFSET_LANGUAGEADDRESS',

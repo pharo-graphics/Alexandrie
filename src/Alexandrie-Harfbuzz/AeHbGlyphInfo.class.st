@@ -12,7 +12,7 @@ See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-glyph-info-t
 "
 Class {
 	#name : #AeHbGlyphInfo,
-	#superclass : #FFIExternalStructure,
+	#superclass : #FFIStructure,
 	#classVars : [
 		'OFFSET_CLUSTER',
 		'OFFSET_CODEPOINT',

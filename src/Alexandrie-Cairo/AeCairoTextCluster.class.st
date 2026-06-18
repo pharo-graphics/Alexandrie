@@ -9,7 +9,7 @@ See: https://www.cairographics.org/manual/cairo-text.html#cairo-text-cluster-t
 "
 Class {
 	#name : #AeCairoTextCluster,
-	#superclass : #FFIExternalStructure,
+	#superclass : #FFIStructure,
 	#classVars : [
 		'OFFSET_BYTECOUNT',
 		'OFFSET_GLYPHCOUNT'

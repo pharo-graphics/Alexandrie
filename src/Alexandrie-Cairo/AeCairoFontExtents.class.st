@@ -7,7 +7,7 @@ See: https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-f
 "
 Class {
 	#name : #AeCairoFontExtents,
-	#superclass : #FFIExternalStructure,
+	#superclass : #FFIStructure,
 	#classVars : [
 		'OFFSET_ASCENT',
 		'OFFSET_DESCENT',

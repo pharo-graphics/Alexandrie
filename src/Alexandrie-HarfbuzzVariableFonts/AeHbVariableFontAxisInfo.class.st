@@ -7,7 +7,7 @@ See: https://harfbuzz.github.io/harfbuzz-hb-ot-var.html#hb-ot-var-axis-info-t
 "
 Class {
 	#name : #AeHbVariableFontAxisInfo,
-	#superclass : #FFIExternalStructure,
+	#superclass : #FFIStructure,
 	#classVars : [
 		'OFFSET_AXISINDEX',
 		'OFFSET_DEFAULTVALUE',

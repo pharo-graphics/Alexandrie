@@ -35,7 +35,7 @@ getMatrixInto: aCairoMatrix
 			AeCairoMatrix *aCairoMatrix ) )
 ```
 Note:
-- The argument is a `AeCairoMatrix` (subclass of `FFIExternalStructure`), and the function will receive its address to use at output. The selector includes "Into" word in these cases.
+- The argument is a `AeCairoMatrix` (subclass of `FFIStructure`), and the function will receive its address to use at output. The selector includes "Into" word in these cases.
 - The indentation in `ffiCall:`'s argument is used when several arguments are passed.
 
 ### Ownership transferred to caller

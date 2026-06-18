@@ -9,7 +9,7 @@ See: https://freetype.org/freetype2/docs/reference/ft2-base_interface.html#ft_fa
 "
 Class {
 	#name : #AeFTFace,
-	#superclass : #FFIExternalStructure,
+	#superclass : #FFIStructure,
 	#traits : 'AeTFreeTypeLibrary + AeTExternalFree',
 	#classTraits : 'AeTFreeTypeLibrary classTrait + AeTExternalFree classTrait',
 	#instVars : [
