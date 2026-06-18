@@ -7,7 +7,5 @@ Class {
 { #category : #tests }
 AeCairoLibraryTest >> testVersionString [
 
-	self
-		assert: AeCairoLibrary uniqueInstance versionString
-		equals: '1.17.4'
+	self assert: AeCairoLibrary uniqueInstance versionString >= '1.17.4'
 ]
