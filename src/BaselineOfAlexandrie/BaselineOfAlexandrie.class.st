@@ -168,8 +168,8 @@ BaselineOfAlexandrie >> stdoutLibraryVersions [
 			[ (aeHarfbuzzLibrary := self class environment at: #AeHarfbuzzLibrary) uniqueInstance versionString ].
 			[ aeHarfbuzzLibrary uniqueInstance libraryName ]}.
 		'SDL2:     '. {
-			[ SDL2 version versionString ].
-			[ SDL2Library uniqueInstance libraryName ]}.
+			[ (self class environment at: #SDL2) version versionString ].
+			[ (self class environment at: #SDL2Library) uniqueInstance libraryName ]}.
 
 	} 	pairsDo: [ :label :blockArray |
 		Stdio stdout << label.
