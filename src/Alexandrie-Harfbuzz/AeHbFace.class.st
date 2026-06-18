@@ -203,7 +203,7 @@ AeHbFace >> openTypeFeatureTags [
 
 	| featureTags featureTagsSize features |
 	self flag: #todo. "Iteration does not work well (try reducing the array's size)"
-	featureTags := FFIExternalArray newType: FFIUInt32 size: 5000.
+	featureTags := FFIArray newType: FFIUInt32 size: 5000.
 	featureTagsSize := FFIUInt32 newBuffer.
 	featureTagsSize unsignedLongAt: 1 put: featureTags size.
 	features := OrderedCollection new.

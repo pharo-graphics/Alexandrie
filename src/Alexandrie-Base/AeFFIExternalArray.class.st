@@ -3,7 +3,7 @@ I'm an external array specialized for Alexandrie's FFI bindings.
 "
 Class {
 	#name : #AeFFIExternalArray,
-	#superclass : #FFIExternalArray,
+	#superclass : #FFIArray,
 	#traits : 'AeTExternalFree',
 	#classTraits : 'AeTExternalFree classTrait',
 	#classInstVars : [

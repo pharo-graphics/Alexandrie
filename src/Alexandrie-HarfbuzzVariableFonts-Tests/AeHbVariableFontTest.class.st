@@ -80,7 +80,7 @@ AeHbVariableFontTest >> test06SetMultipleVariations [
 	| hbFont variations |
 	hbFont := hbFace newHbFont.
 
-	variations := FFIExternalArray
+	variations := FFIArray
 		newType: AeHbVariableFontVariation
 		size: 1.
 	variations first
@@ -98,7 +98,7 @@ AeHbVariableFontTest >> test07ReadVariationFromString [
 	| hbFont variations success hbFontVariation |
 	hbFont := hbFace newHbFont.
 
-	variations := FFIExternalArray
+	variations := FFIArray
 		newType: AeHbVariableFontVariation
 		size: 1.
 	hbFontVariation := variations first.
