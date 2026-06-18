@@ -76,6 +76,12 @@ BaselineOfAlexandrie >> baseline: spec [
 
 			spec
 				group: 'ffi-minimal' with: #('Alexandrie-HarfbuzzCairo' 'Alexandrie-CairoFreetype');
+				group: 'production' with: #(
+					'Alexandrie-Harfbuzz'
+					'Alexandrie-Blur'
+					'Alexandrie-Canvas'
+					'Alexandrie-CairoFreetype'
+					'Alexandrie-FontManager');
 				group: 'development' with: #(
 					'Alexandrie-NewTools-Tests'
 					'Alexandrie-Harfbuzz-Tests'
