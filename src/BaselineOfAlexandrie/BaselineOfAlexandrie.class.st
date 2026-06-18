@@ -14,7 +14,7 @@ BaselineOfAlexandrie >> baseline: spec [
 	spec
 		for: #common
 		do: [
-			spec postLoadDoIt: #'postload:package:'.
+			spec postLoadDoIt: #postLoad.
 
 			spec
 				package: 'Alexandrie-Base';
@@ -112,21 +112,33 @@ BaselineOfAlexandrie >> downloadTestFonts [
 ]
 
 { #category : #actions }
-BaselineOfAlexandrie >> postload: loader package: packageSpec [
+BaselineOfAlexandrie >> initializeAeCanvas [
+	"Initialize canvas. Assumes cairo enumerations are already initialized.
+	Note: The canvas class is not loaded on ffi-minimal load group."
 
-	"Ignore pre and post loads if already executed"
+	(self class environment at: #AeCanvas ifPresent: #initializeFontOptions)
+]
+
+{ #category : #script }
+BaselineOfAlexandrie >> initializeEnumerations [
+	"Initialize all our enumerations (those that implement #enumDecl)"
+
+	(self class environment at: #AeEnumeration)
+		allSubclassesDo: [ :each |
+			(each classSide includesSelector: #enumDecl)
+				ifTrue: [ each initializeEnumeration ] ]
+]
+
+{ #category : #actions }
+BaselineOfAlexandrie >> postLoad [
+
+	"Ignore if already executed"
 	Initialized ifNotNil: [ ^ self ].
 
-	"Re-initialize enumerations as they is executed before the subclasses
-	are loaded since they are packaged separately.
-	Additionally: reference the class indirectly to avoid NewUndeclaredWarning."
-	(self class environment at: #AeEnumeration) initialize.
-
-	"This initialization depends on cairo enumerations, that are now ready.
-	The class is not loaded on ffi-minimal load group."
-	(self class environment at: #AeCanvas ifPresent: #initializeFontOptions).
-
-	self downloadTestFonts; stdoutLibraryVersions.
+	self initializeEnumerations.
+	self initializeAeCanvas.
+	self downloadTestFonts.
+	self stdoutLibraryVersions.
 
 	Initialized := true
 ]

@@ -30,17 +30,6 @@ AeEnumeration class >> camelCaseNameFor: aUnderlinedName [
 	^ camelCaseName uncapitalized
 ]
 
-{ #category : #'class initialization' }
-AeEnumeration class >> initialize [
-	"We take the responsibility of initializing the whole hierarchy.
-	Why? To avoid duplication of initialize on each subclass.
-	However, we have to only initialize subclasses that define #enumDecl on classSide."
-
-	self allSubclassesDo: [ :each |
-		(each classSide includesSelector: #enumDecl)
-			ifTrue: [ each initializeEnumeration ] ]
-]
-
 { #category : #accessing }
 AeEnumeration class >> underlineToCamelCaseDictionary [
 	"
