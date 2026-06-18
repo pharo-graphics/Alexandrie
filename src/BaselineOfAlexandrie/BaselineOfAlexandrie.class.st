@@ -147,7 +147,6 @@ BaselineOfAlexandrie >> postLoad [
 BaselineOfAlexandrie >> stdoutLibraryVersions [
 	<script: 'self new stdoutLibraryVersions'>
 
-	| aeCairoLibrary aeFTLibrary aeHarfbuzzLibrary |
 	"Do this class name trick to avoid loading warnings such as: 
 	NewUndeclaredWarning: BaselineOfAlexandrie>>stdoutLibraryVersions (AeCairoLibrary is Undeclared).
 	
@@ -159,14 +158,14 @@ BaselineOfAlexandrie >> stdoutLibraryVersions [
 		<< '-----------------------------'; lf.
 
 	{	'Cairo:    '. {
-			[ (aeCairoLibrary := self class environment at: #AeCairoLibrary) uniqueInstance versionString ].
-			[ aeCairoLibrary uniqueInstance libraryName ]}.
+			[ (self class environment at: #AeCairoLibrary) uniqueInstance versionString ].
+			[ (self class environment at: #AeCairoLibrary) uniqueInstance libraryName ]}.
 		'Freetype: '. {
-			[ (aeFTLibrary := self class environment at: #AeFTLibrary) newInitialized versionString ].
-			[ aeFTLibrary ffiLibrary uniqueInstance libraryName ]}.
+			[ (self class environment at: #AeFTLibrary) newInitialized versionString ].
+			[ (self class environment at: #AeFTLibrary) ffiLibrary uniqueInstance libraryName ]}.
 		'Harfbuzz: '. {
-			[ (aeHarfbuzzLibrary := self class environment at: #AeHarfbuzzLibrary) uniqueInstance versionString ].
-			[ aeHarfbuzzLibrary uniqueInstance libraryName ]}.
+			[ (self class environment at: #AeHarfbuzzLibrary) uniqueInstance versionString ].
+			[ (self class environment at: #AeHarfbuzzLibrary) uniqueInstance libraryName ]}.
 		'SDL2:     '. {
 			[ (self class environment at: #SDL2) version versionString ].
 			[ (self class environment at: #SDL2Library) uniqueInstance libraryName ]}.
