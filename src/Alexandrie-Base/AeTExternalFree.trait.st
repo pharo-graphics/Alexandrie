@@ -31,7 +31,7 @@ AeTExternalFree classSide >> new [
 AeTExternalFree >> autoRelease [
 	"Add to finalization system so GC frees me when there are no more references.
 	
-	Based on `FFIExternalReference>>#autoRelease`, which is especially needed in `FFIExternalStructure` since it only auto-released the handle."
+	Based on `FFIExternalReference>>#autoRelease`, which is especially needed in `FFIStructure` since it only auto-released the handle."
 
 	FFIExternalResourceManager addResource: self
 ]

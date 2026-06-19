@@ -13,7 +13,7 @@ AeHbCairoExample class >> exampleDrawVariableFont [
 
 	#("defaultValue" minValue maxValue) do: [ :eachSelector |
 		hbFont := hbFace newHbFont.
-		variations := FFIExternalArray
+		variations := FFIArray
 			newType: AeHbVariableFontVariation
 			size: hbFace variableFontAxisCount.
 		hbFace axisInfos withIndexDo: [ :eachAxisInfo :oneBasedIndex |

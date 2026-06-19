@@ -7,7 +7,7 @@ See: https://harfbuzz.github.io/harfbuzz-hb-buffer.html#hb-glyph-position-t
 "
 Class {
 	#name : #AeHbGlyphPosition,
-	#superclass : #FFIExternalStructure,
+	#superclass : #FFIStructure,
 	#classVars : [
 		'OFFSET_VAR',
 		'OFFSET_XADVANCE',

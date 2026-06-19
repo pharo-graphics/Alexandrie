@@ -9,7 +9,7 @@ See: https://www.cairographics.org/cookbook/matrix_conventions/
 "
 Class {
 	#name : #AeCairoMatrix,
-	#superclass : #FFIExternalStructure,
+	#superclass : #FFIStructure,
 	#traits : 'AeTCairoLibrary',
 	#classTraits : 'AeTCairoLibrary classTrait',
 	#classVars : [

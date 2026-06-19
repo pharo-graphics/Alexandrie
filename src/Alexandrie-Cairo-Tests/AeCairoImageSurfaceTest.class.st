@@ -318,14 +318,14 @@ AeCairoImageSurfaceTest >> testPremultipliedAlphaConversionAsForm [
 
 	"Take the byte array as a reference"
 	aSurface flush.
-	aSurfaceBytes := FFIExternalArray
+	aSurfaceBytes := FFIArray
 		fromHandle: aSurface data
 		type: FFIUInt8
 		size: aSurface byteSize.
 
 	anotherSurface := AeCairoImageSurface fromForm: aForm.
 	anotherSurface flush.
-	anotherSurfaceBytes := FFIExternalArray
+	anotherSurfaceBytes := FFIArray
 		fromHandle: anotherSurface data
 		type: FFIUInt8
 		size: anotherSurface byteSize.

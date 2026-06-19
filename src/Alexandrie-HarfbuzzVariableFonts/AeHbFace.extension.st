@@ -6,7 +6,7 @@ AeHbFace >> axisInfos [
 
 	| infosArray axisCount axisCountAddress |
 	axisCount := self variableFontAxisCount.
-	infosArray := FFIExternalArray
+	infosArray := FFIArray
 		newType: AeHbVariableFontAxisInfo
 		size: axisCount.
 	axisCountAddress := FFIUInt32 newBuffer.
@@ -25,7 +25,7 @@ AeHbFace >> getAxisInfosInto: axisArray size: axisCountAddress [
 			self,
 			uint "start_offset" 0,
 			uint *"axes_count" axisCountAddress,
-			FFIExternalArray axisArray ) )
+			FFIArray axisArray ) )
 ]
 
 { #category : #'*Alexandrie-HarfbuzzVariableFonts' }

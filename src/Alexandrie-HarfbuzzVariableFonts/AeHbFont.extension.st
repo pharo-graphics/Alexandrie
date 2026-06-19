@@ -43,7 +43,7 @@ AeHbFont >> variationCoordinates [
 	^ arraySize isZero
 		ifTrue: [ #() ]
 		ifFalse: [
-			FFIExternalArray
+			FFIArray
 				fromHandle: arrayAddress
 				type: FFIFloat32
 				size: arraySize ]
@@ -67,6 +67,6 @@ AeHbFont >> variations: variations size: variationsSize [
 		void
 		hb_font_set_variations (
 			self,
-			"hb_variation_t*" FFIExternalArray* variations,
+			"hb_variation_t*" FFIArray* variations,
 			uint variationsSize) )
 ]

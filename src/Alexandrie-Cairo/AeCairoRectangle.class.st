@@ -7,7 +7,7 @@ See: https://cairographics.org/manual/cairo-cairo-t.html#cairo-rectangle-t
 "
 Class {
 	#name : #AeCairoRectangle,
-	#superclass : #FFIExternalStructure,
+	#superclass : #FFIStructure,
 	#classVars : [
 		'OFFSET_HEIGHT',
 		'OFFSET_WIDTH',

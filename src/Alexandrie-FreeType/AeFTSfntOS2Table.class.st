@@ -9,7 +9,7 @@ See: https://freetype.org/freetype2/docs/reference/ft2-truetype_tables.html#tt_o
 "
 Class {
 	#name : #AeFTSfntOS2Table,
-	#superclass : #FFIExternalStructure,
+	#superclass : #FFIStructure,
 	#classVars : [
 		'OFFSET_FSTYPE',
 		'OFFSET_SFAMILYCLASS',

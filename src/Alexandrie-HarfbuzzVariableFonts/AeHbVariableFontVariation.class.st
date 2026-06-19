@@ -7,7 +7,7 @@ See: https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-variation-t
 "
 Class {
 	#name : #AeHbVariableFontVariation,
-	#superclass : #FFIExternalStructure,
+	#superclass : #FFIStructure,
 	#traits : 'AeTHarfbuzzLibrary',
 	#classTraits : 'AeTHarfbuzzLibrary classTrait',
 	#classVars : [
