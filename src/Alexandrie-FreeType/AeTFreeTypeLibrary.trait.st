@@ -3,7 +3,7 @@ I'm a trait for convenience of FreeType object bindings.
 "
 Trait {
 	#name : #AeTFreeTypeLibrary,
-	#category : #'Alexandrie-FreeType-FFI'
+	#category : #'Alexandrie-FreeType'
 }
 
 { #category : #'library path' }

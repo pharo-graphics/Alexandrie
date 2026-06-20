@@ -12,7 +12,7 @@ Class {
 		'FT_STYLE_FLAG_BOLD',
 		'FT_STYLE_FLAG_ITALIC'
 	],
-	#category : #'Alexandrie-FreeType-FFI'
+	#category : #'Alexandrie-FreeType'
 }
 
 { #category : #'accessing enum' }

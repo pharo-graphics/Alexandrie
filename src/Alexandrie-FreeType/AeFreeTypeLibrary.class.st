@@ -6,7 +6,7 @@ The initial code is inspired on the FreeType library bindings from Pharo 11 (202
 Class {
 	#name : #AeFreeTypeLibrary,
 	#superclass : #FFILibrary,
-	#category : #'Alexandrie-FreeType-FFI'
+	#category : #'Alexandrie-FreeType'
 }
 
 { #category : #'accessing - platform' }
