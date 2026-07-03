@@ -181,7 +181,7 @@ AePixelMatchTest >> fuelOutMismatch: aPixelComparison [
 		serializeToFileNamed: ('pixel_mismatch_{1}_{2}_{3}_{4}.fuel'
 		format: {
 			OSPlatform current family.
-			Time primMillisecondClock printStringHex.
+			Time millisecondClockValue printStringHex.
 			self className.
 			formSelector })
 ]
