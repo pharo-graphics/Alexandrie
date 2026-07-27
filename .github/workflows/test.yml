@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         smalltalk: [ Pharo64-13, Pharo64-14, Pharo64-15 ]
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        os: [ ubuntu-latest, windows-latest ] # macos-latest: https://github.com/pharo-graphics/Alexandrie/issues/38#issuecomment-5092019230  
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
     steps:
