@@ -123,11 +123,15 @@ AePixelMatchTest >> expectedForm [
 	"Answer the expected Form, reading it from a file."
 
 	| aFileReference |
+	aFileReference := self fileReferenceToVersionSpecificExpectedPNG.
+	aFileReference exists ifTrue: [
+		^ Form fromFileNamed: aFileReference ].
+
 	aFileReference := self fileReferenceToExpectedPNG.
-	
-	^ aFileReference exists
-		ifFalse: [ Form extent: 0 asPoint depth: 32 ]
-		ifTrue: [ Form fromFileNamed: aFileReference ]
+	aFileReference exists ifTrue: [
+		^ Form fromFileNamed: aFileReference ].
+
+	^ Form extent: 0 asPoint depth: 32
 ]
 
 { #category : #hooks }
@@ -148,10 +152,33 @@ AePixelMatchTest >> exportAsExpected [
 ]
 
 { #category : #private }
+AePixelMatchTest >> exportAsVersionSpecificExpected [
+
+	| aFileReference |
+	aFileReference := self fileReferenceToVersionSpecificExpectedPNG.
+	aFileReference ensureDelete.
+	aFileReference parent exists ifFalse: [ 
+		aFileReference parent ensureCreateDirectory ].
+	self actualForm writePNGFileNamed: aFileReference
+]
+
+{ #category : #private }
 AePixelMatchTest >> fileReferenceToExpectedPNG [
 
 	^ self expectedFormsDirectory / (formSelector asString, '.png')
 
+]
+
+{ #category : #private }
+AePixelMatchTest >> fileReferenceToVersionSpecificExpectedPNG [
+
+	^ self expectedFormsDirectory /
+		('{1}--cairo-{2}--hb-{3}--ft-{4}.png' format: {
+			formSelector.
+			AeCairoLibrary uniqueInstance versionString.
+			AeHarfbuzzLibrary uniqueInstance versionString.
+			AeFTLibrary newInitialized versionString.
+			})
 ]
 
 { #category : #hooks }
@@ -240,6 +267,7 @@ AePixelMatchTest >> testFormSelector [
 		self formMethod browse.
 		
 		self exportAsExpected.
+		self exportAsVersionSpecificExpected.
 "
 
 ]
