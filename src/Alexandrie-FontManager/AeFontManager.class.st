@@ -61,10 +61,12 @@ AeFontManager class >> globalInstance [
 		globalInstance ]
 ]
 
-{ #category : #'system startup' }
+{ #category : #'class initialization' }
 AeFontManager class >> initialize [
 
-	SessionManager default registerGuiClassNamed: self name
+	SessionManager default
+		registerGuiClassNamed: self name
+		atPriority: 110
 ]
 
 { #category : #accessing }
