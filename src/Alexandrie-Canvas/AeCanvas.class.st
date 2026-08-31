@@ -72,7 +72,9 @@ AeCanvas class >> extent: aPoint [
 { #category : #'class initialization' }
 AeCanvas class >> initialize [
 
-	SessionManager default registerUserClassNamed: self name
+	SessionManager default
+		registerGuiClassNamed: self name
+		atPriority: 120
 ]
 
 { #category : #initialization }
