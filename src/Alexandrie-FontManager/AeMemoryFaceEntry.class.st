@@ -23,7 +23,7 @@ AeMemoryFaceEntry >> bytes: aByteArray [
 ]
 
 { #category : #'instance creation' }
-AeMemoryFaceEntry >> newFaceWith: anAeFTLibrary [ 
+AeMemoryFaceEntry >> newFTFaceWith: anAeFTLibrary [ 
 	
 	^ anAeFTLibrary newFaceFromBytes: bytes index: index
 	

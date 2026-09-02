@@ -10,7 +10,7 @@ Class {
 	#superclass : #FFIExternalObject,
 	#traits : 'AeTFreeTypeLibrary + AeTExternalFree',
 	#classTraits : 'AeTFreeTypeLibrary classTrait + AeTExternalFree classTrait',
-	#category : #'Alexandrie-FreeType-FFI'
+	#category : #'Alexandrie-FreeType'
 }
 
 { #category : #finalization }

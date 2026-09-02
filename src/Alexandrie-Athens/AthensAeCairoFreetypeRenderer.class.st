@@ -95,7 +95,7 @@ AthensAeCairoFreetypeRenderer >> initializeOn: aCanvas [
 	canvas := aCanvas.
 	glyphExtents := AeCairoTextExtents new.
 	utfConverter := AeUTF8Converter new.
-	fontManager := AeFontManager globalInstance.
+	fontManager := AeFontManager current.
 	identityMatrix := AeCairoMatrix newIdentity.
 	fontOptions := AeCairoFontOptions new
 ]

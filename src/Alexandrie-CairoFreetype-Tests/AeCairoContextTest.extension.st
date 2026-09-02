@@ -8,7 +8,7 @@ AeCairoContextTest >> testScaledFont [
 	aContext := aSurface newContext.
 	
 	"Set up scaled font in the context"
-	aFontFace := (AeSourceSansPro_Regular firstFaceUsing: AeFTLibrary newInitialized) newCairoFontFace.
+	aFontFace := (AeSourceSansProRegular firstFaceUsing: AeFTLibrary newInitialized) newCairoFontFace.
 	aContext
 		fontFace: aFontFace;
 		fontSize: 17.
@@ -44,7 +44,7 @@ AeCairoContextTest >> testScaledFont [
 	
 	"Cairo cache doesn't work if Freetype face belongs to a different library"
 	sameFaceInDifferentFTLibrary :=
-		(AeSourceSansPro_Regular firstFaceUsing: AeFTLibrary newInitialized) newCairoFontFace.
+		(AeSourceSansProRegular firstFaceUsing: AeFTLibrary newInitialized) newCairoFontFace.
 	aContext fontFace: sameFaceInDifferentFTLibrary.
 	self
 		deny: aContext scaledFont getHandle

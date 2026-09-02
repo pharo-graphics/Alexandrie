@@ -44,8 +44,8 @@ AeFTLibraryResource >> setUp [
 
 	super setUp.
 	library := AeFTLibrary newInitialized.
-	sourceSansProRegular := AeSourceSansPro_Regular firstFaceUsing: library.
-	sourceSansProBold := AeSourceSansPro_Bold firstFaceUsing: library.
+	sourceSansProRegular := AeSourceSansProRegular firstFaceUsing: library.
+	sourceSansProBold := AeSourceSansProBold firstFaceUsing: library.
 	emojiFTFace :=
 		AeNotoColorEmojiDownloadedFont new 
 			downloadDirectory: AeFilesystemResources downloadedFontsDirectory;

@@ -17,7 +17,7 @@ Class {
 		'FT_SFNT_POST',
 		'FT_SFNT_VHEA'
 	],
-	#category : #'Alexandrie-FreeType-FFI'
+	#category : #'Alexandrie-FreeType'
 }
 
 { #category : #'accessing enum' }

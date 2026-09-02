@@ -27,7 +27,7 @@ Class {
 		'FT_FACE_FLAG_VARIATION',
 		'FT_FACE_FLAG_VERTICAL'
 	],
-	#category : #'Alexandrie-FreeType-FFI'
+	#category : #'Alexandrie-FreeType'
 }
 
 { #category : #'accessing enum' }

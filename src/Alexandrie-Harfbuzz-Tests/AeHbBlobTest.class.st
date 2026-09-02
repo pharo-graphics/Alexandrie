@@ -16,7 +16,7 @@ AeHbBlobTest >> inriaSerifRegularBlob [
 { #category : #running }
 AeHbBlobTest >> sourceSansProBlob [
 
-	^ AeHbBlob newFrom: AeSourceSansPro_Regular fontContentsData
+	^ AeHbBlob newFrom: AeSourceSansProRegular fontContentsData
 ]
 
 { #category : #tests }
