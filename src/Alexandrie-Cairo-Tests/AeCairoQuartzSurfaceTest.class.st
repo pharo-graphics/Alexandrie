@@ -11,7 +11,7 @@ Class {
 AeCairoQuartzSurfaceTest >> testExportPNG [
 
 	| aSurface filename |
-	Smalltalk os isMacOSX ifFalse: [ ^ self skip ].
+	OSPlatform current isMacOSX ifFalse: [ ^ self skip ].
 	
 	aSurface := AeCairoQuartzSurface
 						extent: 100 @ 100
