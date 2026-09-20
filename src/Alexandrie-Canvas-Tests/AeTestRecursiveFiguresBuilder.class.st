@@ -94,13 +94,13 @@ AeTestRecursiveFiguresBuilder >> initialize [
 
 	super initialize.
 
-	referenceExtent := 50 asPoint.
+	referenceExtent := 50 @ 50.
 
 	hasBorder := true.
 	outskirtsSelector := #setOutskirtsCentered.
 	backgroundAlpha := 0.7.
 	borderCapSelector := #setCapButt.
-	borderJoinSelector:= #setJoinRound
+	borderJoinSelector := #setJoinRound
 ]
 
 { #category : #building }

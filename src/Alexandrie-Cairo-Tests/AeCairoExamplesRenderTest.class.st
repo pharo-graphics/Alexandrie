@@ -177,36 +177,27 @@ AeCairoExamplesRenderTest >> surfaceWithDeviceOffset [
 	| aSurface aSquare offsetPoint surfaceWidth surfaceHeight |
 	aSquare := 5 @ 5 extent: 10 @ 10.
 	offsetPoint := 20 @ 10.
-	surfaceWidth := (aSquare right + offsetPoint x) + 1.
-	surfaceHeight := (aSquare bottom + offsetPoint y) + 1.
-	
-	aSurface := AeCairoImageSurface
-		extent: surfaceWidth @ surfaceHeight
-		format: AeCairoSurfaceFormat argb32.
+	surfaceWidth := aSquare right + offsetPoint x + 1.
+	surfaceHeight := aSquare bottom + offsetPoint y + 1.
+
+	aSurface := AeCairoImageSurface extent: surfaceWidth @ surfaceHeight format: AeCairoSurfaceFormat argb32.
 
 	aSurface deviceOffset: offsetPoint.
 
 	aSurface newContext
-		" clear background "
 		sourceColor: Color yellow;
 		paint;
-
-		" mark 0@0 "
-		sourceColor: Color black;
-		rectangleTo: 1 asPoint;
+		" mark 0@0 "sourceColor: Color black;
+		rectangleTo: 1 @ 1;
 		fill;
-
-		" draw a square "
-		sourceColor: Color blue;
+		" draw a square "sourceColor: Color blue;
 		rectangle: aSquare;
 		fill.
+	" clear background "
 
-	self
-		assert: aSurface deviceOffset
-		equals: offsetPoint.
+	self assert: aSurface deviceOffset equals: offsetPoint.
 
 	^ aSurface
-
 ]
 
 { #category : #tests }
@@ -215,46 +206,35 @@ AeCairoExamplesRenderTest >> surfaceWithDeviceScale [
 	| aSurface aSquare scalePoint surfaceWidth surfaceHeight |
 	aSquare := 5 @ 5 extent: 10 @ 10.
 	scalePoint := 3 @ 1.2.
-	surfaceWidth := (aSquare right * scalePoint x) + 1.
-	surfaceHeight := (aSquare bottom * scalePoint y) + 1.
-	
-	aSurface := AeCairoImageSurface
-		extent: surfaceWidth @ surfaceHeight
-		format: AeCairoSurfaceFormat argb32.
+	surfaceWidth := aSquare right * scalePoint x + 1.
+	surfaceHeight := aSquare bottom * scalePoint y + 1.
+
+	aSurface := AeCairoImageSurface extent: surfaceWidth @ surfaceHeight format: AeCairoSurfaceFormat argb32.
 
 	aSurface deviceScale: scalePoint.
 
 	aSurface newContext
-		" clear background "
 		sourceColor: Color yellow;
 		paint;
-
-		" mark 0@0 "
-		sourceColor: Color black;
-		rectangleTo: 1 asPoint;
+		" mark 0@0 "sourceColor: Color black;
+		rectangleTo: 1 @ 1;
 		fill;
-
 		" draw square (that won't look as a square due
-		to device scale)"
-		sourceColor: Color blue;
+		to device scale)"sourceColor: Color blue;
 		rectangle: aSquare;
 		fill.
+	" clear background "
 
-	self
-		assert: aSurface deviceScale
-		equals: scalePoint.
+	self assert: aSurface deviceScale equals: scalePoint.
 
 	^ aSurface
-
 ]
 
 { #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithDeviceScaleAndOffsetDuplicated [
 
 	| aSurface duplicate |
-	aSurface := AeCairoImageSurface
-		extent: 16 @ 16
-		format: AeCairoSurfaceFormat argb32.
+	aSurface := AeCairoImageSurface extent: 16 @ 16 format: AeCairoSurfaceFormat argb32.
 
 	aSurface deviceScale: 3 @ 5.
 	aSurface deviceOffset: 2 @ 1.
@@ -263,17 +243,14 @@ AeCairoExamplesRenderTest >> surfaceWithDeviceScaleAndOffsetDuplicated [
 	self deny: duplicate getHandle equals: aSurface getHandle.
 
 	duplicate newContext
-		" clear background "
 		sourceColor: Color yellow;
 		paint;
-
-		" mark 0@0 "
-		sourceColor: Color blue;
-		rectangleTo: 2 asPoint;
+		" mark 0@0 "sourceColor: Color blue;
+		rectangleTo: 2 @ 2;
 		fill.
+	" clear background "
 
 	^ duplicate
-
 ]
 
 { #category : #tests }
@@ -474,18 +451,15 @@ AeCairoExamplesRenderTest >> surfaceWithRotationAboutCenter [
 AeCairoExamplesRenderTest >> surfaceWithRotationByQuadrantsOnContext [
 
 	| extent mainSurface mainContext m |
-	extent := 10 asPoint.
+	extent := 10 @ 10.
 
-	mainSurface :=
-		AeCairoImageSurface
-			extent: extent * 2
-			format: AeCairoSurfaceFormat rgb24.
+	mainSurface := AeCairoImageSurface extent: extent * 2 format: AeCairoSurfaceFormat rgb24.
 	mainContext := mainSurface newContext.
 
 	m := AeCairoMatrix newIdentity.
 	m beRotationByQuadrants: 1 around: extent.
 	mainContext
-		matrix: m;	
+		matrix: m;
 		sourceColor: Color red;
 		rectangleTo: extent;
 		fill.
@@ -591,37 +565,30 @@ AeCairoExamplesRenderTest >> surfaceWithRoundedRectangle [
 AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedBuffered [
 	"Emulate a Gaussian shadow on a circle using a radial gradient, using an intermediate surface."
 
-	| radius shadowSize aShadowSurface aShadowContext aGradient mainSurface  mainContext shadowOffset extent shadowCenter position shadowColor shadowAlpha |
+	| radius shadowSize aShadowSurface aShadowContext aGradient mainSurface mainContext shadowOffset extent shadowCenter position shadowColor shadowAlpha |
 	radius := 15.
-	shadowOffset := 2 asPoint.
+	shadowOffset := 2 @ 2.
 	shadowSize := 4.
 	position := shadowSize asPoint.
-	extent := (radius + shadowSize) * 2 asPoint + shadowOffset.
+	extent := radius + shadowSize * (2 @ 2) + shadowOffset.
 	shadowCenter := position + radius.
 	shadowColor := Color black.
 	shadowAlpha := 0.5.
 
-	aShadowSurface := AeCairoImageSurface
-		extent: (radius + shadowSize) * 2 asPoint
-		format: AeCairoSurfaceFormat a8.
+	aShadowSurface := AeCairoImageSurface extent: radius + shadowSize * (2 @ 2) format: AeCairoSurfaceFormat a8.
 	aShadowContext := aShadowSurface newContext.
-	aGradient := (AeCairoRadialGradientPattern
-		center: shadowCenter
-		innerRadius: radius
-		outerRadius: radius + shadowSize)
-			addStopAt: 0.0 color: Color white;
-			addStopAt: 0.2 color: (Color white alpha: 0.5);
-			addStopAt: 1.0 color: Color transparent;
-			yourself.
+	aGradient := (AeCairoRadialGradientPattern center: shadowCenter innerRadius: radius outerRadius: radius + shadowSize)
+		             addStopAt: 0.0 color: Color white;
+		             addStopAt: 0.2 color: (Color white alpha: 0.5);
+		             addStopAt: 1.0 color: Color transparent;
+		             yourself.
 	aShadowContext
 		sourcePattern: aGradient;
 		paint.
 	aShadowSurface status ensureIsSuccess.
 
 
-	mainSurface := AeCairoImageSurface
-		extent: extent
-		format: AeCairoSurfaceFormat argb32.
+	mainSurface := AeCairoImageSurface extent: extent format: AeCairoSurfaceFormat argb32.
 	mainContext := mainSurface newContext.
 
 	"draw background"
@@ -632,8 +599,7 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedBuffered [
 	"draw shadow"
 	mainContext
 		sourceColor: (shadowColor alpha: shadowAlpha);
-		maskSurface: aShadowSurface
-			at: position - shadowOffset.
+		maskSurface: aShadowSurface at: position - shadowOffset.
 
 	"draw circle"
 	mainContext
@@ -643,26 +609,23 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedBuffered [
 		fill.
 
 	^ mainSurface
-
 ]
 
 { #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedDirect [
 	"Emulate a Gaussian shadow on a circle using a radial gradient."
 
-	| radius shadowSize aGradient mainSurface  mainContext shadowOffset shadowCenter shadowColor position extent shadowAlpha |
+	| radius shadowSize aGradient mainSurface mainContext shadowOffset shadowCenter shadowColor position extent shadowAlpha |
 	radius := 15.
-	shadowOffset := 2 asPoint.
+	shadowOffset := 2 @ 2.
 	shadowSize := 4.
 	position := shadowSize asPoint.
-	extent := (radius + shadowSize) * 2 asPoint + shadowOffset.
+	extent := radius + shadowSize * (2 @ 2) + shadowOffset.
 	shadowCenter := position + radius + shadowOffset.
 	shadowColor := Color black.
 	shadowAlpha := 0.5.
-	
-	mainSurface := AeCairoImageSurface
-		extent: extent
-		format: AeCairoSurfaceFormat argb32.
+
+	mainSurface := AeCairoImageSurface extent: extent format: AeCairoSurfaceFormat argb32.
 	mainContext := mainSurface newContext.
 
 	"draw background"
@@ -671,14 +634,11 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedDirect [
 		paint.
 
 	"draw shadow"
-	aGradient := (AeCairoRadialGradientPattern
-		center: shadowCenter
-		innerRadius: radius
-		outerRadius: radius + shadowSize)
-			addStopAt: 0.0 color: shadowColor;
-			addStopAt: 0.2 color: (shadowColor alpha: 0.5);
-			addStopAt: 1.0 color: Color transparent;
-			yourself.
+	aGradient := (AeCairoRadialGradientPattern center: shadowCenter innerRadius: radius outerRadius: radius + shadowSize)
+		             addStopAt: 0.0 color: shadowColor;
+		             addStopAt: 0.2 color: (shadowColor alpha: 0.5);
+		             addStopAt: 1.0 color: Color transparent;
+		             yourself.
 	mainContext
 		sourcePattern: aGradient;
 		paintWithAlpha: shadowAlpha.
@@ -691,7 +651,6 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedDirect [
 		fill.
 
 	^ mainSurface
-
 ]
 
 { #category : #tests }

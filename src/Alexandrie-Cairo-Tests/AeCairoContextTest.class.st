@@ -309,9 +309,9 @@ AeCairoContextTest >> testFillRule [
 AeCairoContextTest >> testFontExtents [
 
 	| aSurface aContext aFontFace aScaledFont aFontExtents |
-	aSurface := AeCairoImageSurface extent: 1@1.
+	aSurface := AeCairoImageSurface extent: 1 @ 1.
 	aContext := aSurface newContext.
-	
+
 	"Set up scaled font in the context"
 	aFontFace := AeFTLibraryResource current sourceSansProRegularFTFace newCairoFontFace.
 	aContext
@@ -323,7 +323,7 @@ AeCairoContextTest >> testFontExtents [
 	self assert: aFontExtents height closeTo: 21.
 	self assert: aFontExtents ascent closeTo: 17.
 	self assert: aFontExtents descent closeTo: 5.
-	self assert: aFontExtents maxAdvance closeTo: 37@0.
+	self assert: aFontExtents maxAdvance closeTo: 37 @ 0.
 
 	"Changing fontSize implies a new scaledFont is set"
 	aContext fontSize: 71.
@@ -332,27 +332,26 @@ AeCairoContextTest >> testFontExtents [
 	self assert: aFontExtents height closeTo: 89.
 	self assert: aFontExtents ascent closeTo: 70.
 	self assert: aFontExtents descent closeTo: 20.
-	self assert: aFontExtents maxAdvance closeTo: 156@0.
+	self assert: aFontExtents maxAdvance closeTo: 156 @ 0.
 
-	"Switch back to fontSize=17 but via setting the matrix"	
-	aContext fontMatrix: (AeCairoMatrix newScalingBy: 17 asPoint).
+	"Switch back to fontSize=17 but via setting the matrix"
+	aContext fontMatrix: (AeCairoMatrix newScalingBy: 17 @ 17).
 	aScaledFont := aContext scaledFont.
 	aFontExtents := aContext fontExtents.
 	self assert: aFontExtents height closeTo: 21.
 	self assert: aFontExtents ascent closeTo: 17.
 	self assert: aFontExtents descent closeTo: 5.
-	self assert: aFontExtents maxAdvance closeTo: 37@0.
-
+	self assert: aFontExtents maxAdvance closeTo: 37 @ 0
 ]
 
 { #category : #'tests - text' }
 AeCairoContextTest >> testGlyphExtentsOf [
 
 	| aSurface aContext string aScaledFont aGlyphArray aTextExtents aFontFace |
-	aSurface := AeCairoImageSurface extent: 1@1.
+	aSurface := AeCairoImageSurface extent: 1 @ 1.
 	aContext := aSurface newContext.
 	string := 'Hola'.
-	
+
 	"Set up scaled font in the context"
 	aFontFace := AeFTLibraryResource current sourceSansProRegularFTFace newCairoFontFace.
 	aContext
@@ -361,27 +360,27 @@ AeCairoContextTest >> testGlyphExtentsOf [
 	aScaledFont := aContext scaledFont.
 	aGlyphArray := aScaledFont glyphArrayForString: string.
 	aTextExtents := aContext glyphExtentsOf: aGlyphArray.
-	self assert: aTextExtents extent closeTo: 33@13.
-	self assert: aTextExtents bearing closeTo: 1@ -13.
-	self assert: aTextExtents advance closeTo: 34@0.
+	self assert: aTextExtents extent closeTo: 33 @ 13.
+	self assert: aTextExtents bearing closeTo: 1 @ -13.
+	self assert: aTextExtents advance closeTo: 34 @ 0.
 
 	"Change and fetch different measurements"
 	aContext fontSize: 71.
 	aScaledFont := aContext scaledFont.
 	aGlyphArray := aScaledFont glyphArrayForString: string.
 	aTextExtents := aContext glyphExtentsOf: aGlyphArray.
-	self assert: aTextExtents extent closeTo: 129@51.
-	self assert: aTextExtents bearing closeTo: 6@ -50.
-	self assert: aTextExtents advance closeTo: 139@0.
+	self assert: aTextExtents extent closeTo: 129 @ 51.
+	self assert: aTextExtents bearing closeTo: 6 @ -50.
+	self assert: aTextExtents advance closeTo: 139 @ 0.
 
 	"Switch back to fontSize=17, but this time via #fontMatrix:"
-	aContext fontMatrix: (AeCairoMatrix newScalingBy: 17 asPoint).
+	aContext fontMatrix: (AeCairoMatrix newScalingBy: 17 @ 17).
 	aScaledFont := aContext scaledFont.
 	aGlyphArray := aScaledFont glyphArrayForString: string.
 	aTextExtents := aContext glyphExtentsOf: aGlyphArray.
-	self assert: aTextExtents extent closeTo: 33@13.
-	self assert: aTextExtents bearing closeTo: 1@ -13.
-	self assert: aTextExtents advance closeTo: 34@0
+	self assert: aTextExtents extent closeTo: 33 @ 13.
+	self assert: aTextExtents bearing closeTo: 1 @ -13.
+	self assert: aTextExtents advance closeTo: 34 @ 0
 ]
 
 { #category : #tests }
@@ -416,14 +415,10 @@ AeCairoContextTest >> testPathExtents [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
 	context := surface newContext.
-	
-	self
-		assert: context pathExtentsInUserSpace
-		equals: (Rectangle origin: 0 asPoint extent: 0 asPoint).
-	self
-		assert: context pathExtentsInDeviceSpace
-		equals: (Rectangle origin: 0 asPoint extent: 0 asPoint).
-	
+
+	self assert: context pathExtentsInUserSpace equals: (Rectangle origin: 0 @ 0 extent: 0 @ 0).
+	self assert: context pathExtentsInDeviceSpace equals: (Rectangle origin: 0 @ 0 extent: 0 @ 0).
+
 	context
 		translateBy: -1 @ -2;
 		scaleByX: 0.5 y: 2;
@@ -431,22 +426,13 @@ AeCairoContextTest >> testPathExtents [
 		lineTo: 90 @ 50;
 		fillPreservingPath.
 
-	self
-		assert: context pathExtentsInUserSpace
-		equals: (Rectangle origin: 5.0 @ 10.0 corner: 90.0 @ 50.0).
-	self
-		assert: context pathExtentsInDeviceSpace
-		equals: (Rectangle origin: 1.5 @ 18.0 corner: 44.0 @ 98.0).
+	self assert: context pathExtentsInUserSpace equals: (Rectangle origin: 5.0 @ 10.0 corner: 90.0 @ 50.0).
+	self assert: context pathExtentsInDeviceSpace equals: (Rectangle origin: 1.5 @ 18.0 corner: 44.0 @ 98.0).
 
 	context fill.
-	
-	self
-		assert: context pathExtentsInUserSpace
-		equals: (Rectangle origin: 0 asPoint extent: 0 asPoint).
-	self
-		assert: context pathExtentsInDeviceSpace
-		equals: (Rectangle origin: -1 @ -2 extent: 0 asPoint).
 
+	self assert: context pathExtentsInUserSpace equals: (Rectangle origin: 0 @ 0 extent: 0 @ 0).
+	self assert: context pathExtentsInDeviceSpace equals: (Rectangle origin: -1 @ -2 extent: 0 @ 0)
 ]
 
 { #category : #tests }
@@ -504,14 +490,10 @@ AeCairoContextTest >> testStrokeExtents [
 
 	surface := AeCairoImageSurface extent: 100 @ 100.
 	context := surface newContext.
-	
-	self
-		assert: context strokeExtentsInUserSpace
-		equals: (Rectangle origin: 0 asPoint extent: 0 asPoint).
-	self
-		assert: context strokeExtentsInDeviceSpace
-		equals: (Rectangle origin: 0 asPoint extent: 0 asPoint).
-	
+
+	self assert: context strokeExtentsInUserSpace equals: (Rectangle origin: 0 @ 0 extent: 0 @ 0).
+	self assert: context strokeExtentsInDeviceSpace equals: (Rectangle origin: 0 @ 0 extent: 0 @ 0).
+
 	context
 		translateByX: -1 y: -2;
 		scaleByX: 0.5 y: 2;
@@ -520,22 +502,13 @@ AeCairoContextTest >> testStrokeExtents [
 		strokeSize: 10;
 		strokePreservingPath.
 
-	self
-		assert: context strokeExtentsInUserSpace 
-		equals: ((2.8671875@5.4765625) corner: (92.1328125@54.5234375)).
-	self
-		assert: context strokeExtentsInDeviceSpace
-		equals: ((0.43359375@8.953125) corner: (45.06640625@107.046875)).
+	self assert: context strokeExtentsInUserSpace equals: (2.8671875 @ 5.4765625 corner: 92.1328125 @ 54.5234375).
+	self assert: context strokeExtentsInDeviceSpace equals: (0.43359375 @ 8.953125 corner: 45.06640625 @ 107.046875).
 
 	context stroke.
-	
-	self
-		assert: context strokeExtentsInUserSpace
-		equals: (Rectangle origin: 0 asPoint extent: 0 asPoint).
-	self
-		assert: context strokeExtentsInDeviceSpace
-		equals: (Rectangle origin: -1 @ -2 extent: 0 asPoint).
 
+	self assert: context strokeExtentsInUserSpace equals: (Rectangle origin: 0 @ 0 extent: 0 @ 0).
+	self assert: context strokeExtentsInDeviceSpace equals: (Rectangle origin: -1 @ -2 extent: 0 @ 0)
 ]
 
 { #category : #tests }

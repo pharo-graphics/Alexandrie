@@ -36,34 +36,27 @@ AeCairoRecordingSurfaceRenderTest >> surfaceWithBounds [
 	- a rectangle with a slightly-translucent cyan stroke
 	- IMPORTANT: half of the rectangle stroke is clipped as it's
 	outside of the bounds of the recorded surface"
-	aRecordingSurface :=
-		AeCairoRecordingSurface
-			newContentType: AeCairoContent colorAndAlpha
-			bounds: (AeCairoRectangle origin: aRectangle origin extent: aRectangle extent).
+	aRecordingSurface := AeCairoRecordingSurface
+		                     newContentType: AeCairoContent colorAndAlpha
+		                     bounds: (AeCairoRectangle origin: aRectangle origin extent: aRectangle extent).
 	aRecordingSurface newContext
 		sourceColor: (Color cyan alpha: 0.8);
 		rectangle: aRectangle;
-		strokeSize: 10; 
+		strokeSize: 10;
 		stroke.
 
 	"Replay the recorded surface on a target surface"
-	targetSurface := AeCairoImageSurface
-		extent: 50 asPoint
-		format: AeCairoSurfaceFormat argb32.
+	targetSurface := AeCairoImageSurface extent: 50 @ 50 format: AeCairoSurfaceFormat argb32.
 
 	targetSurface newContext
 		sourceColor: Color blue;
 		paint;
-
-		"Draw a rectangle with the recorded surface"
-		sourceSurface: aRecordingSurface;
+		"Draw a rectangle with the recorded surface"sourceSurface: aRecordingSurface;
 		rectangle: aRectangle;
 		fill;
-
-		"Paint the recorded surface with offset and alpha"
-		sourceSurface: aRecordingSurface
-			x: aRectangle width / 2
-			y: aRectangle height / 2;
+		"Paint the recorded surface with offset and alpha"sourceSurface: aRecordingSurface
+		x: aRectangle width / 2
+		y: aRectangle height / 2;
 		paintWithAlpha: 0.5.
 
 	^ targetSurface
@@ -78,36 +71,28 @@ AeCairoRecordingSurfaceRenderTest >> surfaceWithNoBounds [
 	"Create a recording surface with:
 	- transparent background (the default on its content type)
 	- a rectangle with a slightly-translucent cyan stroke"
-	aRecordingSurface :=
-		AeCairoRecordingSurface
-			newContentType: AeCairoContent colorAndAlpha
-			bounds: AeCairoRectangle null.
+	aRecordingSurface := AeCairoRecordingSurface newContentType: AeCairoContent colorAndAlpha bounds: AeCairoRectangle null.
 	aRecordingSurface newContext
 		sourceColor: (Color cyan alpha: 0.8);
 		rectangle: aRectangle;
-		strokeSize: 10; 
+		strokeSize: 10;
 		stroke.
 
 	"Replay the recorded surface on a target surface"
-	targetSurface := AeCairoImageSurface
-		extent: 50 asPoint
-		format: AeCairoSurfaceFormat argb32.
+	targetSurface := AeCairoImageSurface extent: 50 @ 50 format: AeCairoSurfaceFormat argb32.
 
 	targetSurface newContext
 		sourceColor: Color blue;
 		paint;
-
 		"Draw a rectangle with the recorded surface.
-		The fill operation clips the source by the path."
-		sourceSurface: aRecordingSurface;
+		The fill operation clips the source by the path."sourceSurface: aRecordingSurface;
 		rectangle: aRectangle;
 		fill;
-
 		"Paint the recorded surface with offset and alpha.
-		The paint operation doesn't clip the source."
-		sourceSurface: aRecordingSurface
-			x: aRectangle width / 2
-			y: aRectangle height / 2;
+		The paint operation doesn't clip the source."sourceSurface:
+			aRecordingSurface
+		x: aRectangle width / 2
+		y: aRectangle height / 2;
 		paintWithAlpha: 0.5.
 
 	^ targetSurface
