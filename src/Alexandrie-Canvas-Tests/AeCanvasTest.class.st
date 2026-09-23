@@ -61,11 +61,12 @@ AeCanvasTest >> renderArbitraryFigure [
 	aeCanvas := AeCanvas extent: 50 @ 50.
 
 	aeCanvas pathFactory: [ :cairoContext |
-			cairoContext
-				rectangle: (0 @ 0 extent: 20 @ 20);
-				circleRadius: 20 ].
+		cairoContext
+			rectangle: (0 @ 0 extent: 20 @ 20);
+			circleRadius: 20 ].
 
-	aeCanvas setBackgroundWith: [ aeCanvas setSourceColor: Color blue ].
+	aeCanvas setBackgroundWith: [
+		aeCanvas setSourceColor: Color blue ].
 	aeCanvas setBorderOff.
 	aeCanvas drawFigure.
 
@@ -201,8 +202,10 @@ AeCanvasTest >> renderClippedFigures [
 
 	"Draw container figure (a rectangle)"
 	aeCanvas pathTranslate: 10 @ 10.
-	aeCanvas pathFactory: [ :cairoContext | cairoContext rectangleTo: 30 @ 30 ].
-	aeCanvas setBackgroundWith: [ aeCanvas setSourceColor: Color blue ].
+	aeCanvas pathFactory: [ :cairoContext |
+		cairoContext rectangleTo: 30 @ 30 ].
+	aeCanvas setBackgroundWith: [
+		aeCanvas setSourceColor: Color blue ].
 	aeCanvas setBorderOff.
 
 	"Key message for this test"
@@ -210,8 +213,10 @@ AeCanvasTest >> renderClippedFigures [
 
 	"Draw a child circle that is clipped by the parent rectangle."
 	aeCanvas pathTranslate: 15 @ 15.
-	aeCanvas pathFactory: [ :cairoContext | cairoContext circleRadius: 15 ].
-	aeCanvas setBackgroundWith: [ aeCanvas setSourceColor: Color orange ].
+	aeCanvas pathFactory: [ :cairoContext |
+		cairoContext circleRadius: 15 ].
+	aeCanvas setBackgroundWith: [
+		aeCanvas setSourceColor: Color orange ].
 	aeCanvas setBorderOff.
 	aeCanvas drawFigure.
 
@@ -224,9 +229,11 @@ AeCanvasTest >> renderClosedFigure [
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 50 @ 50.
 
-	aeCanvas pathFactory: [ :cairoContext | cairoContext rectangle: (10 @ 10 extent: 20 @ 20) ].
+	aeCanvas pathFactory: [ :cairoContext |
+		cairoContext rectangle: (10 @ 10 extent: 20 @ 20) ].
 
-	aeCanvas setBackgroundWith: [ aeCanvas setSourceColor: Color blue ].
+	aeCanvas setBackgroundWith: [
+		aeCanvas setSourceColor: Color blue ].
 	aeCanvas setBorderOff.
 	aeCanvas drawFigure.
 
@@ -239,9 +246,11 @@ AeCanvasTest >> renderCurvedFigure [
 	| aeCanvas |
 	aeCanvas := AeCanvas extent: 50 @ 50.
 
-	aeCanvas pathFactory: [ :cairoContext | cairoContext circleRadius: 25 ].
+	aeCanvas pathFactory: [ :cairoContext |
+		cairoContext circleRadius: 25 ].
 
-	aeCanvas setBackgroundWith: [ aeCanvas setSourceColor: Color blue ].
+	aeCanvas setBackgroundWith: [
+		aeCanvas setSourceColor: Color blue ].
 	aeCanvas setBorderOff.
 	aeCanvas drawFigure.
 
@@ -302,20 +311,23 @@ AeCanvasTest >> renderForm [
 AeCanvasTest >> renderFormSet [
 
 	| aeCanvas aForm aFormSet |
+
 	SystemVersion current major >= 12 ifFalse: [ self skip ]. "Earlier versions do not have FormSet"
 
-	aeCanvas := AeCanvas newFor: ((AeCairoImageSurface extent: 60 @ 20 * 2)
-			             deviceScale: 2 @ 2;
-			             yourself).
+	aeCanvas := AeCanvas newFor: ((AeCairoImageSurface extent: (60 @ 20) * 2) deviceScale: 2 @ 2; yourself).
 	aeCanvas clear: Color paleGreen.
 
 	aForm := Form fromFileNamed: AeFilesystemResources removeIcon2xPNG.
 	aFormSet := FormSet extent: aForm extent // 2 depth: aForm depth forms: { aForm }.
 
-	aeCanvas pathScale: (aeCanvas extent / aeCanvas deviceScale / aFormSet extent) asFloatPoint.
-	aeCanvas pathFactory: [ :cairoContext | "Tip: Use another path to clip the form" cairoContext rectangleTo: aFormSet extent ].
+	aeCanvas pathScale: ((aeCanvas extent / aeCanvas deviceScale) / aFormSet extent) asFloatPoint.
+	aeCanvas pathFactory: [ :cairoContext |
+		"Tip: Use another path to clip the form"
+		cairoContext rectangleTo: aFormSet extent ].
 
-	aeCanvas setBackgroundWithFormSet: aFormSet alpha: 1.0.
+	aeCanvas
+		setBackgroundWithFormSet: aFormSet
+		alpha: 1.0.
 	aeCanvas setBorderOff.
 	aeCanvas drawFigure.
 
@@ -475,9 +487,9 @@ AeCanvasTest >> renderOpenFigure [
 
 	"Set line path"
 	aeCanvas pathFactory: [ :cairoContext |
-			cairoContext
-				moveTo: 20 @ 10;
-				lineTo: 30 @ 40 ].
+		cairoContext
+			moveTo: 20 @ 10;
+			lineTo: 30 @ 40 ].
 
 	"Background and other outskirts than centered are an option but
 	they do not look well on open figures."
@@ -488,12 +500,12 @@ AeCanvasTest >> renderOpenFigure [
 	"Finally, customize stroke options and draw the line"
 	aeCanvas
 		setBorderBlock: [
-				aeCanvas
-					setSourceColor: Color red;
-					setDashes: #( 4 6 ) offset: 2;
-					setJoinRound;
-					"A line has no joins, anyway"setCapSquare;
-					setBorderWidth: 4 ];
+			aeCanvas
+				setSourceColor: Color red;
+				setDashes: #(4 6) offset: 2;
+				setJoinRound; "A line has no joins, anyway"
+				setCapSquare;
+				setBorderWidth: 4 ];
 		drawFigure.
 
 	^ aeCanvas

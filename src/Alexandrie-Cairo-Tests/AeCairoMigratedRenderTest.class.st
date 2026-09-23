@@ -305,12 +305,12 @@ AeCairoMigratedRenderTest >> surfaceWithFillDisjoint [
 	"fill with a set of rectangles that the rectangular tessellator
 	will not emit sorted."
 	0 to: surfaceSize x - 10 by: 15 do: [ :each |
-			aContext
-				rectangleX: each
+		aContext
+			rectangleX: each
 				y: each
 				width: 10
-				height: surfaceSize y - (2 * each);
-				fill ].
+				height: (surfaceSize y - (2*each));
+			fill ].
 
 	^ aSurface
 ]
@@ -335,18 +335,18 @@ AeCairoMigratedRenderTest >> surfaceWithFillEmpty [
 
 	"first drawn an ordinary empty path"
 	aContext restoreStateAfter: [
-			aContext
-				rectangle: (0 @ 0 extent: size @ (size / 2));
-				clip;
-				fill ].
+		aContext
+			rectangle: (0 @ 0 extent: size @ (size/2));
+			clip;
+			fill ].
 
 	"and then an unbounded empty path"
 	aContext restoreStateAfter: [
-			aContext
-				rectangle: (0 @ (size / 2) extent: size @ (size / 2));
-				clip;
-				operator: AeCairoOperator destIn;
-				fill ].
+		aContext
+			rectangle: (0 @ (size / 2) extent: size @ (size/2));
+			clip;
+			operator: AeCairoOperator destIn;
+			fill ].
 
 	^ aSurface
 ]
