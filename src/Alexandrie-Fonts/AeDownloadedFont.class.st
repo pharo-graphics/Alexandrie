@@ -9,7 +9,7 @@ Class {
 	#instVars : [
 		'downloadDirectory'
 	],
-	#category : #'Alexandrie-FreeType-Tests-Downloaded'
+	#category : #'Alexandrie-Fonts'
 }
 
 { #category : #convenience }
@@ -78,12 +78,6 @@ AeDownloadedFont >> fileName [
 AeDownloadedFont >> fileReference [
 
 	^ self downloadDirectory / self fileName
-]
-
-{ #category : #accessing }
-AeDownloadedFont >> firstFaceUsing: aFTLibrary [ 
-
-	^ aFTLibrary newFaceFromFile: self fileReference index: 0
 ]
 
 { #category : #initialization }

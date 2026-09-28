@@ -24,7 +24,7 @@ Class {
 		'OFFSET_STYLEFLAGS',
 		'OFFSET_STYLENAMEADDRESS'
 	],
-	#category : #'Alexandrie-FreeType-FFI'
+	#category : #'Alexandrie-FreeType'
 }
 
 { #category : #finalization }

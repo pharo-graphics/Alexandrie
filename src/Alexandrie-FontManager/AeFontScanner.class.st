@@ -147,10 +147,12 @@ AeFontScanner >> shouldIgnoreFile: aFile [
 AeFontScanner >> unixFontDirectories [
 	"Trying with some common directories in unix. The prefered version is to read the /etc/fonts/fonts.conf"
 
-	^ {		FileLocator home / '.fonts'.
-			FileLocator home / '.local/share/fonts'.
-			'/usr/share/fonts'.
-			'/usr/local/share/fonts' }
+	^ {
+		FileLocator home / '.fonts'.
+		FileLocator home / '.local/share/fonts'.
+		'/usr/share/fonts'.
+		'/usr/local/share/fonts'
+		}
 ]
 
 { #category : #directories }
@@ -164,7 +166,8 @@ AeFontScanner >> windowsAppDataDirectories [
 
 	^ {
 		FileLocator home / 'AppData' / 'Local' / 'Microsoft' / 'Windows' / 'Fonts'.
-		FileLocator home / 'AppData' / 'Roaming' / 'Microsoft' / 'Windows' / 'Fonts' }
+		FileLocator home / 'AppData' / 'Roaming' / 'Microsoft' / 'Windows' / 'Fonts'
+		}
 ]
 
 { #category : #directories }

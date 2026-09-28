@@ -294,8 +294,8 @@ AthensAeCairoRenderTest >> surface10Text [
 		pointSize: 30.
 
 	"We assume Source Code Pro family is embedded"
-	AeFontManager resetGlobalInstance.
-	AeFontManager globalInstance scanEmbeddedFonts.
+	AeFontManager reset.
+	AeFontManager current scanEmbeddedFonts.
 	
 	surface := AthensAeCairoSurface
 		extent: (font widthOfString: aString) @ (font ascent + font descent).

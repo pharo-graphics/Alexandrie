@@ -251,7 +251,7 @@ AeHbCairoFeaturesExample class >> newInriaFace [
 AeHbCairoFeaturesExample class >> newSourceSansProFace [
 
 	^ (AeHbBlob newFrom:
-			AeSourceSansPro_Regular fontContentsData)
+			AeSourceSansProRegular fontContentsData)
 				newHbFaceAtIndex: 0
 ]
 

@@ -164,7 +164,7 @@ AeBlurTest >> blurTextShadow [
 		  extent: surfaceSize
 		  format: AeCairoSurfaceFormat a8.
 	
-	aFTFace := AeSourceSansPro_Regular firstFaceUsing: AeFTLibrary newInitialized.
+	aFTFace := AeSourceSansProRegular firstFaceUsing: AeFTLibrary newInitialized.
 	shadowSurface newContext
 		translateByX: 5 y: fontSize;
 		sourceColor: Color black;

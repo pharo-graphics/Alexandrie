@@ -19,6 +19,12 @@ Class {
 	#category : #'Alexandrie-FontManager'
 }
 
+{ #category : #printing }
+AeFaceEntry >> description [
+
+	^ String streamContents: [ :stream | self printDescriptionOn: stream ]
+]
+
 { #category : #accessing }
 AeFaceEntry >> ensureAnalysedAttributes [
 
@@ -65,10 +71,32 @@ AeFaceEntry >> initialize [
 ]
 
 { #category : #'instance creation' }
-AeFaceEntry >> newFaceWith: anAeFTLibrary [
+AeFaceEntry >> newFTFaceWith: anAeFTLibrary [
 	"Answer a new AeFTFace created in the library."
 
 	^ self subclassResponsibility
+]
+
+{ #category : #'instance creation' }
+AeFaceEntry >> newFaceWith: anAeFTLibrary [
+	"Answer a new AeFTFace created in the library."
+
+	self
+		deprecated: 'Please use newFTFaceWith: instead.'
+		transformWith:
+			'`@receiver newFaceWith: `@statements1'
+				-> '`@receiver newFTFaceWith: `@statements1'.
+
+	^ self newFTFaceWith: anAeFTLibrary
+]
+
+{ #category : #printing }
+AeFaceEntry >> printDescriptionOn: aStream [
+
+	aStream
+		print: familyName;
+		space;
+		print: styleName
 ]
 
 { #category : #printing }
@@ -76,12 +104,9 @@ AeFaceEntry >> printOn: aStream [
 
 	super printOn: aStream.
 
-	aStream
-		nextPutAll: '(';
-		print: familyName;
-		space;
-		print: styleName;
-		nextPutAll: ')'
+	aStream nextPutAll: '('.
+	self printDescriptionOn: aStream.
+	aStream nextPutAll: ')'
 ]
 
 { #category : #accessing }
