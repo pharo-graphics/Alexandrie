@@ -124,6 +124,17 @@ AeHbBlob class >> unownedNewLocatedAtOrFail: aPathString [
 ]
 
 { #category : #accessing }
+AeHbBlob >> data [
+	"See: https://harfbuzz.github.io/harfbuzz-hb-blob.html#hb-blob-get-data"
+
+	^ self ffiCall: #(
+		const void *
+		hb_blob_get_data (
+			self,
+			nil) )
+]
+
+{ #category : #accessing }
 AeHbBlob >> faceCount [
 	"Answer the number of faces in this bloc.
 	
