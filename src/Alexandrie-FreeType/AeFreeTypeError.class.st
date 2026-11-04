@@ -14,7 +14,7 @@ Class {
 	#classVars : [
 		'MessageByErrorCode'
 	],
-	#category : #'Alexandrie-FreeType-FFI'
+	#category : #'Alexandrie-FreeType'
 }
 
 { #category : #'class initialization' }

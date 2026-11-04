@@ -14,7 +14,7 @@ AeCairoTextToGlyphShaping class >> exampleShapeAndDraw [
 	aContext := aSurface newContext.
 
 	"Set up scaled font in the context"
-	aFTFace := AeSourceSansPro_Regular firstFaceUsing: AeFTLibrary newInitialized.
+	aFTFace := AeSourceSansProRegular firstFaceUsing: AeFTLibrary newInitialized.
 	aContext
 		fontFace: aFTFace newCairoFontFace;
 		fontSize: fontSize.

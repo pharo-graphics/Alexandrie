@@ -28,7 +28,7 @@ Class {
 		'OFFSET_YSUPERSCRIPTYOFFSET',
 		'OFFSET_YSUPERSCRIPTYSIZE'
 	],
-	#category : #'Alexandrie-FreeType-FFI'
+	#category : #'Alexandrie-FreeType'
 }
 
 { #category : #'field definition' }

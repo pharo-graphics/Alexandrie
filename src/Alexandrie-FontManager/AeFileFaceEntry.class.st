@@ -22,8 +22,8 @@ AeFileFaceEntry >> location: aFileReference [
 	location := aFileReference
 ]
 
-{ #category : #'double-dispatch' }
-AeFileFaceEntry >> newFaceWith: anAeFTLibrary [ 
+{ #category : #'instance creation' }
+AeFileFaceEntry >> newFTFaceWith: anAeFTLibrary [ 
 	
 	^ anAeFTLibrary newFaceFromFile: location index: index
 	
