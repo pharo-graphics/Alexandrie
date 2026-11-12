@@ -66,6 +66,11 @@ BaselineOfAlexandrie >> baseline: spec [
 				package: 'Alexandrie-Canvas-Tests'
 					with: [ spec requires: #('Alexandrie-Canvas' 'Alexandrie-FreeType-Tests' 'Alexandrie-Cairo-Tests') ];
 
+				package: 'Alexandrie-Athens'
+					with: [ spec requires: #('Alexandrie-Cairo' 'Alexandrie-FontManager') ];
+				package: 'Alexandrie-Athens-Tests'
+					with: [ spec requires: #('Alexandrie-Athens') ];
+
 				package: 'Alexandrie-NewTools'
 					with: [ spec requires: #('Alexandrie-Canvas') ];
 				package: 'Alexandrie-NewTools-Tests'
@@ -81,14 +86,16 @@ BaselineOfAlexandrie >> baseline: spec [
 					'Alexandrie-Blur'
 					'Alexandrie-Canvas'
 					'Alexandrie-CairoFreetype'
-					'Alexandrie-FontManager');
+					'Alexandrie-FontManager'
+					'Alexandrie-Athens');
 				group: 'development' with: #(
 					'Alexandrie-NewTools-Tests'
 					'Alexandrie-Harfbuzz-Tests'
 					'Alexandrie-Blur-Tests'
 					'Alexandrie-Canvas-Tests'
 					'Alexandrie-CairoFreetype-Tests'
-					'Alexandrie-FontManager-Tests');
+					'Alexandrie-FontManager-Tests'
+					'Alexandrie-Athens-Tests');
 				group: 'default' with: #('development')	]
 ]
 
