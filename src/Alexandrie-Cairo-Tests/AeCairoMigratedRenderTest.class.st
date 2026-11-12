@@ -290,7 +290,7 @@ AeCairoMigratedRenderTest >> surfaceWithFillDisjoint [
 	Based on: fill-disjoint.c"
 
 	| surfaceSize aSurface aContext |
-	surfaceSize := 300 asPoint.
+	surfaceSize := 300 @ 300.
 	aSurface := self newSurfaceExtent: surfaceSize.
 	aContext := aSurface newContext.
 
@@ -332,22 +332,22 @@ AeCairoMigratedRenderTest >> surfaceWithFillEmpty [
 		paint.
 
 	aContext sourceColor: Color red.
-	
+
 	"first drawn an ordinary empty path"
 	aContext restoreStateAfter: [
 		aContext
-			rectangle: (0 asPoint extent: size @ (size/2));
+			rectangle: (0 @ 0 extent: size @ (size/2));
 			clip;
 			fill ].
 
 	"and then an unbounded empty path"
-	aContext restoreStateAfter: [ 
+	aContext restoreStateAfter: [
 		aContext
 			rectangle: (0 @ (size / 2) extent: size @ (size/2));
 			clip;
 			operator: AeCairoOperator destIn;
 			fill ].
-	
+
 	^ aSurface
 ]
 

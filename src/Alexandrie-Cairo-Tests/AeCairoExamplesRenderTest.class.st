@@ -179,10 +179,11 @@ AeCairoExamplesRenderTest >> surfaceWithDeviceOffset [
 	offsetPoint := 20 @ 10.
 	surfaceWidth := (aSquare right + offsetPoint x) + 1.
 	surfaceHeight := (aSquare bottom + offsetPoint y) + 1.
-	
+
 	aSurface := AeCairoImageSurface
-		extent: surfaceWidth @ surfaceHeight
-		format: AeCairoSurfaceFormat argb32.
+		newWithFormat: AeCairoSurfaceFormat argb32
+		width: surfaceWidth
+		height: surfaceHeight.
 
 	aSurface deviceOffset: offsetPoint.
 
@@ -193,7 +194,7 @@ AeCairoExamplesRenderTest >> surfaceWithDeviceOffset [
 
 		" mark 0@0 "
 		sourceColor: Color black;
-		rectangleTo: 1 asPoint;
+		rectangleTo: 1 @ 1;
 		fill;
 
 		" draw a square "
@@ -206,7 +207,6 @@ AeCairoExamplesRenderTest >> surfaceWithDeviceOffset [
 		equals: offsetPoint.
 
 	^ aSurface
-
 ]
 
 { #category : #tests }
@@ -217,10 +217,11 @@ AeCairoExamplesRenderTest >> surfaceWithDeviceScale [
 	scalePoint := 3 @ 1.2.
 	surfaceWidth := (aSquare right * scalePoint x) + 1.
 	surfaceHeight := (aSquare bottom * scalePoint y) + 1.
-	
+
 	aSurface := AeCairoImageSurface
-		extent: surfaceWidth @ surfaceHeight
-		format: AeCairoSurfaceFormat argb32.
+		newWithFormat: AeCairoSurfaceFormat argb32
+		width: surfaceWidth
+		height: surfaceHeight.
 
 	aSurface deviceScale: scalePoint.
 
@@ -231,7 +232,7 @@ AeCairoExamplesRenderTest >> surfaceWithDeviceScale [
 
 		" mark 0@0 "
 		sourceColor: Color black;
-		rectangleTo: 1 asPoint;
+		rectangleTo: 1 @ 1;
 		fill;
 
 		" draw square (that won't look as a square due
@@ -245,7 +246,6 @@ AeCairoExamplesRenderTest >> surfaceWithDeviceScale [
 		equals: scalePoint.
 
 	^ aSurface
-
 ]
 
 { #category : #tests }
@@ -253,8 +253,9 @@ AeCairoExamplesRenderTest >> surfaceWithDeviceScaleAndOffsetDuplicated [
 
 	| aSurface duplicate |
 	aSurface := AeCairoImageSurface
-		extent: 16 @ 16
-		format: AeCairoSurfaceFormat argb32.
+		newWithFormat: AeCairoSurfaceFormat argb32
+		width: 16
+		height: 16.
 
 	aSurface deviceScale: 3 @ 5.
 	aSurface deviceOffset: 2 @ 1.
@@ -269,11 +270,10 @@ AeCairoExamplesRenderTest >> surfaceWithDeviceScaleAndOffsetDuplicated [
 
 		" mark 0@0 "
 		sourceColor: Color blue;
-		rectangleTo: 2 asPoint;
+		rectangleTo: 2 @ 2;
 		fill.
 
 	^ duplicate
-
 ]
 
 { #category : #tests }
@@ -474,7 +474,7 @@ AeCairoExamplesRenderTest >> surfaceWithRotationAboutCenter [
 AeCairoExamplesRenderTest >> surfaceWithRotationByQuadrantsOnContext [
 
 	| extent mainSurface mainContext m |
-	extent := 10 asPoint.
+	extent := 10 @ 10.
 
 	mainSurface :=
 		AeCairoImageSurface
@@ -485,7 +485,7 @@ AeCairoExamplesRenderTest >> surfaceWithRotationByQuadrantsOnContext [
 	m := AeCairoMatrix newIdentity.
 	m beRotationByQuadrants: 1 around: extent.
 	mainContext
-		matrix: m;	
+		matrix: m;
 		sourceColor: Color red;
 		rectangleTo: extent;
 		fill.
@@ -593,17 +593,18 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedBuffered [
 
 	| radius shadowSize aShadowSurface aShadowContext aGradient mainSurface  mainContext shadowOffset extent shadowCenter position shadowColor shadowAlpha |
 	radius := 15.
-	shadowOffset := 2 asPoint.
+	shadowOffset := 2 @ 2.
 	shadowSize := 4.
 	position := shadowSize asPoint.
-	extent := (radius + shadowSize) * 2 asPoint + shadowOffset.
+	extent := (radius + shadowSize) * (2 @ 2) + shadowOffset.
 	shadowCenter := position + radius.
 	shadowColor := Color black.
 	shadowAlpha := 0.5.
 
 	aShadowSurface := AeCairoImageSurface
-		extent: (radius + shadowSize) * 2 asPoint
-		format: AeCairoSurfaceFormat a8.
+		newWithFormat: AeCairoSurfaceFormat a8
+		width: (radius + shadowSize) * 2
+		height: (radius + shadowSize) * 2.
 	aShadowContext := aShadowSurface newContext.
 	aGradient := (AeCairoRadialGradientPattern
 		center: shadowCenter
@@ -643,7 +644,6 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedBuffered [
 		fill.
 
 	^ mainSurface
-
 ]
 
 { #category : #tests }
@@ -652,14 +652,14 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedDirect [
 
 	| radius shadowSize aGradient mainSurface  mainContext shadowOffset shadowCenter shadowColor position extent shadowAlpha |
 	radius := 15.
-	shadowOffset := 2 asPoint.
+	shadowOffset := 2 @ 2.
 	shadowSize := 4.
 	position := shadowSize asPoint.
-	extent := (radius + shadowSize) * 2 asPoint + shadowOffset.
+	extent := (radius + shadowSize) * (2 @ 2) + shadowOffset.
 	shadowCenter := position + radius + shadowOffset.
 	shadowColor := Color black.
 	shadowAlpha := 0.5.
-	
+
 	mainSurface := AeCairoImageSurface
 		extent: extent
 		format: AeCairoSurfaceFormat argb32.
@@ -691,7 +691,6 @@ AeCairoExamplesRenderTest >> surfaceWithShadowedCircleEmulatedDirect [
 		fill.
 
 	^ mainSurface
-
 ]
 
 { #category : #tests }

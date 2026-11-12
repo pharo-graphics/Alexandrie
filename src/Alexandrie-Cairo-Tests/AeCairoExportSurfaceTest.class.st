@@ -124,6 +124,15 @@ AeCairoExportSurfaceTest >> testExportInUnexistentSubdirectoryFails [
 ]
 
 { #category : #tests }
+AeCairoExportSurfaceTest >> testExtent [
+
+	surface := self surfaceClass
+		           extent: 100 @ 300
+		           to: self targetInCurrentWorkingDirectory.
+	self assert: surface extent equals: 100 @ 300
+]
+
+{ #category : #tests }
 AeCairoExportSurfaceTest >> testHasDevice [
 	"This kind of cairo surfaces don't have a device."
 

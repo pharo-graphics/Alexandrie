@@ -54,6 +54,25 @@ AthensAeCairoCanvas >> clipBy: aRectangle during: aBlock [
 		currentClipRect := oldClip ]
 ]
 
+{ #category : #clipping }
+AthensAeCairoCanvas >> clipRect [
+
+	| origin |
+	currentClipRect ifNil: [
+		origin := pathTransform
+			ifNotNil: [ pathTransform inverted transform: 0 @ 0 ]
+			ifNil: [ 0 @ 0 ].
+		currentClipRect := origin extent: self surface extent ].
+
+	^ currentClipRect
+]
+
+{ #category : #drawing }
+AthensAeCairoCanvas >> copyPage [
+
+	surface copyPage
+]
+
 { #category : #drawing }
 AthensAeCairoCanvas >> draw [
 	"Fill the currently selected shape (applying path matrix) with currently selected paint (applying paint matrix)"
@@ -63,10 +82,42 @@ AthensAeCairoCanvas >> draw [
 	^ shape paintFillsUsing: paint on: self
 ]
 
+{ #category : #'drawing text' }
+AthensAeCairoCanvas >> drawString: aString [
+
+	fontRenderer ifNil: [ self setFont: StandardFonts defaultFont ].
+	^ super drawString: aString
+]
+
+{ #category : #'drawing text' }
+AthensAeCairoCanvas >> drawString: aString from: startIndex to: endIndex [
+
+	fontRenderer ifNil: [ self setFont: StandardFonts defaultFont ].
+	^ super drawString: aString from: startIndex to: endIndex
+]
+
+{ #category : #drawing }
+AthensAeCairoCanvas >> drawWithAlpha: aNumber [
+
+	cairoContext paintWithAlpha: aNumber asFloat
+]
+
 { #category : #drawing }
 AthensAeCairoCanvas >> fill [
 	
 	cairoContext fill
+]
+
+{ #category : #drawing }
+AthensAeCairoCanvas >> fillPreserve [
+
+	cairoContext fillPreserve
+]
+
+{ #category : #drawing }
+AthensAeCairoCanvas >> fillRule [
+
+	^ cairoContext fillRule
 ]
 
 { #category : #drawing }
@@ -82,12 +133,12 @@ AthensAeCairoCanvas >> fillRuleWinding [
 ]
 
 { #category : #accessing }
-AthensAeCairoCanvas >> fontRendererForLogicalFont: aFont [ 
-	
+AthensAeCairoCanvas >> fontRendererForLogicalFont: aFont [
+
 	^ self freetypeRenderer
-		  logicalFont: aFont;
-		  advance: 0 @ 0;
-		  yourself
+		logicalFont: aFont;
+		advance: 0 @ 0;
+		yourself
 ]
 
 { #category : #accessing }
@@ -95,6 +146,12 @@ AthensAeCairoCanvas >> freetypeRenderer [
 
 	^ freetypeRenderer ifNil: [
 		freetypeRenderer := AthensAeCairoFreetypeRenderer on: self ]
+]
+
+{ #category : #drawing }
+AthensAeCairoCanvas >> getCurrentPoint [
+
+	^ cairoContext currentPointInUserSpace
 ]
 
 { #category : #initialization }
@@ -112,9 +169,9 @@ AthensAeCairoCanvas >> initializeWithSurface: aSurface [
 ]
 
 { #category : #private }
-AthensAeCairoCanvas >> loadPath: aCairoPath [ 
+AthensAeCairoCanvas >> loadPath: anAthensPath [
 
-	cairoContext appendPath: aCairoPath
+	anAthensPath loadOnCairoCanvas: self
 ]
 
 { #category : #'instance creation' }
@@ -168,16 +225,17 @@ AthensAeCairoCanvas >> rectangleX: x y: y width: aWidth height: aHeight [
 		height: aHeight
 ]
 
+{ #category : #clipping }
+AthensAeCairoCanvas >> resetClip [
+
+	cairoContext resetClip.
+	currentClipRect := nil
+]
+
 { #category : #drawing }
 AthensAeCairoCanvas >> resetDash [
 
 	cairoContext resetStrokeDashPattern
-]
-
-{ #category : #'drawing text' }
-AthensAeCairoCanvas >> setFont: aFont [
-
-	fontRenderer := aFont athensAeCairoFontRendererFor: self
 ]
 
 { #category : #initialization }
@@ -209,8 +267,36 @@ AthensAeCairoCanvas >> setSourceR: red g: green b: blue a: alpha [
 		a: alpha
 ]
 
+{ #category : #drawing }
+AthensAeCairoCanvas >> showPage [
+
+	surface showPage
+]
+
 { #category : #'API - painting' }
 AthensAeCairoCanvas >> stroke [
 	
 	cairoContext stroke
+]
+
+{ #category : #'drawing text' }
+AthensAeCairoCanvas >> text: aString extents: aCairoTextExtents [
+
+	cairoContext getTextExtentsOf: aString utf8Encoded into: aCairoTextExtents
+]
+
+{ #category : #transformations }
+AthensAeCairoCanvas >> transformBy: aDisplayTransform withClip: aClipRectangle in: aSubRectangle during: aDrawBlock [
+
+	self clipBy: currentClipRect during: [
+		| subClip oldClip |
+		subClip := aDisplayTransform globalBoundsToLocal: aClipRectangle.
+		oldClip := currentClipRect.
+		currentClipRect := aDisplayTransform globalBoundsToLocal: self clipRect.
+		pathTransform restoreAfter: [
+			pathTransform translateBy: aDisplayTransform offset negated.
+			pathTransform rotateByRadians: aDisplayTransform angle negated.
+			pathTransform scaleBy: aDisplayTransform scale.
+			self clipBy: subClip during: [ aDrawBlock value: self ] ].
+		currentClipRect := oldClip ]
 ]

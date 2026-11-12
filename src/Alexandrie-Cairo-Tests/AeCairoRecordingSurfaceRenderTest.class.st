@@ -43,13 +43,14 @@ AeCairoRecordingSurfaceRenderTest >> surfaceWithBounds [
 	aRecordingSurface newContext
 		sourceColor: (Color cyan alpha: 0.8);
 		rectangle: aRectangle;
-		strokeSize: 10; 
+		strokeSize: 10;
 		stroke.
 
 	"Replay the recorded surface on a target surface"
 	targetSurface := AeCairoImageSurface
-		extent: 50 asPoint
-		format: AeCairoSurfaceFormat argb32.
+		newWithFormat: AeCairoSurfaceFormat argb32
+		width: 50
+		height: 50.
 
 	targetSurface newContext
 		sourceColor: Color blue;
@@ -85,13 +86,14 @@ AeCairoRecordingSurfaceRenderTest >> surfaceWithNoBounds [
 	aRecordingSurface newContext
 		sourceColor: (Color cyan alpha: 0.8);
 		rectangle: aRectangle;
-		strokeSize: 10; 
+		strokeSize: 10;
 		stroke.
 
 	"Replay the recorded surface on a target surface"
 	targetSurface := AeCairoImageSurface
-		extent: 50 asPoint
-		format: AeCairoSurfaceFormat argb32.
+		newWithFormat: AeCairoSurfaceFormat argb32
+		width: 50
+		height: 50.
 
 	targetSurface newContext
 		sourceColor: Color blue;

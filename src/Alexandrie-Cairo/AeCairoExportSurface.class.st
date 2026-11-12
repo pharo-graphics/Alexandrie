@@ -20,6 +20,9 @@ References:
 Class {
 	#name : #AeCairoExportSurface,
 	#superclass : #AeCairoSurface,
+	#instVars : [
+		'extent'
+	],
 	#category : #'Alexandrie-Cairo-Surfaces'
 }
 
@@ -42,6 +45,7 @@ AeCairoExportSurface class >> extent: aPoint toPathString: aString [
 		   width: aPoint x
 		   height: aPoint y)
 		  autoRelease;
+		  initializeWithExtent: aPoint;
 		  yourself
 ]
 
@@ -49,4 +53,18 @@ AeCairoExportSurface class >> extent: aPoint toPathString: aString [
 AeCairoExportSurface class >> unownedNewExportingTo: fileName width: width height: height [
 
 	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
+AeCairoExportSurface >> extent [
+	"Answer the extent in points of this export surface."
+
+	^ extent
+]
+
+{ #category : #initialization }
+AeCairoExportSurface >> initializeWithExtent: aPoint [
+	"Note: don't send super initialize as it nullifies the handle."
+
+	extent := aPoint
 ]

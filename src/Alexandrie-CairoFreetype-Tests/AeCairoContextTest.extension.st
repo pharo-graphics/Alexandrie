@@ -4,9 +4,9 @@ Extension { #name : #AeCairoContextTest }
 AeCairoContextTest >> testScaledFont [
 
 	| aSurface aContext aFontFace scaledFont17 scaledFont71 scaledFont17b sameFaceInDifferentFTLibrary |
-	aSurface := AeCairoImageSurface extent: 1@1.
+	aSurface := AeCairoImageSurface extent: 1 @ 1.
 	aContext := aSurface newContext.
-	
+
 	"Set up scaled font in the context"
 	aFontFace := (AeSourceSansPro_Regular firstFaceUsing: AeFTLibrary newInitialized) newCairoFontFace.
 	aContext
@@ -27,7 +27,7 @@ AeCairoContextTest >> testScaledFont [
 	scaledFont71 := aContext scaledFont.
 
 	"Caching, when switching back to fontSize=17 via #fontMatrix:"
-	aContext fontMatrix: (AeCairoMatrix newScalingBy: 17 asPoint).
+	aContext fontMatrix: (AeCairoMatrix newScalingByX: 17 y: 17).
 	self
 		deny: aContext scaledFont getHandle
 		equals: scaledFont71 getHandle.
@@ -41,7 +41,7 @@ AeCairoContextTest >> testScaledFont [
 	self
 		assert: aContext scaledFont getHandle
 		equals: scaledFont71 getHandle.
-	
+
 	"Cairo cache doesn't work if Freetype face belongs to a different library"
 	sameFaceInDifferentFTLibrary :=
 		(AeSourceSansPro_Regular firstFaceUsing: AeFTLibrary newInitialized) newCairoFontFace.

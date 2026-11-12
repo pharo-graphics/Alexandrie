@@ -51,6 +51,12 @@ AeCairoSurface class >> unownedNewSimilarTo: aSurface contentType: aContentType 
 			int aHeight ) )
 ]
 
+{ #category : #converting }
+AeCairoSurface >> asCairoPattern [
+
+	^ AeCairoSurfacePattern surface: self
+]
+
 { #category : #'API - pages' }
 AeCairoSurface >> copyPage [
 	"Emits the current page for backends that support multiple pages, but doesn't clear it, so that the contents of the current page will be retained for the next page.

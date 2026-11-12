@@ -58,11 +58,11 @@ AeCanvasTest >> expectedFormsDirectory [
 AeCanvasTest >> renderArbitraryFigure [
 
 	| aeCanvas |
-	aeCanvas := AeCanvas extent: 50 asPoint.
+	aeCanvas := AeCanvas extent: 50 @ 50.
 
 	aeCanvas pathFactory: [ :cairoContext |
 		cairoContext
-			rectangle: (0 asPoint extent: 20 asPoint);
+			rectangle: (0 @ 0 extent: 20 @ 20);
 			circleRadius: 20 ].
 
 	aeCanvas setBackgroundWith: [
@@ -186,7 +186,7 @@ AeCanvasTest >> renderBorderOutsideAndTranslucentBackground [
 AeCanvasTest >> renderClear [
 
 	| aeCanvas |
-	aeCanvas := AeCanvas extent: 10 asPoint.
+	aeCanvas := AeCanvas extent: 10 @ 10.
 	aeCanvas clearTransparent.
 	aeCanvas clear: Color green.
 
@@ -197,13 +197,13 @@ AeCanvasTest >> renderClear [
 AeCanvasTest >> renderClippedFigures [
 
 	| aeCanvas |
-	aeCanvas := AeCanvas extent: 50 asPoint.
+	aeCanvas := AeCanvas extent: 50 @ 50.
 	aeCanvas clear: Color yellow.
 
 	"Draw container figure (a rectangle)"
-	aeCanvas pathTranslate: 10 asPoint.
+	aeCanvas pathTranslate: 10 @ 10.
 	aeCanvas pathFactory: [ :cairoContext |
-		cairoContext rectangleTo: 30 asPoint ].
+		cairoContext rectangleTo: 30 @ 30 ].
 	aeCanvas setBackgroundWith: [
 		aeCanvas setSourceColor: Color blue ].
 	aeCanvas setBorderOff.
@@ -212,7 +212,7 @@ AeCanvasTest >> renderClippedFigures [
 	aeCanvas drawFigureAndPrepareToClip.
 
 	"Draw a child circle that is clipped by the parent rectangle."
-	aeCanvas pathTranslate: 15 asPoint.
+	aeCanvas pathTranslate: 15 @ 15.
 	aeCanvas pathFactory: [ :cairoContext |
 		cairoContext circleRadius: 15 ].
 	aeCanvas setBackgroundWith: [
@@ -227,10 +227,10 @@ AeCanvasTest >> renderClippedFigures [
 AeCanvasTest >> renderClosedFigure [
 
 	| aeCanvas |
-	aeCanvas := AeCanvas extent: 50 asPoint.
+	aeCanvas := AeCanvas extent: 50 @ 50.
 
 	aeCanvas pathFactory: [ :cairoContext |
-		cairoContext rectangle: (10 asPoint extent: 20 asPoint) ].
+		cairoContext rectangle: (10 @ 10 extent: 20 @ 20) ].
 
 	aeCanvas setBackgroundWith: [
 		aeCanvas setSourceColor: Color blue ].
@@ -244,7 +244,7 @@ AeCanvasTest >> renderClosedFigure [
 AeCanvasTest >> renderCurvedFigure [
 
 	| aeCanvas |
-	aeCanvas := AeCanvas extent: 50 asPoint.
+	aeCanvas := AeCanvas extent: 50 @ 50.
 
 	aeCanvas pathFactory: [ :cairoContext |
 		cairoContext circleRadius: 25 ].
@@ -314,9 +314,9 @@ AeCanvasTest >> renderFormSet [
 
 	SystemVersion current major >= 12 ifFalse: [ self skip ]. "Earlier versions do not have FormSet"
 
-	aeCanvas := AeCanvas newFor: ((AeCairoImageSurface extent: (60@20) * 2) deviceScale: 2 asPoint; yourself).
+	aeCanvas := AeCanvas newFor: ((AeCairoImageSurface extent: (60 @ 20) * 2) deviceScale: 2 @ 2; yourself).
 	aeCanvas clear: Color paleGreen.
-	
+
 	aForm := Form fromFileNamed: AeFilesystemResources removeIcon2xPNG.
 	aFormSet := FormSet extent: aForm extent // 2 depth: aForm depth forms: { aForm }.
 
@@ -483,13 +483,13 @@ AeCanvasTest >> renderLigatureTextWithoutHarfbuzz [
 AeCanvasTest >> renderOpenFigure [
 
 	| aeCanvas |
-	aeCanvas := AeCanvas extent: 50 asPoint.
+	aeCanvas := AeCanvas extent: 50 @ 50.
 
 	"Set line path"
 	aeCanvas pathFactory: [ :cairoContext |
 		cairoContext
-			moveTo: 20@10;
-			lineTo: 30@40 ].
+			moveTo: 20 @ 10;
+			lineTo: 30 @ 40 ].
 
 	"Background and other outskirts than centered are an option but
 	they do not look well on open figures."
