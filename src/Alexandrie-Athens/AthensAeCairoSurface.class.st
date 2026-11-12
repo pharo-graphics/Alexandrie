@@ -11,12 +11,33 @@ Class {
 }
 
 { #category : #'instance creation' }
+AthensAeCairoSurface class >> createFromFile: aFileName ifFailed: aBlock [
+
+	| fileReference imageSurface |
+	fileReference := aFileName asFileReference.
+	fileReference exists ifFalse: [ ^ aBlock value: #fileNotFound ].
+	imageSurface := [ AeCairoImageSurface newFromPngFileAt: fileReference ]
+		on: Error
+		do: [ :anError | ^ aBlock value: anError description ].
+	^ self on: imageSurface
+]
+
+{ #category : #'instance creation' }
 AthensAeCairoSurface class >> extent: aPoint [
 
-	self flag: #athens. "Extra vertical line without explanation,
-		based on: AthensCairoSurface class>>#extent:format:"
+	^ self on: (AeCairoImageSurface extent: aPoint)
+]
 
-	^ self on: (AeCairoImageSurface extent: aPoint + (0@1))
+{ #category : #'instance creation' }
+AthensAeCairoSurface class >> extent: aPoint format: anAeCairoSurfaceFormat [
+
+	^ self on: (AeCairoImageSurface extent: aPoint format: anAeCairoSurfaceFormat)
+]
+
+{ #category : #'instance creation' }
+AthensAeCairoSurface class >> fromForm: aForm [
+
+	^ self on: (AeCairoImageSurface fromForm: (aForm asFormOfDepth: 32))
 ]
 
 { #category : #'instance creation' }
@@ -25,6 +46,12 @@ AthensAeCairoSurface class >> on: aCairoSurface [
 	^ self basicNew
 		initializeOn: aCairoSurface;
 		yourself
+]
+
+{ #category : #converting }
+AthensAeCairoSurface >> asAthensPaintOn: aCanvas [
+
+	^ AthensAeCairoPatternPaint on: cairoSurface asCairoPattern
 ]
 
 { #category : #converting }
@@ -37,6 +64,12 @@ AthensAeCairoSurface >> asForm [
 AthensAeCairoSurface >> attemptToRecurseDrawing [
 
 	^ self flag: #athens. "Should signal a warning or error"
+]
+
+{ #category : #caching }
+AthensAeCairoSurface >> cacheAt: anObject ifAbsentPut: aBlock [
+
+	^ AthensAeCairoBackendCache soleInstance at: anObject ifAbsentPut: aBlock
 ]
 
 { #category : #accessing }
@@ -70,22 +103,32 @@ AthensAeCairoSurface >> clear: clearPaint [
 				drawShape: (0@0 extent: self extent) ] ]
 ]
 
+{ #category : #drawing }
+AthensAeCairoSurface >> copyPage [
+
+	cairoSurface copyPage
+]
+
 { #category : #paints }
 AthensAeCairoSurface >> createFormPaint: aForm [
 
 	| newSurface |
 	newSurface := AeCairoImageSurface fromForm: (aForm asFormOfDepth: 32).
-
-	^ newSurface asAthensPaintOn: canvas
+	^ AthensAeCairoPatternPaint on: newSurface asCairoPattern
 ]
 
 { #category : #paints }
 AthensAeCairoSurface >> createLinearGradient: aColorRamp start: aStartPoint stop: aStopPoint [
 
-	^ AeCairoLinearGradientPattern
-		from: aStartPoint
-		to: aStopPoint
-		addStopsFrom: aColorRamp
+	| pattern |
+	pattern := AeCairoLinearGradientPattern from: aStartPoint to: aStopPoint addStopsFrom: aColorRamp.
+	^ AthensAeCairoPaint on: pattern
+]
+
+{ #category : #paints }
+AthensAeCairoSurface >> createMeshGradientWithPatches: aListOfMeshPatches [
+
+	^ AthensAeCairoMeshGradientPaint withPatches: aListOfMeshPatches
 ]
 
 { #category : #paths }
@@ -95,28 +138,52 @@ AthensAeCairoSurface >> createPath: aPathCreatingBlock [
 ]
 
 { #category : #paints }
-AthensAeCairoSurface >> createRadialGradient: colorRamp center: aCenter radius: aRadius focalPoint: fp [
+AthensAeCairoSurface >> createRadialGradient: colorRamp center: aCenter radius: aRadius focalPoint: aFocalPoint [
 
-	^ AeCairoRadialGradientPattern
-		innerCenter: fp
+	| pattern |
+	pattern := AeCairoRadialGradientPattern
+		innerCenter: aFocalPoint
 		innerRadius: 0.0
 		outerCenter: aCenter
 		outerRadius: aRadius
-		addStopsFrom: colorRamp
+		addStopsFrom: colorRamp.
+	^ AthensAeCairoPaint on: pattern
 ]
 
 { #category : #paints }
 AthensAeCairoSurface >> createSolidColorPaint: aColor [
 
-	^ AeCairoColorPattern newFrom: aColor
+	^ AthensAeCairoPaint on: (AeCairoColorPattern newFrom: aColor)
 ]
 
 { #category : #paints }
 AthensAeCairoSurface >> createStrokePaintFor: aPaint [
 
 	^ AthensAeCairoStrokePaint new
-		  fillPaint: aPaint;
-		  yourself
+		fillPaint: aPaint;
+		yourself
+]
+
+{ #category : #public }
+AthensAeCairoSurface >> deviceScale: aNumber [
+
+	cairoSurface deviceScale: aNumber asFloat
+]
+
+{ #category : #public }
+AthensAeCairoSurface >> deviceScaleX: sx y: sy [
+
+	cairoSurface deviceScaleX: sx asFloat y: sy asFloat
+]
+
+{ #category : #public }
+AthensAeCairoSurface >> displayOnMorphicCanvas: aCanvas at: aPoint [
+
+	aCanvas
+		image: self asForm
+		at: aPoint
+		sourceRect: (0 @ 0 extent: self extent)
+		rule: 34
 ]
 
 { #category : #public }
@@ -164,10 +231,22 @@ AthensAeCairoSurface >> fillRectangle: aRectangle withSolidColor: aColor [
 		fill
 ]
 
+{ #category : #public }
+AthensAeCairoSurface >> finish [
+
+	cairoSurface finish
+]
+
 { #category : #accessing }
 AthensAeCairoSurface >> flush [
 	
 	cairoSurface flush
+]
+
+{ #category : #caching }
+AthensAeCairoSurface >> flushCacheAt: anObject [
+
+	AthensAeCairoBackendCache soleInstance removeAt: anObject
 ]
 
 { #category : #'text support' }
@@ -177,6 +256,12 @@ AthensAeCairoSurface >> getFreetypeFontRendererFor: aFreeTypeFont [
 		  font: aFreeTypeFont;
 		  advance: 0 @ 0;
 		  yourself
+]
+
+{ #category : #'text support' }
+AthensAeCairoSurface >> getStrikeFontRendererFor: aStrikeFont [
+
+	^ AthensAeCairoStrikeFontRenderer on: canvas forFont: aStrikeFont
 ]
 
 { #category : #initialization }
@@ -212,4 +297,16 @@ AthensAeCairoSurface >> loadSolidColor: aColor [
 AthensAeCairoSurface >> newCanvas [
 
 	^ AthensAeCairoCanvas on: self
+]
+
+{ #category : #drawing }
+AthensAeCairoSurface >> showPage [
+
+	cairoSurface showPage
+]
+
+{ #category : #public }
+AthensAeCairoSurface >> writeToPng: aFileName [
+
+	cairoSurface writePngToPathString: aFileName asFileReference fullName
 ]

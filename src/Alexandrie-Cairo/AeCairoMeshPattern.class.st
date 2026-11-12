@@ -41,6 +41,12 @@ AeCairoMeshPattern >> beginPatch [
 		cairo_mesh_pattern_begin_patch ( self ) )
 ]
 
+{ #category : #modifying }
+AeCairoMeshPattern >> colors: aSequenceOfColors [
+
+	^ self cornerColors: aSequenceOfColors
+]
+
 { #category : #color }
 AeCairoMeshPattern >> cornerAt: zeroBasedIndex putColor: aColor [
 
@@ -104,6 +110,12 @@ AeCairoMeshPattern >> cornerColors: aSequenceOfColors [
 
 	aSequenceOfColors doWithIndex: [ :aColor :aOneBasedIndex |
 		self cornerAt: aOneBasedIndex - 1 putColor: aColor ]
+]
+
+{ #category : #modifying }
+AeCairoMeshPattern >> curveVia: pt1 and: pt2 to: endPt [
+
+	^ self curveVia: pt1 via: pt2 to: endPt
 ]
 
 { #category : #path }
