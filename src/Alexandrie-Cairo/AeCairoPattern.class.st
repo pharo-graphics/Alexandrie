@@ -35,6 +35,30 @@ The default extend mode is CAIRO_EXTEND_NONE for surface patterns and CAIRO_EXTE
 			AeCairoExtendMode anExtendMode ) )
 ]
 
+{ #category : #modifying }
+AeCairoPattern >> extendNone [
+
+	self extend: AeCairoExtendMode none
+]
+
+{ #category : #modifying }
+AeCairoPattern >> extendPad [
+
+	self extend: AeCairoExtendMode pad
+]
+
+{ #category : #modifying }
+AeCairoPattern >> extendReflect [
+
+	self extend: AeCairoExtendMode reflect
+]
+
+{ #category : #modifying }
+AeCairoPattern >> extendRepeat [
+
+	self extend: AeCairoExtendMode repeat
+]
+
 { #category : #API }
 AeCairoPattern >> filter [
 	"Gets the current filter on this pattern.

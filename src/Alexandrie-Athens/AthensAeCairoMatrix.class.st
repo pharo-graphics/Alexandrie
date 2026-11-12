@@ -1,6 +1,6 @@
 Class {
 	#name : #AthensAeCairoMatrix,
-	#superclass : #Object,
+	#superclass : #AthensTransform,
 	#instVars : [
 		'cairoMatrix'
 	],
@@ -22,6 +22,50 @@ AthensAeCairoMatrix >> initialize [
 ]
 
 { #category : #transformations }
+AthensAeCairoMatrix >> inverseTransform: aPoint [
+
+	^ self inverted transform: aPoint
+]
+
+{ #category : #transformations }
+AthensAeCairoMatrix >> invert [
+
+	cairoMatrix invert
+]
+
+{ #category : #transformations }
+AthensAeCairoMatrix >> inverted [
+
+	^ self copy
+		invert;
+		yourself
+]
+
+{ #category : #testing }
+AthensAeCairoMatrix >> isAffineTransform [
+
+	^ true
+]
+
+{ #category : #testing }
+AthensAeCairoMatrix >> isIdentity [
+
+	^ cairoMatrix isIdentity
+]
+
+{ #category : #transformations }
+AthensAeCairoMatrix >> loadAffineTransform: anAthensTransform [
+
+	cairoMatrix
+		sx: anAthensTransform sx;
+		sy: anAthensTransform sy;
+		shx: anAthensTransform shx;
+		shy: anAthensTransform shy;
+		x: anAthensTransform x;
+		y: anAthensTransform y
+]
+
+{ #category : #transformations }
 AthensAeCairoMatrix >> loadIdentity [
 	
 	cairoMatrix beIdentity 
@@ -34,6 +78,21 @@ AthensAeCairoMatrix >> loadInvertedOnPattern: aPattern [
 		(cairoMatrix isIdentity
 			ifTrue: [ cairoMatrix ]
 			ifFalse: [ cairoMatrix inverted ])
+]
+
+{ #category : #transformations }
+AthensAeCairoMatrix >> multiplyBy: anAthensTransform [
+
+	| operandMatrix |
+	operandMatrix := self class new loadAffineTransform: anAthensTransform.
+	cairoMatrix preMultiply: operandMatrix cairoMatrix
+]
+
+{ #category : #copying }
+AthensAeCairoMatrix >> postCopy [
+
+	super postCopy.
+	cairoMatrix := cairoMatrix copy
 ]
 
 { #category : #transformations }
@@ -73,6 +132,54 @@ AthensAeCairoMatrix >> scaleX: fx Y: fy [
 ]
 
 { #category : #accessing }
+AthensAeCairoMatrix >> shx [
+
+	^ cairoMatrix shx
+]
+
+{ #category : #accessing }
+AthensAeCairoMatrix >> shx: aNumber [
+
+	cairoMatrix shx: aNumber
+]
+
+{ #category : #accessing }
+AthensAeCairoMatrix >> shy [
+
+	^ cairoMatrix shy
+]
+
+{ #category : #accessing }
+AthensAeCairoMatrix >> shy: aNumber [
+
+	cairoMatrix shy: aNumber
+]
+
+{ #category : #accessing }
+AthensAeCairoMatrix >> sx [
+
+	^ cairoMatrix sx
+]
+
+{ #category : #accessing }
+AthensAeCairoMatrix >> sx: aNumber [
+
+	cairoMatrix sx: aNumber
+]
+
+{ #category : #accessing }
+AthensAeCairoMatrix >> sy [
+
+	^ cairoMatrix sy
+]
+
+{ #category : #accessing }
+AthensAeCairoMatrix >> sy: aNumber [
+
+	cairoMatrix sy: aNumber
+]
+
+{ #category : #accessing }
 AthensAeCairoMatrix >> transform: aPoint [
 
 	^ cairoMatrix value: aPoint
@@ -88,6 +195,12 @@ AthensAeCairoMatrix >> transformRectangle: aRectangle [
 		self transform: aRectangle topRight }
 ]
 
+{ #category : #transformations }
+AthensAeCairoMatrix >> transformX: px Y: py [
+
+	^ cairoMatrix valueOnX: px onY: py
+]
+
 { #category : #transforming }
 AthensAeCairoMatrix >> translateBy: aPoint [
 
@@ -98,4 +211,28 @@ AthensAeCairoMatrix >> translateBy: aPoint [
 AthensAeCairoMatrix >> translateX: x Y: y [
 	
 	cairoMatrix translateByX: x y: y
+]
+
+{ #category : #accessing }
+AthensAeCairoMatrix >> x [
+
+	^ cairoMatrix x
+]
+
+{ #category : #accessing }
+AthensAeCairoMatrix >> x: aNumber [
+
+	cairoMatrix x: aNumber
+]
+
+{ #category : #accessing }
+AthensAeCairoMatrix >> y [
+
+	^ cairoMatrix y
+]
+
+{ #category : #accessing }
+AthensAeCairoMatrix >> y: aNumber [
+
+	cairoMatrix y: aNumber
 ]

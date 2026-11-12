@@ -32,57 +32,68 @@ AthensAeCairoFreetypeRenderer >> advance: aPoint [
 ]
 
 { #category : #accessing }
-AthensAeCairoFreetypeRenderer >> cairoScaledFontFor: aFont ftFace: ftFace [
+AthensAeCairoFreetypeRenderer >> cairoScaledFontFor: aFont ftFace: aFreeTypeFace [
 
-	^ AthensAeCairoBackendCache soleInstance
-		at: aFont
-		ifAbsentPut: [
-			AeCairoScaledFont
-				fontFace: ftFace newCairoFontFace
-				fontMatrix: (AeCairoMatrix newScalingBy: aFont pixelSize asPoint)
-				userToDeviceMatrix: identityMatrix
-				options: fontOptions ]
+	^ AthensAeCairoBackendCache soleInstance at: aFont ifAbsentPut: [
+		AeCairoScaledFont
+			fontFace: aFreeTypeFace newCairoFontFace
+			fontMatrix: (AeCairoMatrix newScalingBy: aFont pixelSize asPoint)
+			userToDeviceMatrix: identityMatrix
+			options: fontOptions ]
+]
+
+{ #category : #accessing }
+AthensAeCairoFreetypeRenderer >> font: aFreeTypeFont [
+
+	originalFont := aFreeTypeFont.
+	cairoFontFace := fontManager
+		detectFamilyName: aFreeTypeFont familyName
+		slant: (aFreeTypeFont isItalic
+			ifTrue: [ AeFontSlant italic ]
+			ifFalse: [ AeFontSlant normal ])
+		weight: (aFreeTypeFont isBold
+			ifTrue: [ AeFontWeight bold ]
+			ifFalse: [ AeFontWeight normal ])
+		stretch: AeFontStretch normal
+		ifNone: [ fontManager defaultFace ].
+	cairoScaledFont := self cairoScaledFontFor: aFreeTypeFont ftFace: cairoFontFace.
+	fontExtents := cairoScaledFont fontExtents
 ]
 
 { #category : #accessing }
 AthensAeCairoFreetypeRenderer >> freetypeFontForLogicalFont: aFont [
 
+	| slant weight stretch |
+	slant := self slantForLogicalFont: aFont.
+	weight := self weightForLogicalFont: aFont.
+	stretch := self stretchForLogicalFont: aFont.
+
 	aFont familyNames do: [ :eachFamilyName |
 		| realFont |
-		self haltIf: [ aFont weightValue ~= 400 ].
-		self haltIf: [ aFont slantValue ~= 0 ].
-		self haltIf: [ aFont stretchValue ~= 5 ].
-		
 		realFont := fontManager
 			detectFamilyName: eachFamilyName
-			slant: AeFontSlant normal
-			weight: AeFontWeight normal
-			stretch: AeFontStretch normal
+			slant: slant
+			weight: weight
+			stretch: stretch
 			ifNone: [ nil ].
-
 		realFont ifNotNil: [ ^ realFont ] ].
-	
-	^ fontManager defaultFont
+
+	^ fontManager defaultFace
 ]
 
 { #category : #private }
-AthensAeCairoFreetypeRenderer >> glyphsOf: aString from: start to: end [
+AthensAeCairoFreetypeRenderer >> glyphsOf: aString from: startIndex to: endIndex [
 
 	| glyphs |
-	utfConverter convert: aString from: start to: end.
+	utfConverter convert: aString from: startIndex to: endIndex.
 
 	canvas
 		setScaledFont: cairoScaledFont;
 		setFontSize: originalFont pixelSize.
 
-	glyphs := cairoScaledFont
-		glyphArrayForUtf8Array: utfConverter buffer
-		size: utfConverter bufferLength.
+	glyphs := cairoScaledFont glyphArrayForUtf8Array: utfConverter buffer size: utfConverter bufferLength.
 
-	cairoScaledFont getGlyphExtentsOf: glyphs
-		size: glyphs size
-		into: glyphExtents.
-	advance := glyphExtents width @ glyphExtents height.
+	cairoScaledFont getGlyphExtentsOf: glyphs size: glyphs size into: glyphExtents.
 
 	^ glyphs
 ]
@@ -91,13 +102,17 @@ AthensAeCairoFreetypeRenderer >> glyphsOf: aString from: start to: end [
 AthensAeCairoFreetypeRenderer >> initializeOn: aCanvas [
 
 	self initialize.
-	
+
 	canvas := aCanvas.
 	glyphExtents := AeCairoTextExtents new.
 	utfConverter := AeUTF8Converter new.
 	fontManager := AeFontManager globalInstance.
 	identityMatrix := AeCairoMatrix newIdentity.
 	fontOptions := AeCairoFontOptions new
+		antialias: AeCairoAntialias fast;
+		hintMetrics: AeCairoHintMetrics on;
+		hintStyle: AeCairoHintStyle slight;
+		yourself
 ]
 
 { #category : #accessing }
@@ -113,13 +128,13 @@ AthensAeCairoFreetypeRenderer >> logicalFont: aFont [
 ]
 
 { #category : #rendering }
-AthensAeCairoFreetypeRenderer >> renderCharacters: aString from: start to: end [
+AthensAeCairoFreetypeRenderer >> renderCharacters: aString from: startIndex to: endIndex [
 
 	| glyphs |
-	glyphs := self glyphsOf: aString from: start to: end.
+	glyphs := self glyphsOf: aString from: startIndex to: endIndex.
 	self renderGlyphs: glyphs.
 
-	^ advance
+	^ glyphExtents advance
 ]
 
 { #category : #rendering }
@@ -130,8 +145,35 @@ AthensAeCairoFreetypeRenderer >> renderGlyphs: cairoGlyphs [
 	canvas
 		setPathMatrix;
 		setScaledFont: cairoScaledFont.
+	advance = (0 @ 0) ifFalse: [ canvas cairoContext translateByX: advance x y: advance y ].
 	canvas paint loadOnCairoCanvas: canvas.
 	canvas cairoContext showGlyphs: cairoGlyphs.
 
 	cairoScaledFont unlock
+]
+
+{ #category : #accessing }
+AthensAeCairoFreetypeRenderer >> setColor: aColor [
+
+	canvas setPaint: aColor
+]
+
+{ #category : #accessing }
+AthensAeCairoFreetypeRenderer >> slantForLogicalFont: aFont [
+
+	aFont isItalic ifTrue: [ ^ AeFontSlant italic ].
+	^ AeFontSlant normal
+]
+
+{ #category : #accessing }
+AthensAeCairoFreetypeRenderer >> stretchForLogicalFont: aFont [
+
+	^ AeFontStretch normal
+]
+
+{ #category : #accessing }
+AthensAeCairoFreetypeRenderer >> weightForLogicalFont: aFont [
+
+	aFont isBold ifTrue: [ ^ AeFontWeight bold ].
+	^ AeFontWeight normal
 ]

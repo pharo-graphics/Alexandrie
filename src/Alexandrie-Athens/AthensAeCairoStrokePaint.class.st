@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'capStyle',
 		'joinStyle',
-		'dashLenghts'
+		'dashOffset',
+		'dashLengths'
 	],
 	#category : #'Alexandrie-Athens'
 }
@@ -37,6 +38,25 @@ AthensAeCairoStrokePaint >> capButt [
 	capStyle := AeCairoStrokeCap butt
 ]
 
+{ #category : #'setting - cap styles' }
+AthensAeCairoStrokePaint >> capRound [
+
+	capStyle := AeCairoStrokeCap round
+]
+
+{ #category : #'setting - cap styles' }
+AthensAeCairoStrokePaint >> capSquare [
+
+	capStyle := AeCairoStrokeCap square
+]
+
+{ #category : #'setting - dashes' }
+AthensAeCairoStrokePaint >> dashes: anAlternateCollectionOfLengths offset: anOffset [
+
+	dashLengths := anAlternateCollectionOfLengths.
+	dashOffset := anOffset asFloat
+]
+
 { #category : #'setting - join styles' }
 AthensAeCairoStrokePaint >> joinBevel [
 
@@ -49,17 +69,35 @@ AthensAeCairoStrokePaint >> joinMiter [
 	joinStyle := AeCairoStrokeJoin miter
 ]
 
+{ #category : #'setting - join styles' }
+AthensAeCairoStrokePaint >> joinRound [
+
+	joinStyle := AeCairoStrokeJoin round
+]
+
 { #category : #private }
 AthensAeCairoStrokePaint >> prepareForDrawingOn: aCanvas [
 
-	fillPaint loadOnCairoCanvas: aCanvas.
+	fillPaint isColor
+		ifTrue: [
+			aCanvas
+				setSourceR: fillPaint red
+				g: fillPaint green
+				b: fillPaint blue
+				a: fillPaint alpha ]
+		ifFalse: [
+			fillPaint loadOnCairoCanvas: aCanvas ].
 
 	aCanvas cairoContext
 		strokeSize: width;
 		strokeJoin: joinStyle;
 		strokeCap: capStyle.
 
-	dashLenghts
-		ifNil: [ aCanvas resetDash ]
-		ifNotNil: [ self setDashesOn: aCanvas ]
+	dashLengths ifNil: [ aCanvas resetDash ] ifNotNil: [ self setDashesOn: aCanvas ]
+]
+
+{ #category : #private }
+AthensAeCairoStrokePaint >> setDashesOn: aCanvas [
+
+	aCanvas cairoContext strokeDashPattern: dashLengths offset: dashOffset
 ]
