@@ -1,14 +1,13 @@
 Class {
 	#name : #AeBlurTest,
-	#superclass : #AePixelMatchTest,
+	#superclass : #AeImageMatchTest,
 	#category : #'Alexandrie-Blur-Tests'
 }
 
-{ #category : #hooks }
-AeBlurTest class >> allFormSelectors [
+{ #category : #accessing }
+AeBlurTest class >> allImageSelectors [
 
-	^ self selectors select: [ :each |
-		  each isUnary and: [ each beginsWith: 'blur' ] ]
+	^ self selectors select: [ :each | each isUnary and: [ each beginsWith: 'blur' ] ]
 ]
 
 { #category : #convenience }
@@ -30,6 +29,16 @@ AeBlurTest class >> inspectMismatches [
 	<script: 'super inspectMismatches'>
 	
 	super inspectMismatches
+]
+
+{ #category : #accessing }
+AeBlurTest >> actual [
+	"Build and answer an AeCairoImageSurface that corresponds to current imageSelector parameter."
+
+	| surface |
+	surface := self imageBehavior perform: imageSelector.
+	surface format = AeCairoSurfaceFormat a8 ifTrue: [ surface := surface asAlphaChannelGrayscaleImage ].
+	^ surface
 ]
 
 { #category : #examples }
@@ -201,7 +210,7 @@ AeBlurTest >> blurTextShadow [
 ]
 
 { #category : #hooks }
-AeBlurTest >> expectedFormsDirectory [
+AeBlurTest >> expectedImagesDirectory [
 
 	^ AeFilesystemResources blurDirectory
 ]

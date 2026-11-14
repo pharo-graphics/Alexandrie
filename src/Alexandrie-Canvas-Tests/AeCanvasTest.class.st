@@ -3,18 +3,18 @@ An AeCanvasTest is a test class for testing the behavior of AeCanvas
 "
 Class {
 	#name : #AeCanvasTest,
-	#superclass : #AePixelMatchTest,
+	#superclass : #AeImageMatchTest,
 	#instVars : [
 		'emojiFTFace',
 		'ffLigatureFTFace'
 	],
-	#category : #'Alexandrie-Canvas-Tests-Base'
+	#category : #'Alexandrie-Canvas-Tests'
 }
 
-{ #category : #hooks }
-AeCanvasTest class >> allFormSelectors [
+{ #category : #accessing }
+AeCanvasTest class >> allImageSelectors [
 
-	^ self selectors select: [ :each | each isUnary and: [each beginsWith: 'render'] ]
+	^ self selectors select: [ :each | each isUnary and: [ each beginsWith: 'render' ] ]
 ]
 
 { #category : #convenience }
@@ -38,6 +38,13 @@ AeCanvasTest class >> inspectMismatches [
 	super inspectMismatches
 ]
 
+{ #category : #accessing }
+AeCanvasTest >> actual [
+	"Build and answer an AeCairoImageSurface that corresponds to current imageSelector parameter."
+
+	^ (self imageBehavior perform: imageSelector) privateAeCairoSurface
+]
+
 { #category : #private }
 AeCanvasTest >> emojiZWJString [ 
 
@@ -49,7 +56,7 @@ AeCanvasTest >> emojiZWJString [
 ]
 
 { #category : #hooks }
-AeCanvasTest >> expectedFormsDirectory [
+AeCanvasTest >> expectedImagesDirectory [
 
 	^ AeFilesystemResources canvasDirectory
 ]

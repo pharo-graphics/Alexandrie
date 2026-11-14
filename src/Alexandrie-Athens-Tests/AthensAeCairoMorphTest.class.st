@@ -1,11 +1,11 @@
 Class {
 	#name : #AthensAeCairoMorphTest,
-	#superclass : #AePixelMatchTest,
+	#superclass : #AthensAeCairoImageMatchTest,
 	#category : #'Alexandrie-Athens-Tests'
 }
 
-{ #category : #hooks }
-AthensAeCairoMorphTest class >> allFormSelectors [
+{ #category : #accessing }
+AthensAeCairoMorphTest class >> allImageSelectors [
 
 	^ self selectors select: [ :each | each beginsWith: 'surface' ]
 ]
@@ -32,7 +32,7 @@ AthensAeCairoMorphTest class >> inspectMismatches [
 ]
 
 { #category : #hooks }
-AthensAeCairoMorphTest >> expectedFormsDirectory [
+AthensAeCairoMorphTest >> expectedImagesDirectory [
 
 	^ AeFilesystemResources testsDirectory / 'athens' / 'morphic'
 ]

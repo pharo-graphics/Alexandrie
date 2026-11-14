@@ -6,6 +6,8 @@ See #isMatch, my main testing method.
 My NewTools inspections help humans to understand what's different between two bitmaps that should be equal.
 
 My colaborators are two instances of Form (the expected and the actual bitmap) and a String that serves as label for the comparison.
+
+I am deprecated. Use AeImageComparison in Alexandrie-ImageMatch-Tests package instead.
 "
 Class {
 	#name : #AePixelComparison,
@@ -27,6 +29,12 @@ AePixelComparison class >> expectedForm: aForm actualForm: anotherForm label: aS
 		  actualForm: anotherForm;
 		  label: aString;
 		  yourself
+]
+
+{ #category : #testing }
+AePixelComparison class >> isDeprecated [
+
+	^ true
 ]
 
 { #category : #accessing }

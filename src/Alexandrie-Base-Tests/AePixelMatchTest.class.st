@@ -1,3 +1,6 @@
+"
+I am deprecated. Use AeImageMatchTest in Alexandrie-ImageMatch-Tests package instead.
+"
 Class {
 	#name : #AePixelMatchTest,
 	#superclass : #TestCase,
@@ -109,6 +112,12 @@ AePixelMatchTest class >> inspectMismatches [
 AePixelMatchTest class >> isAbstract [
 		
 	^ self == AePixelMatchTest
+]
+
+{ #category : #testing }
+AePixelMatchTest class >> isDeprecated [
+
+	^ true
 ]
 
 { #category : #hooks }
