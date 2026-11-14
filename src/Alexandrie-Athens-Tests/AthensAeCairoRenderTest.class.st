@@ -1,11 +1,11 @@
 Class {
 	#name : #AthensAeCairoRenderTest,
-	#superclass : #AePixelMatchTest,
+	#superclass : #AthensAeCairoImageMatchTest,
 	#category : #'Alexandrie-Athens-Tests'
 }
 
-{ #category : #hooks }
-AthensAeCairoRenderTest class >> allFormSelectors [
+{ #category : #accessing }
+AthensAeCairoRenderTest class >> allImageSelectors [
 
 	^ self selectors select: [ :each | each beginsWith: 'surface' ]
 ]
@@ -44,7 +44,7 @@ AthensAeCairoRenderTest >> _surface11Tiger [
 ]
 
 { #category : #hooks }
-AthensAeCairoRenderTest >> expectedFormsDirectory [
+AthensAeCairoRenderTest >> expectedImagesDirectory [
 
 	^ AeFilesystemResources testsDirectory / 'athens' / 'basic'
 ]

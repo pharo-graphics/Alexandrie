@@ -31,6 +31,16 @@ AeCairoExamplesRenderTest >> resources [
 	^ { AeFTLibraryResource }
 ]
 
+{ #category : #hooks }
+AeCairoExamplesRenderTest >> settings [
+	"Allow minor tolerance for platform system font (toy API) and grid-fitting snap at full hinting."
+
+	(#( surfaceWithToyAPISelectFontSlantWeight surfaceWithTextPixelated ) includes: imageSelector) ifTrue: [
+		^ AeImageMatchSettings colorTolerance: 0.01 maxMismatchCount: 5 maxMismatchRatio: 0.005 ].
+
+	^ super settings
+]
+
 { #category : #tests }
 AeCairoExamplesRenderTest >> surfaceWithAllOperators [
 	"Catalog of cairo's compositing operators.

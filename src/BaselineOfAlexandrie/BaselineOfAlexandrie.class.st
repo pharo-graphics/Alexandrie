@@ -20,6 +20,11 @@ BaselineOfAlexandrie >> baseline: spec [
 				package: 'Alexandrie-Base';
 				package: 'Alexandrie-Base-Tests';
 
+				package: 'Alexandrie-ImageMatch'
+					with: [ spec requires: #('Alexandrie-Cairo') ];
+				package: 'Alexandrie-ImageMatch-Tests'
+					with: [ spec requires: #('Alexandrie-ImageMatch') ];
+
 				package: 'Alexandrie-FreeType'
 					with: [ spec requires: #('Alexandrie-Base') ];
 				package: 'Alexandrie-FreeType-Tests'
@@ -28,7 +33,7 @@ BaselineOfAlexandrie >> baseline: spec [
 				package: 'Alexandrie-Cairo'
 					with: [ spec requires: #('Alexandrie-FreeType') ];
 				package: 'Alexandrie-Cairo-Tests'
-					with: [ spec requires: #('Alexandrie-Cairo' 'Alexandrie-FreeType-Tests') ];
+					with: [ spec requires: #('Alexandrie-Cairo' 'Alexandrie-FreeType-Tests' 'Alexandrie-ImageMatch') ];
 
 				package: 'Alexandrie-CairoFreetype'
 					with: [ spec requires: #('Alexandrie-Cairo') ];
@@ -38,7 +43,7 @@ BaselineOfAlexandrie >> baseline: spec [
 				package: 'Alexandrie-Blur'
 					with: [ spec requires: #('Alexandrie-Cairo') ]; "Examples use freetype"
 				package: 'Alexandrie-Blur-Tests'
-					with: [ spec requires: #('Alexandrie-Blur' 'Alexandrie-CairoFreetype') ];
+					with: [ spec requires: #('Alexandrie-Blur' 'Alexandrie-CairoFreetype' 'Alexandrie-ImageMatch') ];
 					
 				package: 'Alexandrie-FontManager'
 					with: [ spec requires: #('Alexandrie-FreeType') ];
@@ -64,12 +69,12 @@ BaselineOfAlexandrie >> baseline: spec [
 				package: 'Alexandrie-Canvas'
 					with: [ spec requires: #('Alexandrie-Cairo' 'Alexandrie-Blur') ];
 				package: 'Alexandrie-Canvas-Tests'
-					with: [ spec requires: #('Alexandrie-Canvas' 'Alexandrie-FreeType-Tests' 'Alexandrie-Cairo-Tests') ];
+					with: [ spec requires: #('Alexandrie-Canvas' 'Alexandrie-FreeType-Tests' 'Alexandrie-Cairo-Tests' 'Alexandrie-ImageMatch') ];
 
 				package: 'Alexandrie-Athens'
 					with: [ spec requires: #('Alexandrie-Cairo' 'Alexandrie-FontManager') ];
 				package: 'Alexandrie-Athens-Tests'
-					with: [ spec requires: #('Alexandrie-Athens') ];
+					with: [ spec requires: #('Alexandrie-Athens' 'Alexandrie-ImageMatch') ];
 
 				package: 'Alexandrie-NewTools'
 					with: [ spec requires: #('Alexandrie-Canvas') ];
@@ -95,8 +100,11 @@ BaselineOfAlexandrie >> baseline: spec [
 					'Alexandrie-Canvas-Tests'
 					'Alexandrie-CairoFreetype-Tests'
 					'Alexandrie-FontManager-Tests'
-					'Alexandrie-Athens-Tests');
+					'Alexandrie-Athens-Tests'
+					'Alexandrie-ImageMatch'
+					'Alexandrie-ImageMatch-Tests');
 				group: 'default' with: #('development')	]
+
 ]
 
 { #category : #actions }

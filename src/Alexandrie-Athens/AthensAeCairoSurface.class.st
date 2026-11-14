@@ -305,6 +305,12 @@ AthensAeCairoSurface >> showPage [
 	cairoSurface showPage
 ]
 
+{ #category : #accessing }
+AthensAeCairoSurface >> writePngTo: aFileReference [
+
+	self writeToPng: aFileReference
+]
+
 { #category : #public }
 AthensAeCairoSurface >> writeToPng: aFileName [
 
