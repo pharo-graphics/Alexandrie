@@ -126,8 +126,10 @@ AeHbBuffer >> cairoGlyphArrayForFace: freetypeFace size: fontSize [
 
 	| hbFont |
 	freetypeFace charHeight: fontSize.
-	hbFont := AeHbFont newForFTFaceReferenced: freetypeFace.
-	self shapeWithFont: hbFont.
+
+	hbFont := AeHbFont unownedNewFTFaceReferenced: freetypeFace.
+	[ self shapeWithFont: hbFont ] ensure: [ hbFont externallyFree ].
+
 	^ self cairoGlyphArray
 ]
 
