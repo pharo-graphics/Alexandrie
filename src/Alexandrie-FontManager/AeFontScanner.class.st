@@ -96,9 +96,9 @@ AeFontScanner >> manager: anAeFontManager [
 { #category : #directories }
 AeFontScanner >> platformSpecificDirectories [
 
-	Smalltalk os isWindows ifTrue: [ ^ self windowsDirectories ].
-	Smalltalk os isUnix ifTrue: [ ^ self unixFontDirectories ].
-	Smalltalk os isMacOSX ifTrue: [ ^ self macosDirectories ].
+	OSPlatform current isWindows ifTrue: [ ^ self windowsDirectories ].
+	OSPlatform current isUnix ifTrue: [ ^ self unixFontDirectories ].
+	OSPlatform current isMacOSX ifTrue: [ ^ self macosDirectories ].
 	^ #()
 ]
 
